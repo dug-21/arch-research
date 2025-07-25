@@ -1,0 +1,44 @@
+{
+  "name": "mermaid-design-system-docs",
+  "version": "1.0.0",
+  "description": "Visual-first architecture documentation using Mermaid diagrams",
+  "scripts": {
+    "dev": "mermaid-docs watch",
+    "build": "mermaid-docs generate",
+    "preview": "mermaid-docs serve",
+    "create:diagram": "mermaid-docs create --interactive",
+    "validate": "mermaid-docs validate",
+    "export:pdf": "mermaid-docs export --format=pdf",
+    "lint": "mermaid-lint architecture/**/*.mmd"
+  },
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "^10.0.0",
+    "mermaid": "^10.0.0",
+    "mermaid-docs-generator": "^1.0.0",
+    "handlebars": "^4.7.8",
+    "gray-matter": "^4.0.3",
+    "marked": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "puppeteer": "^21.0.0",
+    "live-server": "^1.2.2",
+    "mermaid-lint": "^1.0.0"
+  },
+  "mermaidDocs": {
+    "sourceDir": "./architecture",
+    "outputDir": "./generated",
+    "theme": "dark",
+    "formats": ["markdown", "html", "pdf"],
+    "autoGenerate": {
+      "navigation": true,
+      "search": true,
+      "glossary": true
+    },
+    "plugins": [
+      "mermaid-docs-versioning",
+      "mermaid-docs-search",
+      "mermaid-docs-export"
+    ]
+  }
+}

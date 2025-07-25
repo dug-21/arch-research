@@ -1,0 +1,60 @@
+{
+  "name": "docs-as-data-architecture",
+  "version": "1.0.0",
+  "description": "Queryable architecture documentation as structured data",
+  "scripts": {
+    "init": "docs-as-data init",
+    "create:component": "docs-as-data create --type=component",
+    "create:flow": "docs-as-data create --type=flow",
+    "validate": "docs-as-data validate",
+    "query": "docs-as-data query",
+    "analyze": "docs-as-data analyze",
+    "generate": "docs-as-data generate --all",
+    "serve:graphql": "docs-as-data serve --port=4000",
+    "export:report": "docs-as-data export --format=html",
+    "ci:validate": "npm run validate && npm run analyze"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "graphql": "^16.8.0",
+    "js-yaml": "^4.1.0",
+    "glob": "^10.3.0",
+    "commander": "^11.0.0",
+    "express": "^4.18.0",
+    "express-graphql": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "nodemon": "^3.0.0",
+    "jest": "^29.0.0"
+  },
+  "docsAsData": {
+    "dataDir": "./data",
+    "schemaDir": "./data/schemas",
+    "outputDir": "./outputs",
+    "queries": {
+      "presets": [
+        "find-dependencies",
+        "security-audit",
+        "performance-analysis",
+        "test-coverage"
+      ]
+    },
+    "validation": {
+      "strict": true,
+      "autoFix": false
+    },
+    "transforms": [
+      {
+        "name": "diagram-generator",
+        "input": "components",
+        "output": "diagrams/mermaid"
+      },
+      {
+        "name": "openapi-exporter",
+        "input": "api",
+        "output": "specs/openapi"
+      }
+    ]
+  }
+}

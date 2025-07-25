@@ -1,0 +1,49 @@
+%%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#ff6600', 'primaryTextColor':'#fff', 'primaryBorderColor':'#ff6600', 'lineColor':'#6A7FABCC', 'secondaryColor':'#006100', 'tertiaryColor':'#fff'}}}%%
+
+%% Component: {{COMPONENT_NAME}}
+%% Description: {{COMPONENT_DESCRIPTION}}
+%% Version: {{VERSION}}
+%% Last Updated: {{DATE}}
+
+graph TB
+    subgraph "{{COMPONENT_NAME}} Component"
+        %% External Dependencies
+        subgraph "External Dependencies"
+            {{#each EXTERNAL_DEPS}}
+            {{this.name}}[{{this.label}}]
+            {{/each}}
+        end
+        
+        %% Core Component
+        subgraph "Core"
+            {{COMPONENT_ID}}["{{COMPONENT_NAME}}<br/>{{COMPONENT_TYPE}}"]
+            
+            %% Internal Modules
+            {{#each MODULES}}
+            {{this.id}}[{{this.name}}]
+            {{/each}}
+        end
+        
+        %% Data Flow
+        {{#each DATA_FLOWS}}
+        {{this.from}} -->|{{this.label}}| {{this.to}}
+        {{/each}}
+    end
+    
+    %% Interactions
+    {{#each INTERACTIONS}}
+    {{this.source}} -.->|{{this.type}}| {{this.target}}
+    {{/each}}
+
+    %% Styling
+    classDef component fill:#1f2937,stroke:#ff6600,stroke-width:2px,color:#fff
+    classDef external fill:#374151,stroke:#6b7280,stroke-width:1px,color:#fff
+    classDef module fill:#4b5563,stroke:#9ca3af,stroke-width:1px,color:#fff
+    
+    class {{COMPONENT_ID}} component
+    {{#each EXTERNAL_DEPS}}
+    class {{this.name}} external
+    {{/each}}
+    {{#each MODULES}}
+    class {{this.id}} module
+    {{/each}}

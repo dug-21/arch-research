@@ -1,0 +1,209 @@
+# Viewpoints and Perspectives Catalog for E-Commerce Platform
+# Based on Rozanski & Woods methodology
+
+viewpoints:
+  functional:
+    name: "Functional Viewpoint"
+    concerns:
+      - "System functional capabilities"
+      - "External interfaces"
+      - "Internal structure"
+    models:
+      - type: "functional-structure"
+        notation: "UML Component Diagram"
+        elements:
+          - id: "web-frontend"
+            type: "component"
+            responsibilities:
+              - "User interface rendering"
+              - "Client-side validation"
+              - "Session management"
+          - id: "api-gateway"
+            type: "component"
+            responsibilities:
+              - "Request routing"
+              - "Authentication"
+              - "Rate limiting"
+          - id: "product-service"
+            type: "component"
+            responsibilities:
+              - "Product catalog management"
+              - "Inventory tracking"
+              - "Product search"
+    stakeholders: ["developers", "architects", "business-analysts"]
+
+  information:
+    name: "Information Viewpoint"
+    concerns:
+      - "Information structure and content"
+      - "Information flow"
+      - "Data ownership and quality"
+    models:
+      - type: "entity-relationship"
+        notation: "ERD"
+        entities:
+          - name: "Customer"
+            attributes: ["id", "email", "name", "address"]
+            lifecycle: "created -> active -> inactive"
+          - name: "Product"
+            attributes: ["sku", "name", "description", "price", "stock"]
+            lifecycle: "draft -> published -> discontinued"
+          - name: "Order"
+            attributes: ["order_id", "customer_id", "total", "status"]
+            lifecycle: "pending -> paid -> shipped -> delivered"
+      - type: "information-flow"
+        flows:
+          - from: "web-frontend"
+            to: "api-gateway"
+            data: "customer-requests"
+          - from: "product-service"
+            to: "database"
+            data: "product-updates"
+    stakeholders: ["data-architects", "developers", "dba"]
+
+  concurrency:
+    name: "Concurrency Viewpoint"
+    concerns:
+      - "Concurrent processing"
+      - "Synchronization and transactions"
+      - "Deadlock prevention"
+    models:
+      - type: "process-model"
+        processes:
+          - name: "order-processing"
+            type: "thread-pool"
+            size: 20
+            synchronization: "database-transactions"
+          - name: "inventory-update"
+            type: "message-queue"
+            queue: "kafka"
+            partitions: 10
+      - type: "state-model"
+        components:
+          - name: "shopping-cart"
+            states: ["empty", "active", "abandoned", "converted"]
+            concurrency: "optimistic-locking"
+    stakeholders: ["developers", "architects", "operations"]
+
+  deployment:
+    name: "Deployment Viewpoint"
+    concerns:
+      - "Runtime environment"
+      - "System topology"
+      - "Technology dependencies"
+    models:
+      - type: "deployment-diagram"
+        notation: "UML Deployment"
+        nodes:
+          - id: "cdn"
+            type: "cloudfront"
+            hosts: ["static-assets", "images"]
+          - id: "web-tier"
+            type: "ec2-auto-scaling-group"
+            instances: "2-10"
+            hosts: ["nginx", "angular-app"]
+          - id: "app-tier"
+            type: "ecs-fargate"
+            tasks: "4-20"
+            hosts: ["spring-boot-api"]
+          - id: "data-tier"
+            type: "rds-postgresql"
+            configuration: "multi-az"
+            hosts: ["postgresql-13"]
+        connections:
+          - from: "web-tier"
+            to: "app-tier"
+            protocol: "https"
+            port: 443
+          - from: "app-tier"
+            to: "data-tier"
+            protocol: "postgresql"
+            port: 5432
+    stakeholders: ["operations", "infrastructure", "security"]
+
+  operational:
+    name: "Operational Viewpoint"
+    concerns:
+      - "System operation and administration"
+      - "Monitoring and control"
+      - "Backup and recovery"
+    models:
+      - type: "operational-model"
+        procedures:
+          - name: "backup"
+            schedule: "daily-2am"
+            retention: "30-days"
+            target: "s3-glacier"
+          - name: "scaling"
+            trigger: "cpu > 70%"
+            action: "add-instance"
+            cooldown: "5-minutes"
+          - name: "deployment"
+            strategy: "blue-green"
+            validation: "smoke-tests"
+            rollback: "automatic"
+        monitoring:
+          - metric: "response-time"
+            threshold: "200ms"
+            alert: "pagerduty"
+          - metric: "error-rate"
+            threshold: "1%"
+            alert: "slack"
+    stakeholders: ["operations", "support", "management"]
+
+perspectives:
+  security:
+    name: "Security Perspective"
+    applicableTo: ["all-viewpoints"]
+    concerns:
+      - "Authentication and authorization"
+      - "Data protection"
+      - "Threat mitigation"
+    tactics:
+      - name: "defense-in-depth"
+        implementation:
+          - "WAF at CDN level"
+          - "API Gateway authentication"
+          - "Database encryption at rest"
+      - name: "least-privilege"
+        implementation:
+          - "IAM roles per service"
+          - "Network segmentation"
+          - "Secrets management"
+
+  performance:
+    name: "Performance and Scalability Perspective"
+    applicableTo: ["functional", "deployment", "information"]
+    concerns:
+      - "Response time"
+      - "Throughput"
+      - "Resource utilization"
+    tactics:
+      - name: "caching"
+        levels:
+          - "CDN for static assets"
+          - "Redis for session data"
+          - "Application-level caching"
+      - name: "async-processing"
+        implementation:
+          - "Message queues for orders"
+          - "Event streaming for updates"
+
+  evolution:
+    name: "Evolution Perspective"
+    applicableTo: ["all-viewpoints"]
+    concerns:
+      - "Modifiability"
+      - "Extensibility"
+      - "Portability"
+    tactics:
+      - name: "loose-coupling"
+        implementation:
+          - "Microservices architecture"
+          - "API versioning"
+          - "Event-driven communication"
+      - name: "abstraction"
+        implementation:
+          - "Repository pattern"
+          - "Dependency injection"
+          - "Configuration externalization"

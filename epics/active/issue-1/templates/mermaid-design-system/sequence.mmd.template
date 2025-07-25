@@ -1,0 +1,52 @@
+%%{init: {'theme':'dark', 'sequence': {'actorMargin': 50, 'showSequenceNumbers': true}}}%%
+
+sequenceDiagram
+    %% Title: {{FLOW_NAME}}
+    %% Description: {{FLOW_DESCRIPTION}}
+    %% Version: {{VERSION}}
+    
+    autonumber
+    
+    %% Participants
+    {{#each PARTICIPANTS}}
+    participant {{this.id}} as {{this.label}}
+    {{/each}}
+    
+    %% Flow
+    {{#each STEPS}}
+    {{#if this.note}}
+    Note over {{this.participants}}: {{this.note}}
+    {{/if}}
+    
+    {{#if this.alt}}
+    alt {{this.condition}}
+        {{this.from}}->>{{this.to}}: {{this.message}}
+    {{#if this.else}}
+    else {{this.elseCondition}}
+        {{this.elseFrom}}->>{{this.elseTo}}: {{this.elseMessage}}
+    {{/if}}
+    end
+    {{else if this.loop}}
+    loop {{this.condition}}
+        {{this.from}}->>{{this.to}}: {{this.message}}
+    end
+    {{else if this.async}}
+    {{this.from}}--){{this.to}}: {{this.message}}
+    {{else}}
+    {{this.from}}->>{{this.to}}: {{this.message}}
+    {{/if}}
+    
+    {{#if this.return}}
+    {{this.to}}-->>{{this.from}}: {{this.return}}
+    {{/if}}
+    {{/each}}
+    
+    %% Error Handling
+    {{#if ERROR_FLOWS}}
+    rect rgb(255, 0, 0, 0.1)
+        Note right of {{ERROR_FLOWS.participant}}: Error Handling
+        {{#each ERROR_FLOWS.steps}}
+        {{this.from}}->>{{this.to}}: {{this.message}}
+        {{/each}}
+    end
+    {{/if}}

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd"
+       identifier="id-ecommerce-model">
+  
+  <name>E-Commerce Platform Architecture</name>
+  
+  <elements>
+    <!-- Business Layer -->
+    <element xsi:type="BusinessActor" identifier="id-customer">
+      <name>Customer</name>
+    </element>
+    
+    <element xsi:type="BusinessRole" identifier="id-buyer">
+      <name>Buyer</name>
+    </element>
+    
+    <element xsi:type="BusinessService" identifier="id-online-shopping">
+      <name>Online Shopping Service</name>
+    </element>
+    
+    <element xsi:type="BusinessProcess" identifier="id-order-fulfillment">
+      <name>Order Fulfillment Process</name>
+    </element>
+    
+    <element xsi:type="BusinessFunction" identifier="id-payment-processing">
+      <name>Payment Processing</name>
+    </element>
+    
+    <!-- Application Layer -->
+    <element xsi:type="ApplicationComponent" identifier="id-web-app">
+      <name>Web Application</name>
+    </element>
+    
+    <element xsi:type="ApplicationComponent" identifier="id-api-app">
+      <name>API Application</name>
+    </element>
+    
+    <element xsi:type="ApplicationService" identifier="id-user-mgmt">
+      <name>User Management Service</name>
+    </element>
+    
+    <element xsi:type="ApplicationService" identifier="id-product-catalog">
+      <name>Product Catalog Service</name>
+    </element>
+    
+    <element xsi:type="ApplicationService" identifier="id-order-mgmt">
+      <name>Order Management Service</name>
+    </element>
+    
+    <element xsi:type="ApplicationInterface" identifier="id-rest-api">
+      <name>REST API Interface</name>
+    </element>
+    
+    <element xsi:type="DataObject" identifier="id-customer-data">
+      <name>Customer Data</name>
+    </element>
+    
+    <element xsi:type="DataObject" identifier="id-product-data">
+      <name>Product Data</name>
+    </element>
+    
+    <element xsi:type="DataObject" identifier="id-order-data">
+      <name>Order Data</name>
+    </element>
+    
+    <!-- Technology Layer -->
+    <element xsi:type="Node" identifier="id-web-server">
+      <name>Web Server</name>
+    </element>
+    
+    <element xsi:type="Node" identifier="id-app-server">
+      <name>Application Server</name>
+    </element>
+    
+    <element xsi:type="Node" identifier="id-db-server">
+      <name>Database Server</name>
+    </element>
+    
+    <element xsi:type="SystemSoftware" identifier="id-angular">
+      <name>Angular Framework</name>
+    </element>
+    
+    <element xsi:type="SystemSoftware" identifier="id-spring-boot">
+      <name>Spring Boot</name>
+    </element>
+    
+    <element xsi:type="SystemSoftware" identifier="id-postgresql">
+      <name>PostgreSQL</name>
+    </element>
+    
+    <element xsi:type="Device" identifier="id-load-balancer">
+      <name>Load Balancer</name>
+    </element>
+    
+    <element xsi:type="CommunicationNetwork" identifier="id-internet">
+      <name>Internet</name>
+    </element>
+  </elements>
+  
+  <relationships>
+    <!-- Business relationships -->
+    <relationship xsi:type="Assignment" identifier="id-rel1" source="id-customer" target="id-buyer"/>
+    <relationship xsi:type="Serving" identifier="id-rel2" source="id-online-shopping" target="id-buyer"/>
+    <relationship xsi:type="Realization" identifier="id-rel3" source="id-order-fulfillment" target="id-online-shopping"/>
+    <relationship xsi:type="Access" identifier="id-rel4" source="id-order-fulfillment" target="id-order-data" accessType="write"/>
+    
+    <!-- Application relationships -->
+    <relationship xsi:type="Realization" identifier="id-rel5" source="id-web-app" target="id-online-shopping"/>
+    <relationship xsi:type="Serving" identifier="id-rel6" source="id-api-app" target="id-web-app"/>
+    <relationship xsi:type="Composition" identifier="id-rel7" source="id-api-app" target="id-user-mgmt"/>
+    <relationship xsi:type="Composition" identifier="id-rel8" source="id-api-app" target="id-product-catalog"/>
+    <relationship xsi:type="Composition" identifier="id-rel9" source="id-api-app" target="id-order-mgmt"/>
+    <relationship xsi:type="Access" identifier="id-rel10" source="id-user-mgmt" target="id-customer-data"/>
+    <relationship xsi:type="Access" identifier="id-rel11" source="id-product-catalog" target="id-product-data"/>
+    <relationship xsi:type="Access" identifier="id-rel12" source="id-order-mgmt" target="id-order-data"/>
+    
+    <!-- Technology relationships -->
+    <relationship xsi:type="Assignment" identifier="id-rel13" source="id-web-server" target="id-web-app"/>
+    <relationship xsi:type="Assignment" identifier="id-rel14" source="id-app-server" target="id-api-app"/>
+    <relationship xsi:type="Realization" identifier="id-rel15" source="id-angular" target="id-web-app"/>
+    <relationship xsi:type="Realization" identifier="id-rel16" source="id-spring-boot" target="id-api-app"/>
+    <relationship xsi:type="Assignment" identifier="id-rel17" source="id-postgresql" target="id-db-server"/>
+  </relationships>
+  
+  <views>
+    <diagrams>
+      <view xsi:type="Viewpoint" viewpoint="Layered">
+        <name>E-Commerce Layered View</name>
+      </view>
+    </diagrams>
+  </views>
+</model>
