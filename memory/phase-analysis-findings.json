@@ -1,0 +1,72 @@
+{
+  "phase": "analysis",
+  "location": "research.yaml:60-93", 
+  "duration": "1-3 days",
+  "requiredInputs": [
+    "research_data",
+    "evaluation_criteria", 
+    "constraints"
+  ],
+  "outputs": [
+    "analysis_report",
+    "comparison_matrix",
+    "recommendations"
+  ],
+  "successCriteria": [
+    "Data thoroughly analyzed",
+    "Options objectively compared",
+    "Clear insights generated"
+  ],
+  "githubInteractions": {
+    "expectedResponses": [
+      "Post analysis_report as comment",
+      "Create comparison_matrix table in issue",
+      "List recommendations with pros/cons",
+      "Request stakeholder feedback",
+      "Update issue labels to analysis phase"
+    ],
+    "communicationStyle": [
+      "Use structured markdown for reports",
+      "Include data visualizations when possible",
+      "Tag relevant stakeholders for review",
+      "Provide clear action items"
+    ],
+    "documentationRequirements": [
+      "Executive summary in issue description",
+      "Detailed findings in linked documents",
+      "Decision rationale clearly stated"
+    ]
+  },
+  "epicPhaseAnalysis": {
+    "description": "The EPIC workflow doesn't have a standalone 'research-analysis' phase, but analysis activities occur within multiple phases",
+    "analysisInPhases": {
+      "research": {
+        "phase": "Phase 0: Initial Research",
+        "analysisActivities": [
+          "Market Analysis",
+          "Technical Feasibility assessment",
+          "Business Viability analysis",
+          "Competition analysis"
+        ]
+      },
+      "vision_extraction": {
+        "phase": "Phase 1: Vision Extraction", 
+        "analysisActivities": [
+          "Five Whys Analysis",
+          "Root problem identification",
+          "User persona analysis",
+          "Value proposition analysis"
+        ]
+      },
+      "concept_materialization": {
+        "phase": "Phase 2: Concept Materialization",
+        "analysisActivities": [
+          "Concept comparison matrix",
+          "Trade-off analysis",
+          "User flow analysis",
+          "Interaction pattern analysis"
+        ]
+      }
+    }
+  }
+}

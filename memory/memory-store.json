@@ -1,0 +1,22 @@
+{
+  "default": [
+    {
+      "key": "hive/worker/coder/git-status",
+      "value": "{\"timestamp\": \"2025-07-25T17:44:00Z\", \"uncommitted_files\": [\"epics/\", \"memory/memory-store.json\", \"B[BPMN\", \"C[PlantUML\", \"E[Terraform\", \"F[Structurizr\", \"H[GraphViz]\", \"I[D2\"], \"unpushed_commits\": false, \"branch\": \"main\", \"tracking\": \"origin/main\", \"analysis\": \"Found significant uncommitted work in epics/active/issue-1/ with analysis completed today. Also found memory/ directory and several oddly named files that appear to be incomplete.\"}",
+      "namespace": "default",
+      "timestamp": 1753465549748
+    },
+    {
+      "key": "workflow/research/wf-1-1753463951874/human-feedback",
+      "value": "{\"timestamp\": \"2025-07-25T17:28:42Z\", \"feedback\": \"Not seeing responses in GitHub, requested commit and push\", \"action_taken\": \"Committed 59 files to epics/active/issue-1/ and pushed to remote\", \"phase\": \"ANALYSIS\", \"phase_status\": \"COMPLETE\", \"commit\": \"dc8dd78\"}",
+      "namespace": "default",
+      "timestamp": 1753466083451
+    },
+    {
+      "key": "workflow/research/wf-1-1753463951874/phase-transition",
+      "value": "{\"from\": \"ANALYSIS\", \"to\": \"READY_FOR_NEXT\", \"gate_criteria_met\": true, \"deliverables_location\": \"epics/active/issue-1/\"}",
+      "namespace": "default",
+      "timestamp": 1753466117339
+    }
+  ]
+}
