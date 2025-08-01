@@ -752,21 +752,99 @@ Performance Targets:
   - Availability: 99.999%
 ```
 
-### Cryptocurrency Payment Stack
+### Cryptocurrency and DeFi Payment Stack
 
 ```yaml
 Technology Choices:
-  - Language: Rust or Go
-  - Blockchain Nodes: Self-hosted
-  - Database: PostgreSQL + TimescaleDB
-  - Queue: NATS Streaming
-  - Monitoring: Custom blockchain metrics
+  Core Languages:
+    - Rust: Cryptography, wallet operations, MEV protection
+    - Go: Blockchain node interaction, API services
+    - Solidity: Smart contract development
+    - TypeScript: Web3 integration, frontend
+  
+  Blockchain Infrastructure:
+    - Ethereum: Geth/Erigon nodes, Infura/Alchemy backup
+    - Bitcoin: Bitcoin Core nodes
+    - L2 Solutions: Arbitrum, Optimism, Polygon nodes
+    - Alternative Chains: Solana, Avalanche, BSC
+  
+  Database Layer:
+    - PostgreSQL: Transaction records, user data
+    - TimescaleDB: Time-series blockchain data
+    - Redis: Mempool monitoring, gas price cache
+    - MongoDB: Block/transaction indexing
+  
+  Message Queues:
+    - NATS Streaming: Real-time transaction updates
+    - Apache Kafka: Event streaming, cross-chain events
+    - RabbitMQ: Transaction queue management
+  
+  DeFi Integration:
+    - DEX Aggregators: 1inch, 0x Protocol integration
+    - Lending Protocols: Aave, Compound interfaces
+    - Oracle Networks: Chainlink, Band Protocol
+    - Bridge Services: LayerZero, Wormhole
   
 Special Considerations:
-  - HD wallet management
-  - Multi-signature support
-  - Gas optimization
-  - Cross-chain compatibility
+  Wallet Management:
+    - HD wallet generation (BIP32/39/44)
+    - Multi-signature implementation
+    - Hardware wallet integration (Ledger, Trezor)
+    - MPC (Multi-Party Computation) wallets
+    - Account abstraction (ERC-4337)
+  
+  Security Infrastructure:
+    - MEV protection strategies
+    - Flash loan attack prevention
+    - Smart contract auditing tools
+    - Private transaction pools
+    - Key management systems (HSM integration)
+  
+  Gas Optimization:
+    - Dynamic gas pricing algorithms
+    - Transaction batching systems
+    - Layer 2 routing optimization
+    - Gas token strategies
+    - EIP-1559 fee optimization
+  
+  Cross-Chain Architecture:
+    - Unified wallet abstractions
+    - Cross-chain message passing
+    - Liquidity aggregation
+    - Atomic swap implementations
+    - Chain-agnostic transaction formats
+```
+
+### CBDC Integration Stack
+
+```yaml
+Technology Choices:
+  Core Platform:
+    - Hyperledger Fabric: Permissioned blockchain
+    - R3 Corda: Financial-grade DLT
+    - Custom DLT: Central bank specific
+  
+  Languages:
+    - Java/Kotlin: Core CBDC services
+    - Go: High-performance components
+    - Python: Analytics and reporting
+  
+  Infrastructure:
+    - HSM Integration: Key management
+    - Secure Enclaves: Transaction processing
+    - Private Networks: Isolated communication
+  
+  Compliance Layer:
+    - KYC/AML engines
+    - Transaction monitoring
+    - Regulatory reporting
+    - Privacy-preserving analytics
+  
+Integration Points:
+  - Traditional banking APIs
+  - Cross-border payment networks
+  - Digital identity systems
+  - Central bank systems
 ```
 
 ### BNPL (Buy Now Pay Later) Stack

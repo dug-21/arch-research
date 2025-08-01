@@ -1053,6 +1053,441 @@ public class POSIntegrationController {
 }
 ```
 
+## Cryptocurrency and DeFi Integration
+
+### Blockchain Node Integration
+
+#### Ethereum Integration
+
+```typescript
+// Ethereum blockchain integration
+import { ethers } from 'ethers';
+import { Transaction, BlockchainAdapter } from './types';
+
+export class EthereumAdapter implements BlockchainAdapter {
+  private provider: ethers.Provider;
+  private signers: Map<string, ethers.Wallet>;
+  private contracts: Map<string, ethers.Contract>;
+  
+  constructor(config: EthereumConfig) {
+    // Initialize with multiple providers for reliability
+    this.provider = new ethers.FallbackProvider([
+      new ethers.JsonRpcProvider(config.primaryNode),
+      new ethers.AlchemyProvider(config.network, config.alchemyKey),
+      new ethers.InfuraProvider(config.network, config.infuraKey)
+    ]);
+  }
+  
+  async sendTransaction(tx: Transaction): Promise<string> {
+    const signer = this.signers.get(tx.from);
+    if (!signer) throw new Error('Signer not found');
+    
+    // Optimize gas price
+    const gasPrice = await this.optimizeGasPrice();
+    
+    const transaction = {
+      to: tx.to,
+      value: ethers.parseEther(tx.amount),
+      gasPrice: gasPrice,
+      gasLimit: await this.estimateGas(tx),
+      nonce: await this.provider.getTransactionCount(tx.from),
+      data: tx.data || '0x'
+    };
+    
+    const signedTx = await signer.signTransaction(transaction);
+    const receipt = await this.provider.sendTransaction(signedTx);
+    
+    return receipt.hash;
+  }
+  
+  private async optimizeGasPrice(): Promise<bigint> {
+    const block = await this.provider.getBlock('latest');
+    const baseFee = block?.baseFeePerGas || 0n;
+    
+    // EIP-1559 gas optimization
+    return baseFee + ethers.parseGwei('2'); // 2 gwei priority fee
+  }
+}
+```
+
+#### Multi-Chain Integration
+
+```typescript
+// Cross-chain payment orchestrator
+export class CrossChainPaymentOrchestrator {
+  private chains: Map<string, BlockchainAdapter>;
+  private bridges: Map<string, BridgeAdapter>;
+  private priceOracle: PriceOracle;
+  
+  async executeCrossChainPayment(
+    sourceChain: string,
+    targetChain: string,
+    payment: CrossChainPayment
+  ): Promise<CrossChainReceipt> {
+    // 1. Check liquidity on target chain
+    const liquidity = await this.checkLiquidity(targetChain, payment.token);
+    
+    if (liquidity < payment.amount) {
+      // Use bridge if direct liquidity insufficient
+      return await this.bridgePayment(sourceChain, targetChain, payment);
+    }
+    
+    // 2. Execute atomic swap
+    const swap = await this.initializeAtomicSwap({
+      sourceChain,
+      targetChain,
+      payment,
+      timeout: 3600 // 1 hour timeout
+    });
+    
+    // 3. Monitor and complete swap
+    return await this.completeAtomicSwap(swap);
+  }
+  
+  private async bridgePayment(
+    source: string,
+    target: string,
+    payment: CrossChainPayment
+  ): Promise<CrossChainReceipt> {
+    const bridge = this.selectOptimalBridge(source, target);
+    
+    // Lock tokens on source chain
+    const lockTx = await bridge.lock({
+      chain: source,
+      token: payment.token,
+      amount: payment.amount,
+      recipient: payment.recipient
+    });
+    
+    // Wait for confirmations
+    await this.waitForConfirmations(source, lockTx.hash, 12);
+    
+    // Mint/release on target chain
+    const releaseTx = await bridge.release({
+      chain: target,
+      lockTx: lockTx.hash,
+      proof: await this.generateProof(lockTx)
+    });
+    
+    return {
+      sourceChain: source,
+      targetChain: target,
+      sourceTx: lockTx.hash,
+      targetTx: releaseTx.hash,
+      status: 'completed'
+    };
+  }
+}
+```
+
+### DeFi Protocol Integration
+
+#### DEX Aggregator Integration
+
+```typescript
+// DeFi DEX aggregator integration
+export class DexAggregator {
+  private providers: Map<string, DexProvider>;
+  private slippageCalculator: SlippageCalculator;
+  
+  async getBestRoute(
+    tokenIn: string,
+    tokenOut: string,
+    amountIn: bigint,
+    slippage: number = 0.5
+  ): Promise<SwapRoute> {
+    // Query multiple DEXs in parallel
+    const quotes = await Promise.all([
+      this.providers.get('uniswap')?.getQuote(tokenIn, tokenOut, amountIn),
+      this.providers.get('sushiswap')?.getQuote(tokenIn, tokenOut, amountIn),
+      this.providers.get('curve')?.getQuote(tokenIn, tokenOut, amountIn),
+      this.providers.get('balancer')?.getQuote(tokenIn, tokenOut, amountIn)
+    ]);
+    
+    // Find optimal route considering gas costs
+    const optimalRoute = await this.optimizeRoute(quotes, slippage);
+    
+    // Check for MEV protection
+    if (await this.requiresMevProtection(amountIn)) {
+      optimalRoute.protection = 'flashbots';
+    }
+    
+    return optimalRoute;
+  }
+  
+  async executeSwap(route: SwapRoute): Promise<SwapReceipt> {
+    // Validate route freshness
+    if (Date.now() - route.timestamp > 30000) {
+      throw new Error('Route expired, please refresh quote');
+    }
+    
+    // Execute through router
+    const router = this.providers.get(route.dex);
+    return await router.swap({
+      route: route.path,
+      amountIn: route.amountIn,
+      minAmountOut: route.minAmountOut,
+      deadline: Math.floor(Date.now() / 1000) + 300, // 5 min deadline
+      recipient: route.recipient
+    });
+  }
+}
+```
+
+#### Lending Protocol Integration
+
+```typescript
+// DeFi lending protocol integration
+export class LendingProtocolAdapter {
+  private protocols: Map<string, LendingProtocol>;
+  private riskAnalyzer: RiskAnalyzer;
+  
+  async deposit(
+    protocol: string,
+    asset: string,
+    amount: bigint
+  ): Promise<DepositReceipt> {
+    const adapter = this.protocols.get(protocol);
+    
+    // Check protocol health
+    const health = await this.checkProtocolHealth(protocol);
+    if (health.utilizationRate > 0.95) {
+      throw new Error('Protocol utilization too high');
+    }
+    
+    // Approve and deposit
+    await this.approveToken(asset, adapter.address, amount);
+    const receipt = await adapter.deposit(asset, amount);
+    
+    // Return receipt tokens (aTokens, cTokens, etc.)
+    return {
+      protocol,
+      asset,
+      amount,
+      receiptToken: receipt.token,
+      receiptAmount: receipt.amount,
+      apy: await adapter.getCurrentAPY(asset)
+    };
+  }
+  
+  async borrow(
+    protocol: string,
+    collateralAsset: string,
+    borrowAsset: string,
+    borrowAmount: bigint
+  ): Promise<BorrowReceipt> {
+    const adapter = this.protocols.get(protocol);
+    
+    // Check collateral factor
+    const factor = await adapter.getCollateralFactor(collateralAsset);
+    const maxBorrow = await this.calculateMaxBorrow(
+      protocol,
+      collateralAsset,
+      borrowAsset
+    );
+    
+    if (borrowAmount > maxBorrow) {
+      throw new Error('Borrow amount exceeds collateral limit');
+    }
+    
+    // Execute borrow
+    const receipt = await adapter.borrow(borrowAsset, borrowAmount);
+    
+    // Monitor health factor
+    this.startHealthMonitoring(protocol, receipt.positionId);
+    
+    return receipt;
+  }
+}
+```
+
+### Stablecoin Integration
+
+```typescript
+// Stablecoin payment integration
+export class StablecoinPaymentService {
+  private stablecoins: Map<string, StablecoinAdapter>;
+  private complianceChecker: ComplianceChecker;
+  
+  async processStablecoinPayment(
+    payment: StablecoinPayment
+  ): Promise<PaymentReceipt> {
+    // 1. Validate stablecoin
+    const stablecoin = this.stablecoins.get(payment.currency);
+    if (!stablecoin) {
+      throw new Error(`Unsupported stablecoin: ${payment.currency}`);
+    }
+    
+    // 2. Compliance check
+    await this.complianceChecker.verify({
+      sender: payment.from,
+      recipient: payment.to,
+      amount: payment.amount,
+      currency: payment.currency
+    });
+    
+    // 3. Check reserves (for algorithmic stablecoins)
+    if (stablecoin.type === 'algorithmic') {
+      const reserves = await stablecoin.getReserves();
+      if (reserves.ratio < 1.0) {
+        throw new Error('Stablecoin under-collateralized');
+      }
+    }
+    
+    // 4. Execute transfer
+    const receipt = await stablecoin.transfer({
+      from: payment.from,
+      to: payment.to,
+      amount: payment.amount,
+      memo: payment.memo
+    });
+    
+    // 5. Record for compliance
+    await this.recordTransaction(payment, receipt);
+    
+    return receipt;
+  }
+  
+  async convertToFiat(
+    stablecoin: string,
+    amount: bigint,
+    fiatCurrency: string
+  ): Promise<FiatConversion> {
+    // Get off-ramp provider
+    const provider = await this.selectOffRampProvider(stablecoin, fiatCurrency);
+    
+    // Initiate conversion
+    const conversion = await provider.initiate({
+      stablecoin,
+      amount,
+      fiatCurrency,
+      bankAccount: this.getBankAccount(fiatCurrency)
+    });
+    
+    // Monitor conversion status
+    return await this.monitorConversion(conversion.id);
+  }
+}
+```
+
+### CBDC Integration
+
+```typescript
+// Central Bank Digital Currency integration
+export class CBDCIntegrationService {
+  private cbdcNodes: Map<string, CBDCNode>;
+  private identityVerifier: IdentityVerifier;
+  private complianceEngine: ComplianceEngine;
+  
+  async processCBDCPayment(
+    payment: CBDCPayment
+  ): Promise<CBDCReceipt> {
+    // 1. Verify digital identity
+    const identity = await this.identityVerifier.verify(payment.payerId);
+    if (!identity.verified) {
+      throw new Error('Identity verification required');
+    }
+    
+    // 2. Check account limits
+    const limits = await this.checkAccountLimits(
+      payment.cbdc,
+      payment.payerId,
+      payment.amount
+    );
+    
+    if (payment.amount > limits.transactionLimit) {
+      throw new Error('Transaction exceeds limit');
+    }
+    
+    // 3. Execute on CBDC network
+    const node = this.cbdcNodes.get(payment.cbdc);
+    const receipt = await node.executeTransaction({
+      from: payment.payerId,
+      to: payment.payeeId,
+      amount: payment.amount,
+      purpose: payment.purpose,
+      privacyLevel: payment.privacyLevel || 'standard'
+    });
+    
+    // 4. Report for compliance
+    await this.complianceEngine.report({
+      transaction: receipt.transactionId,
+      amount: payment.amount,
+      parties: [payment.payerId, payment.payeeId],
+      timestamp: receipt.timestamp
+    });
+    
+    return receipt;
+  }
+  
+  async bridgeCBDCToCommercial(
+    cbdcAmount: bigint,
+    commercialBankAccount: string
+  ): Promise<BridgeReceipt> {
+    // Convert CBDC to commercial bank money
+    const bridge = await this.initiateBridge({
+      source: 'cbdc',
+      target: 'commercial',
+      amount: cbdcAmount,
+      targetAccount: commercialBankAccount
+    });
+    
+    // Wait for central bank approval
+    await this.waitForApproval(bridge.id);
+    
+    // Execute settlement
+    return await this.settleBridge(bridge.id);
+  }
+}
+```
+
+### NFT Payment Integration
+
+```typescript
+// NFT marketplace payment integration
+export class NFTPaymentService {
+  private marketplaces: Map<string, NFTMarketplace>;
+  private royaltyEngine: RoyaltyEngine;
+  
+  async processNFTPurchase(
+    purchase: NFTPurchase
+  ): Promise<NFTPurchaseReceipt> {
+    const marketplace = this.marketplaces.get(purchase.marketplace);
+    
+    // 1. Verify NFT ownership
+    const owner = await marketplace.getOwner(purchase.tokenId);
+    if (owner !== purchase.seller) {
+      throw new Error('Seller does not own NFT');
+    }
+    
+    // 2. Calculate total cost including royalties
+    const royalties = await this.royaltyEngine.calculate(
+      purchase.collection,
+      purchase.price
+    );
+    
+    const totalCost = purchase.price + royalties.amount;
+    
+    // 3. Execute atomic purchase
+    const receipt = await marketplace.purchaseNFT({
+      tokenId: purchase.tokenId,
+      buyer: purchase.buyer,
+      seller: purchase.seller,
+      price: purchase.price,
+      paymentToken: purchase.paymentToken,
+      royaltyRecipient: royalties.recipient,
+      royaltyAmount: royalties.amount
+    });
+    
+    return {
+      ...receipt,
+      royaltiesPaid: royalties.amount,
+      totalCost
+    };
+  }
+}
+```
+
 ## Regulatory Compliance Integration
 
 ### PCI DSS Compliance
