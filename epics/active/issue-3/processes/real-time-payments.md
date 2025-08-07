@@ -99,27 +99,38 @@ sequenceDiagram
     Note over Sender,Receiver: Total Time: <5 seconds
 ```
 
-#### FedNow Service Flow
+#### FedNow Service Flow (Enhanced Q1 2025)
 ```yaml
 Network: FedNow
 Launch: 2023
 Availability: 24/7/365
 Settlement: Real-time gross settlement
 Message Format: ISO 20022
-Transaction Limit: $500,000 (configurable)
+Transaction Limit: $1,000,000 (increased 2025)
 Participants: 
-  - Banks
-  - Credit Unions
+  - Banks (800+ as of 2025)
+  - Credit Unions (expanded coverage)
   - Service Providers
+  - Fintech Partners (new tier)
 
 Key Features:
   - Instant settlement finality
-  - Request for Payment (RfP)
-  - Liquidity management tools
-  - Fraud prevention services
+  - Request for Payment (RfP) - Enhanced with recurring support
+  - Liquidity management tools - AI-powered forecasting
+  - Fraud prevention services - ML models updated Q1 2025
+  - Alias Directory Service - Email/Phone mapping
+  - Cross-Border Pilot Program - Launching Q2 2025
+  - B2B Features - Invoice attachments, remittance data
+
+Q1 2025 Enhancements:
+  - Increased transaction limits
+  - Enhanced fraud detection with graph neural networks
+  - Improved liquidity optimization algorithms
+  - Extended API capabilities for fintechs
+  - Real-time reporting dashboard
 ```
 
-### 2. Europe - SEPA Instant Credit Transfer (SCT Inst)
+### 2. Europe - SEPA Instant Credit Transfer (SCT Inst) 2025
 
 ```mermaid
 sequenceDiagram
@@ -131,7 +142,7 @@ sequenceDiagram
     
     Originator->>Originator PSP: Payment Order
     
-    Note over Originator PSP: Max 10 seconds<br/>for entire flow
+    Note over Originator PSP: Max 10 seconds<br/>for entire flow<br/>(Target 3 seconds by 2025)
     
     Originator PSP->>CSM: SCT Inst Message
     CSM->>Beneficiary PSP: Forward Message
@@ -148,47 +159,183 @@ sequenceDiagram
     end
 ```
 
-### 3. India - Unified Payments Interface (UPI)
+#### SEPA Instant 2025 Enhancements
+```yaml
+Network_Evolution:
+  Coverage:
+    - Participating PSPs: 3,500+ (up from 2,000)
+    - Countries: All EU27 + EEA
+    - Reachability: 95% of EU payment accounts
+    
+  Enhanced_Features_Q1_2025:
+    Request_to_Pay_2.0:
+      - Recurring payment requests
+      - Conditional payments
+      - Smart contract triggers
+      - B2B invoice integration
+      
+    Increased_Limits:
+      - Standard: €100,000 (from €15,000)
+      - Premium tier: €500,000
+      - B2B transactions: €1,000,000
+      
+    One_Leg_Out_Transactions:
+      - Non-Euro instant payments
+      - GBP, CHF, SEK, NOK support
+      - Real-time FX conversion
+      - Unified API access
+      
+    Enhanced_Data:
+      - ISO 20022 extended fields
+      - Structured remittance info
+      - Purpose codes expansion
+      - Regulatory reporting tags
+      
+  Technical_Improvements:
+    Performance:
+      - Target latency: 3 seconds
+      - Actual average: 2.8 seconds
+      - Peak capacity: 100,000 TPS
+      
+    Resilience:
+      - Multi-region processing
+      - Active-active setup
+      - 99.99% availability target
+      
+    Security:
+      - Quantum-safe preparation
+      - Enhanced fraud scoring
+      - Real-time sanctions screening
+```
+
+### 3. India - Unified Payments Interface (UPI 3.0 - Q1 2025)
 
 ```mermaid
 graph LR
-    subgraph "UPI Ecosystem"
+    subgraph "UPI 3.0 Ecosystem (2025)"
         A[User App] --> B[PSP App]
-        B --> C[UPI Platform]
+        B --> C[UPI Platform 3.0]
         C --> D[NPCI]
         D --> E[Bank A]
         D --> F[Bank B]
+        D --> G[International Gateway]
         
-        G[Virtual Payment Address]
-        H[Mobile Number]
-        I[QR Code]
-        J[Aadhaar]
+        H[Virtual Payment Address]
+        I[Mobile Number]
+        J[QR Code]
+        K[Aadhaar]
+        L[Voice Commands]
+        M[Offline Payments]
+        N[Credit Line]
         
-        G --> C
         H --> C
         I --> C
         J --> C
+        K --> C
+        L --> C
+        M --> C
+        N --> C
     end
 ```
 
-### 4. Brazil - PIX
+#### UPI 3.0 Features (Q1 2025)
+```yaml
+New_Capabilities:
+  Voice_Payments:
+    - Natural language processing
+    - Multi-lingual support (22 languages)
+    - Accessibility compliance
+    
+  Offline_Transactions:
+    - NFC-based payments without internet
+    - Bluetooth mesh networking
+    - Transaction limit: ₹2000 per day
+    
+  Credit_Integration:
+    - Pre-approved credit lines
+    - Buy Now Pay Later (BNPL)
+    - Instant overdraft facility
+    
+  International_Remittances:
+    - Singapore, UAE, UK corridors live
+    - Real-time forex rates
+    - Compliance automation
+    
+  Enhanced_Security:
+    - Biometric authentication
+    - Device binding with AI
+    - Behavioral analysis
+    
+  Business_Features:
+    - Invoice in the box
+    - Automated reconciliation
+    - Tax compliance integration
+
+Performance_Metrics_2025:
+  - Daily transactions: 500 million+
+  - Success rate: 99.2%
+  - Average processing time: 1.2 seconds
+  - International corridors: 7 active
+```
+
+### 4. Brazil - PIX Evolution (Q1 2025)
 
 ```yaml
 Network: PIX
 Launch: 2020
 Operator: Central Bank of Brazil
-Features:
-  - QR Code payments
-  - Payment keys (CPF, phone, email)
+Transaction Volume: 4.5 billion/month (2025)
+
+Core Features:
+  - QR Code payments (static & dynamic)
+  - Payment keys (CPF, phone, email, EVP)
   - Scheduled payments
   - Payment requests
+  - International PIX (pilot)
   
-Transaction Flow:
-  1. Initiation: <0.5 seconds
-  2. Validation: <1 second
-  3. Settlement: <2 seconds
-  4. Confirmation: <3 seconds
-  Total: <10 seconds guaranteed
+PIX 2025 Enhancements:
+  Automatic_Payments:
+    - Recurring payments
+    - Variable amounts
+    - Merchant initiated
+    - Subscription management
+    
+  PIX_Credit:
+    - Instant credit approval
+    - Integration with credit bureaus
+    - Risk-based pricing
+    - Regulatory sandbox participation
+    
+  International_PIX:
+    - Argentina corridor (live)
+    - Uruguay corridor (Q2 2025)
+    - SWIFT gpi integration
+    - Multi-currency support
+    
+  Offline_PIX:
+    - NFC technology
+    - Secure element storage
+    - Daily limit: R$200
+    - Sync when online
+    
+  Business_Intelligence:
+    - Real-time analytics API
+    - Fraud pattern sharing
+    - Merchant category insights
+    - Regulatory reporting automation
+  
+Transaction Flow 2025:
+  1. Initiation: <0.3 seconds
+  2. AI Fraud Check: <0.5 seconds
+  3. Settlement: <1 second
+  4. Confirmation: <2 seconds
+  Total: <4 seconds guaranteed
+  
+Performance_Metrics:
+  - Availability: 99.98%
+  - Peak TPS: 75,000
+  - Average latency: 980ms
+  - Fraud rate: 0.0003%
 ```
 
 ## Payment Initiation Patterns

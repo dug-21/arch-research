@@ -5,7 +5,7 @@ Cross-border payments involve transferring funds between parties in different co
 
 ## Core Cross-Border Payment Flow
 
-### Traditional SWIFT Payment Flow
+### SWIFT Payment Flow with GPI (Global Payment Innovation) 2025
 
 ```mermaid
 sequenceDiagram
@@ -33,6 +33,60 @@ sequenceDiagram
     Beneficiary Bank->>Receiver: Credit Account
     
     Note over SWIFT Network: MT910 Confirmation Messages<br/>Throughout the Chain
+    
+    Note over SWIFT Network: SWIFT GPI Features:<br/>- Real-time tracking (UETR)<br/>- Fee transparency<br/>- Same-day credit<br/>- Payment confirmation
+```
+
+#### SWIFT GPI Enhancements Q1 2025
+```yaml
+SWIFT_GPI_2025:
+  Coverage:
+    - Banks participating: 4,000+
+    - Countries: 200+
+    - Payment volume: 80% of SWIFT messages
+    
+  Core_Features:
+    Real_Time_Tracking:
+      - Unique End-to-End Transaction Reference (UETR)
+      - Status updates within seconds
+      - Full payment journey visibility
+      - API and GUI access
+      
+    Fee_Transparency:
+      - Upfront fee disclosure
+      - No deduction from principal
+      - Fee breakdown by bank
+      - Predictable costs
+      
+    Speed_Improvements:
+      - 50% credited within 30 minutes
+      - 95% credited same day
+      - Average time: 2.5 hours
+      
+  New_2025_Capabilities:
+    Pre_Validation:
+      - Beneficiary account verification
+      - Real-time fraud checks
+      - Compliance pre-screening
+      - Error prevention
+      
+    Case_Resolution:
+      - Automated investigation
+      - 48-hour SLA
+      - Direct bank communication
+      - AI-powered suggestions
+      
+    Stop_and_Recall:
+      - Instant payment stop
+      - Automated recall process
+      - Fraud case integration
+      - Legal hold support
+      
+    Cross_Border_Instant:
+      - Link to domestic instant rails
+      - Sub-minute settlements
+      - 24/7/365 availability
+      - Initial corridors: US-UK, EU-Singapore
 ```
 
 ### Modern API-Based Cross-Border Flow
@@ -241,7 +295,7 @@ class RegulatoryReporting:
         return reports
 ```
 
-## Multi-Rail Orchestration
+## Multi-Rail Orchestration (Enhanced 2025)
 
 ### 1. Payment Orchestration Engine
 
@@ -251,17 +305,21 @@ graph TB
     
     B --> C{Route Decision}
     
-    C -->|SWIFT| D[SWIFT Handler]
+    C -->|SWIFT GPI| D[SWIFT Handler]
     C -->|Local Rails| E[Local Network Handler]
     C -->|Card Rails| F[Card Network Handler]
     C -->|Blockchain| G[DLT Handler]
+    C -->|Stablecoins| H[Stablecoin Handler]
+    C -->|CBDC| I[Digital Currency Handler]
     
-    D --> H[Status Tracking]
-    E --> H
-    F --> H
-    G --> H
+    D --> J[Status Tracking]
+    E --> J
+    F --> J
+    G --> J
+    H --> J
+    I --> J
     
-    H --> I[Unified Response]
+    J --> K[Unified Response]
     
     subgraph "Decision Factors"
         J[Speed Requirements]
@@ -276,6 +334,18 @@ graph TB
     L --> C
     M --> C
     N --> C
+    
+    subgraph "2025 Decision Factors"
+        O[Blockchain Availability]
+        P[Stablecoin Liquidity]
+        Q[CBDC Corridors]
+        R[Real-time Rails]
+    end
+    
+    O --> C
+    P --> C
+    Q --> C
+    R --> C
 ```
 
 ### 2. Intelligent Routing Algorithm
@@ -401,7 +471,7 @@ class CrossBorderReconciliation:
 
 ## Real-time Cross-Border Systems
 
-### 1. Blockchain-Based Settlement
+### 1. Blockchain-Based Settlement (Production 2025)
 
 ```mermaid
 graph LR
@@ -410,15 +480,74 @@ graph LR
     C --> D[Atomic Swap]
     D --> E[Receiver Bank]
     
-    subgraph "Blockchain Layer"
-        F[Consensus]
+    subgraph "Blockchain Layer 2025"
+        F[Consensus - PoS/BFT]
         G[Immutable Ledger]
-        H[Cryptographic Security]
+        H[Quantum-Safe Crypto]
+        I[Cross-Chain Bridges]
+        J[Oracle Networks]
     end
     
     C --> F
     F --> G
     G --> H
+    H --> I
+    I --> J
+```
+
+#### Production Blockchain Corridors Q1 2025
+```yaml
+Blockchain_Cross_Border_2025:
+  Live_Networks:
+    JPM_Coin_Network:
+      - Participants: 400+ banks
+      - Daily volume: $10B+
+      - Currencies: USD, EUR, GBP
+      - Settlement: Instant
+      
+    Partior_Network:
+      - Founded by: JPM, DBS, Temasek
+      - Focus: APAC settlements
+      - Currencies: USD, EUR, GBP, JPY, SGD
+      - Integration: SWIFT compatible
+      
+    Fnality_International:
+      - Backed by: 15 global banks
+      - USC (Utility Settlement Coin)
+      - Central bank money backed
+      - Wholesale CBDC ready
+      
+    UAE_India_Bridge:
+      - CBDC to CBDC pilot
+      - AED-INR corridor
+      - Volume: $100M daily
+      - Cost reduction: 80%
+      
+  Stablecoin_Rails:
+    USDC_Business:
+      - Circle's B2B solution
+      - Instant settlement
+      - 0.1% fees
+      - Compliance built-in
+      
+    EURC_Corridors:
+      - Euro stablecoin
+      - SEPA integration
+      - Programmable payments
+      - Smart contract escrow
+      
+  Technical_Standards:
+    Interoperability:
+      - ISO 20022 messaging
+      - W3C DID standards
+      - Cross-chain protocols
+      - SWIFT gpi integration
+      
+    Compliance_Layer:
+      - On-chain KYC/AML
+      - Travel rule compliance
+      - Real-time screening
+      - Regulatory reporting
 ```
 
 ### 2. API-First Architecture

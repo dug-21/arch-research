@@ -619,6 +619,200 @@ class AuditTrail:
         return audit_entry['id']
 ```
 
+## EU AI Act Compliance for KYC/AML Systems (Q1 2025)
+
+### High-Risk AI System Requirements
+
+The EU AI Act classifies KYC/AML systems using AI as high-risk systems, requiring comprehensive compliance measures:
+
+```yaml
+AI_Act_KYC_AML_Compliance:
+  Classification:
+    System_Type: High-Risk AI System
+    Category: Financial Services - Risk Assessment
+    Justification: Direct impact on access to financial services
+    
+  Core_Requirements:
+    Transparency:
+      - Clear notification of AI usage
+      - Explainable decision-making
+      - Human-readable explanations
+      - Right to human review
+      
+    Accuracy_and_Robustness:
+      - Defined performance metrics
+      - Regular accuracy testing
+      - Bias detection and mitigation
+      - Adversarial testing
+      
+    Human_Oversight:
+      - Human-in-the-loop for critical decisions
+      - Override capabilities
+      - Audit trail of interventions
+      - Operator training programs
+      
+    Data_Governance:
+      - Data quality assurance
+      - Bias-free training datasets
+      - Regular data audits
+      - Privacy by design
+```
+
+### Enhanced ML-Based Anomaly Detection with AI Act Compliance
+
+```python
+class AIActCompliantAnomalyDetector:
+    def __init__(self, model_path):
+        # Core ML components
+        self.model = self.load_model(model_path)
+        self.feature_extractor = FeatureExtractor()
+        
+        # EU AI Act compliance components
+        self.explainability_engine = ExplainabilityEngine()
+        self.bias_monitor = BiasMonitor()
+        self.human_oversight = HumanOversightInterface()
+        self.audit_logger = AuditLogger()
+        
+    async def detect_anomalies(self, transaction, historical_data):
+        # Extract features with bias mitigation
+        features = self.feature_extractor.extract(
+            transaction,
+            historical_data,
+            bias_mitigation=True
+        )
+        
+        # Predict with uncertainty quantification
+        prediction_result = self.model.predict_with_uncertainty(features)
+        anomaly_score = prediction_result['score']
+        confidence = prediction_result['confidence']
+        
+        # Generate explanation (EU AI Act requirement)
+        explanation = self.explainability_engine.explain(
+            model=self.model,
+            features=features,
+            prediction=anomaly_score,
+            method='SHAP',  # SHapley Additive exPlanations
+            language=transaction.customer_language
+        )
+        
+        # Check for bias (EU AI Act requirement)
+        bias_assessment = self.bias_monitor.assess_decision(
+            features=features,
+            score=anomaly_score,
+            protected_attributes=['age', 'gender', 'nationality', 'postal_code']
+        )
+        
+        # Determine if human review needed
+        requires_human_review = (
+            anomaly_score > 0.8 or
+            confidence < 0.7 or
+            bias_assessment['potential_bias'] or
+            transaction.amount > 50000
+        )
+        
+        # Log for audit (EU AI Act requirement)
+        self.audit_logger.log({
+            'transaction_id': transaction.id,
+            'model_version': self.model.version,
+            'anomaly_score': anomaly_score,
+            'confidence': confidence,
+            'explanation': explanation,
+            'bias_assessment': bias_assessment,
+            'human_review_required': requires_human_review,
+            'timestamp': datetime.utcnow()
+        })
+        
+        return {
+            'anomaly_score': anomaly_score,
+            'confidence': confidence,
+            'explanation': explanation,
+            'bias_assessment': bias_assessment,
+            'contributing_factors': explanation['top_factors'],
+            'recommended_action': self.recommend_action(anomaly_score),
+            'human_review_required': requires_human_review,
+            'ai_transparency': {
+                'system_id': 'KYC_AML_ANOMALY_v2',
+                'ai_used': True,
+                'contestable': True,
+                'human_override_available': True
+            }
+        }
+```
+
+### Continuous Monitoring and Compliance Reporting
+
+```python
+class AIActComplianceMonitor:
+    def __init__(self):
+        self.performance_tracker = PerformanceTracker()
+        self.bias_detector = ContinuousBiasDetector()
+        self.drift_monitor = ModelDriftMonitor()
+        self.incident_reporter = IncidentReporter()
+        
+    def generate_compliance_report(self):
+        report = {
+            'reporting_period': self.get_reporting_period(),
+            'system_performance': {
+                'accuracy': self.performance_tracker.get_accuracy(),
+                'precision': self.performance_tracker.get_precision(),
+                'recall': self.performance_tracker.get_recall(),
+                'false_positive_rate': self.performance_tracker.get_fpr(),
+                'false_negative_rate': self.performance_tracker.get_fnr()
+            },
+            'fairness_metrics': {
+                'demographic_parity': self.bias_detector.check_demographic_parity(),
+                'equal_opportunity': self.bias_detector.check_equal_opportunity(),
+                'disparate_impact': self.bias_detector.check_disparate_impact(),
+                'bias_incidents': self.bias_detector.get_bias_incidents()
+            },
+            'model_stability': {
+                'feature_drift': self.drift_monitor.detect_feature_drift(),
+                'concept_drift': self.drift_monitor.detect_concept_drift(),
+                'performance_drift': self.drift_monitor.detect_performance_drift()
+            },
+            'human_oversight': {
+                'total_reviews': self.get_human_review_count(),
+                'overrides': self.get_override_count(),
+                'average_review_time': self.get_avg_review_time(),
+                'reviewer_agreement': self.get_reviewer_agreement_rate()
+            },
+            'incidents': self.incident_reporter.get_reportable_incidents(),
+            'compliance_status': self.assess_overall_compliance()
+        }
+        
+        # Auto-alert if non-compliant
+        if report['compliance_status'] != 'COMPLIANT':
+            self.trigger_compliance_alert(report)
+            
+        return report
+```
+
+### Implementation Checklist for EU AI Act Compliance
+
+- [ ] **System Classification**
+  - [ ] Document AI system as high-risk
+  - [ ] Complete conformity assessment
+  - [ ] Prepare for CE marking
+  - [ ] Register in EU database
+  
+- [ ] **Technical Implementation**
+  - [ ] Deploy explainability features
+  - [ ] Implement bias detection
+  - [ ] Enable human oversight
+  - [ ] Create audit logging
+  
+- [ ] **Documentation**
+  - [ ] Technical documentation package
+  - [ ] Risk assessment reports
+  - [ ] Testing and validation results
+  - [ ] Incident response procedures
+  
+- [ ] **Ongoing Compliance**
+  - [ ] Continuous monitoring system
+  - [ ] Regular bias audits
+  - [ ] Performance tracking
+  - [ ] Incident reporting (72hr SLA)
+
 ## Best Practices
 
 ### 1. Risk-Based Approach
