@@ -1,0 +1,630 @@
+# Azure DevOps CI/CD Pipeline for Microservices Architecture
+# This pipeline implements comprehensive CI/CD for containerized microservices
+
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+    - feature/*
+  paths:
+    include:
+    - src/*
+    - infrastructure/*
+    - .azure-pipelines/*
+
+pr:
+  branches:
+    include:
+    - main
+    - develop
+  paths:
+    include:
+    - src/*
+    - infrastructure/*
+
+variables:
+  # Container Registry
+  containerRegistry: 'microservicesacr.azurecr.io'
+  imageRepository: 'microservices'
+  containerRegistryServiceConnection: 'acr-service-connection'
+  
+  # Kubernetes
+  kubernetesServiceConnection: 'aks-service-connection'
+  kubernetesNamespace: 'microservices'
+  
+  # Infrastructure
+  azureServiceConnection: 'azure-service-connection'
+  resourceGroupName: 'microservices-prod-rg'
+  aksClusterName: 'microservices-prod-aks'
+  
+  # Build Configuration
+  dockerfilePath: '$(Build.SourcesDirectory)/src/Dockerfile'
+  tag: '$(Build.BuildId)'
+  
+  # Environment
+  environmentName: 'production'
+  
+  # SonarCloud
+  sonarCloudServiceConnection: 'sonarcloud-connection'
+  sonarCloudOrganization: 'your-org'
+  sonarCloudProjectKey: 'microservices-project'
+
+# Build stage resources
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: SecurityScan
+  displayName: 'Security and Code Quality'
+  jobs:
+  - job: CodeAnalysis
+    displayName: 'Code Analysis and Security Scan'
+    steps:
+    - task: SonarCloudPrepare@1
+      displayName: 'Prepare SonarCloud analysis'
+      inputs:
+        SonarCloud: $(sonarCloudServiceConnection)
+        organization: $(sonarCloudOrganization)
+        scannerMode: 'MSBuild'
+        projectKey: $(sonarCloudProjectKey)
+        extraProperties: |
+          sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/coverage.opencover.xml
+          sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+          sonar.exclusions=**/obj/**,**/*.dll,**/bin/**
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore NuGet packages'
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build solution'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration Release --no-restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run unit tests'
+      inputs:
+        command: 'test'
+        projects: '**/*Tests/*.csproj'
+        arguments: '--configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory $(Agent.TempDirectory) --logger trx'
+        publishTestResults: true
+
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud analysis'
+
+    - task: SonarCloudPublish@1
+      displayName: 'Publish SonarCloud results'
+      inputs:
+        pollingTimeoutSec: '300'
+
+    - task: ms-codeanalysis.vss-microsoft-security-code-analysis.build-task-credscan.CredScan@2
+      displayName: 'Run Credential Scanner'
+      inputs:
+        toolMajorVersion: 'V2'
+        outputFormat: 'sarif'
+        debugMode: false
+
+    - task: ms-codeanalysis.vss-microsoft-security-code-analysis.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@2
+      displayName: 'Publish Security Analysis Logs'
+      inputs:
+        ArtifactName: 'CodeAnalysisLogs'
+        ArtifactType: 'Container'
+
+- stage: Build
+  displayName: 'Build and Push Container Images'
+  dependsOn: SecurityScan
+  condition: succeeded()
+  jobs:
+  - job: BuildServices
+    displayName: 'Build Microservices'
+    strategy:
+      matrix:
+        OrderService:
+          serviceName: 'order-service'
+          dockerFile: 'src/OrderService/Dockerfile'
+          buildContext: 'src/OrderService'
+        ProductService:
+          serviceName: 'product-service'
+          dockerFile: 'src/ProductService/Dockerfile'
+          buildContext: 'src/ProductService'
+        UserService:
+          serviceName: 'user-service'
+          dockerFile: 'src/UserService/Dockerfile'
+          buildContext: 'src/UserService'
+        PaymentService:
+          serviceName: 'payment-service'
+          dockerFile: 'src/PaymentService/Dockerfile'
+          buildContext: 'src/PaymentService'
+        NotificationService:
+          serviceName: 'notification-service'
+          dockerFile: 'src/NotificationService/Dockerfile'
+          buildContext: 'src/NotificationService'
+    steps:
+    - task: Docker@2
+      displayName: 'Build container image'
+      inputs:
+        containerRegistry: $(containerRegistryServiceConnection)
+        repository: $(serviceName)
+        command: 'build'
+        Dockerfile: $(dockerFile)
+        buildContext: $(buildContext)
+        tags: |
+          $(tag)
+          latest
+
+    - task: AquaSec@4
+      displayName: 'Container Security Scan'
+      inputs:
+        image: '$(containerRegistry)/$(serviceName):$(tag)'
+        scanner: 'Trivy'
+        connection: 'aqua-security-connection'
+        hideBase: true
+        showNegligible: false
+
+    - task: Docker@2
+      displayName: 'Push container image'
+      inputs:
+        containerRegistry: $(containerRegistryServiceConnection)
+        repository: $(serviceName)
+        command: 'push'
+        tags: |
+          $(tag)
+          latest
+
+- stage: InfrastructureValidation
+  displayName: 'Infrastructure Validation'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: ValidateInfrastructure
+    displayName: 'Validate Terraform Configuration'
+    steps:
+    - task: TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: '1.6.0'
+
+    - task: AzureCLI@2
+      displayName: 'Terraform Init and Validate'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          cd infrastructure/terraform
+          
+          # Initialize Terraform
+          terraform init -backend=false
+          
+          # Validate configuration
+          terraform validate
+          
+          # Format check
+          terraform fmt -check
+          
+          # Security scan with tfsec
+          docker run --rm -v $(pwd):/src aquasec/tfsec /src --format json > tfsec-results.json
+          
+          # Parse results
+          if [ -s tfsec-results.json ]; then
+            echo "Security issues found in Terraform configuration:"
+            cat tfsec-results.json
+            exit 1
+          fi
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Terraform Validation Results'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'infrastructure/terraform/terraform-results.xml'
+      condition: always()
+
+- stage: DeployDev
+  displayName: 'Deploy to Development'
+  dependsOn: InfrastructureValidation
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  variables:
+    environmentName: 'development'
+    kubernetesNamespace: 'microservices-dev'
+  jobs:
+  - deployment: DeployToDev
+    displayName: 'Deploy to Development Environment'
+    environment: 'development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+
+          - task: HelmInstaller@1
+            displayName: 'Install Helm'
+            inputs:
+              helmVersionToInstall: '3.13.0'
+
+          - task: KubectlInstaller@0
+            displayName: 'Install kubectl'
+            inputs:
+              kubectlVersion: '1.28.0'
+
+          - task: Kubernetes@1
+            displayName: 'Create namespace'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: $(kubernetesServiceConnection)
+              command: 'apply'
+              useConfigurationFile: true
+              inline: |
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: $(kubernetesNamespace)
+
+          - task: HelmDeploy@0
+            displayName: 'Deploy microservices with Helm'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: $(kubernetesServiceConnection)
+              namespace: $(kubernetesNamespace)
+              command: 'upgrade'
+              chartType: 'FilePath'
+              chartPath: 'helm/microservices'
+              releaseName: 'microservices-dev'
+              valueFile: 'helm/microservices/values-dev.yaml'
+              arguments: '--set image.tag=$(tag) --set environment=development'
+
+          - task: Kubernetes@1
+            displayName: 'Wait for deployment rollout'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: $(kubernetesServiceConnection)
+              namespace: $(kubernetesNamespace)
+              command: 'custom'
+              customCommand: 'rollout'
+              arguments: 'status deployment/order-service --timeout=300s'
+
+- stage: IntegrationTests
+  displayName: 'Integration and Performance Tests'
+  dependsOn: DeployDev
+  condition: succeeded()
+  jobs:
+  - job: RunTests
+    displayName: 'Execute Test Suite'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Run integration tests'
+      inputs:
+        command: 'test'
+        projects: '**/*IntegrationTests/*.csproj'
+        arguments: '--configuration Release --logger trx --collect:"XPlat Code Coverage"'
+        publishTestResults: true
+
+    - task: PowerShell@2
+      displayName: 'Run API tests with Newman'
+      inputs:
+        targetType: 'inline'
+        script: |
+          npm install -g newman newman-reporter-htmlextra
+          newman run tests/postman/microservices-api-tests.json \
+            --environment tests/postman/dev-environment.json \
+            --reporters cli,htmlextra \
+            --reporter-htmlextra-export $(Build.ArtifactStagingDirectory)/newman-results.html
+
+    - task: k6-performance-test@0
+      displayName: 'Performance testing with k6'
+      inputs:
+        filename: 'tests/k6/load-test.js'
+        args: '--out json=results.json --summary-trend-stats="avg,min,med,max,p(90),p(95),p(99)"'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish test results'
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '**/*.trx'
+        mergeTestResults: true
+
+    - task: PublishHtmlReport@1
+      displayName: 'Publish Newman report'
+      inputs:
+        reportDir: $(Build.ArtifactStagingDirectory)
+        tabName: 'API Tests'
+
+- stage: SecurityTests
+  displayName: 'Security Testing'
+  dependsOn: DeployDev
+  condition: succeeded()
+  jobs:
+  - job: SecurityTesting
+    displayName: 'OWASP ZAP Security Scan'
+    steps:
+    - task: owaspzap@1
+      displayName: 'OWASP ZAP Baseline Scan'
+      inputs:
+        scantype: 'targetedScan'
+        url: 'https://microservices-dev.yourdomain.com'
+        port: '443'
+        threshold: 'medium'
+        
+    - task: PublishTestResults@2
+      displayName: 'Publish ZAP Results'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: 'owaspzap/report.xml'
+
+- stage: DeployStaging
+  displayName: 'Deploy to Staging'
+  dependsOn: 
+  - IntegrationTests
+  - SecurityTests
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  variables:
+    environmentName: 'staging'
+    kubernetesNamespace: 'microservices-staging'
+  jobs:
+  - deployment: DeployToStaging
+    displayName: 'Deploy to Staging Environment'
+    environment: 'staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          
+          - task: AzureCLI@2
+            displayName: 'Deploy infrastructure with Terraform'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                cd infrastructure/terraform
+                
+                # Initialize Terraform
+                terraform init
+                
+                # Select workspace
+                terraform workspace select staging || terraform workspace new staging
+                
+                # Plan deployment
+                terraform plan -var-file="staging.tfvars" -out="tfplan"
+                
+                # Apply changes
+                terraform apply -auto-approve "tfplan"
+
+          - task: HelmDeploy@0
+            displayName: 'Deploy with Blue-Green strategy'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: $(kubernetesServiceConnection)
+              namespace: $(kubernetesNamespace)
+              command: 'upgrade'
+              chartType: 'FilePath'
+              chartPath: 'helm/microservices'
+              releaseName: 'microservices-staging'
+              valueFile: 'helm/microservices/values-staging.yaml'
+              arguments: '--set image.tag=$(tag) --set environment=staging --set deployment.strategy=blue-green'
+
+- stage: ProductionApproval
+  displayName: 'Production Approval'
+  dependsOn: DeployStaging
+  condition: succeeded()
+  jobs:
+  - job: waitForValidation
+    displayName: 'Wait for manual validation'
+    pool: server
+    timeoutInMinutes: 1440 # 24 hours
+    steps:
+    - task: ManualValidation@0
+      timeoutInMinutes: 1440
+      inputs:
+        notifyUsers: |
+          user@yourdomain.com
+        instructions: 'Please validate the staging deployment and approve for production'
+        onTimeout: 'reject'
+
+- stage: DeployProduction
+  displayName: 'Deploy to Production'
+  dependsOn: ProductionApproval
+  condition: succeeded()
+  variables:
+    environmentName: 'production'
+    kubernetesNamespace: 'microservices'
+  jobs:
+  - deployment: DeployToProduction
+    displayName: 'Deploy to Production Environment'
+    environment: 'production'
+    strategy:
+      canary:
+        increments: [10, 25, 50, 100]
+        deploy:
+          steps:
+          - checkout: self
+          
+          - task: AzureCLI@2
+            displayName: 'Verify infrastructure'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # Check AKS cluster health
+                az aks show --resource-group $(resourceGroupName) --name $(aksClusterName) --query provisioningState
+                
+                # Verify node readiness
+                kubectl get nodes --no-headers | awk '{print $2}' | grep -v Ready && exit 1 || echo "All nodes ready"
+
+          - task: HelmDeploy@0
+            displayName: 'Canary deployment'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: $(kubernetesServiceConnection)
+              namespace: $(kubernetesNamespace)
+              command: 'upgrade'
+              chartType: 'FilePath'
+              chartPath: 'helm/microservices'
+              releaseName: 'microservices-prod'
+              valueFile: 'helm/microservices/values-prod.yaml'
+              arguments: '--set image.tag=$(tag) --set environment=production --set canary.enabled=true --set canary.weight=$(strategy.increment)'
+
+          - task: Kubernetes@1
+            displayName: 'Health check and monitoring'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: $(kubernetesServiceConnection)
+              namespace: $(kubernetesNamespace)
+              command: 'custom'
+              customCommand: 'get'
+              arguments: 'pods -l app=order-service -o wide'
+
+        routeTraffic:
+          steps:
+          - task: Kubernetes@1
+            displayName: 'Route traffic to canary'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: $(kubernetesServiceConnection)
+              namespace: $(kubernetesNamespace)
+              command: 'apply'
+              useConfigurationFile: true
+              inline: |
+                apiVersion: argoproj.io/v1alpha1
+                kind: Rollout
+                metadata:
+                  name: microservices-rollout
+                spec:
+                  replicas: 10
+                  strategy:
+                    canary:
+                      canaryService: microservices-canary
+                      stableService: microservices-stable
+                      steps:
+                      - setWeight: $(strategy.increment)
+                      - pause: {duration: 300s}
+
+        postRouteTraffic:
+          steps:
+          - task: k6-performance-test@0
+            displayName: 'Canary performance validation'
+            inputs:
+              filename: 'tests/k6/production-canary-test.js'
+              args: '--env CANARY_WEIGHT=$(strategy.increment)'
+
+        on:
+          failure:
+            steps:
+            - task: Kubernetes@1
+              displayName: 'Rollback on failure'
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: $(kubernetesServiceConnection)
+                namespace: $(kubernetesNamespace)
+                command: 'rollout'
+                arguments: 'undo deployment/order-service'
+
+          success:
+            steps:
+            - task: AzureCLI@2
+              displayName: 'Post-deployment tasks'
+              inputs:
+                azureSubscription: $(azureServiceConnection)
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                  # Update Application Insights annotations
+                  az rest --method post \
+                    --uri "https://api.applicationinsights.io/v1/apps/$(appInsightsAppId)/annotations" \
+                    --headers "X-API-Key=$(appInsightsApiKey)" \
+                    --body '{
+                      "AnnotationName": "Deployment",
+                      "Category": "Deployment",
+                      "EventTime": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'",
+                      "Id": "$(Build.BuildNumber)",
+                      "Properties": "Version=$(tag)"
+                    }'
+
+            - task: PowerShell@2
+              displayName: 'Update monitoring dashboards'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  # Update Grafana dashboard with deployment marker
+                  $headers = @{
+                    'Authorization' = 'Bearer $(grafanaApiKey)'
+                    'Content-Type' = 'application/json'
+                  }
+                  
+                  $body = @{
+                    'text' = "Deployment $(Build.BuildNumber)"
+                    'time' = [int64](Get-Date -UFormat %s) * 1000
+                    'tags' = @('deployment', 'production')
+                  } | ConvertTo-Json
+                  
+                  Invoke-RestMethod -Uri "$(grafanaUrl)/api/annotations" -Method Post -Headers $headers -Body $body
+
+- stage: PostDeployment
+  displayName: 'Post-Deployment Verification'
+  dependsOn: DeployProduction
+  condition: succeeded()
+  jobs:
+  - job: VerifyDeployment
+    displayName: 'Verify Production Deployment'
+    steps:
+    - task: PowerShell@2
+      displayName: 'Run smoke tests'
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Test critical endpoints
+          $endpoints = @(
+            "https://api.microservices.com/health",
+            "https://api.microservices.com/orders/health",
+            "https://api.microservices.com/products/health",
+            "https://api.microservices.com/users/health"
+          )
+          
+          foreach ($endpoint in $endpoints) {
+            $response = Invoke-RestMethod -Uri $endpoint -Method Get -TimeoutSec 30
+            if ($response.status -ne "healthy") {
+              Write-Error "Health check failed for $endpoint"
+              exit 1
+            }
+            Write-Host "✓ $endpoint is healthy"
+          }
+
+    - task: AzureCLI@2
+      displayName: 'Validate monitoring and alerting'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Check Application Insights telemetry
+          az monitor app-insights query \
+            --app $(appInsightsAppId) \
+            --analytics-query "requests | where timestamp > ago(5m) | summarize RequestCount=count() by bin(timestamp, 1m)" \
+            --offset P1D
+          
+          # Verify alert rules are active
+          az monitor metrics alert list --resource-group $(resourceGroupName) --query "[].enabled"
+
+    - task: AzureCLI@2
+      displayName: 'Clean up old container images'
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Keep only the latest 10 versions of each service
+          services=("order-service" "product-service" "user-service" "payment-service" "notification-service")
+          
+          for service in "${services[@]}"; do
+            echo "Cleaning up old images for $service..."
+            az acr repository show-tags --name $(containerRegistry) --repository $service --orderby time_desc --output tsv | tail -n +11 | while read tag; do
+              az acr repository delete --name $(containerRegistry) --image $service:$tag --yes
+            done
+          done
