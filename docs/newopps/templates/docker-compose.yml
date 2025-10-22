@@ -1,0 +1,304 @@
+# Agentic Development - 5-Phase Workflow
+# Works in: Codespaces, Pi 5, Local Docker, Cloud
+
+version: '3.8'
+
+services:
+  agentic-dev:
+    image: agentic-dev/5-phase-workflow:latest
+    container_name: agentic-orchestrator
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: "20"
+        CLAUDE_FLOW_VERSION: "alpha"
+
+    # Environment Configuration
+    environment:
+      # ─────────────────────────────────────────────────────────
+      # WORKFLOW CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - NODE_ENV=development
+      - AGENTIC_WORKFLOW_VERSION=5-phase-v1.0
+      - WORKSPACE_ROOT=/workspace
+
+      # ─────────────────────────────────────────────────────────
+      # PHASE 1: RESEARCH CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - ENABLE_PHASE_1_RESEARCH=true
+      - GOALIE_GOAP_SEARCH_ENABLED=true
+      - WEB_RESEARCH_ENABLED=true
+      - AGENTDB_VECTOR_SEARCH_ENABLED=true
+
+      # ─────────────────────────────────────────────────────────
+      # PHASE 2: FORMALIZE CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - ENABLE_PHASE_2_FORMALIZE=true
+      - COLLECTIVE_INTELLIGENCE_ENABLED=true
+      - SCOPE_ITERATION_ENABLED=true
+
+      # ─────────────────────────────────────────────────────────
+      # PHASE 3: SPARC PLANNING CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - ENABLE_PHASE_3_SPARC=true
+      - SPARC_SPECIFICATION_AGENT=true
+      - SPARC_PSEUDOCODE_AGENT=true
+      - SPARC_ARCHITECTURE_AGENT=true
+
+      # ─────────────────────────────────────────────────────────
+      # PHASE 4: APPROVAL GATE CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - ENABLE_PHASE_4_APPROVAL=true
+      - APPROVAL_REQUIRED=true
+      - SPEC_LOCKING_ON_APPROVAL=true
+
+      # ─────────────────────────────────────────────────────────
+      # PHASE 5: LONDON TDD DEVELOPMENT CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - ENABLE_PHASE_5_TDD=true
+
+      # TDD Configuration (London School)
+      - TDD_STYLE=london
+      - TDD_MOCK_DEPENDENCIES=true
+      - TDD_TEST_FIRST=true
+      - TDD_RED_GREEN_REFACTOR=true
+      - TDD_TEST_COVERAGE_THRESHOLD=80
+
+      # Continuous Swarm Iterations
+      - SWARM_CONTINUOUS_MODE=true
+      - SWARM_STOP_ON_COMPLETION=false
+      - ITERATE_UNTIL_CRITERIA_MET=true
+
+      # ─────────────────────────────────────────────────────────
+      # HIVEMIND COORDINATION
+      # ─────────────────────────────────────────────────────────
+      - HIVEMIND_ENABLED=true
+      - ENABLE_QUEEN_COORDINATOR=true
+      - ENABLE_COLLECTIVE_INTELLIGENCE=true
+      - ENABLE_MEMORY_MANAGER=true
+      - ENABLE_WORKER_SPECIALISTS=true
+      - ENABLE_SCOUT_EXPLORERS=true
+
+      # Worker Configuration
+      - MAX_PARALLEL_WORKERS=10
+      - WORKER_STATUS_INTERVAL_MS=30000
+      - WORKER_AUTO_HEAL=true
+
+      # Memory Manager Configuration
+      - SWARM_MEMORY_SYNC_ENABLED=true
+      - MEMORY_SYNC_INTERVAL_MS=30000
+      - MEMORY_CONFLICT_RESOLUTION=crdt
+
+      # ─────────────────────────────────────────────────────────
+      # AGENTDB CONFIGURATION (In-Process)
+      # ─────────────────────────────────────────────────────────
+      - AGENTDB_ENABLED=true
+      - AGENTDB_PATH=/data/agentdb.db
+      - AGENTDB_VECTOR_SEARCH_ENABLED=true
+      - AGENTDB_NAMESPACE_ISOLATION=true
+
+      # AgentDB Namespaces
+      - AGENTDB_NAMESPACE_PATTERNS=patterns/*
+      - AGENTDB_NAMESPACE_COORDINATION=coordination/*
+      - AGENTDB_NAMESPACE_RESEARCH=research/*
+      - AGENTDB_NAMESPACE_SPECS=specs/*
+
+      # ─────────────────────────────────────────────────────────
+      # TRUTH VERIFICATION CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - ENABLE_TRUTH_VERIFICATION=true
+      - TRUTH_VERIFICATION_THRESHOLD=0.95
+      - TRUTH_AUTO_ROLLBACK=true
+      - TRUTH_VERIFICATION_CONTINUOUS=true
+      - TRUTH_CHECK_INTERVAL_MS=30000
+
+      # ─────────────────────────────────────────────────────────
+      # PATTERN-DRIVEN OPTIMIZATION (Optional)
+      # ─────────────────────────────────────────────────────────
+      - ENABLE_PATTERN_MATCHING=true
+      - PATTERN_MATCH_THRESHOLD=0.85
+      - PATTERN_REUSE_ENABLED=true
+      - PATTERN_LEARNING_ENABLED=true
+      - PATTERN_AUTO_STORE=true
+
+      # ─────────────────────────────────────────────────────────
+      # GITHUB INTEGRATION (Native gh CLI)
+      # ─────────────────────────────────────────────────────────
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - ENABLE_GITHUB_SYNC=true
+      - GITHUB_AUTO_PR=true
+      - GITHUB_PR_ON_COMPLETION=true
+
+      # ─────────────────────────────────────────────────────────
+      # MCP CONFIGURATION
+      # ─────────────────────────────────────────────────────────
+      - MCP_SERVER_PORT=3000
+      - ENABLE_CLAUDE_FLOW_MCP=true
+      - ENABLE_GOALIE_MCP=true
+      - ENABLE_AGENTDB_MCP=true
+      - MCP_TIMEOUT_MS=120000
+
+      # ─────────────────────────────────────────────────────────
+      # API KEYS (Pass from host environment or .env file)
+      # ─────────────────────────────────────────────────────────
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+
+    # Volume Mounts
+    volumes:
+      # Workspace (project files)
+      - ./:/workspace
+
+      # AgentDB persistent storage
+      - agentdb-data:/data
+
+      # GitHub CLI config (persistent authentication)
+      - gh-config:/root/.config/gh
+
+      # Agent definitions (64+ .md files, read-only)
+      - ./.agentic/agents:/app/agents:ro
+
+      # Proven patterns library (read-only, grows over time)
+      - ./.agentic/patterns:/patterns:ro
+
+      # Logs
+      - logs:/app/logs
+
+      # npm cache (speed up installs)
+      - npm-cache:/root/.npm
+
+    # Networking
+    networks:
+      - agentic-network
+
+    # Ports
+    ports:
+      - "3000:3000"   # MCP Server
+      - "3001:3001"   # AgentDB Monitoring API
+      - "8080:8080"   # Swagger UI (optional preview)
+
+    # Restart Policy
+    restart: unless-stopped
+
+    # Resource Limits
+    # Codespaces: Auto-configured
+    # Pi 5 (16GB): 12GB RAM, 3 CPUs
+    # Local Docker: Adjust as needed
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 12G
+        reservations:
+          cpus: '1.0'
+          memory: 4G
+
+    # Health Check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    # Depends On (if using separate services)
+    # depends_on:
+    #   - optional-service
+
+# Networks
+networks:
+  agentic-network:
+    driver: bridge
+
+# Volumes (Persistent Data)
+volumes:
+  # AgentDB Database (grows to ~50GB over time)
+  agentdb-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${AGENTDB_DATA_PATH:-./data/agentdb}
+
+  # GitHub CLI Configuration (authentication tokens)
+  gh-config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${GH_CONFIG_PATH:-./data/gh-config}
+
+  # Application Logs
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${LOGS_PATH:-./data/logs}
+
+  # NPM Cache (speed up container rebuilds)
+  npm-cache:
+    driver: local
+
+# ─────────────────────────────────────────────────────────────────
+# DEPLOYMENT-SPECIFIC CONFIGURATIONS
+# ─────────────────────────────────────────────────────────────────
+
+# For GitHub Codespaces:
+# - Automatically uses GitHub token from environment
+# - Workspace auto-mounted at /workspace
+# - Uses devcontainer.json configuration
+# - No additional setup required
+
+# For Raspberry Pi 5 (16GB RAM, 256GB Storage):
+# - Set AGENTDB_DATA_PATH=/mnt/storage/agentdb
+# - Set GH_CONFIG_PATH=/mnt/storage/gh-config
+# - Set LOGS_PATH=/mnt/storage/logs
+# - Ensure 12GB RAM available (limits above)
+# - Run: docker-compose up -d
+
+# For Local Docker (Development Machine):
+# - Default paths work (./data/*)
+# - Adjust resource limits as needed
+# - Run: docker-compose up
+
+# For Cloud Deployment (AWS/GCP/Azure):
+# - Convert to Kubernetes manifests: kompose convert
+# - Or use docker-compose directly with Docker Swarm
+# - Configure persistent volumes for agentdb-data
+# - Set up load balancer for MCP server (port 3000)
+
+# ─────────────────────────────────────────────────────────────────
+# QUICK START COMMANDS
+# ─────────────────────────────────────────────────────────────────
+
+# 1. Setup (one-time):
+#    ./.agentic/scripts/setup.sh
+
+# 2. Start environment:
+#    docker-compose up -d
+
+# 3. View logs:
+#    docker-compose logs -f agentic-dev
+
+# 4. Run Phase 1 (Research):
+#    ./.agentic/scripts/phase-1-research.sh "your wild idea"
+
+# 5. Run Phase 2 (Formalize):
+#    ./.agentic/scripts/phase-2-formalize.sh
+
+# 6. Run Phase 3 (SPARC Planning):
+#    ./.agentic/scripts/phase-3-sparc.sh
+
+# 7. Approve spec (Phase 4):
+#    ./.agentic/scripts/phase-4-approve.sh
+
+# 8. Run Phase 5 (TDD Development):
+#    ./.agentic/scripts/phase-5-develop.sh
+
+# 9. Stop environment:
+#    docker-compose down
+
+# 10. Full cleanup (removes volumes):
+#     docker-compose down -v
