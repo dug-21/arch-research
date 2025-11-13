@@ -145,6 +145,11 @@ vite.config.ts.timestamp-*
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
 
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
 
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
