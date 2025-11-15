@@ -27,7 +27,7 @@ The framework operates across four interconnected dimensions, organized into thr
 │   (Modernization, cloud adoption, process improvement)      │
 ├─────────────────────────────────────────────────────────────┤
 │                   FOUNDATION LAYER                          │
-│   (Stability, security, basic automation, core processes)   │
+│   (Goal alignment, Tech foundation, core processes/culture) │
 └─────────────────────────────────────────────────────────────┘
 
      TECHNOLOGY    PROCESS    PEOPLE    BUSINESS
@@ -42,19 +42,17 @@ The framework operates across four interconnected dimensions, organized into thr
 **Focus**: Infrastructure, tools, and technical capabilities
 
 **Key Areas:**
-- Cloud infrastructure and migration
 - Development tooling and platforms
 - Automation and orchestration
 - Architecture modernization
-- Security and compliance tooling
+- Security and compliance
 - Observability and monitoring
 
 **Strategic Themes:**
 - Legacy System Modernization
-- Cloud-First Infrastructure
-- Platform Engineering
 - Automation & DevOps
 - Security & Compliance
+- 
 
 #### 2. Process Dimension
 **Focus**: How work gets done
@@ -63,7 +61,7 @@ The framework operates across four interconnected dimensions, organized into thr
 - Software delivery lifecycle
 - Agile and iterative development
 - CI/CD pipeline implementation
-- Incident response and reliability
+- Test automation
 - Change management
 - Quality assurance processes
 
@@ -78,7 +76,7 @@ The framework operates across four interconnected dimensions, organized into thr
 **Focus**: Skills, culture, and organizational structure
 
 **Key Areas:**
-- Skill development and training
+- Skill development and training - Agile/Development automation
 - Team structure and roles
 - Cultural transformation
 - Leadership development

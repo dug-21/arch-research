@@ -11,9 +11,9 @@
 
 Your SMB operates in a technology landscape where competitors are leveraging cloud platforms, AI-augmented development, and data-driven decision-making to achieve 30-50% productivity gains and 3-5x faster time-to-market.
 
-**Current State:** Dated technologies, disparate tools, low-discipline agile processes, minimal automation.
+**Current State:** Dated technologies, disparate tools, low-discipline agile processes, minimal automation.  However, they don't currently have reliability issues, and are operating manually in cloud environments.
 
-**Future State:** Cloud-native infrastructure, self-service platforms, AI-powered development, data-driven operations, and enterprise-grade governance.
+**Future State:** Cloud-native infrastructure, self-service platforms, AI-powered development, data-driven operations, and enterprise-grade governance, ISO27001 Compliance.
 
 **The Gap:** A structured, multi-year transformation addressing 12 strategic themes across People, Process, Technology, Culture, and Governance.
 
