@@ -1,14 +1,19 @@
 {
+  "name": "arch-research-devcontainer",
   "image": "mcr.microsoft.com/devcontainers/javascript-node",
   "features": {
-      "ghcr.io/devcontainers/features/docker-in-docker:2": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "moby": true,
-      "dockerDashComposeVersion": "v2"
+      "dockerComposeVersion": "v2"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
+    {
+      "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.ssh",
+      "target": "/home/node/.ssh",
+      "type": "bind"
+    }
   ],
   "remoteEnv": {
     "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}"
