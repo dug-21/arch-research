@@ -1,9 +1,9 @@
 # pMemory SPARC Specification
 
-## Phase 1: Specification
+## Phase 1: Specification (Revised)
 
-**Document Status**: Active
-**Version**: 1.0.0
+**Document Status**: Revised for Integration Approach
+**Version**: 2.0.0
 **Last Updated**: November 2024
 
 ---
@@ -12,211 +12,252 @@
 
 ### 1.1 Problem Statement
 
-Current AI memory solutions force users into platform lock-in:
-- Memory stored in provider clouds creates switching costs
-- Slow retrieval (>500ms) breaks cognitive flow and agentic workflows
-- No active intelligence—static retrieval only
-- Security is an afterthought, not architectural foundation
-- No learning from user patterns
+The capabilities for a secure, intelligent, LLM-agnostic memory layer exist but are fragmented:
+
+- **AgentDB**: 29 MCP tools for memory, but no integrated security
+- **aidefence**: Threat detection, but not wired into memory operations
+- **agentic-flow**: LLM routing, but not coordinated with memory
+- **ruvector**: Massive scale, but separate deployment
+
+**No unified system exists that secures agent memory by default while enabling LLM-agnostic operation.**
 
 ### 1.2 Solution Overview
 
-**pMemory** is an Active Memory Layer providing:
-- LLM-agnostic personal/team memory infrastructure
-- Sub-100ms retrieval at scale (1M+ vectors)
-- Active intelligence with self-learning capabilities
-- Zero-trust, quantum-resistant security architecture
-- Full user ownership of data
+**pMemory** is an MCP server that integrates existing tools into a unified, secure Active Memory Layer:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   pMemory MCP Server                        │
+│            (Integration Layer - ~2,200 LOC)                 │
+├─────────────────────────────────────────────────────────────┤
+│  Input: MCP requests (pmemory_*)                           │
+│  Output: Secured, routed responses                          │
+│                                                             │
+│  Integrates:                                                │
+│  • AgentDB (29 existing MCP tools)                         │
+│  • aidefence (security scanning)                           │
+│  • agentic-flow (LLM routing)                              │
+│  • ruvector (optional scale tier)                          │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ### 1.3 Success Criteria
 
-| Criterion | Target | Validation Method |
-|-----------|--------|-------------------|
-| Retrieval latency | <50ms @ 1M vectors | Benchmark suite |
-| Security compliance | OWASP LLM Top 10 | Automated scan |
-| LLM portability | 3+ providers | Integration tests |
-| Learning improvement | 15% relevance gain/month | A/B testing |
-| User data ownership | 100% exportable | Export verification |
+| Criterion | Target | Validation |
+|-----------|--------|------------|
+| MCP tools exposed | 15 unified tools | Tool listing |
+| Security coverage | 100% operations scanned | Integration test |
+| LLM providers | 3+ routable | Provider test |
+| Installation | Single `npx` command | Manual test |
+| Timeline | 3 weeks | Delivery date |
 
 ---
 
 ## 2. Functional Requirements
 
-### 2.1 Core Memory Operations
+### 2.1 MCP Interface
 
-#### FR-001: Vector Storage and Retrieval
+#### FR-001: MCP Server Implementation
 **Priority**: P0 (Critical)
 
 The system MUST:
-- Store text content with associated vector embeddings
-- Support multiple embedding models (OpenAI, Cohere, local)
-- Retrieve top-k similar items in <50ms for 1M vectors
-- Support hybrid search (vector + keyword + metadata filters)
-- Enable batch operations for bulk ingest
+- Implement MCP protocol (stdio transport)
+- Register `pmemory_*` tool namespace
+- Handle concurrent requests
+- Support MCP resources for configuration
 
 **Acceptance Criteria**:
-- [ ] Single vector retrieval <50ms @ 1M vectors
-- [ ] Batch ingest 10K documents in <30 seconds
-- [ ] Hybrid search with metadata filters
-- [ ] Embedding model pluggability
+- [ ] Server starts via `npx pmemory mcp start`
+- [ ] Tools visible in Claude Code
+- [ ] Concurrent requests handled correctly
 
-#### FR-002: Causal Memory Graphs
+#### FR-002: Core Memory Tools (Delegates to AgentDB)
 **Priority**: P0 (Critical)
 
-The system MUST:
-- Track relationships between memory items (A led to B)
-- Calculate uplift scores for causal relationships
-- Support graph traversal queries
-- Enable temporal relationship analysis
-- Prune stale relationships automatically
+| Tool | Delegates To | Security |
+|------|-------------|----------|
+| `pmemory_init` | `agentdb_init` | Config validation |
+| `pmemory_store` | `agentdb_insert` | aidefence scan |
+| `pmemory_store_batch` | `agentdb_insert_batch` | aidefence batch scan |
+| `pmemory_search` | `agentdb_search` | Query validation |
+| `pmemory_delete` | `agentdb_delete` | Auth check |
 
 **Acceptance Criteria**:
-- [ ] Create causal edges with timestamps and scores
-- [ ] Query related items via graph traversal
-- [ ] Time-decay scoring for relationship freshness
-- [ ] Automatic pruning of low-value edges
+- [ ] All 5 tools delegate correctly to AgentDB
+- [ ] Security applied before delegation
+- [ ] Errors propagate with context
 
-#### FR-003: Multi-Source Ingestion
+#### FR-003: Intelligence Tools (Delegates to AgentDB Frontier)
 **Priority**: P1 (High)
 
-The system MUST:
-- Ingest from local files (text, PDF, markdown)
-- Ingest from web sources (URL scraping with robots.txt respect)
-- Ingest from API sources (custom connectors)
-- Support incremental updates (delta sync)
-- Track source provenance for all content
+| Tool | Delegates To | Purpose |
+|------|-------------|---------|
+| `pmemory_causal_link` | `causal_add_edge` | Create cause-effect relationship |
+| `pmemory_causal_query` | `causal_query` | Query causal graph |
+| `pmemory_reflect` | `reflexion_store` | Store success/failure episode |
+| `pmemory_recall` | `reflexion_retrieve` | Retrieve past episodes |
 
 **Acceptance Criteria**:
-- [ ] File ingestion for common formats
-- [ ] Web ingestion with content extraction
-- [ ] Custom API connector framework
-- [ ] Delta sync for updated sources
-- [ ] Full provenance tracking
+- [ ] Causal graphs build correctly over time
+- [ ] Reflexion episodes persist across sessions
+- [ ] Recall returns relevant episodes
 
-### 2.2 Active Intelligence
+#### FR-004: Learning Tools (Delegates to AgentDB + ReasoningBank)
+**Priority**: P1 (High)
 
-#### FR-004: Pattern Learning
+| Tool | Delegates To | Purpose |
+|------|-------------|---------|
+| `pmemory_skill_store` | `skill_create` | Store reusable skill |
+| `pmemory_skill_find` | `skill_search` | Find relevant skills |
+| `pmemory_learn` | `learner_discover` | Trigger pattern discovery |
+
+**Acceptance Criteria**:
+- [ ] Skills persist and are searchable
+- [ ] Learning discovers useful patterns
+- [ ] ReasoningBank integration functional
+
+#### FR-005: Security Tools (Delegates to aidefence)
+**Priority**: P0 (Critical)
+
+| Tool | Purpose |
+|------|---------|
+| `pmemory_scan` | Explicit threat scan |
+| `pmemory_audit` | Query audit log |
+
+**Acceptance Criteria**:
+- [ ] Scan detects known threat patterns
+- [ ] Audit log captures all operations
+
+#### FR-006: Provider Tools (Delegates to agentic-flow)
+**Priority**: P1 (High)
+
+| Tool | Purpose |
+|------|---------|
+| `pmemory_embed` | Generate embedding via routed LLM |
+| `pmemory_provider_set` | Set preferred provider |
+| `pmemory_provider_list` | List available providers |
+
+**Acceptance Criteria**:
+- [ ] Embedding routes to configured provider
+- [ ] Provider switching works without data loss
+- [ ] Fallback chain activates on failure
+
+### 2.2 Security Integration
+
+#### FR-007: Default Security Scanning
 **Priority**: P0 (Critical)
 
 The system MUST:
-- Track user interaction patterns (searches, retrievals, ratings)
-- Learn retrieval preferences via reinforcement learning
-- Adapt search strategies based on context
-- Maintain per-user preference models
-- Enable preference export/import
+- Scan ALL store operations via aidefence before storage
+- Validate ALL search queries for injection attempts
+- Log ALL operations to audit trail
+- Filter PII when configured
+
+**Security Flow**:
+```
+Request → aidefence.scan() → if safe → delegate → respond
+                           → if threat → reject with reason
+```
 
 **Acceptance Criteria**:
-- [ ] Thompson Sampling for strategy selection
-- [ ] Contextual bandit for query adaptation
-- [ ] User preference model persistence
-- [ ] Measurable relevance improvement over time
+- [ ] Known injection patterns blocked
+- [ ] PII filtered from stored content
+- [ ] Audit log complete and queryable
 
-#### FR-005: Cognitive State Detection
+#### FR-008: Configurable Security Levels
 **Priority**: P2 (Medium)
 
-The system SHOULD:
-- Detect user cognitive state from interaction patterns
-- Adapt retrieval behavior based on detected state
-- Support explicit state switching
-- Track state transitions over time
+| Level | Behavior |
+|-------|----------|
+| `strict` | Block any threat score >0.5 |
+| `balanced` | Block threats >0.7, warn >0.5 |
+| `permissive` | Block only high-confidence (>0.9) |
+| `off` | No scanning (not recommended) |
 
 **Acceptance Criteria**:
-- [ ] State detection via rule-based classifier
-- [ ] Behavior adaptation per state
-- [ ] Manual state override capability
+- [ ] Security level configurable via YAML
+- [ ] Behavior matches documented levels
 
-#### FR-006: Reflexion Episodes
+### 2.3 LLM Routing Integration
+
+#### FR-009: Intelligent Embedding Routing
 **Priority**: P1 (High)
 
 The system MUST:
-- Store retrieval episodes with outcomes
-- Learn from successful/failed retrievals
-- Generate retrieval critiques
-- Apply learned patterns to future queries
+- Route embedding requests via agentic-flow
+- Select provider based on cost/latency/privacy
+- Cache embeddings to reduce LLM calls
+- Support fallback chains
 
 **Acceptance Criteria**:
-- [ ] Episode storage with outcome tracking
-- [ ] Success/failure classification
-- [ ] Pattern extraction from episodes
-- [ ] Pattern application to queries
+- [ ] Embedding requests route to configured provider
+- [ ] Cost savings measurable vs direct API
+- [ ] Fallback activates when primary fails
 
-### 2.3 LLM Integration
-
-#### FR-007: Multi-Provider Support
-**Priority**: P0 (Critical)
-
-The system MUST:
-- Integrate with Claude (Anthropic)
-- Integrate with GPT (OpenAI)
-- Integrate with Gemini (Google)
-- Integrate with local models (Ollama, vLLM)
-- Support provider switching without data migration
-
-**Acceptance Criteria**:
-- [ ] Unified API abstraction layer
-- [ ] Per-provider configuration
-- [ ] Hot-swap between providers
-- [ ] Fallback chain configuration
-
-#### FR-008: Agentic Workflow Support
-**Priority**: P0 (Critical)
-
-The system MUST:
-- Support high-frequency retrieval (100+ calls/task)
-- Enable agent memory coordination
-- Provide transaction semantics for agent writes
-- Support multi-agent concurrent access
-- Track agent-specific memory namespaces
-
-**Acceptance Criteria**:
-- [ ] <50ms retrieval under agentic load
-- [ ] Concurrent access without corruption
-- [ ] Agent namespace isolation
-- [ ] Transaction rollback support
-
-#### FR-009: Context Assembly
+#### FR-010: Provider Configuration
 **Priority**: P1 (High)
 
-The system MUST:
-- Assemble relevant context for LLM queries
-- Respect token limits per provider
-- Prioritize by relevance and recency
-- Support custom assembly strategies
+```yaml
+# pmemory.yaml
+llm:
+  default_provider: claude
+  fallback_chain:
+    - claude
+    - openai
+    - ollama
+  embedding_model: text-embedding-3-small
+  routing_strategy: cost  # cost | latency | privacy
+```
 
 **Acceptance Criteria**:
-- [ ] Token-aware context assembly
-- [ ] Configurable prioritization
-- [ ] Strategy pluggability
+- [ ] Configuration loaded from YAML
+- [ ] Runtime provider switching via tool
+- [ ] Environment variable overrides work
 
-### 2.4 Data Portability
+### 2.4 Configuration
 
-#### FR-010: Full Export
-**Priority**: P0 (Critical)
-
-The system MUST:
-- Export all user data in standard formats (JSON, SQLite)
-- Export memory graphs in standard graph formats
-- Export learned preferences and models
-- Enable complete system migration
-
-**Acceptance Criteria**:
-- [ ] One-click full export
-- [ ] Standard format compliance
-- [ ] Migration validation tooling
-
-#### FR-011: Import Compatibility
+#### FR-011: Configuration File
 **Priority**: P1 (High)
 
-The system MUST:
-- Import from competitor formats where possible
-- Import from standard knowledge base formats
-- Support incremental import
-- Validate import integrity
+```yaml
+# pmemory.yaml (complete example)
+
+# Memory backend
+memory:
+  backend: agentdb          # agentdb | ruvector
+  namespace: default
+  data_path: ~/.pmemory
+
+# Security settings
+security:
+  enabled: true
+  level: balanced           # strict | balanced | permissive | off
+  pii_filter: true
+  audit_retention_days: 30
+
+# LLM routing
+llm:
+  router: agentic-flow
+  default_provider: claude
+  fallback_chain:
+    - claude
+    - openai
+    - gemini
+    - ollama
+  routing_strategy: cost
+
+# Learning features
+learning:
+  reflexion: true
+  causal_tracking: true
+  skill_library: true
+  reasoningbank: true
+```
 
 **Acceptance Criteria**:
-- [ ] Common format import support
-- [ ] Import verification
-- [ ] Conflict resolution for duplicates
+- [ ] Config file parsed correctly
+- [ ] Defaults applied for missing values
+- [ ] Validation errors reported clearly
 
 ---
 
@@ -224,301 +265,381 @@ The system MUST:
 
 ### 3.1 Performance
 
-#### NFR-001: Latency Requirements
-| Operation | Target | Maximum |
-|-----------|--------|---------|
-| Vector search (1K vectors) | <10ms | 50ms |
-| Vector search (100K vectors) | <30ms | 100ms |
-| Vector search (1M vectors) | <50ms | 200ms |
-| Graph traversal (depth 3) | <20ms | 100ms |
-| Batch ingest (1K docs) | <3s | 10s |
-| Learning update | <100ms | 500ms |
+| Operation | Target | Source |
+|-----------|--------|--------|
+| Store (with security) | <100ms | aidefence <10ms + AgentDB <50ms |
+| Search | <50ms | AgentDB p95 |
+| Embedding | <500ms | LLM provider dependent |
+| Causal query | <20ms | AgentDB |
 
-#### NFR-002: Throughput Requirements
-| Scenario | Target |
-|----------|--------|
-| Concurrent queries | 1000+ QPS |
-| Concurrent agents | 100+ |
-| Concurrent users | 10,000+ |
-| Ingestion rate | 100K docs/hour |
-
-#### NFR-003: Resource Constraints
-| Resource | Limit |
-|----------|-------|
-| Memory per 1M vectors | <4GB |
-| Storage per 1M vectors | <8GB |
-| CPU cores (baseline) | 2-4 |
-| GPU (optional) | CUDA 11+ |
+**Note**: Performance depends on underlying tools, not our code.
 
 ### 3.2 Reliability
 
-#### NFR-004: Availability
-- **Target**: 99.9% uptime for hosted service
-- **Local mode**: Graceful degradation on failure
-- **Recovery**: <30 second restart on crash
+| Requirement | Target |
+|-------------|--------|
+| Error handling | All errors include context |
+| Fallback | LLM fallback chain activates |
+| Graceful degradation | Works without security (if configured) |
 
-#### NFR-005: Durability
-- **Data durability**: 99.999999999% (11 nines)
-- **Write confirmation**: Sync to disk before acknowledgment
-- **Backup**: Automated daily with 30-day retention
+### 3.3 Compatibility
 
-#### NFR-006: Consistency
-- **Read-after-write**: Guaranteed
-- **Cross-device sync**: Eventually consistent (<5s)
-- **Conflict resolution**: Last-write-wins with history
-
-### 3.3 Security (Detailed in Security Architecture)
-
-#### NFR-007: Authentication
-- Multi-factor authentication support
-- API key rotation capabilities
-- Session management with expiration
-
-#### NFR-008: Authorization
-- Role-based access control (RBAC)
-- Resource-level permissions
-- Namespace isolation for multi-tenant
-
-#### NFR-009: Encryption
-- At-rest: AES-256
-- In-transit: TLS 1.3
-- End-to-end option: Zero-knowledge
-
-#### NFR-010: Quantum Resistance
-- Post-quantum key exchange (ML-KEM)
-- Hybrid classical/PQ modes
-- Migration path for future algorithms
-
-### 3.4 Scalability
-
-#### NFR-011: Horizontal Scaling
-- Stateless query handlers
-- Sharded vector indices
-- Distributed graph storage
-
-#### NFR-012: Vertical Scaling
-- Memory-mapped storage
-- GPU acceleration support
-- SIMD-optimized operations
+| Requirement | Target |
+|-------------|--------|
+| Node.js | >=18.0.0 |
+| MCP SDK | Latest |
+| AgentDB | ^1.6.0 |
+| aidefence | ^2.1.0 |
+| agentic-flow | Latest |
 
 ---
 
-## 4. Constraints
+## 4. MCP Tool Specifications
 
-### 4.1 Technical Constraints
+### 4.1 Tool Schema
 
-| Constraint | Rationale |
-|------------|-----------|
-| Rust for core | Performance and memory safety requirements |
-| SQLite for local | Proven, portable, zero-dependency |
-| HNSW for vectors | Best performance/accuracy tradeoff |
-| No network for local mode | Privacy requirement |
+#### pmemory_init
 
-### 4.2 Business Constraints
+```json
+{
+  "name": "pmemory_init",
+  "description": "Initialize pMemory with configuration",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "namespace": {
+        "type": "string",
+        "description": "Memory namespace",
+        "default": "default"
+      },
+      "config_path": {
+        "type": "string",
+        "description": "Path to pmemory.yaml"
+      }
+    }
+  }
+}
+```
 
-| Constraint | Rationale |
-|------------|-----------|
-| Open source core | Build trust, enable verification |
-| Self-hostable | Enterprise requirement |
-| No telemetry default | Privacy-first positioning |
+#### pmemory_store
 
-### 4.3 Regulatory Constraints
+```json
+{
+  "name": "pmemory_store",
+  "description": "Store content in memory (security scanned)",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "type": "string",
+        "description": "Content to store"
+      },
+      "metadata": {
+        "type": "object",
+        "description": "Optional metadata"
+      },
+      "causal_sources": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "IDs of items that led to this"
+      }
+    },
+    "required": ["content"]
+  }
+}
+```
 
-| Constraint | Requirement |
-|------------|-------------|
-| GDPR | Right to deletion, data portability |
-| CCPA | Data disclosure, opt-out |
-| SOC 2 | Audit logging, access controls |
-| HIPAA | BAA-eligible option required |
+#### pmemory_search
+
+```json
+{
+  "name": "pmemory_search",
+  "description": "Search memory semantically",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Search query"
+      },
+      "top_k": {
+        "type": "number",
+        "description": "Number of results",
+        "default": 10
+      },
+      "include_causal": {
+        "type": "boolean",
+        "description": "Include causal context",
+        "default": false
+      }
+    },
+    "required": ["query"]
+  }
+}
+```
+
+#### pmemory_embed
+
+```json
+{
+  "name": "pmemory_embed",
+  "description": "Generate embedding via routed LLM",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "Text to embed"
+      },
+      "provider": {
+        "type": "string",
+        "description": "Override default provider"
+      }
+    },
+    "required": ["text"]
+  }
+}
+```
+
+#### pmemory_reflect
+
+```json
+{
+  "name": "pmemory_reflect",
+  "description": "Store reflection episode for learning",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "task": {
+        "type": "string",
+        "description": "Task description"
+      },
+      "outcome": {
+        "type": "string",
+        "enum": ["success", "failure", "partial"],
+        "description": "Task outcome"
+      },
+      "reflection": {
+        "type": "string",
+        "description": "What was learned"
+      },
+      "related_memories": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Memory IDs involved"
+      }
+    },
+    "required": ["task", "outcome", "reflection"]
+  }
+}
+```
+
+### 4.2 Complete Tool List
+
+| Tool | Category | Delegates To |
+|------|----------|-------------|
+| `pmemory_init` | Core | `agentdb_init` |
+| `pmemory_store` | Core | `agentdb_insert` |
+| `pmemory_store_batch` | Core | `agentdb_insert_batch` |
+| `pmemory_search` | Core | `agentdb_search` |
+| `pmemory_delete` | Core | `agentdb_delete` |
+| `pmemory_causal_link` | Intelligence | `causal_add_edge` |
+| `pmemory_causal_query` | Intelligence | `causal_query` |
+| `pmemory_reflect` | Intelligence | `reflexion_store` |
+| `pmemory_recall` | Intelligence | `reflexion_retrieve` |
+| `pmemory_skill_store` | Learning | `skill_create` |
+| `pmemory_skill_find` | Learning | `skill_search` |
+| `pmemory_learn` | Learning | `learner_discover` |
+| `pmemory_scan` | Security | `aidefence.scan` |
+| `pmemory_audit` | Security | `aidefence.audit` |
+| `pmemory_embed` | Provider | `agentic-flow.embed` |
+| `pmemory_provider_set` | Provider | config update |
+| `pmemory_provider_list` | Provider | config read |
 
 ---
 
-## 5. Interfaces
+## 5. Integration Architecture
 
-### 5.1 User Interfaces
+### 5.1 Dependency Graph
 
-#### CLI Interface
+```
+pMemory MCP Server
+    │
+    ├── @modelcontextprotocol/sdk  (MCP protocol)
+    │
+    ├── agentdb                     (Memory engine)
+    │   ├── Vector storage
+    │   ├── Causal graphs
+    │   ├── Reflexion memory
+    │   └── Skill library
+    │
+    ├── aidefence                   (Security)
+    │   ├── Threat detection
+    │   ├── PII filtering
+    │   └── Audit logging
+    │
+    └── agentic-flow                (LLM routing)
+        ├── Multi-provider router
+        └── ReasoningBank
+```
+
+### 5.2 Request Flow
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                       MCP Request Flow                           │
+│                                                                  │
+│  Claude/Agent                                                    │
+│      │                                                           │
+│      │ MCP: pmemory_store({ content: "..." })                   │
+│      ▼                                                           │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                   pMemory Server                          │   │
+│  │                                                           │   │
+│  │  1. Parse MCP request                                     │   │
+│  │  2. Validate input schema                                 │   │
+│  │  3. aidefence.scan(content)  ────────────────────────┐   │   │
+│  │                                                       │   │   │
+│  │     ┌─────────────────────────────────────────────────┤   │   │
+│  │     │ If threat detected:                             │   │   │
+│  │     │   Return error with threat details              │   │   │
+│  │     └─────────────────────────────────────────────────┤   │   │
+│  │                                                       │   │   │
+│  │  4. agentic-flow.embed(content)  ◄────────────────────┘   │   │
+│  │                                                           │   │
+│  │  5. agentdb.insert({ content, embedding, metadata })     │   │
+│  │                                                           │   │
+│  │  6. If causal_sources provided:                          │   │
+│  │       agentdb.causal_add_edge(source, new_id)            │   │
+│  │                                                           │   │
+│  │  7. aidefence.log(operation)  (audit trail)              │   │
+│  │                                                           │   │
+│  │  8. Return MCP response { id, success }                  │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│      │                                                           │
+│      ▼                                                           │
+│  Claude/Agent receives response                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 6. Installation & Usage
+
+### 6.1 Installation
+
 ```bash
-# Core operations
-pmemory search "query text" --top-k 10
-pmemory add /path/to/document
-pmemory graph show --depth 2
+# Global install
+npm install -g pmemory
 
-# Configuration
-pmemory config set provider claude
-pmemory config set latency-target 50ms
-
-# Learning
-pmemory feedback <item-id> positive
-pmemory stats learning
+# Or run directly
+npx pmemory mcp start
 ```
 
-#### REST API
-```yaml
-# Core endpoints
-POST /v1/search
-POST /v1/add
-GET  /v1/item/{id}
-DELETE /v1/item/{id}
+### 6.2 Claude Code Integration
 
-# Graph endpoints
-GET  /v1/graph/{id}/related
-POST /v1/graph/edge
-
-# Learning endpoints
-POST /v1/feedback
-GET  /v1/stats/learning
-
-# Admin endpoints
-GET  /v1/health
-POST /v1/export
-POST /v1/import
-```
-
-#### SDK (Rust, Node.js, Python)
-```rust
-// Rust
-let memory = PMemory::new(config)?;
-let results = memory.search("query", SearchOptions::default()).await?;
-
-// Node.js (NAPI)
-const memory = new PMemory(config);
-const results = await memory.search("query", { topK: 10 });
-
-// Python (PyO3)
-memory = PMemory(config)
-results = await memory.search("query", top_k=10)
-```
-
-### 5.2 External Interfaces
-
-#### LLM Provider Interface
-```rust
-trait LLMProvider {
-    async fn embed(&self, text: &str) -> Result<Vec<f32>>;
-    async fn complete(&self, prompt: &str, context: &Context) -> Result<String>;
-    fn token_limit(&self) -> usize;
-    fn name(&self) -> &str;
+```json
+// claude_desktop_config.json
+{
+  "mcpServers": {
+    "pmemory": {
+      "command": "npx",
+      "args": ["pmemory", "mcp", "start"],
+      "env": {
+        "PMEMORY_CONFIG": "~/.pmemory/config.yaml"
+      }
+    }
+  }
 }
 ```
 
-#### Storage Backend Interface
-```rust
-trait StorageBackend {
-    async fn store(&self, item: &MemoryItem) -> Result<ItemId>;
-    async fn retrieve(&self, id: &ItemId) -> Result<MemoryItem>;
-    async fn search(&self, query: &SearchQuery) -> Result<Vec<SearchResult>>;
-    async fn delete(&self, id: &ItemId) -> Result<()>;
+### 6.3 CLI Commands
+
+```bash
+# Start MCP server
+pmemory mcp start
+
+# Initialize configuration
+pmemory init
+
+# Set provider
+pmemory config set llm.default_provider openai
+
+# View stats
+pmemory stats
+
+# Export data
+pmemory export ./backup.json
+```
+
+---
+
+## 7. Testing Strategy
+
+### 7.1 Integration Tests
+
+| Test | Validates |
+|------|-----------|
+| `test_store_with_security` | aidefence scans before storage |
+| `test_store_blocks_injection` | Known injection patterns rejected |
+| `test_search_routes_correctly` | Query reaches AgentDB |
+| `test_embed_routes_to_provider` | agentic-flow routing works |
+| `test_fallback_activates` | Fallback chain on provider failure |
+| `test_causal_links_persist` | Causal graph builds correctly |
+| `test_reflexion_persists` | Episodes survive restart |
+
+### 7.2 E2E Demo Test
+
+```typescript
+// Demo: Agent research task
+async function testAgentResearch() {
+  // 1. Initialize
+  await pmemory.init({ namespace: "research" });
+
+  // 2. Store some knowledge
+  const id1 = await pmemory.store({
+    content: "Quantum computing threatens RSA encryption",
+    metadata: { source: "research-paper" }
+  });
+
+  // 3. Search for related content
+  const results = await pmemory.search({
+    query: "encryption vulnerabilities",
+    top_k: 5
+  });
+
+  // 4. Store derived insight with causal link
+  const id2 = await pmemory.store({
+    content: "Post-quantum cryptography adoption is urgent",
+    causal_sources: [id1]
+  });
+
+  // 5. Reflect on success
+  await pmemory.reflect({
+    task: "Research quantum crypto impact",
+    outcome: "success",
+    reflection: "Causal linking helped connect ideas"
+  });
+
+  // Assertions
+  expect(results.length).toBeGreaterThan(0);
+  expect(await pmemory.causalQuery({ target: id2 })).toContain(id1);
 }
 ```
 
-#### Security Provider Interface
-```rust
-trait SecurityProvider {
-    fn encrypt(&self, data: &[u8]) -> Result<Vec<u8>>;
-    fn decrypt(&self, data: &[u8]) -> Result<Vec<u8>>;
-    fn sign(&self, data: &[u8]) -> Result<Signature>;
-    fn verify(&self, data: &[u8], sig: &Signature) -> Result<bool>;
-}
-```
+---
+
+## 8. Document References
+
+- **Thesis**: `00-thesis.md` - Integration approach
+- **Architecture**: `arch/03-architecture.md` - System design
+- **Implementation**: `implementation/05-implementation.md` - Timeline
 
 ---
 
-## 6. Use Cases
+## Appendix: Underlying Tool References
 
-### UC-001: Personal Knowledge Management
-
-**Actor**: Individual user
-**Precondition**: pMemory installed locally
-**Flow**:
-1. User ingests personal documents
-2. User searches for information
-3. System returns relevant items with context
-4. User provides feedback on relevance
-5. System learns and improves
-
-### UC-002: Agentic Research Task
-
-**Actor**: AI agent (via agentic-flow)
-**Precondition**: Memory populated, agent authenticated
-**Flow**:
-1. Agent receives complex research task
-2. Agent makes 50-100 memory queries
-3. System returns results in <50ms each
-4. Agent synthesizes findings
-5. Agent stores new knowledge with causal links
-
-### UC-003: Team Knowledge Sharing
-
-**Actor**: Team members
-**Precondition**: Shared memory namespace configured
-**Flow**:
-1. Member A adds knowledge to shared namespace
-2. System syncs to team members
-3. Member B searches shared knowledge
-4. System returns results with attribution
-5. Team learning improves from collective usage
-
-### UC-004: LLM Provider Migration
-
-**Actor**: System administrator
-**Precondition**: Currently using Provider A
-**Flow**:
-1. Admin configures Provider B credentials
-2. Admin switches active provider
-3. System re-embeds using new provider (background)
-4. All queries now use Provider B
-5. No data migration required
-
----
-
-## 7. Risks and Mitigations
-
-### Technical Risks
-
-| Risk | Impact | Probability | Mitigation |
-|------|--------|-------------|------------|
-| Performance target miss | High | Medium | Incremental optimization, GPU fallback |
-| Security vulnerability | Critical | Low | Formal verification, audit |
-| LLM API changes | Medium | High | Abstraction layer, version pinning |
-| Learning effectiveness | Medium | Medium | A/B testing, fallback to static |
-
-### Business Risks
-
-| Risk | Impact | Probability | Mitigation |
-|------|--------|-------------|------------|
-| Big Tech feature parity | High | High | Differentiate on privacy/openness |
-| Adoption barrier | Medium | Medium | Clear migration path, free tier |
-| Maintenance burden | Medium | Low | Modular architecture, strong typing |
-
----
-
-## 8. Glossary
-
-| Term | Definition |
-|------|------------|
-| Active Memory | Memory layer with intelligence that learns and adapts |
-| Causal Graph | Graph structure tracking cause-effect relationships |
-| HNSW | Hierarchical Navigable Small World (vector index algorithm) |
-| Reflexion | Learning pattern storing episodes with outcomes |
-| Thompson Sampling | Probabilistic strategy for exploration/exploitation |
-| Zero-Trust | Security model assuming no implicit trust |
-
----
-
-## 9. Appendices
-
-### A. Reference Materials
-
-- PKM Analysis Documents (epics/pkm-analysis/08-10)
-- AIMDS Security Framework (gist reference)
-- AgentDB Documentation (agentdb.ruv.io)
-- agentic-flow Documentation (github.com/ruvnet/agentic-flow)
-
-### B. Related Documents
-
-- 02-pseudocode.md - Algorithm designs
-- 03-architecture.md - System architecture
-- 04-security.md - Security architecture
-- 05-implementation.md - Implementation roadmap
-- 06-technology.md - Technology selection
+- [AgentDB MCP Tools](https://agentdb.ruv.io) - 29 tools, v1.6.0
+- [aidefence](https://www.npmjs.com/package/aidefence) - Security, v2.1.1
+- [agentic-flow](https://github.com/ruvnet/agentic-flow) - LLM routing
+- [ruvector](https://github.com/ruvnet/ruvector) - Scale tier

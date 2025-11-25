@@ -1,765 +1,508 @@
-# pMemory SPARC Architecture
+# pMemory Architecture
 
-## Phase 3: Architecture
+## MCP-First Integration Design
 
-**Document Status**: Active
-**Version**: 1.0.0
+**Document Status**: Revised
+**Version**: 2.0.0
 **Last Updated**: November 2024
 
 ---
 
 ## 1. Architecture Overview
 
-### 1.1 System Context
+### 1.1 Design Principle
+
+**pMemory is an integration layer, not a platform.**
+
+We build ~2,200 lines of orchestration code. We leverage:
+- **AgentDB**: 29 MCP tools (memory, causal graphs, reflexion, skills)
+- **aidefence**: Security scanning, PII filtering, audit logging
+- **agentic-flow**: LLM routing, ReasoningBank
+- **ruvector**: Scale tier (optional)
+
+### 1.2 System Context
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              EXTERNAL ACTORS                                 │
-├─────────────────┬─────────────────┬─────────────────┬───────────────────────┤
-│   Human Users   │   AI Agents     │   LLM Providers │   External Systems    │
-│   (CLI/API)     │   (agentic-flow)│   (Claude/GPT)  │   (Data Sources)      │
-└────────┬────────┴────────┬────────┴────────┬────────┴───────────┬───────────┘
-         │                 │                 │                     │
-         ▼                 ▼                 ▼                     ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           pMemory Active Memory Layer                        │
-│  ┌───────────────────────────────────────────────────────────────────────┐  │
-│  │                        Security Perimeter                              │  │
-│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐  │  │
-│  │  │ Auth/AuthZ  │ │ Threat Det. │ │ Encryption  │ │ Audit Logging   │  │  │
-│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────┘  │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│                                      │                                       │
-│  ┌───────────────────────────────────▼───────────────────────────────────┐  │
-│  │                          API Gateway Layer                             │  │
-│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐  │  │
-│  │  │ REST API    │ │ gRPC API    │ │ SDK Bindings│ │ WebSocket       │  │  │
-│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────┘  │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│                                      │                                       │
-│  ┌───────────────────────────────────▼───────────────────────────────────┐  │
-│  │                         Core Services Layer                            │  │
-│  │  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌─────────┐  │  │
-│  │  │  Search   │ │  Ingest   │ │  Graph    │ │  Learning │ │  LLM    │  │  │
-│  │  │  Service  │ │  Service  │ │  Service  │ │  Service  │ │  Router │  │  │
-│  │  └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └────┬────┘  │  │
-│  └────────┼─────────────┼─────────────┼─────────────┼────────────┼───────┘  │
-│           │             │             │             │            │          │
-│  ┌────────▼─────────────▼─────────────▼─────────────▼────────────▼───────┐  │
-│  │                        Storage Abstraction Layer                       │  │
-│  │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐                │  │
-│  │  │ Vector Store  │ │ Document Store│ │ Graph Store   │                │  │
-│  │  │ (HNSW Index)  │ │ (Content/Meta)│ │ (Causal Edges)│                │  │
-│  │  └───────┬───────┘ └───────┬───────┘ └───────┬───────┘                │  │
-│  └──────────┼─────────────────┼─────────────────┼────────────────────────┘  │
-│             │                 │                 │                            │
-│  ┌──────────▼─────────────────▼─────────────────▼────────────────────────┐  │
-│  │                         Physical Storage Layer                         │  │
-│  │  ┌───────────────────────────────────────────────────────────────┐    │  │
-│  │  │  SQLite (Local)  │  AgentDB (Distributed)  │  Sync Layer      │    │  │
-│  │  └───────────────────────────────────────────────────────────────┘    │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           SYSTEM CONTEXT                                 │
+│                                                                          │
+│   ┌─────────────────┐                                                   │
+│   │   Claude Code   │                                                   │
+│   │  Claude Desktop │                                                   │
+│   │  MCP Clients    │                                                   │
+│   └────────┬────────┘                                                   │
+│            │                                                            │
+│            │  MCP Protocol (stdio/sse)                                  │
+│            │                                                            │
+│   ┌────────▼────────────────────────────────────────────────────────┐  │
+│   │                    pMemory MCP Server                            │  │
+│   │                                                                  │  │
+│   │   ┌─────────────────────────────────────────────────────────┐   │  │
+│   │   │                  Orchestration Layer                     │   │  │
+│   │   │                    (~2,200 LOC)                          │   │  │
+│   │   │                                                          │   │  │
+│   │   │  • MCP protocol handling                                 │   │  │
+│   │   │  • Tool routing (pmemory_* → underlying tools)          │   │  │
+│   │   │  • Security enforcement                                  │   │  │
+│   │   │  • Configuration management                              │   │  │
+│   │   └─────────────────────────────────────────────────────────┘   │  │
+│   │                              │                                   │  │
+│   │       ┌──────────────────────┼──────────────────────┐           │  │
+│   │       ▼                      ▼                      ▼           │  │
+│   │  ┌─────────────┐      ┌─────────────┐      ┌──────────────┐    │  │
+│   │  │  aidefence  │      │agentic-flow │      │   AgentDB    │    │  │
+│   │  │             │      │             │      │              │    │  │
+│   │  │ • Scan      │      │ • Route     │      │ • 29 MCP     │    │  │
+│   │  │ • Filter    │      │ • Embed     │      │   tools      │    │  │
+│   │  │ • Log       │      │ • Fallback  │      │              │    │  │
+│   │  └─────────────┘      └─────────────┘      └──────────────┘    │  │
+│   │                                                                  │  │
+│   └──────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│   Optional (scale):                                                     │
+│   ┌──────────────────────────────────────────────────────────────────┐  │
+│   │                          ruvector                                │  │
+│   │               (When >1M vectors, distributed)                    │  │
+│   └──────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
-
-### 1.2 Deployment Modes
-
-| Mode | Description | Storage | Network | Use Case |
-|------|-------------|---------|---------|----------|
-| **Local** | Single-user, device-bound | SQLite | None | Privacy-first personal |
-| **Synced** | Multi-device, user-owned | SQLite + Sync | P2P/QUIC | Personal across devices |
-| **Team** | Multi-user, shared namespace | AgentDB | Internal | Team collaboration |
-| **Enterprise** | Multi-tenant, managed | AgentDB Cluster | Mesh | Organization-wide |
 
 ---
 
 ## 2. Component Architecture
 
-### 2.1 Security Perimeter
-
-The outermost layer enforcing zero-trust principles.
+### 2.1 MCP Server (We Build This)
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                     Security Perimeter                          │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                  Request Pipeline                        │   │
-│  │                                                          │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐  │   │
-│  │  │ TLS      │→ │ Rate     │→ │ Auth     │→ │ Threat  │  │   │
-│  │  │ Termination  │ Limiter  │  │ Validator│  │ Detect  │  │   │
-│  │  └──────────┘  └──────────┘  └──────────┘  └─────────┘  │   │
-│  │        │            │             │             │        │   │
-│  │        ▼            ▼             ▼             ▼        │   │
-│  │  ┌─────────────────────────────────────────────────┐    │   │
-│  │  │              Security Context                    │    │   │
-│  │  │  - Identity (user/agent/service)                 │    │   │
-│  │  │  - Permissions (RBAC + ABAC)                     │    │   │
-│  │  │  - Session state                                 │    │   │
-│  │  │  - Audit trail reference                         │    │   │
-│  │  └─────────────────────────────────────────────────┘    │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │              Cryptographic Services                      │   │
-│  │  ┌────────────┐  ┌────────────┐  ┌────────────────────┐ │   │
-│  │  │ Key Mgmt   │  │ Encryption │  │ Post-Quantum       │ │   │
-│  │  │ (HSM/KMS)  │  │ Engine     │  │ (ML-KEM-768)       │ │   │
-│  │  └────────────┘  └────────────┘  └────────────────────┘ │   │
-│  └─────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                       pMemory MCP Server                                │
+│                                                                         │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │                      Entry Point                                  │  │
+│  │                                                                   │  │
+│  │  src/index.ts                                                     │  │
+│  │  • Initialize MCP server                                          │  │
+│  │  • Register tool handlers                                         │  │
+│  │  • Start stdio transport                                          │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                              │                                          │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │                     Tool Registry                                 │  │
+│  │                                                                   │  │
+│  │  src/tools/                                                       │  │
+│  │  ├── core.ts        (pmemory_init, store, search, delete)        │  │
+│  │  ├── intelligence.ts (causal_link, causal_query, reflect, recall)│  │
+│  │  ├── learning.ts    (skill_store, skill_find, learn)             │  │
+│  │  ├── security.ts    (scan, audit)                                │  │
+│  │  └── provider.ts    (embed, provider_set, provider_list)         │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                              │                                          │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │                    Service Layer                                  │  │
+│  │                                                                   │  │
+│  │  src/services/                                                    │  │
+│  │  ├── security.ts    (wraps aidefence)                            │  │
+│  │  ├── memory.ts      (wraps AgentDB)                              │  │
+│  │  ├── llm.ts         (wraps agentic-flow)                         │  │
+│  │  └── config.ts      (configuration management)                   │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                              │                                          │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │                   Configuration                                   │  │
+│  │                                                                   │  │
+│  │  src/config/                                                      │  │
+│  │  ├── schema.ts      (YAML schema validation)                     │  │
+│  │  └── defaults.ts    (default configuration)                      │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Key Components**:
-
-| Component | Technology | Responsibility |
-|-----------|------------|----------------|
-| TLS Termination | rustls | TLS 1.3, certificate validation |
-| Rate Limiter | Custom (token bucket) | Request throttling |
-| Auth Validator | JWT (RS256/Ed25519) | Token validation |
-| Threat Detector | Pattern + ML | Injection detection |
-| Key Management | age/sodiumoxide | Key lifecycle |
-| Encryption Engine | AES-256-GCM | At-rest encryption |
-| Post-Quantum | ml-kem crate | PQ key exchange |
-
-### 2.2 API Gateway Layer
+### 2.2 External Dependencies (Already Built)
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                      API Gateway Layer                          │
-│                                                                 │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
-│  │    REST API     │  │    gRPC API     │  │   WebSocket     │ │
-│  │   (axum/tower)  │  │    (tonic)      │  │   (tokio-ws)    │ │
-│  │                 │  │                 │  │                 │ │
-│  │  /v1/search     │  │  Search.Query   │  │  Real-time      │ │
-│  │  /v1/add        │  │  Ingest.Add     │  │  subscriptions  │ │
-│  │  /v1/graph      │  │  Graph.Traverse │  │                 │ │
-│  │  /v1/feedback   │  │  Learn.Feedback │  │                 │ │
-│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘ │
-│           │                    │                    │          │
-│  ┌────────▼────────────────────▼────────────────────▼────────┐ │
-│  │                   Request Router                           │ │
-│  │  - Version routing                                         │ │
-│  │  - Request transformation                                  │ │
-│  │  - Response formatting                                     │ │
-│  └───────────────────────────────────────────────────────────┘ │
-│                                                                 │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │                   SDK Bindings                             │ │
-│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐ │ │
-│  │  │ Rust Native  │  │ Node.js      │  │ Python           │ │ │
-│  │  │              │  │ (NAPI-RS)    │  │ (PyO3)           │ │ │
-│  │  └──────────────┘  └──────────────┘  └──────────────────┘ │ │
-│  └───────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
-```
+┌────────────────────────────────────────────────────────────────────────┐
+│                       AgentDB (npm: agentdb)                           │
+│                                                                        │
+│  29 MCP Tools:                                                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐                 │
+│  │ Core Vector  │  │  Frontier    │  │  Learning    │                 │
+│  │              │  │  Memory      │  │  System      │                 │
+│  │ • init       │  │ • causal_*   │  │ • PPO        │                 │
+│  │ • insert     │  │ • reflexion_*│  │ • Decision   │                 │
+│  │ • search     │  │ • skill_*    │  │   Transformer│                 │
+│  │ • delete     │  │ • recall     │  │ • MCTS       │                 │
+│  │ • batch      │  │ • learner    │  │              │                 │
+│  └──────────────┘  └──────────────┘  └──────────────┘                 │
+│                                                                        │
+│  Performance: p95 <50ms, 150x faster HNSW search                      │
+│  Features: QUIC sync, causal graphs, reflexion memory                 │
+└────────────────────────────────────────────────────────────────────────┘
 
-**API Design Principles**:
-- RESTful for CRUD operations
-- gRPC for high-frequency agent calls
-- WebSocket for real-time updates
-- Native bindings for performance-critical paths
+┌────────────────────────────────────────────────────────────────────────┐
+│                       aidefence (npm: aidefence)                       │
+│                                                                        │
+│  Security Layers:                                                      │
+│  ┌──────────────────────────────────────────────────────────────────┐ │
+│  │ Detection (<10ms)    │ Analysis (<100ms)   │ Response (<50ms)    │ │
+│  │                      │                     │                      │ │
+│  │ • Pattern matching   │ • Behavioral       │ • Strategy select    │ │
+│  │ • Prompt injection   │ • Anomaly detect   │ • Mitigation         │ │
+│  │ • PII filter         │ • Temporal pattern │ • Logging            │ │
+│  └──────────────────────────────────────────────────────────────────┘ │
+│                                                                        │
+│  Coverage: 98.3% test coverage, formal verification                   │
+└────────────────────────────────────────────────────────────────────────┘
 
-### 2.3 Core Services Layer
-
-#### 2.3.1 Search Service
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                       Search Service                            │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                  Query Processor                         │   │
-│  │  - Query parsing and normalization                       │   │
-│  │  - Filter extraction                                     │   │
-│  │  - Strategy selection (Thompson Sampling)                │   │
-│  └────────────────────────┬────────────────────────────────┘   │
-│                           │                                     │
-│  ┌────────────────────────▼────────────────────────────────┐   │
-│  │                 Strategy Executor                        │   │
-│  │                                                          │   │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │   │
-│  │  │  Semantic   │  │  Keyword    │  │  Graph-based    │  │   │
-│  │  │  (HNSW)     │  │  (BM25)     │  │  (Causal)       │  │   │
-│  │  └──────┬──────┘  └──────┬──────┘  └────────┬────────┘  │   │
-│  │         └─────────────┬──┴───────────────────┘          │   │
-│  │                       ▼                                  │   │
-│  │  ┌───────────────────────────────────────────────────┐  │   │
-│  │  │           Result Fusion (RRF)                      │  │   │
-│  │  └───────────────────────────────────────────────────┘  │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                 Result Processor                         │   │
-│  │  - Diversity enforcement                                 │   │
-│  │  - Score normalization                                   │   │
-│  │  - Metadata enrichment                                   │   │
-│  └─────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Performance Targets**:
-| Operation | 1K vectors | 100K vectors | 1M vectors |
-|-----------|------------|--------------|------------|
-| HNSW search | <5ms | <20ms | <50ms |
-| BM25 search | <3ms | <15ms | <40ms |
-| Hybrid fusion | <2ms | <5ms | <10ms |
-| Total p99 | <15ms | <50ms | <120ms |
-
-#### 2.3.2 Ingest Service
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                       Ingest Service                            │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                   Source Handlers                        │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐  │   │
-│  │  │  File    │  │  URL     │  │  API     │  │  Stream │  │   │
-│  │  │  Handler │  │  Handler │  │  Handler │  │  Handler│  │   │
-│  │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬────┘  │   │
-│  │       └──────────┬──┴──────────┬──┴─────────────┘       │   │
-│  └──────────────────┼─────────────┼────────────────────────┘   │
-│                     ▼             ▼                             │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                  Processing Pipeline                     │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐  │   │
-│  │  │ Extract  │→ │ Chunk    │→ │ Embed    │→ │ Store   │  │   │
-│  │  │          │  │          │  │ (Batch)  │  │         │  │   │
-│  │  └──────────┘  └──────────┘  └──────────┘  └─────────┘  │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                 Duplicate Detection                      │   │
-│  │  - Content hash check (exact)                            │   │
-│  │  - Embedding similarity check (near-duplicate)           │   │
-│  │  - Merge strategy for duplicates                         │   │
-│  └─────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Chunking Strategy**:
-- Semantic chunking (paragraph boundaries)
-- Overlap for context preservation (10-15%)
-- Maximum chunk size: 512 tokens
-- Metadata inheritance from parent
-
-#### 2.3.3 Graph Service
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Graph Service                            │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                   Graph Operations                       │   │
-│  │  - Create/update causal edges                            │   │
-│  │  - Traverse with depth/score limits                      │   │
-│  │  - Calculate path scores                                 │   │
-│  │  - Prune low-value edges                                 │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                  Edge Scoring Model                      │   │
-│  │                                                          │   │
-│  │  score = base_uplift × decay(age) × log(interactions+1) │   │
-│  │                                                          │   │
-│  │  Decay function: exp(-λ × age_days)                      │   │
-│  │  λ (decay rate): 0.01 (30-day half-life)                 │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                   Graph Storage                          │   │
-│  │  - Adjacency list representation                         │   │
-│  │  - Indexed by source node                                │   │
-│  │  - Secondary index by target for reverse lookups         │   │
-│  └─────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-#### 2.3.4 Learning Service
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      Learning Service                           │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                  Episode Storage                         │   │
-│  │  - Query + results + feedback                            │   │
-│  │  - Timestamped for temporal analysis                     │   │
-│  │  - Indexed by user/session                               │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │              Strategy Optimization                       │   │
-│  │                                                          │   │
-│  │  ┌───────────────────────────────────────────────────┐  │   │
-│  │  │          Thompson Sampling Engine                  │  │   │
-│  │  │  - Per-user Beta priors for each strategy          │  │   │
-│  │  │  - Continuous Bayesian updates                     │  │   │
-│  │  │  - Decay to prevent prior ossification             │  │   │
-│  │  └───────────────────────────────────────────────────┘  │   │
-│  │                                                          │   │
-│  │  ┌───────────────────────────────────────────────────┐  │   │
-│  │  │          Contextual Bandits                        │  │   │
-│  │  │  - Feature extraction from context                 │  │   │
-│  │  │  - LinUCB for strategy selection                   │  │   │
-│  │  └───────────────────────────────────────────────────┘  │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │              Preference Model                            │   │
-│  │  - Topic weights                                         │   │
-│  │  - Recency bias                                          │   │
-│  │  - Diversity preference                                  │   │
-│  │  - Source trust scores                                   │   │
-│  └─────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-#### 2.3.5 LLM Router
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        LLM Router                               │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                 Provider Registry                        │   │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌───────────────┐  │   │
-│  │  │ Claude  │ │ GPT-4   │ │ Gemini  │ │ Local (Ollama)│  │   │
-│  │  └────┬────┘ └────┬────┘ └────┬────┘ └───────┬───────┘  │   │
-│  │       └───────────┼──────────┼───────────────┘          │   │
-│  │                   ▼          ▼                           │   │
-│  │  ┌───────────────────────────────────────────────────┐  │   │
-│  │  │           Unified Provider Interface               │  │   │
-│  │  │  - embed(text) -> Vec<f32>                         │  │   │
-│  │  │  - complete(prompt, context) -> String             │  │   │
-│  │  │  - token_count(text) -> usize                      │  │   │
-│  │  └───────────────────────────────────────────────────┘  │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                  Routing Engine                          │   │
-│  │  - Cost optimization                                     │   │
-│  │  - Latency optimization                                  │   │
-│  │  - Privacy routing (local preference)                    │   │
-│  │  - Fallback chains                                       │   │
-│  │  - Health checking                                       │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                 Embedding Cache                          │   │
-│  │  - LRU cache with TTL                                    │   │
-│  │  - Per-provider model versioning                         │   │
-│  │  - Cache invalidation on model change                    │   │
-│  └─────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### 2.4 Storage Abstraction Layer
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                  Storage Abstraction Layer                      │
-│                                                                 │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │                    Storage Trait                           │ │
-│  │                                                            │ │
-│  │  trait VectorStore {                                       │ │
-│  │    fn insert(&mut self, id: Id, vec: Vec<f32>);           │ │
-│  │    fn search(&self, query: Vec<f32>, k: usize) -> Results;│ │
-│  │    fn delete(&mut self, id: Id);                          │ │
-│  │  }                                                         │ │
-│  │                                                            │ │
-│  │  trait DocumentStore {                                     │ │
-│  │    fn store(&mut self, doc: Document) -> Id;              │ │
-│  │    fn get(&self, id: Id) -> Option<Document>;             │ │
-│  │    fn update(&mut self, id: Id, doc: Document);           │ │
-│  │    fn query(&self, filter: Filter) -> Vec<Document>;      │ │
-│  │  }                                                         │ │
-│  │                                                            │ │
-│  │  trait GraphStore {                                        │ │
-│  │    fn add_edge(&mut self, edge: Edge);                    │ │
-│  │    fn get_edges(&self, node: Id) -> Vec<Edge>;            │ │
-│  │    fn traverse(&self, start: Id, opts: TraverseOpts);     │ │
-│  │  }                                                         │ │
-│  └───────────────────────────────────────────────────────────┘ │
-│                                                                 │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │               Backend Implementations                      │ │
-│  │  ┌─────────────────┐  ┌─────────────────────────────────┐ │ │
-│  │  │  SQLite Backend │  │  AgentDB Backend (Distributed)  │ │ │
-│  │  │  - Local files  │  │  - Cluster deployment           │ │ │
-│  │  │  - WAL mode     │  │  - Sharding                     │ │ │
-│  │  │  - FTS5 for BM25│  │  - Replication                  │ │ │
-│  │  │  - Custom HNSW  │  │  - Native HNSW                  │ │ │
-│  │  └─────────────────┘  └─────────────────────────────────┘ │ │
-│  └───────────────────────────────────────────────────────────┘ │
-│                                                                 │
-│  ┌───────────────────────────────────────────────────────────┐ │
-│  │                    Sync Layer                              │ │
-│  │  - CRDT-based conflict resolution                         │ │
-│  │  - QUIC transport for low-latency sync                    │ │
-│  │  - Delta sync for efficiency                              │ │
-│  │  - End-to-end encrypted sync option                       │ │
-│  └───────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                    agentic-flow (npm: agentic-flow)                    │
+│                                                                        │
+│  LLM Routing:                                                          │
+│  ┌──────────────────────────────────────────────────────────────────┐ │
+│  │ Multi-Model Router                                                │ │
+│  │                                                                   │ │
+│  │ • 100+ LLM providers                                              │ │
+│  │ • 85-99% cost savings                                             │ │
+│  │ • Intelligent selection (cost/latency/privacy)                   │ │
+│  │ • Fallback chains                                                 │ │
+│  └──────────────────────────────────────────────────────────────────┘ │
+│                                                                        │
+│  Additional: ReasoningBank, Agent Booster, QUIC transport            │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 3. Data Architecture
+## 3. Data Flow
 
-### 3.1 Data Model
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                         Data Model                                    │
-│                                                                       │
-│  ┌─────────────────┐       ┌─────────────────┐                       │
-│  │   MemoryItem    │       │   CausalEdge    │                       │
-│  │─────────────────│       │─────────────────│                       │
-│  │ id: UUID        │◀──────│ source_id: UUID │                       │
-│  │ content: Text   │       │ target_id: UUID │──────▶MemoryItem      │
-│  │ embedding: Vec  │       │ relationship    │                       │
-│  │ metadata: JSON  │       │ uplift_score    │                       │
-│  │ source: Source  │       │ interactions    │                       │
-│  │ created_at      │       │ created_at      │                       │
-│  │ updated_at      │       └─────────────────┘                       │
-│  │ access_count    │                                                  │
-│  └────────┬────────┘       ┌─────────────────┐                       │
-│           │                │ ReflexionEpisode│                       │
-│           │                │─────────────────│                       │
-│           │                │ query_id        │                       │
-│           ▼                │ result_ids: []  │                       │
-│  ┌─────────────────┐       │ feedback        │                       │
-│  │     Source      │       │ outcome         │                       │
-│  │─────────────────│       │ timestamp       │                       │
-│  │ uri: String     │       └─────────────────┘                       │
-│  │ type: Enum      │                                                  │
-│  │ hash: String    │       ┌─────────────────┐                       │
-│  │ captured_at     │       │ UserPreferences │                       │
-│  └─────────────────┘       │─────────────────│                       │
-│                            │ user_id: UUID   │                       │
-│                            │ strategy_priors │                       │
-│                            │ topic_weights   │                       │
-│                            │ settings: JSON  │                       │
-│                            └─────────────────┘                       │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-### 3.2 Index Architecture
+### 3.1 Store Operation
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│                      Index Architecture                               │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                    HNSW Vector Index                            │  │
-│  │                                                                  │  │
-│  │  Parameters:                                                     │  │
-│  │  - M (max connections): 16                                       │  │
-│  │  - ef_construction: 200                                          │  │
-│  │  - ef_search: 100 (tunable)                                      │  │
-│  │  - Distance: Cosine similarity                                   │  │
-│  │                                                                  │  │
-│  │  Memory Layout:                                                  │  │
-│  │  - Vectors: Memory-mapped file                                   │  │
-│  │  - Graph: In-memory with disk backing                            │  │
-│  │  - ~1KB per vector (384-dim float32 + graph links)               │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                    BM25 Full-Text Index                         │  │
-│  │                                                                  │  │
-│  │  Implementation: SQLite FTS5                                     │  │
-│  │  - Porter stemmer                                                │  │
-│  │  - Trigram tokenizer for fuzzy match                             │  │
-│  │  - BM25 ranking function                                         │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                    Secondary Indexes                            │  │
-│  │                                                                  │  │
-│  │  - content_hash: B-tree (deduplication)                          │  │
-│  │  - created_at: B-tree (temporal queries)                         │  │
-│  │  - source_uri: Hash (provenance lookup)                          │  │
-│  │  - graph_source: B-tree (outgoing edges)                         │  │
-│  │  - graph_target: B-tree (incoming edges)                         │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      pmemory_store Data Flow                            │
+│                                                                         │
+│  1. MCP Request                                                         │
+│     └── { tool: "pmemory_store", content: "...", causal_sources: [...]}│
+│                              │                                          │
+│  2. Validate Schema          ▼                                          │
+│     └── Check required fields, types                                    │
+│                              │                                          │
+│  3. Security Scan            ▼                                          │
+│     └── aidefence.scan(content)                                         │
+│         ├── Pass: Continue                                              │
+│         └── Fail: Return { error: "Threat detected", details }         │
+│                              │                                          │
+│  4. Generate Embedding       ▼                                          │
+│     └── agentic-flow.embed(content)                                     │
+│         └── Routes to optimal LLM provider                              │
+│                              │                                          │
+│  5. Store in AgentDB         ▼                                          │
+│     └── agentdb.insert({ content, embedding, metadata })                │
+│         └── Returns: item_id                                            │
+│                              │                                          │
+│  6. Create Causal Links      ▼                                          │
+│     └── For each source_id in causal_sources:                           │
+│         agentdb.causal_add_edge(source_id, item_id)                     │
+│                              │                                          │
+│  7. Audit Log                ▼                                          │
+│     └── aidefence.log({ operation: "store", item_id, user, timestamp }) │
+│                              │                                          │
+│  8. MCP Response             ▼                                          │
+│     └── { success: true, id: item_id }                                  │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 3.3 Caching Architecture
+### 3.2 Search Operation
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│                      Caching Architecture                             │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                      Cache Tiers                                │  │
-│  │                                                                  │  │
-│  │  ┌──────────────────────────────────────────────────────────┐  │  │
-│  │  │  L1: In-Process (Rust HashMap)                            │  │  │
-│  │  │  - Hot embeddings (last 1000)                             │  │  │
-│  │  │  - Recent search results                                  │  │  │
-│  │  │  - Access: ~100ns                                         │  │  │
-│  │  └──────────────────────────────────────────────────────────┘  │  │
-│  │                           │                                     │  │
-│  │  ┌──────────────────────────────────────────────────────────┐  │  │
-│  │  │  L2: Memory-Mapped (mmap)                                 │  │  │
-│  │  │  - HNSW graph structure                                   │  │  │
-│  │  │  - Frequently accessed vectors                            │  │  │
-│  │  │  - Access: ~1µs                                           │  │  │
-│  │  └──────────────────────────────────────────────────────────┘  │  │
-│  │                           │                                     │  │
-│  │  ┌──────────────────────────────────────────────────────────┐  │  │
-│  │  │  L3: Disk (SQLite/AgentDB)                                │  │  │
-│  │  │  - Full vector store                                      │  │  │
-│  │  │  - Document content                                       │  │  │
-│  │  │  - Access: ~1-10ms                                        │  │  │
-│  │  └──────────────────────────────────────────────────────────┘  │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                   Embedding Cache                               │  │
-│  │  - Key: hash(normalized_text + model_version)                   │  │
-│  │  - Value: embedding vector                                      │  │
-│  │  - TTL: 7 days (configurable)                                   │  │
-│  │  - Max size: 10,000 entries (LRU eviction)                      │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     pmemory_search Data Flow                            │
+│                                                                         │
+│  1. MCP Request                                                         │
+│     └── { tool: "pmemory_search", query: "...", top_k: 10 }            │
+│                              │                                          │
+│  2. Validate Query           ▼                                          │
+│     └── aidefence.validate(query)                                       │
+│         └── Check for injection patterns                                │
+│                              │                                          │
+│  3. Generate Embedding       ▼                                          │
+│     └── agentic-flow.embed(query)                                       │
+│                              │                                          │
+│  4. Search AgentDB           ▼                                          │
+│     └── agentdb.search({ embedding, top_k })                            │
+│                              │                                          │
+│  5. Optional: Causal Context ▼                                          │
+│     └── If include_causal:                                              │
+│         For each result: agentdb.causal_query(result.id)               │
+│                              │                                          │
+│  6. Audit Log                ▼                                          │
+│     └── aidefence.log({ operation: "search", query, results_count })   │
+│                              │                                          │
+│  7. MCP Response             ▼                                          │
+│     └── { results: [...], causal_context: [...] }                       │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 4. Integration Architecture
-
-### 4.1 agentic-flow Integration
+## 4. File Structure
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│                    agentic-flow Integration                           │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                   Agent Memory Interface                        │  │
-│  │                                                                  │  │
-│  │  // Agent retrieves context for task                             │  │
-│  │  agent.memory.search(query, {                                    │  │
-│  │    namespace: "agent-123",                                       │  │
-│  │    top_k: 20,                                                    │  │
-│  │    include_graph: true                                           │  │
-│  │  });                                                             │  │
-│  │                                                                  │  │
-│  │  // Agent stores findings                                        │  │
-│  │  agent.memory.store({                                            │  │
-│  │    content: "discovered insight",                                │  │
-│  │    causal_links: [prior_item_id],                                │  │
-│  │    namespace: "agent-123"                                        │  │
-│  │  });                                                             │  │
-│  │                                                                  │  │
-│  │  // Cross-agent memory sharing                                   │  │
-│  │  agent.memory.share(item_id, "team-namespace");                  │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                   Swarm Coordination                            │  │
-│  │                                                                  │  │
-│  │  - Shared memory namespace for swarm tasks                       │  │
-│  │  - Transaction semantics for concurrent writes                   │  │
-│  │  - Event-driven updates (WebSocket)                              │  │
-│  │  - Memory quotas per agent                                       │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-### 4.2 External System Integration
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                  External System Integration                          │
-│                                                                       │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐  │
-│  │   File Systems  │  │   Web Sources   │  │   API Connectors    │  │
-│  │─────────────────│  │─────────────────│  │─────────────────────│  │
-│  │ - Local files   │  │ - URL fetching  │  │ - Notion            │  │
-│  │ - Cloud storage │  │ - robots.txt    │  │ - Obsidian          │  │
-│  │ - Network shares│  │ - Rate limiting │  │ - Roam              │  │
-│  │                 │  │ - Content extract│  │ - Custom webhooks   │  │
-│  └────────┬────────┘  └────────┬────────┘  └──────────┬──────────┘  │
-│           └────────────────────┼──────────────────────┘              │
-│                                ▼                                      │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                    Connector Framework                          │  │
-│  │                                                                  │  │
-│  │  trait SourceConnector {                                         │  │
-│  │    fn fetch(&self, uri: &str) -> Result<Content>;               │  │
-│  │    fn list(&self, path: &str) -> Result<Vec<Uri>>;              │  │
-│  │    fn watch(&self, callback: Fn(Change));                       │  │
-│  │  }                                                               │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────────┘
+pmemory/
+├── package.json
+├── tsconfig.json
+├── README.md
+│
+├── src/
+│   ├── index.ts              # MCP server entry point
+│   │
+│   ├── tools/                # MCP tool handlers
+│   │   ├── index.ts          # Tool registry
+│   │   ├── core.ts           # init, store, search, delete
+│   │   ├── intelligence.ts   # causal, reflect, recall
+│   │   ├── learning.ts       # skill, learn
+│   │   ├── security.ts       # scan, audit
+│   │   └── provider.ts       # embed, provider management
+│   │
+│   ├── services/             # External integrations
+│   │   ├── memory.ts         # AgentDB wrapper
+│   │   ├── security.ts       # aidefence wrapper
+│   │   ├── llm.ts            # agentic-flow wrapper
+│   │   └── config.ts         # Configuration loader
+│   │
+│   ├── config/
+│   │   ├── schema.ts         # YAML validation
+│   │   └── defaults.ts       # Default config values
+│   │
+│   └── types/
+│       └── index.ts          # TypeScript types
+│
+├── tests/
+│   ├── integration/
+│   │   ├── store.test.ts
+│   │   ├── search.test.ts
+│   │   ├── security.test.ts
+│   │   └── provider.test.ts
+│   └── e2e/
+│       └── demo.test.ts
+│
+└── bin/
+    └── pmemory.js            # CLI entry point
 ```
 
 ---
 
-## 5. Deployment Architecture
+## 5. Configuration Schema
 
-### 5.1 Local Deployment
+```yaml
+# ~/.pmemory/config.yaml
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                      Local Deployment                                 │
-│                                                                       │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                    Single Binary                                │  │
-│  │                                                                  │  │
-│  │  pmemory                                                         │  │
-│  │  ├── Core Services (embedded)                                    │  │
-│  │  ├── SQLite Storage                                              │  │
-│  │  ├── HNSW Index (in-process)                                     │  │
-│  │  └── REST API (localhost only)                                   │  │
-│  │                                                                  │  │
-│  │  Data Location: ~/.pmemory/                                      │  │
-│  │  ├── data.db          (SQLite database)                          │  │
-│  │  ├── vectors.idx      (HNSW index)                               │  │
-│  │  ├── config.toml      (Configuration)                            │  │
-│  │  └── keys/            (Encryption keys)                          │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                       │
-│  Resource Requirements:                                               │
-│  - RAM: 512MB base + ~4GB per 1M vectors                             │
-│  - Disk: ~8GB per 1M vectors                                         │
-│  - CPU: 2+ cores recommended                                         │
-└──────────────────────────────────────────────────────────────────────┘
-```
+# Memory backend configuration
+memory:
+  backend: agentdb              # agentdb | ruvector
+  namespace: default            # Memory namespace
+  data_path: ~/.pmemory/data    # Local data directory
 
-### 5.2 Distributed Deployment
+# Security configuration
+security:
+  enabled: true                 # Enable/disable security scanning
+  level: balanced               # strict | balanced | permissive | off
+  pii_filter: true              # Enable PII detection and filtering
+  audit:
+    enabled: true               # Enable audit logging
+    retention_days: 30          # Days to retain audit logs
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                   Distributed Deployment                              │
-│                                                                       │
-│  ┌─────────────────────────────────────────────────────────────┐    │
-│  │                    Load Balancer                             │    │
-│  │              (nginx/HAProxy/cloud LB)                        │    │
-│  └──────────────────────────┬──────────────────────────────────┘    │
-│                              │                                        │
-│  ┌───────────────────────────┼───────────────────────────────────┐  │
-│  │                 API Gateway Cluster                            │  │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐                        │  │
-│  │  │ Gateway │  │ Gateway │  │ Gateway │  (stateless)           │  │
-│  │  │   #1    │  │   #2    │  │   #3    │                        │  │
-│  │  └────┬────┘  └────┬────┘  └────┬────┘                        │  │
-│  └───────┼────────────┼────────────┼─────────────────────────────┘  │
-│          └────────────┼────────────┘                                 │
-│                       ▼                                               │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                  Service Mesh                                   │  │
-│  │  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌────────────┐  │  │
-│  │  │  Search   │  │  Ingest   │  │  Graph    │  │  Learning  │  │  │
-│  │  │  Service  │  │  Service  │  │  Service  │  │  Service   │  │  │
-│  │  │  (3x)     │  │  (2x)     │  │  (2x)     │  │  (1x)      │  │  │
-│  │  └─────┬─────┘  └─────┬─────┘  └─────┬─────┘  └──────┬─────┘  │  │
-│  └────────┼──────────────┼──────────────┼───────────────┼────────┘  │
-│           └──────────────┼──────────────┼───────────────┘            │
-│                          ▼              ▼                             │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │                   AgentDB Cluster                               │  │
-│  │  ┌───────────┐  ┌───────────┐  ┌───────────┐                   │  │
-│  │  │  Shard 1  │  │  Shard 2  │  │  Shard 3  │                   │  │
-│  │  │  (Vector) │  │  (Vector) │  │  (Vector) │                   │  │
-│  │  └───────────┘  └───────────┘  └───────────┘                   │  │
-│  │                                                                  │  │
-│  │  ┌─────────────────────────────────────────────────────────┐   │  │
-│  │  │              Graph Store (replicated)                    │   │  │
-│  │  └─────────────────────────────────────────────────────────┘   │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────────┘
+# LLM routing configuration
+llm:
+  default_provider: claude      # Default embedding provider
+  fallback_chain:               # Provider fallback order
+    - claude
+    - openai
+    - ollama
+  routing_strategy: cost        # cost | latency | privacy
+  cache_embeddings: true        # Cache embeddings locally
+
+# Learning configuration
+learning:
+  reflexion: true               # Enable reflexion memory
+  causal_tracking: true         # Enable causal graph building
+  skill_library: true           # Enable skill storage
+  reasoningbank: true           # Enable ReasoningBank integration
 ```
 
 ---
 
-## 6. Cross-Cutting Concerns
+## 6. MCP Protocol Details
 
-### 6.1 Observability
+### 6.1 Server Registration
 
+```typescript
+// src/index.ts
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+
+const server = new Server({
+  name: "pmemory",
+  version: "1.0.0",
+}, {
+  capabilities: {
+    tools: {},
+    resources: {},
+  },
+});
+
+// Register tools
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    { name: "pmemory_init", ... },
+    { name: "pmemory_store", ... },
+    { name: "pmemory_search", ... },
+    // ... all 17 tools
+  ],
+}));
+
+// Handle tool calls
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+  return await toolHandlers[name](args);
+});
+
+// Start server
+const transport = new StdioServerTransport();
+await server.connect(transport);
 ```
-Metrics (Prometheus-compatible):
-- pmemory_search_latency_seconds{strategy}
-- pmemory_ingest_total{source_type}
-- pmemory_cache_hit_ratio{tier}
-- pmemory_learning_updates_total
-- pmemory_security_threats_detected{type}
 
-Tracing (OpenTelemetry):
-- Request traces through service mesh
-- Latency breakdown by component
-- Error propagation tracking
+### 6.2 Tool Handler Pattern
 
-Logging (structured JSON):
-- Security events (audit trail)
-- Performance anomalies
-- Learning events
-```
+```typescript
+// src/tools/core.ts
+import { security } from "../services/security";
+import { memory } from "../services/memory";
+import { llm } from "../services/llm";
 
-### 6.2 Error Handling
+export async function pmemory_store(args: StoreArgs) {
+  // 1. Security scan
+  const scanResult = await security.scan(args.content);
+  if (scanResult.threat) {
+    return {
+      content: [{ type: "text", text: JSON.stringify({
+        error: "Threat detected",
+        details: scanResult.details,
+      })}],
+      isError: true,
+    };
+  }
 
-```
-Error Categories:
-├── Transient (retry with backoff)
-│   ├── Network timeout
-│   ├── Rate limit exceeded
-│   └── Service temporarily unavailable
-├── Permanent (fail fast)
-│   ├── Authentication failed
-│   ├── Resource not found
-│   └── Invalid input
-└── Degraded (fallback)
-    ├── Provider unavailable (use alternate)
-    ├── Cache miss (fetch from source)
-    └── Learning service down (use defaults)
+  // 2. Generate embedding
+  const embedding = await llm.embed(args.content);
+
+  // 3. Store in AgentDB
+  const id = await memory.insert({
+    content: args.content,
+    embedding,
+    metadata: args.metadata,
+  });
+
+  // 4. Create causal links
+  if (args.causal_sources) {
+    for (const sourceId of args.causal_sources) {
+      await memory.addCausalEdge(sourceId, id);
+    }
+  }
+
+  // 5. Audit log
+  await security.log("store", { id, content_length: args.content.length });
+
+  // 6. Return success
+  return {
+    content: [{ type: "text", text: JSON.stringify({ success: true, id })}],
+  };
+}
 ```
 
 ---
 
-## 7. Architecture Decision Records
+## 7. Deployment
 
-### ADR-001: Rust for Core
+### 7.1 npm Package
 
-**Decision**: Use Rust for all core services
-**Rationale**: Performance requirements (<50ms latency) and memory safety
-**Alternatives Considered**: Go (GC pauses), C++ (safety concerns)
-**Consequences**: Steeper learning curve, excellent performance
+```json
+{
+  "name": "pmemory",
+  "version": "1.0.0",
+  "bin": {
+    "pmemory": "./bin/pmemory.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "latest",
+    "agentdb": "^1.6.0",
+    "aidefence": "^2.1.0",
+    "agentic-flow": "latest",
+    "yaml": "^2.0.0"
+  }
+}
+```
 
-### ADR-002: SQLite for Local Storage
+### 7.2 Claude Desktop Config
 
-**Decision**: Use SQLite with custom HNSW for local deployments
-**Rationale**: Zero-dependency, proven reliability, portable
-**Alternatives Considered**: RocksDB (complexity), PostgreSQL (heavyweight)
-**Consequences**: Simple deployment, limited to single-node local
+```json
+{
+  "mcpServers": {
+    "pmemory": {
+      "command": "npx",
+      "args": ["pmemory", "mcp", "start"],
+      "env": {
+        "ANTHROPIC_API_KEY": "...",
+        "OPENAI_API_KEY": "..."
+      }
+    }
+  }
+}
+```
 
-### ADR-003: Thompson Sampling for Strategy Selection
+### 7.3 Usage
 
-**Decision**: Use Thompson Sampling over epsilon-greedy or UCB
-**Rationale**: Natural exploration/exploitation balance, Bayesian updates
-**Alternatives Considered**: UCB (less adaptive), epsilon-greedy (suboptimal)
-**Consequences**: Slightly more computation, better long-term performance
+```bash
+# Install globally
+npm install -g pmemory
 
-### ADR-004: Post-Quantum Key Exchange
+# Or use npx
+npx pmemory mcp start
 
-**Decision**: Implement ML-KEM-768 for key exchange
-**Rationale**: Future-proof against quantum attacks
-**Alternatives Considered**: X25519 only (vulnerable), ML-KEM-1024 (overkill)
-**Consequences**: Larger key sizes, quantum resistance
+# Initialize config
+pmemory init
+
+# Configure provider
+pmemory config set llm.default_provider openai
+```
 
 ---
 
-## 8. References
+## 8. Performance Characteristics
 
+### 8.1 Latency Breakdown
+
+| Operation | pMemory Overhead | Underlying Tool | Total |
+|-----------|------------------|-----------------|-------|
+| Store | ~5ms | AgentDB 50ms + aidefence 10ms + embed 200ms | ~265ms |
+| Search | ~2ms | AgentDB 50ms + aidefence 5ms | ~57ms |
+| Causal query | ~1ms | AgentDB 20ms | ~21ms |
+| Reflect | ~2ms | AgentDB 30ms | ~32ms |
+
+**Note**: pMemory adds minimal overhead (<10ms). Performance is determined by underlying tools.
+
+### 8.2 Memory Usage
+
+| Component | Memory |
+|-----------|--------|
+| pMemory server | ~50MB |
+| AgentDB | ~100MB + 4GB per 1M vectors |
+| aidefence | ~100MB |
+| agentic-flow | ~50MB |
+
+---
+
+## 9. Document References
+
+- **Thesis**: `00-thesis.md`
 - **Specification**: `spec/01-specification.md`
-- **Pseudocode**: `pseudocode/02-pseudocode.md`
-- **Security**: `security/04-security.md`
 - **Implementation**: `implementation/05-implementation.md`
-- **Technology**: `implementation/06-technology.md`
