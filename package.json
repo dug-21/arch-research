@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "gh-guided-dev": "file:../gh-guided-dev-4.0.4.tgz"
+    "claude-flow": "npm:claude-flow@alpha"
   }
 }
