@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "claude-flow": "npm:claude-flow@alpha"
-  }
-}
