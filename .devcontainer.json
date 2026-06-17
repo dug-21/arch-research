@@ -8,10 +8,6 @@
       "version": "latest",
       "installTools": true
     },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "moby": true,
-      "dockerDashComposeVersion": "v2"
-    },
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "initializeCommand": "docker network create uni-net 2>/dev/null || true",
