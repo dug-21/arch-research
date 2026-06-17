@@ -14,6 +14,8 @@
     },
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
+  "initializeCommand": "docker network create uni-net 2>/dev/null || true",
+  "runArgs": ["--network=uni-net"],
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
   ],
