@@ -18,7 +18,7 @@
   "remoteEnv": {
     "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}"
   },
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "npm install && curl -fsSL https://claude.ai/install.sh | bash && { grep -qF 'alias dsp=' ~/.bashrc || printf 'export PATH=\"$HOME/.local/bin:$PATH\"\\nalias dsp=%s\\nalias dspc=%s\\n' \"'claude --dangerously-skip-permissions'\" \"'claude --dangerously-skip-permissions -c'\" >> ~/.bashrc; }",
   "customizations": {
     "vscode": {
       "extensions": [
