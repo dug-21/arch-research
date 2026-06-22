@@ -6,7 +6,7 @@ export NVM_DIR=/usr/local/share/nvm
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 # Node deps
-npm install
+# npm install
 
 # Build toolchain + JSON tooling: native pip/npm builds, compiled POCs, evidence extraction
 sudo apt-get update
