@@ -8,6 +8,10 @@
       "version": "latest",
       "installTools": true
     },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": true,
+      "dockerDashComposeVersion": "v2"
+    },
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "initializeCommand": "docker network create uni-net 2>/dev/null || true",
@@ -18,7 +22,7 @@
   "remoteEnv": {
     "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}"
   },
-  "postCreateCommand": "npm install && curl -fsSL https://claude.ai/install.sh | bash && { grep -qF 'alias dsp=' ~/.bashrc || printf 'export PATH=\"$HOME/.local/bin:$PATH\"\\nalias dsp=%s\\nalias dspc=%s\\n' \"'claude --dangerously-skip-permissions'\" \"'claude --dangerously-skip-permissions -c'\" >> ~/.bashrc; }",
+  "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "customizations": {
     "vscode": {
       "extensions": [
