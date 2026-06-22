@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Make nvm-installed node/npm available in this non-login shell
+export NVM_DIR=/usr/local/share/nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 # Node deps
 npm install
 
