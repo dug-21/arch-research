@@ -188,3 +188,16 @@ coordination/orchestration/*
 claude-flow
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
+
+# --- factory additions ---
+.claude/worktrees/
+# local model weights / POC artifacts (shd-003+)
+*.gguf
+*.safetensors
+# python POC envs
+.venv/
+venv/
+__pycache__/
+*.pyc
+# rust POC builds
+target/
