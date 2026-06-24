@@ -279,6 +279,12 @@ A research run is a Unimatrix **cycle** (`context_cycle`, `topic: "<run-id>"`, e
 The workflow definition lives in the repo as a versioned protocol + skills — it is an artifact
 with a history, not a hardcoded behavior — so it can be improved over time.
 
+**Scope unit (D2 — see §15).** A goal does not run as one goal-wide cycle; it runs as a set of
+**scopes**, each its own cycle (`topic`) and GitHub Issue: one **decompose-scope** (`scope`→
+`decompose`, producing the capability board) then one **research-scope per capability**
+(`scope`→`tech-discovery`→[`feasibility`]→`synthesis`). The phases below define each scope's
+lifecycle — a decompose-scope uses the first two; a research-scope uses the rest.
+
 Phases (each closed with `context_cycle phase-end`):
 
 | Phase | What happens | Gate |
@@ -613,6 +619,7 @@ work. The roster:
 | `factory-poc` | specialist | none (writes code/artifacts to the repo) | the POC/experiment artifact + a result report |
 | `factory-validator` | specialist | none (reads) | gate reports as **files** (not graph) |
 | `factory-retro` | specialist | write (process plane) | `lesson-learned` + `factory`-plane entries (§9) |
+| `goal-owner` | specialist (advisory) | read-only | a **relevance/target review** at synthesis: did the findings answer the goal-relevant question, with NFRs weighted, and did decomposition miss a capability? Advisory input to the human gate (OBS-1). |
 
 **The cardinal write rule (reconciles the research-spike "no writes" stance with our compounding goal):**
 
@@ -659,7 +666,8 @@ research-leader → context_cycle_review(feature_cycle:"{run-id}", auto_close:tr
 ### 14.3 Gates & rework
 
 - **Advisory gates** (scope, synthesis): a reviewer's stance is *input to a human gate*; the leader
-  relays it verbatim and never acts on it directly. The human decides.
+  relays it verbatim and never acts on it directly. The human decides. At **synthesis**, the
+  **goal-owner** (§14.1) runs the relevance/target review as this advisory input.
 - **Blocking gates** (coverage, **firewall/feasibility**): `uni-validator`-style check → PASS /
   REWORKABLE FAIL / SCOPE FAIL. REWORKABLE → re-spawn the prior phase's specialists, **max 2
   iterations**; on the 3rd failure escalate to **SCOPE FAIL → stop, return to human**.
@@ -676,14 +684,18 @@ research-leader → context_cycle_review(feature_cycle:"{run-id}", auto_close:tr
    *before creating nodes*, so a proven approach is **reused** (a new `Prerequisite` edge), never
    re-researched. This is where "the library compounds" actually happens in practice.
 
-### 14.5 Files vs. graph (provisional vs. settled)
+### 14.5 The three surfaces (provisional / settled / live)
+
+The factory uses **three** surfaces (D1), each owning a non-overlapping question:
 
 | Artifact | Lives in | Role |
 |---|---|---|
-| `SCOPE.md`, `FINDINGS*.md`, `REPORT.md`, `reports/gate-*.md` | git (`product/research/{run-id}/`) | provisional narrative + audit trail |
+| `SCOPE.md`, `FINDINGS*.md`, `REPORT.md`, `reports/gate-*.md` | git (`product/research/{scope-id}/`) | provisional narrative + proof artifacts + audit trail |
 | capability / technology / finding / lesson nodes | Unimatrix graph | curated, settled, queryable, compounding |
+| the scope's **GitHub Issue** (one per scope) | GitHub | the **live human↔factory interface** — scope in the body, gates/status/approvals in comments; human inputs originate here and are distilled back |
 
-The **curator is the bridge**: reads files, writes the firewalled graph.
+The **curator is the bridge** between files and the firewalled graph; the **Issue** is a projection
+of those two except for human inputs, which originate in it (a comment moves structure, never status).
 
 ### 14.6 Autonomy, budget, human checkpoints
 
@@ -696,3 +708,29 @@ The **curator is the bridge**: reads files, writes the firewalled graph.
 - **Spawn discipline:** all specialists within a phase spawned in one message (parallel); the
   leader waits for all before advancing the cycle.
 ```
+
+---
+
+## 15. Reconciliation with bootstrap practice (wf-v0.5)
+
+The bootstrap runs (`shd-001`/`shd-002`) and the decisions log (`product/factory/decisions.md`)
+evolved this design. The body above is reconciled inline; this section is the changelog, for
+traceability (§11-style).
+
+- **Scope unit (D2).** A goal runs as multiple **scopes**, each its own cycle/`topic`/Issue — one
+  decompose-scope + one research-scope per capability — not a single goal-wide cycle. The §7/§14.2
+  phases define each scope's lifecycle. *Provisional — revisit if goal-wide proves simpler.*
+- **Goal-owner role (OBS-1).** Added to the §14.1 roster + §14.3: an advisory **relevance/target**
+  review at synthesis (did the findings answer the goal-relevant question; NFRs weighted;
+  decomposition gaps?), distinct from coverage and the firewall.
+- **Three surfaces (D1).** The GitHub Issue is the **third** surface (§14.5) — the live
+  human↔factory interface carrying the 3 checkpoints; one Issue per scope.
+- **Confidence-required enum (D7) — clarification, already consistent.** The axis the doc references
+  is `directional | empirical | validated` (sets a scope's target status); it replaces any "Type"
+  field. The firewall is altitude-aware: `proven` needs an artifact at the claim's altitude,
+  demonstrated by us — theory by reproduction, never by citation.
+- **`wf:` (D12) — clarification, already permitted by §8.** A method **semver** (tag `wf-vX.Y`),
+  bumped only on method-stream PRs — not a HEAD SHA. Git is two-stream (method vs research); see the
+  `factory-git` skill.
+
+Canonical detail for each lives in `decisions.md` (D-numbers above).
