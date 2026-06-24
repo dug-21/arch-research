@@ -68,3 +68,14 @@ The follow-on (`shd-005`) POC must demonstrate, **at runtime altitude, by us**, 
 ## Coverage / done call  *(synthesis)*
 
 Loop-until-dry: stop when **K=2** consecutive searches surface no new engine, model, or quant format **and** **≥2** independent findings corroborate the leading engine × model × quant stack. Agent proposes "sufficient"; **human confirms** at the synthesis gate.
+
+---
+
+## Extension (2026-06-24): $5K workstation-tier hardware envelope
+
+**Why:** the original W4 bounded N1 to *minimum* owned-HW (consumer GPU ≤24 GB / Apple Silicon / CPU / 2×24 GB). Human steer at the coverage gate: also evaluate **one tier up — a ~$5K workstation budget** (NVIDIA DGX Spark, AMD Strix Halo, Mac Studio M3 Ultra, 2×RTX 5090 / RTX 6000-class). This raises the N1 ceiling to ~$5K; it remains owned hardware, fully offline (N1/N2 unchanged). **In-envelope** (a budget-ceiling change to the same capability), not a new scope.
+
+**Added workstream:**
+- **W4b — $5K workstation-tier hardware envelope.** For each ~$5K box: separate **capacity** (what model×quant×context now fits) from **memory bandwidth** (what sets decode tok/s); name the leading box + model×quant; state whether stepping up from the minimum tier is worth it for an agentic coding loop. *Output:* a workstation-tier envelope table + capacity-vs-bandwidth verdict + a directional buy recommendation. (`findings-W4b.md`.)
+
+**What it reconciles:** does not revise any prior verdict — extends the W4 hardware envelope upward. Headline result (carried into synthesis): the unified-memory appliances (DGX Spark ~273 GB/s, Strix Halo ~215 GB/s) have *lower* bandwidth than a used RTX 3090 (~936 GB/s), so they unlock big-model capacity but decode dense models *slower* than the minimum tier — dense tok/s at $5K comes only from a high-bandwidth GPU (RTX 5090 / PRO 6000) or the Mac M3 Ultra, never from the appliances. Directional verdict: **stepping up is not worth it by default**; the $5K tier earns its cost only if a >32B dense model is proven necessary, or for long context / concurrency.
