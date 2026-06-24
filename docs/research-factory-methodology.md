@@ -619,7 +619,7 @@ work. The roster:
 | `factory-poc` | specialist | none (writes code/artifacts to the repo) | the POC/experiment artifact + a result report |
 | `factory-validator` | specialist | none (reads) | gate reports as **files** (not graph) |
 | `factory-retro` | specialist | write (process plane) | `lesson-learned` + `factory`-plane entries (§9) |
-| `goal-owner` | specialist (advisory) | read-only | a **relevance/target review** at synthesis: did the findings answer the goal-relevant question, with NFRs weighted, and did decomposition miss a capability? Advisory input to the human gate (OBS-1). |
+| `goal-owner` | specialist (advisory) | read-only | **strategic-alignment review** at synthesis — guards **drift** (wrong question) and **under-reach** (a step-function level-up the objective missed; directional/empirical only, suppressed on proof unless stated). Advisory input to the human gate (OBS-1, OBS-4). |
 
 **The cardinal write rule (reconciles the research-spike "no writes" stance with our compounding goal):**
 
