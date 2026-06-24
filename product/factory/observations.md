@@ -46,3 +46,25 @@ cleared on a manual `/mcp` reconnect. Filed `dug-21/unimatrix#830`.
 
 **Automation implication.** An automated leader needs **retry/reconnect resilience** around
 `context_*` calls, or unattended runs will stall. Not a blocker in manual mode (human reconnects).
+
+## OBS-4 — Goal-owner needs a step-function / ambition review (directional only)
+*2026-06-24 · from shd-004*
+
+The goal-owner checklist (OBS-1) guards relevance / constraint / gap — all of which **assume the
+stated objective is the right altitude.** shd-004 optimized the stated (single-box, N1-bounded)
+objective efficiently and correctly, but nothing in the process pressure-tested whether the
+**objective itself under-reached**. The human did it manually: *"if we leveled up, what does that
+buy us — and is it worth it?"*
+
+**Need.** A 4th goal-owner dimension — **step-function check**: given the landscape, name any
+higher-value level-up beyond the stated objective (what it buys, its cost) → pursue /
+defer-and-record / decline. Guards against tunnel vision from a tightly-scoped objective. The
+"worth it" cost/benefit + advisory-to-human keeps it from becoming scope-creep; deferred level-ups
+are **recorded** (D10/D11) so they aren't lost.
+
+**Confidence-conditioned.** Active on **directional/empirical** (mapping terrain is when you can
+assess a level-up); **suppressed on validated/proof** unless the scope explicitly stated it (a proof
+is a bounded commitment; re-opening ambition mid-proof derails it).
+
+Baked into `goal-owner.md` (wf:v0.8); enhancement #20 updated. The reflexive loop (§8) operating
+manually — a real run surfaced a process gap → a workflow edit.
