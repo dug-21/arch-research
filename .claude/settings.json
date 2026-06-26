@@ -35,7 +35,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "context_cycle|mcp__unimatrix__context_cycle",
+        "matcher": "^context_cycle$|^mcp__unimatrix__context_cycle$",
         "hooks": [
           {
             "type": "command",
