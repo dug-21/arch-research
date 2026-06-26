@@ -68,3 +68,32 @@ is a bounded commitment; re-opening ambition mid-proof derails it).
 
 Baked into `goal-owner.md` (wf:v0.8); enhancement #20 updated. The reflexive loop (§8) operating
 manually — a real run surfaced a process gap → a workflow edit.
+
+## OBS-5 — Non-gate interactive prompts break the autonomous run; gates are the ONLY stops
+*2026-06-26 · from shd-004 (first AUTONOMOUS run)*
+
+shd-004 was the first run executed autonomously (research-leader spawning real specialist agents,
+not inline roles). The leader twice used `AskUserQuestion` at a **non-gate** point — to refine an
+in-envelope steer ("add a $5K hardware tier") — and it **blocked the autonomous flow**; the human
+flagged it directly ("STEP WITH THE QUESTION CONTEXT. This blocks autonomous … it stopped our
+autonomous workflow earlier").
+
+**Rule surfaced.** The research-leader must confine **blocking/interactive** prompts to the **3
+human gates ONLY** (scope approval · coverage confirm · synthesis review). An in-envelope steer is
+executed with sensible **defaults** + surfaced in **Issue comments / the work product** — never a
+blocking question. A non-gate question is a defect, not diligence. (→ factory enhancement, claimed;
+`Prerequisite→` #25 Orchestrate a phase-gated run.)
+
+## OBS-6 — Observation telemetry now flows: the attribution fix is confirmed (#24 partially unblocked)
+*2026-06-26 · from shd-004*
+
+The prior symptom (enhancement #24 "process-axis telemetry wiring"; capability #32 tagged `blocked`)
+was `context_cycle_review` returning **"No observation data."** On shd-004 it now returns rich data:
+`total_records: 186`, `attributed_session_count: 1/1`, `knowledge_stored: 22`, per-phase stats with
+gate outcomes, `cold_restart_events: 3` (the real session gaps). **Confirmed: the attribution fix
+landed.**
+
+**Still partial (not complete):** `total_tool_calls: 0`, `knowledge_curated: 0`,
+`feature_knowledge_reuse.total_served: 0` remain unpopulated — the cycle/phase/attribution stream is
+wired, but the per-tool-call and curation sub-streams are not yet. Enhancement #24 → `partial`, not
+`proven`; the reflexive capability #32 stays `blocked` until telemetry can power an A/B improvement.
