@@ -82,3 +82,32 @@ Loop-until-dry: stop when **K=2** consecutive searches surface no new signal, ro
 ## Capability-altitude note  *(D3 / goal-owner — flagged, not yet acted on)*
 
 The human's broadening ("more than local/public — routing to the *right* LLM") suggests the **delivering technology** for C3 is *general multi-model routing*, of which C3's "escalate to public when local insufficient" is **one policy**. This scope proceeds with **C3 as the anchor** (its `done_when` is the proof target) and stores routing as program-scoped `technology` reusable beyond C3. **If discovery confirms the capability itself is broader**, the resolution is decided at synthesis (goal-owner / D3): either **sharpen C3's `done_when`** to "route each task to the best-fit model, with public escalation gated by N3," or **add a sibling capability** (a new 🔴 node + new scope) — a *structure* move, firewall-safe, made with the human at the synthesis gate, not pre-emptively here.
+
+---
+
+## Extension (2026-06-26): platform capability-coverage pass — evaluate tools on what-else-they-solve, not single-capability fit
+
+**Why (human steer at the coverage gate).** W1–W6 ranked each tool against **C3's `done_when` alone**. But a `technology` is program-scoped and *reusable* — one node, many `Prerequisite` edges, compounding across capabilities (methodology §2/§5). Ranking a multi-purpose platform on a single-capability rubric **structurally under-values anything that does more than C3** — exactly the tools that may solve needs we *will* have. This is the **goal-owner step-function dimension** (OBS-4) firing manually: the per-capability scope unit (D2, "provisional") causes **platform-blindness**. This extension re-frames the question; it does **not** overwrite any W1–W6 verdict.
+
+**The better question:**
+> What minimal set of **self-hosted platform components** covers the most of the whole `shd` loop — serving · routing · escalation · the privacy boundary · resilience · cost/observability · key management — and where must we still **build** or **hard-gate**?
+
+**Reconciliation (append-only, D3).** The sovereignty disqualification from W2/W4 **stands but becomes role-scoped, not a global discount**: a tool is disqualified from the *specific role* that breaks a hard constraint (e.g. OpenRouter as a router on a sensitive path → N3), while its value in **every other role** is now catalogued, not discarded. No prior verdict is reversed; they are re-contextualised from "fit for C3" to "qualified/disqualified per role."
+
+**The need-set (the matrix columns — fixed so both workstreams align):**
+- **Core:** C1 local serving · C2 agentic-harness drive · C3 routing/escalation.
+- **NFRs:** N1 budget/cost · N2 resilience/offline · **N3 sensitive-code-local (HARD)** · N4 multi-machine.
+- **Adjacent / operational (platform-lens may surface these as NEW capabilities — flag per D3):** observability/tracing · cost-tracking & attribution · key/secret management · caching · guardrails/policy enforcement · audit logging · load-balancing/rate-limiting · multi-provider breadth.
+
+**Evaluation discipline (careful evaluation — the human asked for rigour):**
+- Per cell, grade coverage **strong ✓ / partial ◑ / none ✗ / ⛔ disqualified-for-this-role-by-a-hard-constraint** + a one-line note. Keep **doc-claim vs demonstrated** separation (firewall) — a platform claiming a feature ≠ it working for our stack.
+- Per tool, summarise **qualified roles** + **disqualified roles**, and tag each covered need **hard-grade** (must be 100% or hard-gated — N3 especially) vs **soft/convenience-grade** (80% platform reuse is a win). **Breadth must never paper over a hard-constraint gap** — a platform earns reuse on the multi/soft needs; a hard constraint still needs its own dedicated guarantee.
+- Any need a platform reveals that we have **not decomposed** → name it as a **candidate new capability/NFR** (D3 surface-expanding) for the human at synthesis.
+
+**Added workstreams:**
+- **W7a — Gateway/proxy-class platforms.** LiteLLM · Portkey-OSS · OpenRouter · Requesty · Kong / Envoy / Bifrost AI Gateway (+ Cloudflare AI Gateway as a hosted exemplar). *Output:* a tool×need coverage matrix over the need-set above, with qualified/disqualified roles + hard-vs-soft tags + candidate-new-capability flags. (`findings-W7a.md`.)
+- **W7b — Harness/meta-class platforms.** Goose · Roo Code/Cline · aider · Continue · OpenHands · Claude Code · ruflo. Same matrix + discipline; emphasise what each delivers *beyond* C2/C3 (built-in cost/obs, policy, multi-model, sub-agents). (`findings-W7b.md`.)
+
+**What it changes downstream.** Synthesis recommends a **platform spine** (the minimal self-hosted component set covering the most needs) *and* names the hard-constraint gaps (N3 above all) that **no platform closes** — those route to dedicated build/gate work, possibly their own scopes. The coverage "researched enough" call is **held open** until this pass lands.
+
+**Lesson locked (process plane).** The generalised insight — *evaluate platform technologies on a capability-coverage matrix (one tech → many `Prerequisite` edges); per-capability scoping causes platform-blindness; separate hard-constraint coverage from soft/convenience coverage* — is recorded as a `lesson-learned` + factory enhancement so every future scope asks the platform question by default.
