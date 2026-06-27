@@ -97,3 +97,32 @@ landed.**
 `feature_knowledge_reuse.total_served: 0` remain unpopulated — the cycle/phase/attribution stream is
 wired, but the per-tool-call and curation sub-streams are not yet. Enhancement #24 → `partial`, not
 `proven`; the reflexive capability #32 stays `blocked` until telemetry can power an A/B improvement.
+
+## OBS-7 — Subagent file-writes are blocked for EVERY specialist; the contract must flip to leader-persists
+*2026-06-27 · from shd-005 (first multi-specialist autonomous run)*
+
+shd-005 spawned **8 read-only researchers** (W1–W6 + W7a/W7b). **Every one had its file-write
+blocked** and returned its FINDINGS markdown inline for the leader to persist (the leader wrote all
+8 `findings-*.md` + the two REPORT/synthesis files). This is no longer an intermittent symptom
+(OBS-2, n=1 partial on shd-002) — it is **deterministic in this harness**: a spawned specialist
+cannot write to the repo.
+
+**Rule surfaced (supersedes the OBS-2 "pick one" ambiguity).** The researcher contract is
+**read-only, returns-markdown**; the **leader/curator is responsible for persisting** every
+researcher artifact (and must budget context for it — inline returns of 8 large findings files are
+heavy). The runbook's "researcher → FINDINGS file" step is **not executable**; rewrite it to
+"researcher → returns markdown → leader persists." (→ factory enhancement #21, now strongly
+evidenced; should move toward `partial`/contract-locked.)
+
+## OBS-8 — Two method wins confirmed: run-id-tag yield query works, and the goal-owner step-function fired
+*2026-06-27 · from shd-005*
+
+1. **Telemetry-tag fix works (#65).** shd-004's per-run yield query returned empty (curator hadn't
+   tagged). shd-005's curator tagged every node `shd-005`; `context_lookup(tags:["shd-005"])` returns
+   all 20 nodes — **per-run knowledge-yield is now queryable by tag** (note: by *tag*, not the `topic`
+   field, which the curator set to `shd-routing`). The runbook's run-id-tag convention is validated.
+2. **Goal-owner step-function dimension (OBS-4) fired productively, manually.** A human "what if we
+   level up?" steer mid-run surfaced the platform-coverage reframe and then the platform-vision goal
+   (#92) — captured build-deferred (D10) without derailing the directional run. The reflexive loop
+   (§8) operating by hand: a run produced a methodology lesson (#90/#91, platform-blindness) **and** a
+   new product-vision goal, both firewall-clean. Evidence the goal-owner role earns its place.
