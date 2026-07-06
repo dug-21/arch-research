@@ -66,3 +66,14 @@ Stamp the run with the workflow version `wf:<semver>` (§8) — the method's `wf
 **Run-id tagging convention:** the curator **tags every stored entry with the run-id** (e.g.
 `shd-002`) so per-run knowledge-yield is queryable by tag — `context_lookup`'s `feature_cycle` is
 NOT a filter. (Observation-stream telemetry is upstream-blocked; see factory enhancement #24.)
+
+**Firewall-grade tagging convention (the board index):** the curator tags every
+`capability`/`technology` with a **`grade:<missing|claimed|partial|proven>`** tag mirroring its
+firewall grade. This makes the board (§6) a **one-call query** —
+`context_graph(mode:"subgraph", seed_ids:[<goal>], max_depth:1, edge_types:["Advances"], direction:"incoming", detail:"full")`
+returns every capability hydrated and its grade is read straight from the tag, no content parse and no
+separate status fetch. `grade:` is **distinct from the lifecycle `status` field** (`active`/`deprecated`) —
+never overload that field. **Forward-only:** set the tag at `context_store` and update it in the *same*
+`context_correct` that moves the grade (`context_correct` reissues the id, so never rewrite a node just
+to add the tag — that would churn ids and break cross-surface anchors). Pre-convention nodes keep the
+grade in `content` until their next real correction; onboard falls back to parsing it.

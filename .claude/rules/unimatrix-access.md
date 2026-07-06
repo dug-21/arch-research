@@ -11,7 +11,8 @@ wrong). Choose by intent:
 | Intent | Tool |
 |---|---|
 | Live/authoritative value, or resolve a stale id forward | `context_graph(mode:"current")` |
-| Traverse typed relations | `context_graph(mode:"neighbors" \| "subgraph")` |
+| Traverse relations, need the **edges** (topology) | `context_graph(mode:"neighbors")` — returns edge records only, even at `detail:"full"` |
+| Traverse relations, need the **nodes hydrated** (e.g. the board — one call) | `context_graph(mode:"subgraph", seed_ids:[…], edge_types:[…], direction:…, detail:"full")` — filtered + hydrated |
 | Lineage / supersession history | `context_graph(mode:"chain")` |
 | A specific deprecated/historical version (audit, look-back) | `context_get(id)` |
 | Active node + its edges, one call | `context_get(id)` |
