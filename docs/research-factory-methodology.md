@@ -238,14 +238,27 @@ selection is a `finding` tagged `position`; losers move `partial → deprecated`
 **start of every cycle**; the graph is the durable memory across autonomous sessions.
 
 ```
-context_graph(from: <goal-id>, edges: Advances incoming)
-  → the capability set → read each status → group 🟢 proven · 🟡 partial · 🔴 missing · ⚪ claimed
+context_graph(mode:"subgraph", seed_ids:[<goal-id>], max_depth:1,
+              edge_types:["Advances"], direction:"incoming", detail:"full")
+  → the capability set, hydrated in ONE call → read each node's grade → group
+    🟢 proven · 🟡 partial · 🔴 missing · ⚪ claimed
 ```
 
-But "done" has **two axes** and you must read them together. `status` answers *delivery*-done; it
+This is a **single hydrated call**: `subgraph` returns the neighbor *nodes* (content + tags), not
+just edges, and honors the `edge_types`/`direction` filter — no separate status fetch, no client-side
+join. (`neighbors` mode returns edges only, even at `detail:"full"`; use it when you want the topology,
+`subgraph` when you want the nodes. Both are live at depth 1; depth>1 reads the tick-cache.) Read the
+firewall grade from each node's **`grade:<missing|claimed|partial|proven>` tag** — the queryable
+projection of the grade, written by the curator (§14.1). It is **distinct from the entry's lifecycle
+`status` field** (`active`/`deprecated`), which is a different axis; do not conflate them. To pull the
+`technology` children in the same call, add `Prerequisite` to `edge_types` and `max_depth:2`.
+
+But "done" has **two axes** and you must read them together. The **grade** answers *delivery*-done; it
 does not tell you whether a capability has even been *researched*. That you read from whether it
-has `technology` children and what *their* status is. The pair yields a precise pipeline state —
-**derived, never stored** (a stored `researched: true` flag would drift from reality):
+has `technology` children and what *their* grade is. The pair yields a precise pipeline state —
+**derived, never stored** (a stored `researched: true` flag would drift from reality; the `grade:` tag
+is not such a flag — it mirrors the firewall grade the curator already sets, updated in the same
+`context_correct` that moves it):
 
 | Capability state | What you see in the graph | Done so far | Next action |
 |---|---|---|---|

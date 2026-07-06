@@ -19,15 +19,25 @@ lands (methodology §6: "what's done is a graph query, not a maintained list").
 
 ## 2. Determine current status — RUN these (status is derived; trust no snapshot)
 - **Method version:** `git tag -l 'wf-*' | sort -V | tail -1` + `git log --oneline -15`.
-- **Research board** (the `shd` goal — `context_search "shd self-hosted goal"` to resolve its id):
-  `context_graph(mode:"neighbors", id:<shd-goal>, direction:"incoming", edge_types:["Advances"])`
-  → each capability's status (🟢proven / 🟡partial / 🔴missing / ⚪claimed); then the `technology`
-  nodes (`Prerequisite→` each capability) and their status.
-- **Factory board** (the `factory` goal — the "am I autonomous yet" plane): the same frontier query
-  → the factory capabilities + status; the factory enhancements (`kind:technology`, `claimed` = the backlog).
+- **Board = ONE call per goal.** Resolve the goal id (`context_search`), then:
+  `context_graph(mode:"subgraph", seed_ids:[<goal-id>], max_depth:1, edge_types:["Advances"], direction:"incoming", detail:"full")`
+  → returns the capability nodes **hydrated** (content + tags) in a single call — no separate status
+  fetch, no client-side join. Read each capability's **firewall grade from its `grade:` tag**
+  (🟢proven / 🟡partial / 🔴missing / ⚪claimed); for nodes predating the grade-tag convention (no
+  `grade:` tag), parse the `status:` line in `content`. **Do NOT read the node's `status` field for
+  the firewall grade** — that field is the lifecycle (`active`/`deprecated`), a different axis.
+  - **Research board:** `<shd-goal>` (`context_search "shd self-hosted goal"`).
+  - **Factory board** ("am I autonomous yet"): `<factory-goal, id 19>` — same call → factory
+    capabilities + grades; enhancements are `kind:technology` still at `grade:claimed` = the backlog.
+  - **+ technology landscape (optional, one call):** bump to `max_depth:2, edge_types:["Advances","Prerequisite"]`
+    to pull goal ← capabilities ← technologies together (depth>1 reads the tick-cache, ~30-60s lag —
+    fine for orientation).
 - **Issues:** `gh issue list --repo dug-21/arch-research --label factory`.
-- **Telemetry:** `context_cycle_review(feature_cycle:"<latest run topic>")`.
-- Resolution per `.claude/rules/unimatrix-access.md` — default `context_graph(mode:"current")`; pass `agent_id`; if a `context_*` call is rejected, the MCP connection is stale → `/mcp` reconnect (unimatrix#830).
+- **Telemetry:** `context_cycle_review(feature_cycle:"<latest run-id>")`.
+- Resolution per `.claude/rules/unimatrix-access.md` — `subgraph`/`neighbors` at depth 1 are live
+  (reflect committed writes immediately); pass `agent_id`. Note: `neighbors` returns **edges only**
+  (even with `detail:"full"`) — use `subgraph` when you want the nodes. If a `context_*` call is
+  rejected, the MCP connection is stale → `/mcp` reconnect.
 
 ## 3. Interpret with the firewall (§3)
 `proven` ONLY on a real, demonstrated-by-us artifact. `partial` = manually demonstrated, not yet
