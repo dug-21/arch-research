@@ -12,7 +12,11 @@
       "moby": true,
       "dockerDashComposeVersion": "v2"
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "default"
+    }
   },
   "initializeCommand": "docker network create uni-net 2>/dev/null || true",
   "runArgs": ["--network=uni-net"],
@@ -27,7 +31,8 @@
     "vscode": {
       "extensions": [
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "rust-lang.rust-analyzer"
       ]
     }
   }
