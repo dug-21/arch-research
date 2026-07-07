@@ -24,3 +24,4 @@ Objectives:
 - Knowledge lives in Unimatrix (`context_*` tools), not in scattered docs. Search before designing; store after deciding.
 - Don't store workflow state or process steps as knowledge.
 - Skills under `.claude/skills/`; workflow protocols under `.claude/workflow/`.
+- Standing research themes (the factory's continuous scanning intent) live in `product/factory/themes.md` — steering config, not graph knowledge. Design: `product/factory/proposals/theme-driven-scanning-methodology.md`.

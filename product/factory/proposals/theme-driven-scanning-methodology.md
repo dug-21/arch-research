@@ -65,11 +65,11 @@ themes grow/change and are only needed by scan runs, so they must not bloat glob
 
 **Queryability is preserved by tags, not the node.** The theme *definition* stays in the doc; every
 downstream artifact (technology, hypothesis, proof-goal) carries a **`theme:<slug>` tag** (e.g.
-`theme:edge-smart`). "Everything under this theme" is therefore one graph query. Definition = file;
+`theme:smart-edge`). "Everything under this theme" is therefore one graph query. Definition = file;
 evidence = graph.
 
 **`themes.md` entry schema (per theme):**
-- **slug** — `theme:<kebab>` (the tag namespace; e.g. `theme:edge-smart`)
+- **slug** — `theme:<kebab>` (the tag namespace; e.g. `theme:smart-edge`)
 - **lens** — the thematic hunting ground (e.g. *smarter systems on edge-capable devices; non-LLM
   text-processing / sorting / pattern-recognition; low-memory capabilities*)
 - **value-targets** — the use-cases scored against (Unimatrix = #1; others as they arise). Two axes kept
@@ -234,7 +234,7 @@ budget sink.
 
 ## 12. Open decisions (owner)
 
-- **`themes.md` seed** — author the first theme (`theme:edge-smart`) with its lens / value-targets /
+- **`themes.md` seed** — author the first theme (`theme:smart-edge`) with its lens / value-targets /
   source-mix / cadence. Source-mix is TBD (§2).
 - **Autonomy timing** — factory-autonomous scanning/hypothesizing is the highest-reach + highest-noise
   piece. Recommended: prototype the hypothesizer manually via AB-001 first, measure the hit-rate, *then*
