@@ -23,7 +23,7 @@ whose POC clears its `done_when`, demonstrated by us.
 
 **Lens.** Technologies that make systems *smarter on edge-capable / resource-constrained devices* —
 especially **non-LLM** approaches to **text processing, sorting, and pattern recognition**, and
-**low-memory** capabilities. The bias is deliberately toward classical / lightweight / deterministic
+**low-memory** capabilities including Small Language models, quantized or otherwise. The bias is deliberately toward classical / lightweight / deterministic
 techniques (grammars, automata, compact indexes, streaming/approximate algorithms, structured pattern
 matchers) that buy capability *without* a large model or large memory footprint. LLM-centric approaches
 are out of lens unless they materially reduce the resource envelope.
