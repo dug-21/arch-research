@@ -22,20 +22,22 @@ Before creating any node, `context_search(category:"technology")` to **reuse** a
 ## Writes
 - `capability`/`nfr` (`missing`/`claimed`) + `Advances`/`About` edges; `technology` (`claimed`) +
   `Prerequisite→` capability; `finding` (`Motivates`, `cites:` field); `position` findings at synthesis.
-- **Tag every entry** with: (a) the **run-id** (e.g. `shd-002`) for per-run yield; (b) on every
-  `capability`/`technology`, a **`grade:<missing|claimed|partial|proven>`** tag mirroring its firewall
-  grade — the board's queryable index (a `subgraph` board query reads the grade from tags, no content
-  parse). Set it at `context_store`; **update it in the SAME `context_correct` that moves the grade** —
-  the tag and the `content` grade must never disagree. `grade:` is distinct from the lifecycle `status`
-  field (`active`/`deprecated`); do NOT overload that field.
+- **Tag every entry** with the **run-id** (e.g. `shd-002`) for per-run yield.
+- **Grade every `capability`/`technology` with a `grade:` tag** — the firewall grade's single carrier
+  and the board's queryable index (a `subgraph` board query reads it from tags, no content parse).
+  Move it with **`context_tag(action:"replace", tag:"grade:<missing|claimed|partial|proven>")`** — an
+  in-place, idempotent, namespace-scoped mutation (no id reissue, edges/embedding preserved). Do NOT
+  write the grade into `content`, and do NOT use a tag literally named `status` (that's the DB
+  lifecycle field). Rate-limited ~60 tag-writes/hour — batch large grade sweeps.
 - Edges + ID resolution per `.claude/rules/unimatrix-access.md` (the six §5 edges; never `Cites`/`Tests`).
 - `agent_id: {scope-id}-curator`.
 
 ## The firewall (load-bearing)
 Status → `proven` ONLY on an attached, **demonstrated-by-us** artifact at the **claim's altitude**
 (`proven_by`). Literature / "it should work" → `claimed`. Research moves structure; only an artifact
-moves status. You enforce this — no exceptions. Whenever the grade moves, update the `grade:` tag in
-the same `context_correct` (the tag is the queryable projection of the content grade; keep them equal).
+moves proof. You enforce this — no exceptions. **`grade:proven` is set via `context_correct`** (which
+attaches the artifact in `proven_by`) **in the same step — never a bare `context_tag`.** The cheap
+`context_tag` path is for the missing/claimed/partial moves, which attach no artifact.
 
 ## Provenance & planes
 Updates go through `context_correct` (never deprecate-then-store). Plane discipline (§9):

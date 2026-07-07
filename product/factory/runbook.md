@@ -72,8 +72,11 @@ NOT a filter. (Observation-stream telemetry is upstream-blocked; see factory enh
 firewall grade. This makes the board (§6) a **one-call query** —
 `context_graph(mode:"subgraph", seed_ids:[<goal>], max_depth:1, edge_types:["Advances"], direction:"incoming", detail:"full")`
 returns every capability hydrated and its grade is read straight from the tag, no content parse and no
-separate status fetch. `grade:` is **distinct from the lifecycle `status` field** (`active`/`deprecated`) —
-never overload that field. **Forward-only:** set the tag at `context_store` and update it in the *same*
-`context_correct` that moves the grade (`context_correct` reissues the id, so never rewrite a node just
-to add the tag — that would churn ids and break cross-surface anchors). Pre-convention nodes keep the
-grade in `content` until their next real correction; onboard falls back to parsing it.
+separate status fetch. `grade:` is **distinct from the DB `status` field** (`active`/`deprecated`) —
+never overload that field, never name a tag `status`. **Mutate the grade with `context_tag`** —
+`context_tag(id, action:"replace", tag:"grade:<g>")` sets-or-swaps the grade **in place** (idempotent,
+namespace-scoped, no id reissue, edges/embedding preserved). This is what makes the grade a first-class,
+cheaply-maintained field — and makes **backfill anchor-safe** (no id churn), unlike `context_correct`.
+**Firewall unchanged:** `grade:proven` is set only alongside `context_correct` attaching `proven_by` (the
+audited artifact event) — never a bare tag flip. **Rate limit:** ~60 tag-writes/hour; a bulk grade sweep
+must batch under it (see OBS-9).

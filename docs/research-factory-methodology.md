@@ -122,6 +122,15 @@ partial 🟡  → some evidence, done_when not fully cleared
 proven  🟢  → real-artifact evidence clears done_when
 ```
 
+**Where the grade lives (carrier).** The grade is carried as a **`grade:<missing|claimed|partial|proven>`
+tag** on the node — the queryable projection the board reads (§6), mutated **in place** by `context_tag`
+(no id reissue, content/edges/embedding preserved). It is deliberately **not** the entry's DB `status`
+field (that field is the *lifecycle*: `active`/`deprecated`) and **not** a content line — one grade, one
+carrier, no drift. A missing/claimed/partial move is a single `context_tag(action:"replace", tag:"grade:X")`;
+reaching `proven` additionally attaches the artifact in `proven_by` via `context_correct` — the firewall's
+audited event stays heavyweight exactly where evidence is attached (`context_tag` is never a shortcut to
+`proven`). Curator-only (`Capability::Write`); rate-limited ~60 tag-writes/hour.
+
 ---
 
 ## 4. Entry schemas
@@ -145,8 +154,8 @@ name:     business → an OUTCOME a user/operator experiences (never an implemen
           nfr      → a quality PROPERTY in business terms (cost, sovereignty, privacy, latency…)
 why:      one sentence — the problem it solves
 done_when: 1-2 BEHAVIORAL, runnable statements (the proof gate AND definition of done)
-status:   missing | partial | proven | claimed
-proven_by: <real-artifact evidence ref>   (FIELD)
+grade:    missing | partial | proven | claimed   (carried as the `grade:` TAG — §3; NOT the DB `status` field, NOT a content line)
+proven_by: <real-artifact evidence ref>   (FIELD, in content; set via context_correct on reaching proven)
 ```
 - **NFRs are goal-specific.** They are quality properties of *this* mission and `Advances` this
   goal. Another goal decomposes into different NFRs. (Cross-goal sharing via multiple `Advances`
@@ -159,7 +168,7 @@ category: technology
 name:     the enabling approach / mechanism (this IS the HOW — the inverse of capability altitude)
 why:      which capability it could deliver, and what makes it promising/novel
 done_when: behavioral viability bar — what a POC must demonstrate
-status:   missing | partial | proven | claimed
+grade:    missing | partial | proven | claimed   (carried as the `grade:` TAG — §3; NOT the DB `status` field)
 proven_by: "live: <hardware/context>, <result>, <artifact ref>"   (FIELD — captures the envelope)
 ```
 - A technology is **proven within an envelope** recorded in `proven_by`. Reusing it under a
@@ -257,8 +266,8 @@ But "done" has **two axes** and you must read them together. The **grade** answe
 does not tell you whether a capability has even been *researched*. That you read from whether it
 has `technology` children and what *their* grade is. The pair yields a precise pipeline state —
 **derived, never stored** (a stored `researched: true` flag would drift from reality; the `grade:` tag
-is not such a flag — it mirrors the firewall grade the curator already sets, updated in the same
-`context_correct` that moves it):
+is not such a flag — it *is* the firewall grade's single carrier (§3), mutated in place by `context_tag`,
+never duplicated in content):
 
 | Capability state | What you see in the graph | Done so far | Next action |
 |---|---|---|---|
