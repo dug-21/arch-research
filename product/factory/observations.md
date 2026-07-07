@@ -126,3 +126,25 @@ evidenced; should move toward `partial`/contract-locked.)
    (#92) — captured build-deferred (D10) without derailing the directional run. The reflexive loop
    (§8) operating by hand: a run produced a methodology lesson (#90/#91, platform-blindness) **and** a
    new product-vision goal, both firewall-clean. Evidence the goal-owner role earns its place.
+
+## OBS-9 — Grade becomes a tag-canonical field via `context_tag`; and its ~60/hr write rate limit
+*2026-07-07 · platform update*
+
+Two Unimatrix updates reshaped how the board is stored and read:
+1. **`context_graph(mode:"subgraph")` now honors an `edge_types`+`direction` filter** → the §6 board
+   query is a **single hydrated call** (was `neighbors` edges-only + a bulk `context_lookup` + a
+   client-side join). `neighbors` still returns edges only, even at `detail:"full"`.
+2. **`context_tag(id, action, tag)`** — an **in-place single-tag mutation** that preserves the id,
+   content hash, edges, and embedding (**unlike `context_correct`, which reissues the id**). `replace`
+   is namespace-scoped (`grade:*`) and sets-or-swaps in one idempotent call. This made the firewall
+   grade a **tag-canonical field** (`grade:<missing|claimed|partial|proven>`) — moved cheaply without id
+   churn, read straight from the lean `subgraph … detail:"summary"` projection. **Distinct from the DB
+   `status` field** (lifecycle `active`/`deprecated`) — the grade tag must never be named `status`.
+   Adopted across methodology §3/§4/§6, `unimatrix-access`, `factory-curator`, runbook.
+
+**Hazard — write rate limit.** `context_tag` is rate-limited to **~60 writes / 3600s**. Backfilling the
+existing board (~60 capabilities+technologies) hit it: 57 tagged, **3 deferred** (`retry after ~56m`).
+**Automation implication:** a curator that flips many grades in one burst — a large decompose, a mass
+reopen (process-defect blast-radius, §8), or a backfill — must **throttle/batch under 60/hr** or stall.
+The firewall is unchanged: `grade:proven` is still set only alongside a `context_correct` that attaches
+`proven_by`; `context_tag` carries the missing/claimed/partial moves.

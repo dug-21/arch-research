@@ -25,11 +25,20 @@ wrong). Choose by intent:
 
 ## Write discipline (curator only)
 
-- Only the **curator** writes nodes (`context_store` / `context_correct` / edges). One writer keeps
-  the firewall auditable.
-- Updates go through **`context_correct`** (it deprecates + re-links); never deprecate-then-store.
-- **Firewall (D7):** status → `proven` ONLY on an attached real artifact in `proven_by`, matching the
-  claim's altitude and demonstrated by us. Research moves *structure*, never *status*.
+- Only the **curator** writes nodes (`context_store` / `context_correct` / `context_tag` / edges).
+  One writer keeps the firewall auditable.
+- **Content/edge updates** go through **`context_correct`** (it deprecates + re-links + **reissues the
+  id**); never deprecate-then-store.
+- **Grade (firewall status) is a `grade:` tag, mutated by `context_tag`** — `action:"replace",
+  tag:"grade:<missing|claimed|partial|proven>"` sets-or-swaps the grade **in place** (no id reissue,
+  content/edges/embedding preserved; idempotent, namespace-scoped). Use it for every missing/claimed/
+  partial move. `grade:` is distinct from the DB `status` field (lifecycle `active`/`deprecated`) — never
+  put the grade in a tag literally named `status`. **Rate-limited ~60 tag-writes/hour** — a large grade
+  sweep/backfill must batch under that.
+- **Firewall (D7):** grade → `proven` ONLY on an attached real artifact in `proven_by`, matching the
+  claim's altitude and demonstrated by us — and **`proven` is set via `context_correct`** (attach the
+  artifact) **in the same step as `grade:proven`, never a bare `context_tag`**. Research moves *structure*
+  (and non-proven grades), never *proof*.
 
 ## Edges (D8 — verified against the README)
 
