@@ -1,0 +1,27 @@
+# Ground-truth labeled hotspot lines — drawn from REAL shd-005 cycle_review evidence
+# + real factory retro observations (observations.md OBS-*). Format: category||text
+# Positives = documented real hotspots. "clean" = benign lines that must NOT fire.
+
+# --- cycle_review's OWN findings for shd-005 (F-01, F-02) — the bank must recover these ---
+session-gap||Session http-567e4788-7869-4f30-97a3-6a6621a10877 had a 14.7h gap
+session-gap||cold_restart_events: 5 detected across the run
+reread||9 files re-read multiple times. Top files: findings-W3.md findings-W2.md
+
+# --- the hotspot the MANUAL retro flagged (OBS-7) that cycle_review MISSED — the money case ---
+write-block||W3 was fully blocked from file writes and returned its markdown inline for the parent to persist
+write-block||every one had its file-write blocked and returned its FINDINGS markdown inline for the leader to persist
+write-block||this is deterministic in this harness: a spawned specialist cannot write to the repo
+
+# --- other real factory hotspots from observations.md ---
+mcp-stale||context_cycle calls were interrupted ~4x by the stale-connection symptom, each cleared on a manual /mcp reconnect
+non-gate-prompt||the leader twice used AskUserQuestion at a non-gate point and it blocked the autonomous flow
+rate-limit||57 tagged, 3 deferred (retry after ~56m) when the context_tag rate-limit was hit
+telemetry-empty||context_cycle_review returning No observation data on the earlier run
+retry-loop||attempt 3 failed, trying again after the error
+
+# --- clean negatives (must NOT fire) ---
+clean||Scope approved by the human at gate one after a broadening steer
+clean||12 technologies and 8 findings authored, all graded claimed
+clean||Position 102 recommends the platform spine, buy gateway and harness
+clean||the dev and research loop runs locally end to end on owned hardware
+clean||the curator distilled the findings into the firewalled knowledge graph
