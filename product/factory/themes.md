@@ -34,6 +34,13 @@ use-case, or vice versa; score on both):*
   capability surface is fully knowable — the MCP tool set + the repo). First-class hunting ground for
   where a smart-edge technology could enhance an existing capability (e.g. `context_cycle_review`
   hotspot/pattern detection, `context_search` ranking, tag/text normalization).
+  - **Implementation substrate (load-bearing for scoring):** the server is a **Rust binary**; the client
+    is a **dumb JS/TS shim** (so intelligence must live server-side, in Rust). A candidate that has a
+    **Rust-native crate** can live *in the server binary* (no external process/FFI) — this is a
+    first-order fit/effort discriminator the surface inventory MUST carry, not just the MCP interface.
+    Already built-in: a **PII scanner** (new safety ideas here are *improve the existing*, not greenfield).
+    The owner **owns the platform** — so "platform walls" (e.g. mid-cycle buffer access, new endpoints)
+    are *liftable*, not hard constraints; triage must not park a hypothesis on a wall the owner can move.
 - *(others as they arise — the theme is not Unimatrix-only)*
 
 **Source-mix.** *TBD (config knob, not yet resolved — proposal §2/§12).* Candidate surfaces to settle:
