@@ -7,6 +7,16 @@
 > within a budget. The Unimatrix knowledge base is the compounding asset: each goal
 > enriches a shared, evidence-graded library of what works and what doesn't.
 
+**Where this sits — the garage and its factory (reframe in progress).** The platform's identity is a
+research & development **garage**: a funnel from **concept → trial → proof**. Themes scan divergently at
+the **wide mouth**, triage narrows at the **neck**, and the **proving grounds** — the firewall-gated
+**factory** machinery this document specifies — turn a candidate into `proven` or kill it. "Garage" is
+the umbrella; **"factory" is the precise name of the proving-grounds stage** at the narrow end. The body
+below is deliberately factory-centric — that is where the method is deepest and where nearly all decisions
+to date apply — and is fine as-is; the garage framing is being layered in as a **staged narrative pass,
+structural identifiers frozen** (`factory` category, `factory-*` agents, `product/factory/` paths stay
+put). Concept map: `product/factory/themes.md` → "The garage funnel"; identity: `CLAUDE.md` → Mission.
+
 The methodology runs on **two axes** and **two planes**, both governed by one rule (the
 firewall, §3):
 

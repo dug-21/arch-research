@@ -5,6 +5,14 @@ manual bootstrap, this file is the single source of "what's settled vs. what we 
 Locked decisions graduate to the Unimatrix `factory` plane (as ADRs / position findings)
 once a real run validates them; provisional ones are revisited after the first run.
 
+> **Where this sits (reframe in progress).** These decisions are **factory-centric** — the factory is
+> the **proving-grounds** stage of the larger **garage** (the concept→trial→proof funnel; see `CLAUDE.md`
+> Mission and `product/factory/themes.md` → "The garage funnel"). Almost every decision below (D1–D12)
+> refers primarily to the factory, and that is fine for now: the garage reframe is **narrative only** and
+> staged — structural identifiers (`factory` category, `factory-*` agents, `product/factory/` paths) stay
+> as-is. The reframe itself will be logged as `D13 — garage reframe + funnel model` once ratified; until
+> then this note is the interim record.
+
 **Status legend:** `locked` (decided, in effect) · `provisional` (trying it, will reassess) ·
 `open` (not yet decided) · `finding` (observed fact / carry-forward, not a choice).
 
@@ -26,6 +34,7 @@ once a real run validates them; provisional ones are revisited after the first r
 | D10 | Principle: architect for the future, build for now | locked | factory ADR (Uni) |
 | D11 | Distributed multi-machine objective (architected now, build deferred) | objective | factory goal + shd N4 |
 | D12 | Git strategy — two-stream, parallel-safe, auto-merge | locked | factory-git skill |
+| D13 | Garage reframe + funnel model (narrative-only; factory = proving-grounds stage) | locked | factory ADR (Uni) |
 
 ---
 
@@ -347,3 +356,49 @@ Adapted from `uni-git` (which is SDLC-shaped); a sibling **`factory-git`** skill
 **Config:** rebase-only merge; auto-merge enabled at repo level; `.gitignore` excludes secrets,
 build artifacts, **local model weights/venvs (shd-003)**, `.claude/worktrees/`,
 `.claude/settings.local.json`. No worktrees for read-only research fan-out (revisit for the shd-003 POC).
+
+---
+
+## D13 — Garage reframe + funnel model
+**Status:** locked · 2026-07-08
+
+**The reframe.** The platform's identity is a **research & development garage** — a funnel from
+**concept → trial → proof** — not merely a "factory." The factory is **not renamed away**; it becomes
+the **precise name of the proving-grounds stage** at the narrow end of the funnel.
+
+**The funnel (three stages):**
+
+| Stage | What it is | Roles |
+|---|---|---|
+| **Wide mouth** — divergent intake | themes scan for candidate technologies; range rewarded, nothing graded | scout, hypothesizer |
+| **Neck** — convergent triage | narrow to a shortlist; promote survivors to a proof-goal | goal-owner (park/probe/build) |
+| **Proving grounds** — evidence-gated | the **factory** machinery turns a candidate into `proven` or kills it | leader / researcher / curator / poc / validator |
+
+The **firewall sits at the bottom**: the funnel moves *structure* freely (a wild idea is `claimed`) and
+*status* only on proof. A garage with no proving grounds is a hobby — the firewall is unchanged and
+load-bearing.
+
+**Rebrand discipline — narrative only, identifiers frozen.** "Garage" is layered into the *prose*; the
+**structural identifiers stay `factory`**: the Unimatrix `factory` **category** (the sealed process
+plane, §9), the `factory-*` **agent types**, and the `product/factory/` **paths**. Renaming them is a
+data migration that would orphan every stored node/edge — out of scope and forbidden by this decision.
+
+**Staged rollout (overview-first, NOT find-replace).** Existing content is factory-centric and stays
+that way — the factory is where the method is deepest and where D1–D12 apply. The garage framing is
+added as **overview blocks** that locate the factory within the funnel:
+- `CLAUDE.md` → Mission (identity + funnel). ✅
+- `product/factory/themes.md` → "The garage funnel" note (canonical concept map). ✅
+- `docs/research-factory-methodology.md` → "Where this sits" framing paragraph. ✅
+- `product/factory/decisions.md` → this D13 + the interim callout. ✅
+- Skill/agent prose → still says "factory"; reframed opportunistically, not in a bulk pass. ⏳
+
+**First inward theme.** `theme:daystrom` (themes.md) is the garage's first **process-plane** theme —
+scanning for tools that improve the garage's own process; its candidates are `factory/technology`
+enhancement ideas that feed the §9 A/B backlog and can advance the reflexive capability #66.
+
+**Rationale.** Early Apple out-innovated IBM on both spend *and* breakthroughs — a lean garage that
+continuously adopts better tools beats big-spend ossification. The reframe centers **innovation and new
+learnings** as the identity without loosening the firewall (D10: architect the concept now, keep the
+proven reality).
+
+**Eventual home:** factory ADR (Uni), authored when the factory/process plane is stood up.
