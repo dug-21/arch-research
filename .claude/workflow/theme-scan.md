@@ -1,7 +1,8 @@
 # Protocol: theme-scan
 
-The **recurring, technology-push** entry to the factory: scan a **theme** for candidate technologies,
-fan each out into hypotheses, triage hard, and hand a shortlist to the owner. Inverts research-scope
+The **recurring, technology-push** intake at the **wide mouth of the garage funnel** (`CLAUDE.md` Mission):
+scan a **theme** for candidate technologies, fan each out into hypotheses (wide mouth), triage hard at the
+**neck**, and hand a shortlist to the owner. Inverts research-scope
 (which is capability-pull). Produces **structure only** — candidate technologies (`claimed`) and
 hypotheses (`finding`+`hypothesis`); **nothing reaches `proven` here.** A promoted hypothesis becomes a
 *separate* bounded proof-goal (a normal validated research-scope) where the firewall bites. Run by

@@ -1,12 +1,13 @@
 ---
 name: "factory-onboard"
-description: "Catch a fresh-context agent up to the research factory's CURRENT status — read the canonical sources, query the live Unimatrix graph + git, then report where things stand. Status is DERIVED from the graph, never a stored snapshot. Use when a new session/agent needs to orient from scratch."
+description: "Catch a fresh-context agent up to the research & development garage's CURRENT status — read the canonical sources, query the live Unimatrix graph + git, then report where things stand. Status is DERIVED from the graph, never a stored snapshot. Use when a new session/agent needs to orient from scratch."
 ---
 
 # factory-onboard — Fresh-Context Catch-Up
 
-Bring an agent that has **no prior context** current on the autonomous research factory (built on
-Unimatrix; Claude is the platform). The whole point is to orient from **self-updating canonical
+Bring an agent that has **no prior context** current on the autonomous research & development **garage**
+(built on Unimatrix; Claude is the platform; the **factory** is its firewall-gated proving-grounds stage —
+see `CLAUDE.md` Mission). The whole point is to orient from **self-updating canonical
 sources + live queries** — never a hand-maintained status file, which would drift the moment a run
 lands (methodology §6: "what's done is a graph query, not a maintained list").
 

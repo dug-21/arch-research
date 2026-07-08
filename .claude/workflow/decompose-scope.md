@@ -1,7 +1,8 @@
 # Protocol: decompose-scope
 
-Produces a goal's **capability board**. Run by `research-leader`. One decompose-scope per goal; its
-own cycle (`topic`) and GitHub Issue. Phases: **scope → decompose**. (Methodology §7, §14.2; runbook.)
+Produces a goal's **capability board** — the demand map the **proving grounds** (the factory stage of the
+garage funnel) researches against. Run by `research-leader`. One decompose-scope per goal; its own cycle
+(`topic`) and GitHub Issue. Phases: **scope → decompose**. (Methodology §7, §14.2; runbook.)
 
 ## Roles
 `research-leader` (coordinator) · `factory-researcher` (read-only) · `factory-curator` (single writer).
