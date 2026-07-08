@@ -1,7 +1,8 @@
 # Protocol: research-scope
 
-Researches ONE capability to a graded technology landscape (directional/empirical) or proves a
-technology (validated). Run by `research-leader`. One research-scope per capability (1+ per capability
+The **proving grounds** run (the factory stage of the garage funnel, `CLAUDE.md` Mission): researches ONE
+capability to a graded technology landscape (directional/empirical) or **proves** a technology (validated)
+— where the firewall bites. Run by `research-leader`. One research-scope per capability (1+ per capability
 if needed); its own cycle (`topic`) and GitHub Issue. Phases: **scope → tech-discovery →
 [feasibility] → synthesis**. (Methodology §14.2; runbook; scope template
 `product/factory/templates/scope.md`.)
