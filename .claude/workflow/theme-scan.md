@@ -17,8 +17,17 @@ validator — this protocol never proves.
 ## INIT
 - Read `product/factory/themes.md` for the **active theme** — lens · value-targets · source-mix ·
   cadence · **budget envelope** (§8). Resolve `scan-id` = `{theme-slug}-NNN` (e.g. `smart-edge-001`).
-- `context_cycle start` topic=`{scan-id}`, goal=`scan <theme> for candidate technologies`,
-  next_phase=`scan`, agent_id=`{scan-id}-leader`. Stamp `wf:`. Create the Issue (cross-linked by title).
+- **Open all three surfaces (D1) — MANDATORY, before any specialist spawns. A run that skips these is
+  invisible on two of three surfaces (OBS-10, learned the hard way on smart-edge — no Issue, no cycle
+  stamp for the whole line):**
+  1. **GitHub Issue** — `gh issue create --repo dug-21/arch-research --label factory,scope:research,confidence:directional`,
+     title `{scan-id} — theme-scan: <theme> …`, body = scan intent + out-of-scope. Cross-linked by
+     **title, not # equality** (D4). This is the live human↔garage surface; it is not optional.
+  2. **Cycle** — `context_cycle start` topic=`{scan-id}`, goal=`scan <theme> for candidate technologies`,
+     next_phase=`scan`, agent_id=`{scan-id}-leader`. The stamp is what makes the run **attributable and
+     its transcript retained** (retention now works on stamped cycles — OBS-10); an unstamped run has no
+     linked buffer at all. `phase-end` at **every** phase boundary; `stop` at CLOSE.
+  3. **Git** — stamp `wf:`; research-stream commits under `product/research/{scan-id}/`.
 - **GATE (advisory → owner):** confirm **theme + candidate source** (owner-injection vs external-scan)
   **+ budget envelope**. Wave-0 the owner's kick IS this approval; surface it, don't block on it.
 

@@ -11,9 +11,16 @@ if needed); its own cycle (`topic`) and GitHub Issue. Phases: **scope → tech-d
 `research-leader` · `factory-researcher` (×N, one per workstream) · `factory-curator` · `goal-owner`
 (synthesis) · *validated only:* `factory-poc`, `factory-validator`.
 
-## INIT
-`context_cycle start` topic=`{goal}-NNN`, goal=`<capability-focused goal sentence>`,
-next_phase=`scope`, agent_id=`{scope-id}-leader`. Stamp `wf:`. Create the Issue (body = SCOPE).
+## INIT — open all three surfaces FIRST (MANDATORY, D1)
+A run that skips these is invisible on two of three surfaces (OBS-10 — learned the hard way on
+smart-edge: the proof-goal ran to a `partial` artifact with no Issue and no cycle stamp). Do all three
+**before** the scope phase, not retroactively:
+1. **GitHub Issue** — `gh issue create --repo dug-21/arch-research --label factory,scope:research,confidence:<directional|empirical|validated>`,
+   title `{scope-id} — <Type>: <subject>`, body = the SCOPE. Cross-linked by **title, not # equality** (D4).
+2. **Cycle** — `context_cycle start` topic=`{scope-id}` (= `{program}-NNN`), goal=`<capability-focused goal
+   sentence>`, next_phase=`scope`, agent_id=`{scope-id}-leader`. The stamp makes the run **attributable +
+   its transcript retained** (OBS-10). `phase-end` at **every** phase boundary; `stop` at CLOSE.
+3. **Git** — stamp `wf:`.
 
 ## Phase: scope
 - `factory-researcher` drafts `SCOPE.md` from the template: **capability target** (Uni id),
