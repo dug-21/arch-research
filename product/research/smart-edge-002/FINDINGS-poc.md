@@ -33,5 +33,30 @@ The proof bar (SCOPE) for `proven` requires the **in-server Unimatrix (Rust bina
 ## Handoff (product bridge, §7)
 On this `partial`: file a `dug-21/unimatrix` issue proposing the in-server hotspot bank for `context_cycle_review`, citing this artifact as the mechanism+envelope evidence, and recommending the **two-engine split** (regex for complex signatures, aho-corasick for the literal bank) with the measured scaling as the design basis. "More proof is better upon handoff" — this hands off a working bank + real numbers, not a hypothesis.
 
+## Rerun on REAL Unimatrix transcript (2026-07-08) — the precision finding
+
+After the platform owner shipped a transcript-retention fix, we re-ran against a genuinely
+Unimatrix-**linked** buffer (the thing H11 always needed and couldn't get before).
+
+- **Retention confirmed.** A post-update stamped cycle (`smart-edge-003`) now returns real transcript via
+  `cycle_review`: **`Transcript bytes: 112091`**, `Transcript deltas: 4`, real `transcript_candidates`
+  (the `PostToolUse` event stream) — vs `unavailable (no data)` on the pre-update `smart-edge-002`.
+  Transcript↔cycle linkage requires `context_cycle` stamping; a stamped, post-fix cycle now retains it.
+
+- **The precision failure the synthetic test hid.** On the real transcript the lexical bank fired
+  **`firewall` (critical)** on our *own* H29 node text ("…never a **bare context_tag**") and **`error`**
+  on "**error-recovering**". **None are hotspot *events*** — they are agents *writing about* the concepts.
+  The synthetic labeled test scored 100%/0-FP because its lines looked like events; **real transcript is
+  full of agents reasoning about kill/throttle/firewall/error**, and naive lexical matching cannot tell
+  *"discussing a kill"* from *"a kill event."* This is the reflexive loop working: running the tool on
+  real data surfaced its next design constraint.
+
+- **The fix is STRUCTURAL, not lexical (identified here; demonstrated below).** Signatures must anchor on
+  **event structure** — the `tool:` / `response:` / exit-code / error *fields* of a tool-use record — not
+  free prose. This is exactly the **structural tier (H2/H3, tree-sitter over the event tree)** the two-tier
+  design already carries: the `RegexSet`/`aho-corasick` lexical bank is necessary but **not sufficient**
+  for transcript precision. **Updated handoff picture:** recall + scaling hold; transcript *precision*
+  requires the structural tier.
+
 ## Reproduce
 `cd product/research/smart-edge-002/hotspot-bank && cargo run --release -- signatures.json labeled.txt <corpus files...>`

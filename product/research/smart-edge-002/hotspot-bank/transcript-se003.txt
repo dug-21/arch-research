@@ -1,0 +1,40 @@
+event: PostToolUse
+tool: mcp__unimatrix__context_cycle
+input: {"type":"start","topic":"smart-edge-003","goal":"Generate a real cycle-linked transcript (by persisting the smart-edge-001 scan candidates to the graph — deferred task #8) and rerun the H11 hotspot bank against the ACTUAL Unimatrix transcription data now that retention is live."}
+response: Acknowledged: cycle_started for topic 'smart-edge-003'.
+event: PostToolUse
+tool: mcp__unimatrix__context_store
+input: {"content":"TECHNOLOGY — tree-sitter (incremental GLR parsing engine). Small dependency-free C library + first-class Rust bindings; error-recovering incremental concrete syntax trees; on-device, CPU-only, deterministic, sub-ms incremental re-parse."}
+response: Stored #106 | smart-edge: technology | technology
+event: PostToolUse
+tool: mcp__unimatrix__context_store
+input: {"content":"TECHNOLOGY — ast-grep (grammar-driven structural search & rewrite). Rust crate embeddable in-binary built on tree-sitter; meta-variable patterns match/rewrite AST subtrees; CPU-only, parallel, no model."}
+response: Stored #107 | smart-edge: technology | technology
+event: PostToolUse
+tool: mcp__unimatrix__context_store
+input: {"content":"TECHNOLOGY — PEG / packrat / pika parsers. Deterministic linear-time single-parse; Rust via pest/nom. Packrat memory caveat; pika adds error-recovery but has no production Rust path. Weakest engine in the content-grammar bake-off."}
+response: Stored #108 | smart-edge: technology | technology
+event: PostToolUse
+tool: mcp__unimatrix__context_store
+input: {"content":"TECHNOLOGY — grammar-constrained decoding (GBNF / llguidance / outlines). Deterministic grammar overlay on an LM sampler: masks tokens that cannot extend a valid parse. Firewall watch: grammar-valid != true."}
+response: Stored #109 | smart-edge: technology | technology
+event: PostToolUse
+tool: mcp__unimatrix__context_store
+input: {"content":"HYPOTHESIS — H25: real-time guardrail/steering layer over the live observation buffer. In-server Rust automata stream every buffer append; each match class drives a graduated action ladder (nudge -> course-correct -> throttle -> kill), so intervention happens DURING a run. The genuine unknown is the ACTUATOR."}
+response: Stored #110 | smart-edge: finding | finding
+event: PostToolUse
+tool: mcp__unimatrix__context_store
+input: {"content":"HYPOTHESIS — H27: learn-then-enforce edge grammar. Infer the graph's implicit edge schema by ENUMERATION; the enumeration IS the violation report; then compile the sanctioned triples into an in-server write-time validator. Mine SHACL/ShEx."}
+response: Stored #111 | smart-edge: finding | finding
+event: PostToolUse
+tool: mcp__unimatrix__context_store
+input: {"content":"HYPOTHESIS — H29: the firewall as an automaton. A tiny in-server DFA over grades where the proven-entering edge accepts ONLY a context_correct attaching proven_by, never a bare context_tag. Makes D7 mechanically unviolable."}
+response: Stored #112 | smart-edge: finding | finding
+event: PostToolUse
+tool: mcp__unimatrix__context_cycle
+input: {"type":"phase-end","topic":"smart-edge-003","phase":"persist","next_phase":"analysis"}
+response: Acknowledged: phase_ended for topic 'smart-edge-003'.
+event: PostToolUse
+tool: mcp__unimatrix__context_cycle
+input: {"type":"stop","topic":"smart-edge-003"}
+response: Acknowledged: cycle_stopped for topic 'smart-edge-003'.
