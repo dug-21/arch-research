@@ -58,5 +58,19 @@ Unimatrix-**linked** buffer (the thing H11 always needed and couldn't get before
   for transcript precision. **Updated handoff picture:** recall + scaling hold; transcript *precision*
   requires the structural tier.
 
+- **Structural fix — DEMONSTRATED (`events-labeled.txt`, structural pass in the binary).** An
+  event-structured test — 3 *trap* records (agents' `content` discusses hotspots; outcome clean) + 5
+  *real* hotspot events (signal in the `response`/outcome) — scanned two ways:
+
+  | matcher | recall (real events) | false-pos (traps: prose about hotspots) |
+  |---|---|---|
+  | **lexical** (whole record incl. agent content) | 5/5 | **3/3** — fires on "…never a bare context_tag", "error-recovering", "retrying…rate-limit storms" |
+  | **structural** (tool + response/outcome only) | 5/5 | **0/3** |
+
+  Scoping the match to the event's **outcome field** (not the agent-authored `content`) **eliminates all
+  three false positives while preserving 100% recall.** This is the concrete sharpening: the in-server
+  bank must run against the tool-use **event structure**, not raw transcript text. Confirms the two-tier
+  design and gives the `dug-21/unimatrix` handoff a *precise* spec, not just "add regexes."
+
 ## Reproduce
 `cd product/research/smart-edge-002/hotspot-bank && cargo run --release -- signatures.json labeled.txt <corpus files...>`

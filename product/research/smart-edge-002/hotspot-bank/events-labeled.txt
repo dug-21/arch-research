@@ -1,0 +1,16 @@
+# Event-structured precision test. Format: expected_category||tool||content(agent request)||response(outcome)
+# TRAPS = clean events whose CONTENT discusses hotspot concepts (the real-transcript FP mode).
+#         The response/outcome is clean ("Stored #NNN"). A good detector must NOT fire.
+# REAL  = genuine hotspot EVENTS: the signal lives in the response/outcome, content is benign.
+
+# --- TRAPS: agents writing ABOUT hotspots (these are what over-fired on the real transcript) ---
+clean||context_store||HYPOTHESIS H29 the firewall accepts only context_correct never a bare context_tag||Stored #112 | smart-edge: finding
+clean||context_store||tree-sitter error-recovering incremental concrete syntax trees on device||Stored #106 | smart-edge: technology
+clean||context_store||H26 watchdog detects retrying loops and rate-limit storms then kills the agent||Stored #110 | smart-edge: finding
+
+# --- REAL hotspot events: signal in the RESPONSE/outcome, benign content ---
+write-block||Write||findings-W3.md draft||error: EACCES permission denied - cannot write to path
+error||Bash||cargo build --release||error: could not compile hotspot-bank due to previous error, exit code 101
+rate-limit||context_tag||action replace grade proven||error: rate limit exceeded (60 per hour) - retry after 56m
+telemetry-empty||context_cycle_review||feature_cycle shd-005||No observation data returned for this cycle
+mcp-stale||context_search||routing patterns query||error: connection stale - reconnect via /mcp to continue

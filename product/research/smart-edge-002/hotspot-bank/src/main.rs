@@ -200,5 +200,70 @@ fn main() {
             n, compile_ms, scan_ms, mb / (scan_ms / 1000.0), hits
         );
     }
+    // ---- 4. STRUCTURAL vs LEXICAL precision (the real-transcript fix) ----
+    println!("\n-- STRUCTURAL FIX: lexical(whole-record) vs structural(response-scoped) --");
+    match fs::read_to_string("events-labeled.txt") {
+        Ok(ev) => {
+            let (mut lex_recall, mut lex_fp) = (0i32, 0i32);
+            let (mut str_recall, mut str_fp) = (0i32, 0i32);
+            let (mut real, mut traps) = (0i32, 0i32);
+            for raw in ev.lines() {
+                let raw = raw.trim();
+                if raw.is_empty() || raw.starts_with('#') {
+                    continue;
+                }
+                let p: Vec<&str> = raw.splitn(4, "||").collect();
+                if p.len() < 4 {
+                    continue;
+                }
+                let (cat, tool, content, response) =
+                    (p[0].trim(), p[1].trim(), p[2].trim(), p[3].trim());
+                // LEXICAL: the whole record, including agent-authored content prose.
+                let lex = format!("{} {} {}", tool, content, response);
+                // STRUCTURAL: outcome only (tool + response) — ignore what the agent WROTE.
+                let strt = format!("{} {}", tool, response);
+                let lf: Vec<&str> = set
+                    .matches(&lex)
+                    .into_iter()
+                    .map(|i| sigs[i].category.as_str())
+                    .collect();
+                let sf: Vec<&str> = set
+                    .matches(&strt)
+                    .into_iter()
+                    .map(|i| sigs[i].category.as_str())
+                    .collect();
+                if cat == "clean" {
+                    traps += 1;
+                    if !lf.is_empty() {
+                        lex_fp += 1;
+                        let snip: String = content.chars().take(48).collect();
+                        println!("   LEX-FP {:?} on prose: {}", lf, snip);
+                    }
+                    if !sf.is_empty() {
+                        str_fp += 1;
+                    }
+                } else {
+                    real += 1;
+                    if lf.iter().any(|f| *f == cat) {
+                        lex_recall += 1;
+                    }
+                    if sf.iter().any(|f| *f == cat) {
+                        str_recall += 1;
+                    }
+                }
+            }
+            println!("real events={} trap lines (prose about hotspots)={}", real, traps);
+            println!(
+                "   LEXICAL    (tool+content+response): recall={}/{}  FALSE-POS on traps={}/{}",
+                lex_recall, real, lex_fp, traps
+            );
+            println!(
+                "   STRUCTURAL (tool+response only)   : recall={}/{}  FALSE-POS on traps={}/{}",
+                str_recall, real, str_fp, traps
+            );
+        }
+        Err(_) => println!("   (events-labeled.txt not found — skipped)"),
+    }
+
     println!("\n(RSS after bench ~{} KB)", rss_kb());
 }
