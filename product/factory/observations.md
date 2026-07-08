@@ -148,3 +148,43 @@ existing board (~60 capabilities+technologies) hit it: 57 tagged, **3 deferred**
 reopen (process-defect blast-radius, §8), or a backfill — must **throttle/batch under 60/hr** or stall.
 The firewall is unchanged: `grade:proven` is still set only alongside a `context_correct` that attaches
 `proven_by`; `context_tag` carries the missing/claimed/partial moves.
+
+## OBS-10 — The whole smart-edge line ran with NO GitHub Issue (D1 third-surface gap) — and NO `context_cycle` stamping
+*2026-07-08 · from smart-edge-001/002/003 (first theme-scan + first promoted proof-goal)*
+
+Two surfaces the protocol assumes were **silently skipped** for the entire run until caught late:
+1. **No GitHub Issue.** The scan (`smart-edge-001`), the proof-goal (`smart-edge-002`), and the rerun
+   (`smart-edge-003`) ran to a `partial` artifact + a product handoff with **no Issue** — D1's third
+   surface (the live human↔garage interface) was absent. Created retroactively (`#37` scan, `#38` proof).
+2. **No `context_cycle` stamping** (until `smart-edge-002` onward). The scan phases were bare agent
+   spawns → no telemetry, and (pre-fix) **no retained transcript at all** — transcript↔cycle linkage
+   *requires* stamping.
+
+**Rule surfaced.** The `theme-scan` and `research-scope` protocols must **create the Issue AND
+`context_cycle start` at INIT — not optionally, not retroactively.** An un-stamped, un-Issue'd run is
+invisible on two of the three surfaces. (→ wire both into protocol INIT; the cycle-stamping half is the
+standing wire-stamping enhancement.) The retention/transcript-linkage itself is now **fixed on the
+platform** (verified: stamped `smart-edge-003` returns `Transcript bytes: 112091` where pre-fix
+`smart-edge-002` returned "no data").
+
+## OBS-11 — The capability-surface inventory must carry the IMPLEMENTATION SUBSTRATE, not just the interface
+*2026-07-08 · from smart-edge-001*
+
+The hypothesizer's first pass reasoned against Unimatrix's MCP **interface** (`context_*` tools) and
+missed that the server is a **Rust binary** — so nearly the whole candidate family is Rust-native and can
+live **in-server** (a first-order fit/effort discriminator). The owner supplied the correction; a second
+pass on the corrected surface **doubled** non-obvious/adjacent survival. **Rule:** the surface inventory
+handed to the generator must include the use-case's **tech stack / language / existing components** (e.g.
+"a PII scanner already exists"), because in-server-native-vs-external-bolt-on changes the verdict.
+
+## OBS-12 — Real linked-transcript testing beat the synthetic test; the firewall's "on real data" bar earned its keep
+*2026-07-08 · from smart-edge-002 rerun*
+
+The H11 bank scored 100%/0-FP on a **synthetic** labeled set, then **over-fired on a real linked
+transcript** — flagging an agent's stored text ("…never a bare context_tag") as a firewall *violation*.
+Naive lexical matching cannot tell *discussing* a hotspot from a hotspot *event*. The synthetic test hid
+it; only real data exposed it. The **structural fix** (match the event outcome field, not raw prose) was
+then demonstrated (FP 3/3 → 0/3, recall preserved). **Lesson:** for transcript/agent-output tools, a
+`partial`/`proven` claim must be demonstrated on **real captured data**, not a hand-built proxy — the
+proxy flatters. This is the reflexive loop working: running the tool on real data surfaced its next
+design constraint (the two-tier requirement).
