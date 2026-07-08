@@ -61,7 +61,7 @@ A mid-run gap →
 ## Telemetry (close every run)
 
 `context_cycle_review(feature_cycle:"{scope-id}", auto_close:true, format:"json")` → yield (§10).
-Stamp the run with the workflow version `wf:<semver>` (§8) — the method's `wf-vX.Y` tag (factory-git).
+Stamp the run with the workflow version (§8) — **derive it, never hand-type:** `git describe --tags --match 'wf-*'` (the `wf-vX.Y` tag is the single source of truth; factory-git).
 
 **Run-id tagging convention:** the curator **tags every stored entry with the run-id** (e.g.
 `shd-002`) so per-run knowledge-yield is queryable by tag — `context_lookup`'s `feature_cycle` is

@@ -20,7 +20,7 @@ smart-edge: the proof-goal ran to a `partial` artifact with no Issue and no cycl
 2. **Cycle** — `context_cycle start` topic=`{scope-id}` (= `{program}-NNN`), goal=`<capability-focused goal
    sentence>`, next_phase=`scope`, agent_id=`{scope-id}-leader`. The stamp makes the run **attributable +
    its transcript retained** (OBS-10). `phase-end` at **every** phase boundary; `stop` at CLOSE.
-3. **Git** — stamp `wf:`.
+3. **Git** — stamp `wf:` (derive it, never hand-type: `git describe --tags --match 'wf-*'`).
 
 ## Phase: scope
 - `factory-researcher` drafts `SCOPE.md` from the template: **capability target** (Uni id),

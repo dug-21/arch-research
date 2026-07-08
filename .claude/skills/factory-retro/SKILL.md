@@ -54,7 +54,7 @@ procedure, `uni-architect`, cargo/worktree cleanup — none of which apply here)
 ## Phase 4 — Artifacts & version
 
 - Research narrative / `REPORT.md` → committed via **factory-git research stream**.
-- Any method change the retro implies (runbook/skill/rule edits) → **method stream**, bump `wf:`.
+- Any method change the retro implies (runbook/skill/rule edits) → **method stream**, bump `wf:` (annotate-tag the method commit + push the tag; factory-git — the tag is the only place the version lives).
 - The capability board is a **graph query, not a file** (§6) — do not write it to disk.
 
 ## Edges (HIGH bar, default few; factory→factory only)

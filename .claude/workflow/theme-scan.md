@@ -27,7 +27,7 @@ validator — this protocol never proves.
      next_phase=`scan`, agent_id=`{scan-id}-leader`. The stamp is what makes the run **attributable and
      its transcript retained** (retention now works on stamped cycles — OBS-10); an unstamped run has no
      linked buffer at all. `phase-end` at **every** phase boundary; `stop` at CLOSE.
-  3. **Git** — stamp `wf:`; research-stream commits under `product/research/{scan-id}/`.
+  3. **Git** — stamp `wf:` (derive it, never hand-type: `git describe --tags --match 'wf-*'`); research-stream commits under `product/research/{scan-id}/`.
 - **GATE (advisory → owner):** confirm **theme + candidate source** (owner-injection vs external-scan)
   **+ budget envelope**. Wave-0 the owner's kick IS this approval; surface it, don't block on it.
 

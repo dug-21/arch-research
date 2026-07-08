@@ -35,12 +35,24 @@ The factory runs scopes/agents in parallel. The rule that makes that safe in git
 
 ## The `wf:` version stamp (§8)
 
-- `wf:` is a **semver of the METHOD**, bumped when a `workflow/*` PR merges — **NOT a HEAD SHA**
-  (research commits also move HEAD; `wf:` must move only when the method changes).
-- On each method-PR merge: tag the **method commit** `wf-vX.Y` (annotated), and bump.
-- Every run records its `wf:` in `context_cycle` outcomes + the run REPORT, so yield is sliceable by
-  method version and a defective method's blast radius is scopable.
-- Current baseline: **`wf-v0.1`**.
+**Single source of truth: the annotated git tag `wf-vX.Y` on a method commit. The version is never
+hand-typed anywhere else — it is always DERIVED from the tag.** (Hand-copied stamps drift: 24
+commits sat stamped `wf:v0.10` while the tags reached v0.12 and the remote lagged at v0.9. One
+source, one derivation — no copies to rot.)
+
+- `wf:` is a **semver of the METHOD**, not a HEAD SHA (research commits also move HEAD; `wf:` moves
+  only when the method changes).
+- **Bumping = one action:** annotate-tag the method commit and push the tag —
+  `git tag -a wf-vX.Y -m "<what changed>" && git push origin wf-vX.Y`. There is nothing else to
+  update: no VERSION file, no message stamp, no doc to bump.
+- **Runtime stamp is DERIVED, never typed** — a run records its stamp with
+  `git describe --tags --match 'wf-*'`, which yields `wf-v0.13` on a tagged commit or
+  `wf-v0.13-2-gabc123` when the method HEAD is 2 commits past the last tag (honest "uncut"
+  provenance). That derived value is what goes into `context_cycle` outcomes + the run REPORT, so
+  yield stays sliceable by method version with zero maintenance.
+- **Do NOT stamp the version into commit messages.** A hand-typed `(wf:vX.Y)` in a subject line is a
+  copy that drifts from the tag — the tag is the record. (Historical stamps already in the log are
+  frozen history; leave them.)
 
 ## Branch naming
 

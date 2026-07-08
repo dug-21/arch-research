@@ -9,7 +9,7 @@ garage funnel) researches against. Run by `research-leader`. One decompose-scope
 
 ## INIT
 `context_cycle start` topic=`{goal}-NNN`, goal=`<specific goal sentence (§7)>`, next_phase=`scope`,
-agent_id=`{scope-id}-leader`. Stamp `wf:` (the method's `wf-vX.Y` tag). Create the GitHub Issue
+agent_id=`{scope-id}-leader`. Stamp `wf:` (derive it, never hand-type: `git describe --tags --match 'wf-*'`). Create the GitHub Issue
 (body = the SCOPE).
 
 ## Phase: scope

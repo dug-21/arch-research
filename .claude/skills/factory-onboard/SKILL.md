@@ -19,7 +19,7 @@ lands (methodology §6: "what's done is a graph query, not a maintained list").
 5. Method artifacts: `product/factory/runbook.md` · `.claude/workflow/{decompose-scope,research-scope}.md` · `.claude/agents/factory/*.md` · `.claude/rules/unimatrix-access.md` · `.claude/skills/factory-{git,retro}/SKILL.md`.
 
 ## 2. Determine current status — RUN these (status is derived; trust no snapshot)
-- **Method version:** `git tag -l 'wf-*' | sort -V | tail -1` + `git log --oneline -15`.
+- **Method version:** `git describe --tags --match 'wf-*'` (the derived live stamp — clean `wf-vX.Y` on a tagged commit, or `wf-vX.Y-N-gSHA` when method HEAD is N commits past the last tag) + `git log --oneline -15`.
 - **Board = ONE call per goal.** Resolve the goal id (`context_search`), then:
   `context_graph(mode:"subgraph", seed_ids:[<goal-id>], max_depth:1, edge_types:["Advances"], direction:"incoming", detail:"full")`
   → returns the capability nodes **hydrated** (content + tags) in a single call — no separate status

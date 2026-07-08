@@ -357,7 +357,9 @@ workflow v2, then a change to v3 only affects how the *next* goal runs — X's r
 next cycle uses the new method with no deploy step beyond the commit.
 
 **Meaning requires a version stamp.** Every run is tagged with the workflow version that produced
-it — `wf:<version>` (a git short-SHA of the protocol/skills, or a semver). Without the stamp,
+it — `wf:<version>`. The **single source of truth is the annotated git tag `wf-vX.Y`** on the method
+commit; the stamp is **derived at runtime** (`git describe --tags --match 'wf-*'`), never hand-typed
+into messages or docs (a hand-copied stamp drifts — see the factory-git skill). Without the stamp,
 "it ran differently" is invisible and unmeasurable. The stamp does double duty:
 
 1. **Efficiency comparison** — slice yield telemetry by version to compare v2-runs vs v3-runs.
