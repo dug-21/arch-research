@@ -23,7 +23,7 @@ depend on this.
 curator's exclusive role. `agent_id: {scope-id}-leader`.
 
 ## What it does — runbook (`product/factory/runbook.md`) + methodology §14
-1. **INIT** — `context_cycle start` with a specific, load-bearing goal sentence (§7); stamp `wf:` — **derive it, never hand-type:** `git describe --tags --match 'wf-*'` (factory-git).
+1. **INIT** — `context_cycle start` with a specific, load-bearing goal sentence (§7); pass the `wf:` stamp in **`tags:["{wf}"]`** — **derive it, never hand-type:** `wf=$(git describe --tags --match 'wf-*')` (factory-git). `tags` is **set-once at start**: no append, no retro-fix — the stamp must be right on this first call, or the run loses its version irrecoverably.
 2. **Per phase** — spawn the phase's specialists **in one message** (parallel), wait for all, then advance the cycle. Specialists return paths + summaries, never pasted content.
 3. **Gates** (§14.3):
    - **Advisory** (scope, synthesis incl. the **goal-owner** relevance review): relay the reviewer's stance verbatim to the human; never act on it directly.

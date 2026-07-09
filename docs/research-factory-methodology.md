@@ -454,9 +454,11 @@ opens it, marks phase boundaries, and closes it; `context_cycle_review` analyzes
 
 ```
 # open the run — the goal sentence is LOAD-BEARING: it drives goal-conditioned briefing (and
-# thereby plane selection, §9) AND binds this run's entries to telemetry. stamp the workflow version.
-context_cycle({ type:"start", topic:"shd-001", goal:"<specific goal sentence>", next_phase:"scope" })
-   # entries stored this run carry tag wf:v3 (the version that produced them)
+# thereby plane selection, §9) AND binds this run's entries to telemetry. The wf: version rides in
+# `tags` (set-once at start; derived via git describe — never hand-typed).
+context_cycle({ type:"start", topic:"shd-001", goal:"<specific goal sentence>", next_phase:"scope", tags:["wf-v0.13"] })
+   # the CYCLE carries the wf: tag (run-level, immutable). Knowledge NODES stored this run carry the
+   # RUN-ID tag ("shd-001") for per-run yield (§10.4) — join cycle↔nodes on run-id, don't tag nodes with wf.
 
 # close each phase as it ends (advances the phase signal; records the outcome)
 context_cycle({ type:"phase-end", topic:"shd-001", phase:"scope",          outcome:"…",                    next_phase:"decompose" })
@@ -504,11 +506,19 @@ context_lookup({ topic:"shd-001", category:"lesson-learned" })   → dead-ends t
 
 ### 10.5 Slicing by version (the process axis)
 
-Because every run carries `wf:<version>`, comparing methods is "group the per-run yield by the
-`wf` tag." Run `cycle_review` for each run and aggregate by version; the delta between v2-runs and
-v3-runs is the **proof artifact** that a process change helped — i.e. the `proven_by` a
-`factory/finding` cites in the A/B loop (§9). After the §11.4 enhancement, the yield block carries
-the `wf` stamp directly, so the comparison is a single grouped read.
+Because every run carries `wf:<version>` as a `context_cycle` **start tag** (set-once, §14.2),
+comparing methods is "group the per-run yield by the `wf` tag." Run `cycle_review` for each run and
+aggregate by version; the delta between v2-runs and v3-runs is the **proof artifact** that a process
+change helped — i.e. the `proven_by` a `factory/finding` cites in the A/B loop (§9).
+
+**Status — write shipped, read pending.** The **write** side is live: `context_cycle(start, tags:[…])`
+stores the stamp on the cycle (set-once-whole-set). The **read** side is not yet exposed — until it
+is, a run's `wf:` on the cycle is not machine-retrievable, so version-sliced comparison waits on that
+read (see §11 open item 3). We stamp now anyway (D10) so no interim run loses its version; the moment
+the read lands, historical runs are already tagged. **Recommended exposure (minimal-tool):** surface
+the cycle's `tags` in `cycle_review`'s own output (per-cycle — no new tool, no new param); if
+cross-cycle filtering later proves load-bearing, add an optional `tags` filter to `cycle_review` (with
+`feature_cycle` optional) rather than a new tool. Reads belong on the cycle's own analysis surface.
 
 ### 10.6 Two consumers
 
@@ -672,8 +682,13 @@ work. The roster:
 
 ```
 # INIT — before any file-touching work. The goal sentence is load-bearing (§7).
+# The wf: stamp is DERIVED (git describe --tags --match 'wf-*', never hand-typed) and passed as a
+# cycle tag. `tags` is SET-ONCE-WHOLE-SET at start: the first tag-bearing start freezes the set —
+# there is NO append and NO retro-fix, so the stamp MUST be correct on this first call (a run that
+# starts un-tagged loses its version irrecoverably). Only INIT-known facts belong here (wf: qualifies).
+wf=$(git describe --tags --match 'wf-*')          # e.g. wf-v0.13  (or wf-v0.13-2-gSHA if HEAD is ahead)
 context_cycle(type:"start", topic:"{run-id}", goal:"{specific goal sentence}",
-              next_phase:"scope", agent_id:"{run-id}-leader")
+              next_phase:"scope", tags:["{wf}"], agent_id:"{run-id}-leader")
 ```
 
 | Phase | Who acts | Unimatrix touchpoints | Gate | `context_cycle` close |
@@ -685,9 +700,9 @@ context_cycle(type:"start", topic:"{run-id}", goal:"{specific goal sentence}",
 | **synthesis** | **curator** writes `position` findings + the run `REPORT`; marks capabilities `proven` where `done_when` clears | curator `context_store`/`context_correct`; losers `deprecated` | **human review** | `phase-end phase:"synthesis" outcome:"board: A proven/B partial/C claimed"` → `stop` |
 
 ```
-# CLOSE
+# CLOSE — the wf: version is the cycle's start tag (do NOT re-stamp it into the outcome string).
 context_cycle(type:"stop", topic:"{run-id}",
-              outcome:"Run complete. Board: A proven / B partial / C claimed. wf:{version}",
+              outcome:"Run complete. Board: A proven / B partial / C claimed.",
               agent_id:"{run-id}-leader")
 ```
 

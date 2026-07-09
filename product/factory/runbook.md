@@ -61,7 +61,11 @@ A mid-run gap →
 ## Telemetry (close every run)
 
 `context_cycle_review(feature_cycle:"{scope-id}", auto_close:true, format:"json")` → yield (§10).
-Stamp the run with the workflow version (§8) — **derive it, never hand-type:** `git describe --tags --match 'wf-*'` (the `wf-vX.Y` tag is the single source of truth; factory-git).
+Stamp the run with the workflow version (§8) at **INIT**, in the `context_cycle start` **`tags:["{wf}"]`**
+— **derive it, never hand-type:** `wf=$(git describe --tags --match 'wf-*')` (the `wf-vX.Y` tag is the
+single source of truth; factory-git). `tags` is **set-once at start**: no append, no retro-fix.
+**Read side not yet exposed** — the write accrues the stamp now (D10) so no interim run loses its
+version; version-sliced yield (§10.5) activates when Unimatrix exposes cycle-tag reads.
 
 **Run-id tagging convention:** the curator **tags every stored entry with the run-id** (e.g.
 `shd-002`) so per-run knowledge-yield is queryable by tag — `context_lookup`'s `feature_cycle` is

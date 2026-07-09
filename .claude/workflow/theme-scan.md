@@ -24,10 +24,13 @@ validator — this protocol never proves.
      title `{scan-id} — theme-scan: <theme> …`, body = scan intent + out-of-scope. Cross-linked by
      **title, not # equality** (D4). This is the live human↔garage surface; it is not optional.
   2. **Cycle** — `context_cycle start` topic=`{scan-id}`, goal=`scan <theme> for candidate technologies`,
-     next_phase=`scan`, agent_id=`{scan-id}-leader`. The stamp is what makes the run **attributable and
-     its transcript retained** (retention now works on stamped cycles — OBS-10); an unstamped run has no
-     linked buffer at all. `phase-end` at **every** phase boundary; `stop` at CLOSE.
-  3. **Git** — stamp `wf:` (derive it, never hand-type: `git describe --tags --match 'wf-*'`); research-stream commits under `product/research/{scan-id}/`.
+     next_phase=`scan`, **`tags:["{wf}"]`** (the derived `wf:` — `git describe --tags --match 'wf-*'`),
+     agent_id=`{scan-id}-leader`. `tags` is **set-once at start** (no append, no retro-fix — get it right
+     on the first call). The cycle is what makes the run **attributable and its transcript retained**
+     (retention now works on stamped cycles — OBS-10); an unstamped run has no linked buffer at all.
+     `phase-end` at **every** phase boundary; `stop` at CLOSE.
+  3. **Git** — research-stream commits under `product/research/{scan-id}/` (the `wf:` version rides the
+     cycle tag above; do not hand-type it).
 - **GATE (advisory → owner):** confirm **theme + candidate source** (owner-injection vs external-scan)
   **+ budget envelope**. Wave-0 the owner's kick IS this approval; surface it, don't block on it.
 

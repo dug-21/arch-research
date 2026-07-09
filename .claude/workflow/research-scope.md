@@ -18,9 +18,12 @@ smart-edge: the proof-goal ran to a `partial` artifact with no Issue and no cycl
 1. **GitHub Issue** — `gh issue create --repo dug-21/arch-research --label factory,scope:research,confidence:<directional|empirical|validated>`,
    title `{scope-id} — <Type>: <subject>`, body = the SCOPE. Cross-linked by **title, not # equality** (D4).
 2. **Cycle** — `context_cycle start` topic=`{scope-id}` (= `{program}-NNN`), goal=`<capability-focused goal
-   sentence>`, next_phase=`scope`, agent_id=`{scope-id}-leader`. The stamp makes the run **attributable +
-   its transcript retained** (OBS-10). `phase-end` at **every** phase boundary; `stop` at CLOSE.
-3. **Git** — stamp `wf:` (derive it, never hand-type: `git describe --tags --match 'wf-*'`).
+   sentence>`, next_phase=`scope`, **`tags:["{wf}"]`** (the derived `wf:` — `git describe --tags --match 'wf-*'`),
+   agent_id=`{scope-id}-leader`. `tags` is **set-once at start** — no append, no retro-fix, so the stamp
+   must be right on this first call. The cycle makes the run **attributable + its transcript retained**
+   (OBS-10). `phase-end` at **every** phase boundary; `stop` at CLOSE.
+3. **Git** — commit under `product/research/{scope-id}/` (the `wf:` version rides the cycle tag above; do
+   not hand-type it anywhere else).
 
 ## Phase: scope
 - `factory-researcher` drafts `SCOPE.md` from the template: **capability target** (Uni id),

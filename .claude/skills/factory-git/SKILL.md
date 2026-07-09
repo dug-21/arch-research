@@ -48,8 +48,9 @@ source, one derivation — no copies to rot.)
 - **Runtime stamp is DERIVED, never typed** — a run records its stamp with
   `git describe --tags --match 'wf-*'`, which yields `wf-v0.13` on a tagged commit or
   `wf-v0.13-2-gabc123` when the method HEAD is 2 commits past the last tag (honest "uncut"
-  provenance). That derived value is what goes into `context_cycle` outcomes + the run REPORT, so
-  yield stays sliceable by method version with zero maintenance.
+  provenance). That derived value rides the `context_cycle(start)` `tags` (set-once at INIT — no
+  append, no retro-fix, so it must be right on the first call) + the run REPORT, so yield stays
+  sliceable by method version with zero maintenance.
 - **Do NOT stamp the version into commit messages.** A hand-typed `(wf:vX.Y)` in a subject line is a
   copy that drifts from the tag — the tag is the record. (Historical stamps already in the log are
   frozen history; leave them.)
