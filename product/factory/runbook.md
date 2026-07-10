@@ -64,8 +64,9 @@ A mid-run gap →
 Stamp the run with the workflow version (§8) at **INIT**, in the `context_cycle start` **`tags:["{wf}"]`**
 — **derive it, never hand-type:** `wf=$(git describe --tags --match 'wf-*')` (the `wf-vX.Y` tag is the
 single source of truth; factory-git). `tags` is **set-once at start**: no append, no retro-fix.
-**Read side not yet exposed** — the write accrues the stamp now (D10) so no interim run loses its
-version; version-sliced yield (§10.5) activates when Unimatrix exposes cycle-tag reads.
+**Round-trip demonstrated** (probe `wf-tag-probe-002`, 2026-07-10): tags set at `start` persist and
+surface in `cycle_review`'s `tags` field. Version-sliced yield (§10.5) is unblocked at the platform
+level — the remaining gap to the reflexive A/B is two comparable runs captured under this wiring.
 
 **Run-id tagging convention:** the curator **tags every stored entry with the run-id** (e.g.
 `shd-002`) so per-run knowledge-yield is queryable by tag — `context_lookup`'s `feature_cycle` is

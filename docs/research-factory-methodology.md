@@ -511,14 +511,17 @@ comparing methods is "group the per-run yield by the `wf` tag." Run `cycle_revie
 aggregate by version; the delta between v2-runs and v3-runs is the **proof artifact** that a process
 change helped — i.e. the `proven_by` a `factory/finding` cites in the A/B loop (§9).
 
-**Status — write shipped, read pending.** The **write** side is live: `context_cycle(start, tags:[…])`
-stores the stamp on the cycle (set-once-whole-set). The **read** side is not yet exposed — until it
-is, a run's `wf:` on the cycle is not machine-retrievable, so version-sliced comparison waits on that
-read (see §11 open item 3). We stamp now anyway (D10) so no interim run loses its version; the moment
-the read lands, historical runs are already tagged. **Recommended exposure (minimal-tool):** surface
-the cycle's `tags` in `cycle_review`'s own output (per-cycle — no new tool, no new param); if
-cross-cycle filtering later proves load-bearing, add an optional `tags` filter to `cycle_review` (with
-`feature_cycle` optional) rather than a new tool. Reads belong on the cycle's own analysis surface.
+**Status — round-trip demonstrated (write + read).** Both sides are live and proven end-to-end:
+`context_cycle(start, tags:[…])` persists the stamp on the cycle (set-once-whole-set), and
+`context_cycle_review` returns it in its top-level **`tags`** field. Verified 2026-07-10 by probe
+`wf-tag-probe-002` (tags set at start → `cycle_review` returned `["probe","wf-v0.14"]` on a forced
+fresh recompute; the prior probe had returned `[]`, so the platform fix is demonstrated, not assumed).
+The exposure is the minimal one — the cycle's own analysis surface carries its tags, **no new tool,
+no new param**. If cross-cycle filtering later proves load-bearing (aggregating all runs under a `wf:`
+in one call rather than looping known run-ids), add an optional `tags` filter to `cycle_review` (with
+`feature_cycle` made optional) rather than a new tool. Version-sliced yield is now unblocked at the
+platform level; the remaining gap to the reflexive A/B (§8, #66) is having two comparable runs
+captured under this wiring.
 
 ### 10.6 Two consumers
 
