@@ -1,101 +1,76 @@
 #!/usr/bin/env python3
-"""opcost — cost-weighted, time-paced Claude usage bucket across all your repos.
+"""opcost — accurate per-repo Claude token reporting, by model, daily + weekly.
 
-Reads local Claude Code transcripts (~/.claude/projects/**/*.jsonl), prices each
-message's four usage fields per-model in $-equivalent (list price), attributes by
-repo (cwd), and paces spend against a self-defined weekly budget.
+Reports RAW token consumption for the current repo, broken down by model and by
+the four usage classes (input / output / cache-write / cache-read), rolled up
+daily and weekly. No dollars, no budget, no cross-repo denominator — just the
+honest, observable numbers, so you can watch a couple of weeks of real activity
+and then set a threshold from data.
 
-Portable: put this skill at ~/.claude/skills/opcost/ and it sees every repo from
-anywhere. Config lives at ~/.claude/opcost.config.json (auto-created on first run).
+Scope (be honest about it): reads only local Claude Code transcripts on THIS
+machine (~/.claude/projects/**/*.jsonl). It does NOT see claude.ai web, Cowork,
+other machines, or other repos. On a Max subscription there is no per-token bill
+and no exposed quota meter (see product/research/opcost-001/), so token counts
+are the accurate primitive; anything $-denominated would be a notional proxy.
 
-Design (opcost goal, run opcost-002):
-  - unit  = $-equivalent, cost-weighted (cache_read is ~0.1x input, so raw tokens
-            overweight it ~10x; see findings-b1). NOT the subscription quota meter,
-            which isn't observably exposed — this is the buildable proxy (N-a).
-  - bucket= a SELF-DEFINED weekly budget you set; per-repo shares split it.
-  - pace  = a daily pace line (elapsed_fraction_of_week x budget); flags a repo
-            running AHEAD of pace before the weekly cap is hit.
-Passive HUD: this reports, it does not block. (A PreToolUse hook is a later step.)
+Usage:
+  python3 opcost.py                 # current repo (cwd), last 14 days + weekly
+  python3 opcost.py --days 30       # widen the daily window
+  python3 opcost.py --repo NAME     # a specific repo by name
+  python3 opcost.py --all           # every repo on this machine
+  python3 opcost.py --cost          # add a NOTIONAL $-equiv column (list price, NOT Max spend)
 """
-import json, os, glob, sys, collections
-from datetime import datetime, timedelta, timezone
+import json, os, glob, argparse, collections
+from datetime import datetime, timedelta
 
 ROOT = os.path.expanduser("~/.claude/projects")
 CONFIG_PATH = os.path.expanduser("~/.claude/opcost.config.json")
+CLASSES = ["input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"]
+SHORT = {"input_tokens": "input", "output_tokens": "output",
+         "cache_creation_input_tokens": "cache_wr", "cache_read_input_tokens": "cache_rd"}
 
-# $ per 1M tokens, list price (verified via claude-api skill, 2026-07). The unit is
-# a governance proxy, not a subscription bill — list price keeps the weight stable.
-# NOTE: claude-sonnet-5 has intro pricing $2/$10 through 2026-08-31; list $3/$15 used
-# here for a durable weight. Cache-write assumes 5-min TTL (1.25x); 1h TTL is 2x.
-PRICING = {  # model-id prefix -> (input, output) $/Mtok
-    "claude-opus-4-8":   (5.00, 25.00),
-    "claude-opus-4-7":   (5.00, 25.00),
-    "claude-opus-4-6":   (5.00, 25.00),
-    "claude-fable-5":    (10.00, 50.00),
-    "claude-mythos-5":   (10.00, 50.00),
-    "claude-sonnet-5":   (3.00, 15.00),
-    "claude-sonnet-4-6": (3.00, 15.00),
-    "claude-haiku-4-5":  (1.00, 5.00),
-}
-FALLBACK = (5.00, 25.00)  # unknown model -> price as Opus (conservative)
-CACHE_WRITE_MULT = 1.25   # 5-min TTL
-CACHE_READ_MULT = 0.10
-
-DEFAULT_CONFIG = {
-    "weekly_budget_usd": None,       # set this to enable pace checks (e.g. 150)
-    "reset_weekday": 0,              # 0=Mon .. 6=Sun; the self-defined week boundary
-    "repo_shares": {},               # {"arch-research": 0.6, ...}; missing -> even split
-    "_comment": "opcost budget config. Set weekly_budget_usd and per-repo shares (fractions summing to <=1).",
-}
+# Optional --cost only. $/1M tokens, list price. cache_wr=1.25x input (5m TTL), cache_rd=0.10x.
+PRICING = {"claude-opus-4-8": (5, 25), "claude-opus-4-7": (5, 25), "claude-opus-4-6": (5, 25),
+           "claude-fable-5": (10, 50), "claude-mythos-5": (10, 50),
+           "claude-sonnet-5": (3, 15), "claude-sonnet-4-6": (3, 15), "claude-haiku-4-5": (1, 5)}
 
 
-def load_config():
-    if not os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, "w") as f:
-            json.dump(DEFAULT_CONFIG, f, indent=2)
-        return dict(DEFAULT_CONFIG), True
-    with open(CONFIG_PATH) as f:
-        cfg = json.load(f)
-    for k, v in DEFAULT_CONFIG.items():
-        cfg.setdefault(k, v)
-    return cfg, False
+def reset_weekday():
+    try:
+        with open(CONFIG_PATH) as f:
+            return int(json.load(f).get("reset_weekday", 0))
+    except (OSError, ValueError, json.JSONDecodeError):
+        return 0
 
 
-def price(model, u):
-    """$-equivalent for one message's usage block, cost-weighted per model."""
-    inp, out = FALLBACK
-    for prefix, (i, o) in PRICING.items():
-        if model and model.startswith(prefix):
-            inp, out = i, o
-            break
-    dollars = (
-        (u.get("input_tokens", 0) or 0) * inp
-        + (u.get("output_tokens", 0) or 0) * out
-        + (u.get("cache_creation_input_tokens", 0) or 0) * inp * CACHE_WRITE_MULT
-        + (u.get("cache_read_input_tokens", 0) or 0) * inp * CACHE_READ_MULT
-    ) / 1_000_000
-    return dollars
+def week_start(d, rwd):
+    ws = d - timedelta(days=(d.weekday() - rwd) % 7)
+    return ws.date()
 
 
-def week_start(now, reset_weekday):
-    d = now - timedelta(days=(now.weekday() - reset_weekday) % 7)
-    return d.replace(hour=0, minute=0, second=0, microsecond=0)
+def notional_cost(model, c):
+    inp, out = next((p for k, p in PRICING.items() if model.startswith(k)), (5, 25))
+    return (c["input_tokens"] * inp + c["output_tokens"] * out
+            + c["cache_creation_input_tokens"] * inp * 1.25
+            + c["cache_read_input_tokens"] * inp * 0.10) / 1_000_000
 
 
 def main():
-    cfg, created = load_config()
-    if created:
-        print(f"Created default config at {CONFIG_PATH}")
-        print("Set 'weekly_budget_usd' and 'repo_shares' to enable pace checks.\n")
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--days", type=int, default=14)
+    ap.add_argument("--repo", default=None)
+    ap.add_argument("--all", action="store_true")
+    ap.add_argument("--cost", action="store_true")
+    args = ap.parse_args()
 
+    target = None if args.all else (args.repo or os.path.basename(os.getcwd()))
+    rwd = reset_weekday()
     now = datetime.now().astimezone()
-    wk_start = week_start(now, cfg["reset_weekday"])
-    elapsed_frac = min(1.0, (now - wk_start).total_seconds() / (7 * 86400))
-    rolling_start = now - timedelta(days=7)
+    daily_cutoff = (now - timedelta(days=args.days)).date()
 
-    week = collections.defaultdict(float)     # repo -> $ this self-defined week
-    rolling = collections.defaultdict(float)  # repo -> $ last rolling 7 days
-    unknown_models = set()
+    by_model = collections.defaultdict(lambda: collections.Counter())   # model -> class counts (+msgs)
+    weekly = collections.defaultdict(lambda: collections.Counter())     # (weekstart, model) -> counts
+    daily = collections.defaultdict(lambda: collections.Counter())      # (day, model) -> counts
 
     for path in glob.glob(os.path.join(ROOT, "**", "*.jsonl"), recursive=True):
         try:
@@ -110,13 +85,12 @@ def main():
                         continue
                     if e.get("type") != "assistant":
                         continue
-                    msg = e.get("message", {})
-                    u = msg.get("usage")
+                    u = (e.get("message") or {}).get("usage")
                     if not u:
                         continue
-                    model = msg.get("model", "")
-                    if model and not any(model.startswith(p) for p in PRICING):
-                        unknown_models.add(model)
+                    repo = os.path.basename((e.get("cwd") or "(unknown)").rstrip("/")) or "(unknown)"
+                    if target is not None and repo != target:
+                        continue
                     ts = e.get("timestamp", "")
                     if not ts:
                         continue
@@ -124,63 +98,57 @@ def main():
                         t = datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone()
                     except ValueError:
                         continue
-                    repo = os.path.basename((e.get("cwd") or "(unknown)").rstrip("/")) or "(unknown)"
-                    d = price(model, u)
-                    if t >= wk_start:
-                        week[repo] += d
-                    if t >= rolling_start:
-                        rolling[repo] += d
+                    model = (e.get("message") or {}).get("model") or "(unknown)"
+                    counts = {cl: (u.get(cl, 0) or 0) for cl in CLASSES}
+                    for agg, key in ((by_model, model),
+                                     (weekly, (week_start(t, rwd), model)),
+                                     (daily, (t.date(), model))):
+                        agg[key].update(counts)
+                        agg[key]["msgs"] += 1
         except (OSError, IOError):
             continue
 
-    budget = cfg["weekly_budget_usd"]
-    shares = cfg["repo_shares"]
-    repos = sorted(set(week) | set(rolling) | set(shares), key=lambda r: -week.get(r, 0))
+    scope = "ALL repos" if target is None else f"repo '{target}'"
+    print("=" * 78)
+    print(f"opcost — token report · {scope} · this machine's Claude Code only")
+    print("=" * 78)
+    if not by_model:
+        print("No transcripts found for this scope.")
+        return
 
-    def repo_share(repo):
-        if repo in shares:
-            return shares[repo]
-        unassigned = [r for r in repos if r not in shares]
-        remaining = max(0.0, 1.0 - sum(v for k, v in shares.items() if k in repos))
-        return remaining / len(unassigned) if unassigned else 0.0
-
-    print("=" * 74)
-    print(f"opcost — cost-weighted Claude spend ($-equiv, list price)")
-    print(f"self-defined week: {wk_start:%Y-%m-%d %a} 00:00  ->  now ({elapsed_frac*100:.0f}% elapsed)")
-    print("=" * 74)
-
-    wk_total = sum(week.values())
-    if budget:
-        pace_total = budget * elapsed_frac
-        flag = "  ⚠ AHEAD OF PACE" if wk_total > pace_total else ""
-        print(f"WEEK-TO-DATE: ${wk_total:,.2f} of ${budget:,.2f} budget "
-              f"(pace target ${pace_total:,.2f}){flag}")
-    else:
-        print(f"WEEK-TO-DATE: ${wk_total:,.2f}   (set weekly_budget_usd for pace checks)")
-    print()
-
-    hdr = f"{'repo':<24}{'wk $':>10}{'wk %':>7}"
-    if budget:
-        hdr += f"{'share':>7}{'pace $':>10}{'ratio':>8}"
-    print(hdr)
-    print("-" * len(hdr))
-    for repo in repos:
-        w = week.get(repo, 0.0)
-        pct = 100 * w / wk_total if wk_total else 0
-        row = f"{repo:<24}{w:>10.2f}{pct:>6.0f}%"
-        if budget:
-            sh = repo_share(repo)
-            pace = budget * sh * elapsed_frac
-            ratio = w / pace if pace else 0
-            mark = " ⚠" if w > pace and pace > 0 else ""
-            row += f"{sh*100:>6.0f}%{pace:>10.2f}{ratio:>7.2f}x{mark}"
+    # 1. Per-model totals (the headline) — full 4-class breakdown
+    def tot(c):
+        return sum(c[cl] for cl in CLASSES)
+    print("\nBY MODEL (all-time in scope)")
+    cols = f"{'model':<22}{'msgs':>6}" + "".join(f"{SHORT[cl]:>13}" for cl in CLASSES) + f"{'TOTAL':>15}"
+    if args.cost:
+        cols += f"{'~$(notional)':>14}"
+    print(cols)
+    print("-" * len(cols))
+    for model in sorted(by_model, key=lambda m: -tot(by_model[m])):
+        c = by_model[model]
+        row = f"{model:<22}{c['msgs']:>6}" + "".join(f"{c[cl]:>13,}" for cl in CLASSES) + f"{tot(c):>15,}"
+        if args.cost:
+            row += f"{notional_cost(model, c):>13,.2f}"
         print(row)
 
-    print()
-    roll_total = sum(rolling.values())
-    print(f"rolling 7-day total: ${roll_total:,.2f}  (closest proxy to Anthropic's real rolling weekly cap)")
-    if unknown_models:
-        print(f"note: priced-as-Opus (unknown model): {', '.join(sorted(unknown_models))}")
+    # 2. Weekly by model
+    print(f"\nWEEKLY (week starts {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][rwd]})")
+    wcols = f"{'week':<12}{'model':<22}{'msgs':>6}{'TOTAL tokens':>16}"
+    print(wcols); print("-" * len(wcols))
+    for (ws, model) in sorted(weekly, reverse=True):
+        c = weekly[(ws, model)]
+        print(f"{ws.isoformat():<12}{model:<22}{c['msgs']:>6}{tot(c):>16,}")
+
+    # 3. Daily by model (last --days)
+    print(f"\nDAILY (last {args.days} days)")
+    dcols = f"{'day':<12}{'model':<22}{'msgs':>6}{'TOTAL tokens':>16}"
+    print(dcols); print("-" * len(dcols))
+    for (day, model) in sorted(daily, reverse=True):
+        if day < daily_cutoff:
+            continue
+        c = daily[(day, model)]
+        print(f"{day.isoformat():<12}{model:<22}{c['msgs']:>6}{tot(c):>16,}")
 
 
 if __name__ == "__main__":
