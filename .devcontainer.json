@@ -19,8 +19,7 @@
     },
     "ghcr.io/tailscale/codespace/tailscale": {}
   },
-  "initializeCommand": "docker network create uni-net 2>/dev/null || true",
-  "runArgs": ["--network=uni-net", "--device=/dev/net/tun" ],
+  "runArgs": ["--device=/dev/net/tun" ],
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
   ],
