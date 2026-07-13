@@ -35,7 +35,8 @@ Fields (in the entry content / structured body):
   why           one sentence — the problem it solves
   done_when     1-2 BEHAVIORAL, runnable statements — the proof gate AND definition of done.
                 nfr: the test runs ACROSS the governed surface, not a single feature.
-  status        missing | partial | proven | claimed
+  (status)      NOT a content field — the former status is now a first-class TAG: delivery:{proven|partial|missing|asserted}.
+                See "Status is a TAG" below. (This is the single source of delivery status.)
   delivered_by  GH ref(s), e.g. "#787" / "vnc-039"   (FIELD — target is not a Unimatrix node)
   proven_by     evidence ref, e.g. "live: arch-research store/get round-trip" (FIELD)
 
@@ -49,7 +50,8 @@ Edges (RelationType — validated against unimatrix-engine/src/graph.rs):
 Corrections (lifecycle):
   context_correct   sharpen done_when / reword / record a regression — preserves provenance.
 
-Status legend:  missing 🔴 | partial 🟡 | proven 🟢 | claimed ⚪ (asserted, no behavioral test exists)
+Status legend:  missing 🔴 | partial 🟡 | proven 🟢 | asserted ⚪ (claimed in a goal/doc, NO behavioral
+                test — a warning to retire; NOT the "claimable" marketing sense — see Claim-floor vs North-star)
 ```
 
 **Edge-choice rationale (do not change without re-validating):**
@@ -62,6 +64,41 @@ Status legend:  missing 🔴 | partial 🟡 | proven 🟢 | claimed ⚪ (asserte
   other* in retrieval (capability↔capability, never research — that's fine). If capabilities should be
   kept out of *agent delivery* retrieval entirely, filter by `category != "capability"` at the
   retrieval layer — do NOT mangle the edge type; the DAG needs `Prerequisite`.
+
+---
+
+## Status is a TAG (delivery status — the single source)
+
+Capability **delivery status** is a first-class **tag**, never buried in the content blob. This keeps it
+**projectable** (surfaced in `context_graph(… detail="summary")`, so orientation is one call, no parse) and
+**queryable** (`context_lookup(category="capability", tags=["delivery:proven"])` lists every proven cap) — while
+keeping the domain-agnostic engine clean: the engine stores a tag it never interprets. "proven" is *our*
+(capability-domain) meaning, expressed in a domain-agnostic mechanism — NOT an engine field. (This is itself
+a dog-food test of the domain-agnostic goal: manage our own capability domain with tags/config, never a
+bespoke schema field.)
+
+**Two unrelated "status" concepts — never conflate:** the engine's `EntryRecord.status` (Active/Deprecated/…
+lifecycle) vs THIS capability delivery status. Only the latter is a `delivery:` tag.
+
+**Vocabulary — exactly these four:** `delivery:proven` 🟢 · `delivery:partial` 🟡 · `delivery:missing` 🔴 · `delivery:asserted` ⚪.
+
+**Rules:**
+- **Exactly one** `delivery:` tag per capability entry. A status change **replaces** it (never two, never zero).
+- **Single source** — the tag is authoritative; the **content carries NO status value at all**. Content is
+  `kind/name/why/done_when/delivered_by/proven_by` only.
+- **Firewall holds** — `delivery:proven` ONLY with behavioral evidence in `proven_by`.
+- **How to set/change status — use the fast path (`context_tag`, vnc-045):**
+  - **Pure status flip** (the `proven_by` evidence is already in content — the normal verify-then-flip case, and a
+    downgrade): `context_tag(id, action="replace", tag="delivery:{value}")`. In-place, atomic, single-value-**per-prefix**
+    (it swaps only the `delivery:` tag, leaves all others), and it **preserves the entry's learning vector, edges, and
+    content hash**. Do NOT use `context_correct` for a pure flip — it rewrites the record and resets learning.
+  - **Status change that ALSO writes content** (attaching *new* `proven_by`, sharpening `done_when`): `context_correct` —
+    the content hash genuinely changes and a re-embed is correct there; set the `delivery:` tag in the same call.
+- `delivery:asserted` = claimed with no behavioral test (a warning to retire) — NOT the "claimable" marketing sense.
+
+**Ownership (single owner):** this skill OWNS the status vocabulary and the set-status operation. Other sessions
+(**uni-zero**, **uni-zero-reviewer**) READ the tag (from the projection) and **route every status mutation
+through this skill's operation** — they never hand-edit a `delivery:` tag or invent a value.
 
 ---
 
@@ -131,6 +168,50 @@ without it.
 
 ---
 
+## Claim-floor vs North-star (the goal-delivery accounting)
+
+Goals are **north stars** — never "done"; there is always headroom. So a goal's delivery is read at two
+altitudes, built directly on threshold/curve:
+
+- **Claim-floor** — the named subset of **threshold** capabilities that must be `proven` for the goal to be
+  honestly *claimed* ("we have this"). Floor met ⇒ **claimable** — the marketing / DevX truth line. A goal is
+  claimable *well before* its north-star: you do NOT wait on the curve to claim the goal.
+- **North-star** — the goal's **curve** capabilities (and its marquee rollup). Never terminal; a curve at 🟡
+  means *advancing, ceiling open* — **not** deficient. These carry the excellence story, not the claim.
+
+Decompose every goal into both: the floor thresholds (claimable) and the north-star curves (aspirational).
+Most functional caps are floor thresholds; the rollup + quality promise are the curves. Record the split in
+the **goal entry** (a `Claim-floor` and a `North-star` clause), not just in the capability statuses.
+
+**Terminology (opposite valence — never conflate):**
+- **claim / claimable** = floor met, a **good** state (what marketing / enablement may assert).
+- status **⚪ `asserted`** = claimed in a goal/doc with **no** behavioral test — a **warning** state, an
+  honest-unknown to retire. A goal that *asserts* a criterion delivered with no `proven` capability behind it
+  is the vnc-034 drift this skill exists to catch.
+
+**Verify before you claim (the firewall, operationalized).** "Built" ≠ "claimable-as-worded." A merge, or a
+delivering agent's nomination, moves *structure*, never *status* — the cited test must be **independently
+verified to clear the `done_when` as worded** before a threshold flips `proven` and its goal's floor counts
+as met. The failure modes this catches: an over-scoped `done_when` (the cited test proves a *narrower* thing —
+e.g. "tamper-evident" claimed, only "tamper-recorded" tested); a mechanism test standing in for an outcome
+test; and — the sharpest, seen three times in this corpus — **a cited test that passes without ever driving the
+real / assembled production path** (an in-memory proxy that hand-builds the object #917; a tautology re-asserting
+its own literal #918; a test that injects the dependency it should drive *through*, blind to the production
+instance-split #930). So `proven_by` must name **re-runnable test(s) that exercise the assembled path the
+`done_when` describes** — not reasoning, not code-tracing, not a proxy; absent that, the cap is at most `partial`.
+(A one-time live/dogfood observation *on the real path* is behavioral proof but **unguarded** — `proven` for a
+threshold only with a tracked regression-guard test-debt, per PD2→#918.) **Only a 🟢 floor may back a claim; a
+nominated-but-unverified floor may not.**
+
+**One-call orientation (the goal-status query).** The whole map renders in a single traversal —
+`context_graph(mode=subgraph, seed_ids=[<vision-root>], direction=incoming, edge_types=["Advances"],
+max_depth=2, detail=summary)` → every goal + its capabilities + status in one pull. Group by the `Advances`
+edge; read floor (threshold, `proven` ⇒ claimable) vs north-star (curve). This replaces any multi-step
+lookup-then-read-each-status choreography. Use **`detail=summary`** for the lean projection — NOT
+`format=summary` (a deprecated no-op alias that returns full content).
+
+---
+
 ## The firewall (load-bearing — the one rule that makes this trustworthy)
 
 > **Status advances to `proven` ONLY on attached behavioral, real-artifact evidence.**
@@ -189,18 +270,19 @@ claimed = asserted (often inherited from a goal criterion) with no behavioral te
 3. For each: `context_store category="capability"` with the fields, and an `Advances` edge to the goal:
    ```
    context_store({ category: "capability", topic: "<goal-tag>",
-     content: "name: …\nwhy: …\ndone_when: …\nstatus: missing\ndelivered_by:\nproven_by:",
-     tags: ["capability", "<goal-tag>"],
+     content: "kind: …\nname: …\nwhy: …\ndone_when: …\ndelivered_by:\nproven_by:",   // NO status line — status is a tag
+     tags: ["capability", "<goal-tag>", "<kind>", "delivery:missing"],
      edges: [{ relation: "Advances", target_id: <goal_id> }] })
    ```
 4. Add `Prerequisite` edges for dependencies (source = the prerequisite).
 
 ### Mark a capability proven (the gate)
-- ONLY with attached behavioral evidence. `context_correct` the entry: set `status: proven`, fill
-  `proven_by` (the real-artifact test/evidence) and `delivered_by`. No evidence ⇒ leave `partial`/raise variance.
+- ONLY with attached behavioral evidence in `proven_by`.
+  - If the evidence is **already in content** (the usual verify-then-flip case): `context_tag(id, action="replace", tag="delivery:proven")` — the fast path. No evidence ⇒ leave `delivery:partial`/raise variance.
+  - If you are **attaching new evidence** (writing `proven_by`/`delivered_by` now): `context_correct` (content + `delivery:proven` tag in one call).
 
 ### Record a gap / regression
-- `context_correct`: `proven → partial`, **sharpen `done_when`** to encode the newly-discovered bar.
+- Pure downgrade: `context_tag(id, action="replace", tag="delivery:partial")`. If you also **sharpen `done_when`** to encode the newly-discovered bar (a content change), use `context_correct` instead.
   This is the dev-process self-learning loop — reality contradicted "proven," the definition tightens.
 
 ### Report what's left for a goal (the strategic query)
