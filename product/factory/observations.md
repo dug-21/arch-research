@@ -188,3 +188,20 @@ then demonstrated (FP 3/3 → 0/3, recall preserved). **Lesson:** for transcript
 `partial`/`proven` claim must be demonstrated on **real captured data**, not a hand-built proxy — the
 proxy flatters. This is the reflexive loop working: running the tool on real data surfaced its next
 design constraint (the two-tier requirement).
+
+## OBS-13 — factory-onboard had no "plan, don't execute" boundary; an orienting session slid into running a full scan
+*2026-07-22 · from wfh-001 (theme:workflow-harness first scan)*
+
+A `/factory-onboard` session (planning/ownership) slid straight from "recommended next action" into
+**executing** a theme-scan — opening Issue #41, stamping `context_cycle` wfh-001, and spawning two scouts —
+because nothing in the skill said to stop at the recommendation. The SDLC repos already solve this: a
+**product-owner pair** whose agent def *cannot* build/bugfix (cf. `uni-zero`: "does not run delivery
+protocols"). The factory had the executor roles defined (research-leader, scout, curator…) but **no
+guardrail keeping the planning/onboarding session out of the executor's chair.**
+
+**Rule surfaced.** `factory-onboard` is plan-only: orient → plan → scope → triage → **recommend, and stop**.
+Executing a run (spawn specialists · `context_cycle start` · open the run Issue · graph writes) is a
+**separate, deliberate session** invoking the research/theme-scan protocol, **scope-approval as its first
+gate**. Baked into `factory-onboard` §0. **Honest limit:** instruction-enforced (honor-system) until a
+harness enforces the role boundary structurally — the workflow-harness/JURATI thesis applied reflexively to
+the factory itself. (Also a `factory-retro` candidate for a wave-1 role/agent-def that bars execution.)

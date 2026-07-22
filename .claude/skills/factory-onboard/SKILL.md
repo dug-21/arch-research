@@ -1,6 +1,6 @@
 ---
 name: "factory-onboard"
-description: "Catch a fresh-context agent up to the research & development garage's CURRENT status — read the canonical sources, query the live Unimatrix graph + git, then report where things stand. Status is DERIVED from the graph, never a stored snapshot. Use when a new session/agent needs to orient from scratch."
+description: "Catch a fresh-context agent up to the research & development garage's CURRENT status — read the canonical sources, query the live Unimatrix graph + git, then report where things stand. PLAN-ONLY: orients and recommends a next action; does NOT execute research runs (execution is a separate protocol session). Status is DERIVED from the graph, never a stored snapshot. Use when a new session/agent needs to orient from scratch."
 ---
 
 # factory-onboard — Fresh-Context Catch-Up
@@ -10,6 +10,24 @@ Bring an agent that has **no prior context** current on the autonomous research 
 see `CLAUDE.md` Mission). The whole point is to orient from **self-updating canonical
 sources + live queries** — never a hand-maintained status file, which would drift the moment a run
 lands (methodology §6: "what's done is a graph query, not a maintained list").
+
+## 0. Role boundary — plan, don't execute (load-bearing)
+
+`factory-onboard` is a **planning / ownership** context — the factory analog of the SDLC **product-owner**
+pair, and of `uni-zero` ("does not run delivery protocols"). Its deliverable is **orientation + a
+recommendation**; it does **not** execute research.
+
+- **MAY:** read canonical sources, run the status queries (§2), plan/scope hypotheses, triage, and
+  **recommend** a next action.
+- **MUST NOT** (this session): launch a run — no spawning specialists (scout / researcher / hypothesizer /
+  curator), no `context_cycle start`, no opening a run Issue, no graph writes.
+
+Executing a run is a **separate, deliberate session** invoking the research / theme-scan protocol
+(`.claude/workflow/{theme-scan,research-scope,decompose-scope}.md`), spun up per-hypothesis on the human's
+go, with **scope-approval as its explicit first gate**. This keeps the human gate meaningful and stops an
+orienting agent from sliding from "recommended next action" straight into running it (**OBS-13**). Wave-0
+hygiene enforced by instruction; the durable fix is a harness that enforces the boundary structurally, not
+the agent's compliance.
 
 ## 1. Orient — read in order
 1. `CLAUDE.md` — mission, how-to-work, the firewall.
@@ -48,6 +66,9 @@ reflexive loop (FC-Improve).
 ## 4. Report
 A concise status: method `wf:` version · research-board state for `shd` (what's proven/partial/
 missing) · factory-board autonomy state · open blockers · recommended next action.
+
+**Then STOP — do not execute the recommended action in this session (§0).** The recommendation is the
+handoff; execution is a separate, human-gated protocol session.
 
 **Flag anything where the canonical sources were insufficient to orient** — those are
 factory-process gaps and become `factory-retro` lessons. Every onboarding doubles as a
