@@ -142,3 +142,90 @@ label origin for portfolio hygiene.)
 **First candidate (not yet run).** Owner-injection, TBD — run one tool end-to-end (scan → hypothesizer
 over the process-capability surface → triage → shortlist → A/B) as the theme's first exercise, and to
 measure the funnel's process-plane hit-rate.
+
+---
+
+## theme:workflow-harness — the control plane that drives the LLM, made visible
+**Status:** active · seeded 2026-07-22
+
+**Lens.** Context-injection & control architectures for LLM **coding agents**: how a harness *owns and
+injects* the operating context (skills, agent-definitions, protocols/workflows, tools, gates) into the
+LLM, and *structurally enforces* gates + access boundaries the LLM cannot circumvent — the LLM a
+**directed, supporting component, not the driver**. Deliberate bias toward **build-once / any-LLM-pluggable**
+designs that reduce vendor-ecosystem lock-in (the durable asset is the harness + its graph; the LLM is a
+swappable backend). Claude-Code / coding-agent mechanisms are in-lens as *reference implementations to
+generalize from*, not endpoints.
+
+**Value-target #1 — JURATI** (`dug-21/jurati`, "the Queen"). The deterministic control model in front of
+the substrate — the single edge where all LLM calls originate; enforcement (identity, per-agent capability
+gating, sequencing, budget) lives here, **outside the LLM context**. Grounded in the ratified
+Unimatrix↔JURATI joint recommendation (**JURATI issue #12**), **ASS-009** (control-model PoC — "ship one
+control model, the controller"), **ass-100/101** (edge-minted identity → single-root delegation → Anchor B).
+Dogfoodable like Unimatrix (repo + capability board knowable). Proven findings hand off as issues to
+`dug-21/jurati`'s SDLC (§7 product bridge) — the factory proves, JURATI ships.
+
+**Plane — research (feeds JURATI's delivery).** This garage *researches and proves* the ontology +
+injection/gating model; JURATI *productizes* it (queen executes, ships the UI/ecosystem). *Reflexive-for-
+later (D10):* the Queen is a candidate to eventually become **this garage's own** harness (retiring the
+current "LLM-is-the-harness" model here) — a `daystrom` / process-plane, higher-bar move, architected-now /
+deferred, NOT this theme's build.
+
+**Load-bearing boundary — workflow ≠ knowledge.** The executable workflow (agent-defs / skills / steps /
+gates + edges) and its runtime state (token spend, live errors) are **not** Unimatrix knowledge and must
+not be stored as graded, decaying, retrieval-ranked evidence — doing so makes Unimatrix an **orchestrator**,
+which the joint rec (issue #12) explicitly forbids. **Three layers, three owners:** *Unimatrix* = knowledge;
+*queen* = workflow definition + execution + telemetry; *canvas* = a view overlaying them across a
+`cites:`-style **reference** seam (never a merged graph). Open fork this theme must resolve: does the
+workflow-*definition* layer reuse Unimatrix's graph engine in a hard-isolated plane, or run on a separate
+substrate?
+
+**Source-mix.** Owner-injection-heavy (the value-target already has a ratified architecture + PoCs) +
+external scan of the fast-moving coding-agent / context-engineering space (agent frameworks, MCP,
+skill/prompt-injection patterns, control/gate designs, visual workflow tooling). Label each candidate's
+origin `owner-injection · external-scan · dogfood-signal`.
+
+**Cadence.** Weekly, wave-0 manual kick. First exercise = capture + triage of the seed hypotheses below
+(structure-only); graph-formalization (`finding` + `hypothesis` tag, run-id, `theme:workflow-harness`)
+happens on the first `theme-scan` run.
+
+**Operating plan & artifacts.** Standing research plan (tracks T1–T5, run queue, systemic funnel):
+`proposals/workflow-harness-research-plan.md`. Delivery-model design space (axes A1–A8, paths P1–P14):
+`proposals/workflow-harness-delivery-model-paths.md`. First run: **wfh-001** (external landscape scan).
+
+**Seed hypotheses** *(pre-triage, 2026-07-22 — file-captured, NOT yet graph nodes; owner-injection):*
+- **H1 — control-plane-as-graph.** A graph structure lets the queen *coordinate* the workflow **and** be
+  its *live debugger*, with the queen in control and the LLM given direction from it (one structure, both
+  jobs). *Proof-direction: a run where the graph both drives step order and renders the live trace.*
+- **H2 — harness-as-observability.** The same harness meters **token spend** and captures problems /
+  feedback in **real time**, mapped onto the workflow structure. *Proof-direction: per-step token + error
+  surfaced on the canvas as a run executes.*
+- **H3 — one JURATI across many repos/domains.** One harness serves multiple projects/domains (this repo =
+  research; `unimatrix` dev; `jurati` dev). Two variants: **(A)** the queen *dispatches* work to per-repo
+  instances that share one workflow definition; **(B)** one workflow *spans* repos simultaneously. Rides on
+  issue #12's **proven** per-slug data isolation + queen-side access governance. *Start with A (cleaner; B
+  is architect-for-later). Proof-direction: stand up a new repo on the existing workflow with only a topic
+  + Unimatrix-slug setup.*
+- **H4 — ontology-first.** The load-bearing object is a **minimal typed vocabulary** of a coding-agent's
+  operating context (skill / agent-def / step / gate / tool + a few edges); the canvas and the injection
+  are downstream of getting it right. *Proof-direction: express this repo's own `.claude/` context in the
+  vocabulary with no loss.*
+- **H5 — anti-lock-in as consequence.** If the operating context is a portable typed graph, swapping the
+  LLM swaps only the *executor*; the harness/graph stays. Lock-in-avoidance becomes a *property of the
+  representation*, not a feature to build. *Proof-direction: run the same workflow graph against two
+  different LLM backends.*
+- **H6 — build-once ecosystem.** Domains / workflow-types = subgraphs on the shared ontology; "manage tens
+  of products" = one engine + per-product knowledge slug. *(Generalizes H3; the multi-product vision.)*
+- **H7 — definition vs events, two backends.** The workflow *definition* graph is **stable + versioned**
+  (config-like, read-heavy, changes only when an improvement is deliberately tested); *outcomes / telemetry
+  / events* are **high-churn, streamed runtime**. They want **different backends** — conflating them repeats
+  the workflow≠knowledge error one level down. Net: **three stores** — Unimatrix (knowledge), a versioned
+  *definition* store (queen), an *event/telemetry* sink (queen). *Proof-direction: a "right-backend" analysis
+  picks a store per layer against its read/write/version/query profile.*
+- **H8 — sovereignty-preserving SaaS.** JURATI is built **multi-tenant SaaS from the start** (not a
+  single-user tool retrofitted later). Testable premise: it can be SaaS *without betraying the anti-lock-in
+  thesis* — **iff** the tenant's workflow graph stays **portable / exportable / self-hostable**, the LLM
+  stays pluggable (incl. local), and per-tenant isolation is **mechanical**. **Consequence (issue #12):**
+  multi-tenant IS the explicit trigger that promotes the deferred **Anchor-B verifier** from "named seam,
+  later" to **foundational, now** — SaaS-from-start pulls the hardest security substrate forward. *Proof-
+  direction: a two-tenant deploy where A cannot address B's slug (mechanical, not assumed) AND a tenant can
+  export its full workflow graph and run it self-hosted.*
