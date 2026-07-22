@@ -205,3 +205,22 @@ Executing a run (spawn specialists · `context_cycle start` · open the run Issu
 gate**. Baked into `factory-onboard` §0. **Honest limit:** instruction-enforced (honor-system) until a
 harness enforces the role boundary structurally — the workflow-harness/JURATI thesis applied reflexively to
 the factory itself. (Also a `factory-retro` candidate for a wave-1 role/agent-def that bars execution.)
+
+## OBS-14 — Cycle telemetry is blind to subagent sessions: the converge legs' 38 writes recorded as "0 stored"
+*2026-07-22 · from wfh-001 retro*
+
+`context_cycle_review(wfh-001)` saw only the scan-phase sessions. The converge legs — run by a
+research-leader **subagent** in its own sessions — were invisible: the review reported **"Stored this
+cycle: 0"** while the curator demonstrably stored **38 nodes** (PR #45); the phase timeline showed
+`scan → triage` though `formalize` and `synthesis` phase-ends were acknowledged; and the cycle showed
+IN PROGRESS after an acknowledged `stop`. Consequence: **the more autonomous a run (more work pushed
+into agent sessions), the less its telemetry attributes** — the reflexive loop's §9 funnel/yield metrics
+under-count exactly the runs we most want to measure. Related upstream: the known observation-attribution
+gap (enhancement #24) and D6 (agent_id not persisted). Until fixed, treat cycle-review yield numbers as
+a **floor**, and take authoritative counts from a run-id `context_lookup` (as this retro did).
+
+Smaller operational notes from the same run: repo-level auto-merge is disabled (protocol says
+"auto-merge after the triage gate" — enable it or amend the protocol); WebFetch failed 4× clustered
+during scan (retry/backoff or alternate fetcher for scouts); `context_correct` re-links on #11–#15
+skipped pre-existing invalid incoming sources (engine-side data quirk — pre-existing, not authored this
+run; watch whether it recurs).
