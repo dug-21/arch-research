@@ -6,7 +6,7 @@ scan a **theme** for candidate technologies, fan each out into hypotheses (wide 
 (which is capability-pull). Produces **structure only** — candidate technologies (`claimed`) and
 hypotheses (`finding`+`hypothesis`); **nothing reaches `proven` here.** A promoted hypothesis becomes a
 *separate* bounded proof-goal (a normal validated research-scope) where the firewall bites. Run by
-`research-leader`. Its own cycle (`topic`) + GitHub Issue. Phases: **scan → hypothesize → triage.**
+`research-leader`. Its own cycle (`topic`) + GitHub Issue. Phases: **scan → hypothesize → triage → formalize.**
 Design: `product/factory/proposals/theme-driven-scanning-methodology.md` (§5 flow · §6 triage · §9 funnel).
 
 ## Roles
@@ -37,12 +37,12 @@ validator — this protocol never proves.
 ## Phase: scan
 - Leader spawns `scout` (parallel ×N if the source-mix partitions) → candidate technologies. Owner-
   injection enters here as a hand-fed candidate.
-- `scout` applies the **lens include-test**, **dedups reuse-first** against Unimatrix, and characterizes
-  each survivor (mechanism · **resource envelope** · demonstrated-vs-claimed · `cites` · source-signal).
-  Read-only; returns markdown inline (OBS-7) → **leader persists** `product/research/{scan-id}/scout-candidates.md`.
-- `factory-curator` **self-briefs first** (`context_search category:"technology"` — REUSE), then files
-  each **new, in-lens** candidate → `technology` (`grade:claimed`), tagged `theme:<slug>` + `{scan-id}`,
-  `cites`. Known/out-of-lens candidates are NOT re-filed (note the existing node id).
+- `scout` applies the **lens include-test**, **dedups reuse-first** against Unimatrix (prior runs' filed
+  nodes — incl. fold-findings' named tails) and characterizes each survivor (mechanism · **resource
+  envelope** · demonstrated-vs-claimed · `cites` · source-signal). Read-only; returns markdown inline
+  (OBS-7) → **leader persists** `product/research/{scan-id}/scout-candidates.md`.
+- **NO graph writes in this phase** (lesson #172, wfh-001): the divergent output stays in git markdown
+  until triage has compressed it — the neck's verdict shapes what the curator writes (see formalize).
 - `phase-end phase:"scan" outcome:"C candidates (N new, K known/parked)"`.
 
 ## Phase: hypothesize
@@ -54,26 +54,46 @@ validator — this protocol never proves.
   **leader persists** `product/research/{scan-id}/hypotheses.md`.
 - **Coverage (advisory, non-blocking):** if a candidate's fan-out is thin or its scout writeup too thin
   to reason from, leader re-spawns for more range (≤2) or flags the candidate as under-characterized.
-- `factory-curator` files each hypothesis → `finding` tagged `hypothesis` + `theme:<slug>` + `{scan-id}`,
-  with `Motivates→` its technology. **The conjectured `technology Prerequisite→ capability` edge is NOT
-  authored yet** — only survivors get it (triage), to keep speculative edges off the graph; parked
-  hypotheses carry the target in `content`.
+- **NO graph writes in this phase** — hypotheses reach the graph only through formalize, post-triage.
 - `phase-end phase:"hypothesize" outcome:"H hypotheses (obvious/adjacent/non-obvious split)"`.
 
 ## Phase: triage
 - `goal-owner` runs the **convergent gate** (§6): scores mechanism-fit · theme-alignment · novelty ·
   effort-vs-payoff; **park by default**; routes **PARK / DIRECTIONAL-PROBE / VALIDATED-BUILD** (with a
   proposed `done_when` for builds). Advisory; writes `product/research/{scan-id}/reports/triage.md`.
-- For **survivors only**, `factory-curator` authors the conjectured `technology Prerequisite→ capability`
-  edge. Parked hypotheses stay `claimed` findings, re-enterable — no further spend.
 - **GATE (blocking → owner):** the owner reviews the shortlist and **promotes 0..n** hypotheses to
   bounded proof-goals. Promoting nothing is a valid, common outcome.
-- `phase-end phase:"triage" outcome:"P promoted, D probe, rest parked"` → `stop`.
+- `phase-end phase:"triage" outcome:"P promoted, D probe, rest parked"`.
+
+## Phase: formalize (post-gate — ALL graph writes live here)
+
+The run's only curator phase. **The graph stores verdicts and re-entry conditions, never the spray**
+(lesson #172; the divergent archive is git markdown). The persistence test for every item: *would a
+future agent need to FIND this via `context_search` — to avoid re-spending, or to re-enter when a
+condition flips?* If yes → the **cheapest searchable representation** below; if no → git only.
+
+`factory-curator` **self-briefs first** (`context_search` — REUSE; extend existing nodes via
+`context_correct`, never duplicate), then files in three tiers:
+
+1. **Survivors** (promoted / probe, plus in-lens candidates worth individual reuse) → full `technology`
+   nodes (`grade:claimed`, tagged `theme:<slug>` + `{scan-id}`, `cites`) and `finding`+`hypothesis`
+   nodes with `Motivates→` their technology; the conjectured `technology Prerequisite→ capability` edge
+   is authored for **survivors only** — speculative edges stay off the graph.
+2. **Parked-with-a-reason** → a `finding` (`hypothesis`+`parked`) whose content IS the park reason with
+   an explicit **re-enter-when** condition. These must be **few and load-bearing** — if triage parks
+   many, compress further (fold) before filing; a large parked tier is spray with extra steps.
+3. **Folded tail** (thrown out at triage) → NOT individual nodes. One or two **fold-findings that NAME
+   every folded candidate** (this is what keeps future scan dedup working graph-side) + the git
+   markdown as archive.
+
+- Synthesis verdict (e.g. white-space) → a `position`-tagged `finding`.
+- `phase-end phase:"formalize" outcome:"N nodes (S survivors, P parked, F folded-into-K findings)"` → `stop`.
 
 ## CLOSE
 - `context_cycle stop`. Record the **funnel counts** (scanned → generated → survived → promoted, by
   novelty class), tagged `{scan-id}` + `theme:<slug>` — the reflexive-loop telemetry (§9, #66).
-- Git: research-stream PR `Closes #<issue>` (auto-merge after the triage gate). Trigger `factory-retro`.
+- Git: research-stream PR `Closes #<issue>` — merge after formalize (auto-merge if enabled at repo
+  level; else the leader rebase-merges — the blocking gate already passed). Trigger `factory-retro`.
 - **Promotion (frontier-change, D3):** each promoted hypothesis → a new **validated research-scope**
   Issue (a bounded proof-goal, real `done_when`), linked to this scan. That run — not this one — does the
   POC and the firewall, and on `proven` files the **Unimatrix issue** handoff (§7). The scan hands off;
