@@ -23,3 +23,30 @@ Run-id `wfh-002` on all four writes; `grade:claimed` preserved on #176 via the c
 - A separate finding for the byte-bar gaps (G-G/G-H) — folded into #177; one spec sharpening, not an independent verdict.
 - (a)+(b) kept as two findings, not merged: distinct claims (internal expressiveness vs external subsumption), distinct support targets (H4 vs F1), distinct citations.
 - No grade moves on any other wfh-001 node; no `proven` anywhere — firewall untouched, W4's gate.
+
+---
+
+## W5 — domain-agnosticism distillation (`wfh-002-curator`, 2026-07-24)
+
+### Corrected (1)
+
+- **#176 → #180** `technology` "JURATI typed operating-context ontology — SPECIFIED (5 nodes/4 edges) + stress-tested" — folded the W5 verdict into the node. Changes: "Stress-tested **twice** → **three times**" with a W5 bullet (AGNOSTIC-WITH-GAPS: no type collapse, no dead type, all 4 edges load, firewall types as a `gate` → rules out SDLC-locked; skeleton = actor/action/checkpoint/instrument/instruction; holes G-W1 graded-state, G-W2 budget, G-W3 loop + G-W6 SDLC-worded definitions; digitally-mediated `tool` caveat). Added a v0.3 line and updated `proven_by`/downstream to record **W4 is now gated on the v0.3 structural decision (G-W1/W2/W3)**. Added the W5 FINDINGS cite. **Grade unchanged: `grade:claimed`** (no artifact — grade tag preserved via correct's `tags` override; firewall untouched). Edges: 6 incoming Motivates auto-redirected (#156, #161, #164, #177, #178, #179); outbound `Prerequisite → #2` re-declared.
+
+### Stored (1 finding, tagged `wfh-002`, topic `workflow-harness`)
+
+- **#181** — W5 verdict: **AGNOSTIC-WITH-GAPS**. Second, non-software domain (our own research method, from its PROSE design, not `.claude/`) round-trips the 5/4 vocabulary → SDLC-locked ruled out; skeleton is the domain-neutral slots. Three structural general-workflow holes SDLC never stressed (G-W1 graded-state / G-W2 budget-envelope / G-W3 convergence-loop) + G-W6 prose leakage; load-bearing contrarian caveat that the `tool` round-trip was flattered by our instruments being software. **No grade asserted** (structure, no artifact). Edges: `Motivates → #180`, `Supports → #164` (H4) — both verified live.
+
+### Reuse decisions / justification
+
+- **Reused #176 (→#180)**, did not create a new tech node — W5 is another stress test of the same ontology, consistent with the W2/W3 folding pattern.
+- **Chose to correct rather than leave W5 as an edge-only leaf:** W5 changes #176's *own* claims (third held stress test; stale "twice" count) and, decisively, its forward path — `proven_by`/downstream now record W4 gated on a v0.3 decision. That is node-level status, not a mere supporting finding.
+- **Reused #164 (H4)** as the `Supports` target — confirmed live before linking.
+- **Did NOT store** the expressed graph (§1), the gap-table (§5), or the ontology spec content — workflow ≠ knowledge; those stay in the FINDINGS file. Only the verdict ABOUT the ontology is graphed.
+
+### Grade / firewall
+
+`grade:claimed` unchanged on the ontology node (now #180). **No `proven` anywhere** — W5 produced no artifact.
+
+### Rate-limit note
+
+**Zero `context_tag` calls** this pass — grade did not move; `context_correct` preserves the grade tag via its `tags` override. Writes: 1 correct + 1 store.
