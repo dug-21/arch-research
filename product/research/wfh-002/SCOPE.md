@@ -25,7 +25,8 @@ The ontology is the **load-bearing, defensible core** of the theme — wfh-001's
 - **W1 — Ontology spec.** Draft the typed node/edge vocabulary from §3's mechanisms + the issue-#12 gate concept. *Output: the ontology spec (nodes, edges, required fields).*
 - **W2 — Lossless round-trip.** Express this repo's `.claude/` (skills, `agents/factory/*`, rules, workflow protocols, CLAUDE.md) in the vocabulary; verify no loss (can the operating behavior be reconstructed?). *Output: the expressed graph + a gap list.*
 - **W3 — `AGENTS.md` subsumption.** Map the standard into the vocabulary; confirm lossless. *Output: mapping + gaps.*
-- **W4 — P10 template artifact.** Package the ontology as a git-native template + devcontainer that instantiates a new project's operating context from the vocabulary. *Output: the working template — the real artifact.*
+- **W5 — Second-domain round-trip (domain-agnosticism probe).** Express our **own research-factory method _as designed_** — the garage funnel (scan → triage → prove), its phases, roles, human/firewall gates, and the evidence-grading discipline — in the SAME vocabulary (v0.2). **Source of truth = the method's prose design** (`docs/research-factory-methodology.md` + funnel narrative), explicitly **NOT** its `.claude/` config implementation, which would silently re-test the software domain. *Output: the expressed graph of the research method + a domain-fit verdict (agnostic / SDLC-locked) with a gap list.* **Precedes W4** — the build hardens the vocabulary, so agnosticism must be settled first.
+- **W4 — P10 template artifact.** Package the ontology as a git-native template + devcontainer that instantiates a new project's operating context from the vocabulary. *Output: the working template — the real artifact.* **Gated on W5** — build only after the vocabulary is shown domain-agnostic (or its gaps characterized).
 
 ## 5. Expected output (FINDINGS deliverables)
 - The ontology spec (W1).
@@ -37,6 +38,8 @@ The ontology is the **load-bearing, defensible core** of the theme — wfh-001's
 ## 6. Proof bar (what moves H4)
 A real artifact, demonstrated by us: this repo's `.claude/` round-trips through the vocabulary with **no loss** AND `AGENTS.md` **subsumes** AND the template **instantiates** a new project → **validated** (H4 → proven). Any lossy gap → **partial** + the characterized gap list. Literature / assertion moves nothing.
 
+**Domain-agnosticism precondition (W5, amendment 2026-07-24).** The vocabulary must round-trip a **second, non-software domain** (our own research method, expressed from its prose design) before W4 hardens it. Clean second-domain round-trip → agnosticism supported, proceed to build. Lossy/over-fit → characterize the gap (and, if structural, revise the spec to v0.3) before building. A vocabulary that only fits SDLC does not deserve a general template.
+
 ## 7. Explicitly out of scope
 The UX canvas (T2 — later); the delivery/tenancy model (T4 — P14 settled, rest deferred); the runtime / execution engine (the queen's job, not this scope); multi-LLM portability testing (H5 — later); **any JURATI production code** (that's the §7 handoff to `dug-21/jurati`, not build-here).
 
@@ -45,3 +48,5 @@ The round-trip, subsumption, and template are objective artifacts (not loop-unti
 
 ## Amendments
 *(append-only, dated; reconcile any changed verdicts — D3)*
+
+- **2026-07-24 — W5 added (owner-authorized), W4 gated on it.** Owner raised the load-bearing question: is the ontology SDLC-specific? W1–W3 tested only software-development artifacts (this repo's coding-agent config + `AGENTS.md`). The vocabulary is domain-agnostic *by design* (typed on control semantics — actor / action / checkpoint / instrument / instruction — not file format), but *evidenced* in one domain only. **W5** adds a second-domain round-trip against our own research method (from its prose design, not its config) to test agnosticism directly. Sequencing changed to **analyze-then-build**: W5 precedes W4; W4 proceeds only once agnosticism is demonstrated or its gaps characterized. Naming-alignment with agentic tooling (skill/agent-def/tool vs. capability/actor/instrument) is **parked** per owner — agnostic *meaning* under familiar *names* is acceptable for now. Coverage gate now spans W1–W3 + W5.
