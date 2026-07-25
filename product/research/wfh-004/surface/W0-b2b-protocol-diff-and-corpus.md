@@ -29,7 +29,17 @@
 | Retro-architect reports | **49** |
 | Vision-alignment reports | **161** |
 
-**The signal in that table:** **224 units produced a Gate 3a report; only 195 produced a Gate 3c.** Twenty-nine units entered delivery and left no final-gate artifact — **and nothing noticed.** That is declared-vs-actual divergence, quantified, on real SDLC evidence, at a scale the research side could never reach. It is the SDLC instance of P-13 (a declared step that never ran) with a count attached instead of an anecdote.
+> ## ⚠ CORRECTED BY W0-f — read `W0-f-conformance-census.md` §1–2 before using anything in this section
+>
+> **Two errors in this file, both established by census:**
+>
+> 1. **The corpus is 6,781 files, not 7,975.** The 7,975 figure counted tree entries minus unit directories — i.e. **files plus sub-directories**.
+> 2. **The "29-unit attrition gap" does not exist.** The 224 / 226 / 195 figures are **file counts, not unit counts**, and comparing them as units was a category error. At unit level, 157 units have a 3a file and 157 have a 3c file. **Real Gate-3c conformance over 161 delivered feature units: 154/161 = 95.7%.** The apparent gap is duplicate filings (166 `agents/` aliases) plus rework attempts.
+> 3. **`WARN` *is* defined** — in `uni-validator.md`, not in the protocols this file read. The real defect is *vocabulary leakage upward*: 29/553 (5.2%) of canonical reports put a non-template value in the gate-level `Result:` field.
+>
+> **What survives, sharper than the original claim:** **5 feature units genuinely shipped without their declared gates** (4 with none at all; `crt-043` with a self-declared `CONDITIONAL PASS` in its PR body — a verdict in no definition), all inside a 30-day window. And **`SCOPE FAIL` fired zero times in 231 units** — a declared escalation branch that never executed once. Unlike the 29-unit claim, that one is exact.
+
+**The signal originally read from this table** — *224 units produced a Gate 3a report; only 195 a Gate 3c* — **was a file-vs-unit category error.** It is retained here, struck, because the error itself is instructive: **a count taken from filenames, compared across two populations with different filing conventions, produced a confident wrong number that read as a major finding.** That is FP-3 reproducing inside this run's own surface work, caught only because a second pass censused it. See W0-f §2.
 
 ---
 
