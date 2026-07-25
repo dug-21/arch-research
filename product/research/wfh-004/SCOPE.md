@@ -353,3 +353,63 @@ second-domain generation round in a *successor* run, not a mid-flight expansion 
 
 *Rule-1 admission: N/A — a screen and a classification discipline governing candidates; not itself a
 candidate.*
+
+### A-6 — 2026-07-25 · The layer test, and what this run's output is *for* (owner)
+
+> *"we're determining the potential functionality in a harness we're considering to build over the LLMs.
+> It would be built in Jurati, and the intention is for it to work SDLC and research somewhat equally,
+> obviously the workflows themselves are different."* — owner, 2026-07-25
+
+Refines A-5 in three ways. The third corrects a question A-5 framed wrongly.
+
+**1. The deliverable is a build-decision input, not a build backlog.** The harness is *being considered*,
+not committed. Therefore **L5's "residual after full configuration" is as load-bearing as the SHOULD
+shortlist**, and the **drop-list is a first-class output, not a byproduct**. L5's finding stands as the
+honest frame: if the W0-b probes land favourably, the case for building anything rests entirely on five
+named absences, and any proposed ability that does not target one of them is re-buying something already
+free in the incumbent. **Triage must report the case *against* building with the same rigour as the case
+for.** §7's expected output is amended accordingly: the shortlist, the probe queue, **and** the
+drop-list-with-reasons are co-equal deliverables.
+
+**2. JURATI's constraints are design context, not hypotheticals.** The harness would be built in JURATI,
+so C-1 (enforcement is queen-side), the workflow≠knowledge three-store boundary, and H8's
+multi-tenant-from-the-start posture are live constraints on what "available" means — and L4's tenancy
+step-function (isolation *believed* → isolation *demonstrable to a stranger*) is on the real roadmap
+rather than a scale hypothetical.
+
+**3. The layer test — supersedes A-5's trichotomy as the primary cut.**
+
+> **"The workflows themselves are different"** is the load-bearing clause. The **harness** is domain-general;
+> the **workflow definitions** that run on it are domain-specific. SDLC and research are two different
+> *definitions*, not two different *harnesses*.
+
+A-5 asked "does this ability generalize across domains?" That is the wrong first question, because it
+mis-files a whole class of candidate. The right first question is:
+
+**Is this a property of the harness, or a property of a workflow definition?**
+
+- **HARNESS-LAYER** — the ability belongs to the engine: it holds for any workflow definition running on
+  it. *(A unit that stops emitting is declared dead. A gate's satisfaction is recorded by the party that
+  gated. Spend is metered per named unit.)* These are the run's product.
+- **DEFINITION-LAYER** — the ability is really a feature of a *particular* workflow: the garage's
+  firewall, its `grade:` vocabulary, its theme-scan phase order, its curator single-writer rule. **These
+  are not garage-specific *defects* — they are correct content at the wrong layer.** The harness's job is
+  to make such a rule *expressible and enforceable*; authoring it is the definition's job. A
+  DEFINITION-LAYER candidate therefore converts into a HARNESS-LAYER requirement: *"the harness can
+  express and enforce a declared single-writer constraint"* rather than *"the harness enforces the
+  curator rule."* **Triage performs that conversion; it does not simply drop these.**
+- **AMBIGUOUS** — argued both ways; state both readings.
+
+**Why this matters more than A-5's version:** under A-5 alone, a candidate drawn from a garage pain risked
+being classed GARAGE-SPECIFIC and dropped, when it was in fact a *correct harness requirement stated in
+garage vocabulary*. The layer test recovers it at the right altitude instead of discarding it. A-5's
+DOMAIN-NEUTRAL/SHAPED/SPECIFIC classes remain, applied **only within the HARNESS-LAYER set** — that is
+where "does it hold for SDLC as well as research?" is the meaningful question.
+
+**Sharper cross-check available in-house:** SDLC and research definitions already coexist here (`uni-*`
+vs the factory protocols), so for any HARNESS-LAYER candidate triage can ask concretely — *would the
+`uni-*` delivery protocol need this too, and would it need it differently?* An ability both definitions
+need identically is the strongest class the run can produce. An ability they need *differently* is
+evidence about the harness's **parameterization surface**, which is itself a finding worth recording.
+
+*Rule-1 admission: N/A — a classification discipline and a scope-of-output clarification; not a candidate.*
