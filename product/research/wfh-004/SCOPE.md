@@ -413,3 +413,58 @@ need identically is the strongest class the run can produce. An ability they nee
 evidence about the harness's **parameterization surface**, which is itself a finding worth recording.
 
 *Rule-1 admission: N/A — a classification discipline and a scope-of-output clarification; not a candidate.*
+
+### A-7 — 2026-07-25 · REFRAME: rebuild, do not patch (owner directive)
+
+> *"completely redo anything that had the wrong frame"* — owner, 2026-07-25
+
+A-5 and A-6 corrected the frame **at triage and distillation**, on the leader's judgment that the skew
+sat in the evidence column rather than the ability column. **The owner overrode that judgment.** The
+correction is a rebuild. This amendment records what was wrong-framed, what survives, and why —
+so the rebuild is auditable and the salvage is not sunk-cost reasoning in disguise.
+
+**The frame error, stated exactly.** The run generated against a surface assembled from **one domain**:
+W0-b inspected this repo's *research* configuration; W0-d catalogued 30 incidents, all from *research*
+runs. The target is a harness serving **SDLC and research roughly equally**. A single-domain demand
+signal cannot establish a two-domain requirement, and no amount of downstream classification repairs an
+input that was never gathered.
+
+**Wrong-framed — rebuilt, not amended:**
+
+| Artifact | Defect |
+|---|---|
+| `surface/BRIEFING.md` | Garage as implicit subject; no harness/definition layer cut (A-6); no build-decision framing |
+| `surface/W0-b-incumbent-baseline.md` | Inspected only the research-side configuration |
+| `surface/W0-d-pain-record.md` | 30 incidents, all research runs — single-domain demand signal |
+| All 11 registers in `hypotheses/` | Generated against the above |
+| `hypotheses/ROUND-1-COVERAGE.md` | §9 grid computed on the wrong frame |
+
+**Survives — with the reason, so this is checkable rather than convenient:**
+
+- **`W0-a-landscape-by-concern.md`** — characterizes ~30 *externally shipped tools*. Never garage
+  evidence; most of those tools are coding agents, so if anything it is SDLC-weighted already.
+- **`W0-c-constraints.md`** — C-1…C-4 are substrate and JURATI constraints (enforcement locus, semantic
+  verdicts, files-as-source-of-truth, self-binding). Domain-independent by construction.
+- **§3.1's eight concerns** — structure, context provisioning, security, introspection, cost,
+  self-improvement, recovery, human steering are *harness* concerns. An SDLC harness has the same eight.
+  The **axis** survives; the **evidence populating it** did not.
+- **The ~330 candidate mechanisms** — sourced from aviation, nuclear operations, insurance, epidemiology,
+  power grids, maritime, object-capability security, distributed systems, military doctrine,
+  manufacturing, medicine, finance. **Not one is a research discipline.** They are re-admitted to the
+  rebuild in exactly the status W0-a holds: **a dedup reference, not a menu** — they stop the rebuild
+  re-deriving object-capability security from scratch, and they bound nothing about what it may want.
+  Every re-admitted mechanism must be **re-stated at the harness layer against two-domain evidence** or
+  dropped; carrying a candidate forward unchanged is the patch this amendment forbids.
+
+**In flight:** `W0-b2` (SDLC incumbent baseline) and `W0-d2` (SDLC pain record) — the missing second
+domain. The W6 distillation task was **stopped mid-run**: it was distilling the wrong-framed corpus, and
+a well-audited answer to the wrong question is worse than none, because its audit trail lends it
+authority.
+
+**Budget:** the rebuild exceeds A-1's 18–22 envelope (~30 projected). Surfaced to the owner as a
+blocking question before regeneration spawns — per §12's hazard note, an out-of-envelope change is not an
+in-envelope steer and is not the leader's to absorb silently.
+
+*Rule-1 admission: N/A — a run-direction record, not a candidate. Filed under E-1's own logic: a
+superseded artifact that is not recorded as superseded is a live artifact wearing a stale frame, which is
+exactly the P-19 shape this run has now hit twice.*
