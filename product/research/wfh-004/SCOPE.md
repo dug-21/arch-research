@@ -468,3 +468,65 @@ in-envelope steer and is not the leader's to absorb silently.
 *Rule-1 admission: N/A — a run-direction record, not a candidate. Filed under E-1's own logic: a
 superseded artifact that is not recorded as superseded is a live artifact wearing a stale frame, which is
 exactly the P-19 shape this run has now hit twice.*
+
+### A-8 — 2026-07-25 · The product thesis, and the rebuilt question (owner)
+
+> *"I really want this done right… worth the spend… a lot cheaper at this stage than after we start
+> building. This focus is for a new product, potentially a novel one. I want to minimize dependence on
+> LLMs while raising security and reliability, but keep them for what they are good at. But this
+> 'harness' we're talking about is critical, and I'm trying to ensure we have fully done our research
+> assessment, to look at regular, and maybe non-traditional approaches to solve the challenges."*
+> — owner, 2026-07-25
+
+**Budget: released.** A-1's 18–22 envelope is superseded; the rebuild runs to completion. Rationale
+recorded because it is the standing justification for every subsequent spend decision in this run:
+*research is cheaper than rework once building starts.*
+
+**The thesis, stated as the run's organizing question.** A-3 admitted inference-minimality as one lens
+among six and one triage screen. That was an under-reading. It is **the product thesis**, and the rebuilt
+run is organized around it:
+
+> **What must an agentic workflow harness provide such that the LLM is required in as few places as
+> possible — and the places it *is* required are the ones it is genuinely good at — while security and
+> reliability go *up*, not down?**
+
+This is not the same question the superseded run asked ("what must a harness provide?"). It is
+strictly harder and strictly more useful, because it forces every candidate to declare **what it takes
+off the model's plate, what it deliberately leaves there, and what security or reliability is bought by
+the move.** It also aligns the run with the theme's own lens — *the LLM a directed, supporting component,
+not the driver* — which the superseded run cited but never made load-bearing.
+
+**Four binding consequences for the rebuild:**
+
+1. **Inference minimality is promoted from lens to frame.** Every candidate, from every lens, carries the
+   A-3 inference-surface field as a **required and scored** property, not an annotation. L6's D / I / P
+   partition (decidable · irreducible · pseudo-irreducible-because-nobody-built-the-deterministic-path)
+   becomes the rebuild's shared vocabulary. **The (P) reservoir is the product's opportunity surface.**
+2. **Security and reliability are co-equal raised bars, not constraints to satisfy.** A candidate that
+   removes inference but *lowers* either is a regression and must say so. A candidate that raises both
+   *because* it removed inference is the thesis working, and should be named as such — L6 §5 already
+   argues the mechanism (a guarantee is statable only over a deterministic path; any inference on the
+   enforcement path demotes a guarantee to a tendency).
+3. **"Keep them for what they are good at" requires knowing what that is — and we never established it.**
+   The superseded surface characterized the *shipped field* (W0-a), the *incumbent* (W0-b), our
+   *constraints* (W0-c), and our *pain* (W0-d). It never characterized **the component itself**. A run
+   whose thesis is "use the LLM only where it is genuinely good" cannot proceed on an unexamined
+   assumption about where that is. **New surface input W0-e** is chartered: the honest capability and
+   failure envelope of the LLM *as a component of a control system* — what it is reliably good at, what
+   it is unreliably good at (the dangerous middle), what it cannot do, and how each of those degrades
+   under adversarial input, long horizons, and scale.
+4. **Non-traditional approaches are explicitly in scope and will be resourced.** Rule 2 already forbids a
+   shipped-precedent screen; A-8 goes further and makes unconventional mechanism a **deliberate search
+   target**. The superseded run's single highest-yield vein was cross-domain transplant, and its own
+   authors flagged unmined ground twice (L1: aviation over-concentration; R2-5: insurance-fraud/AML
+   named as the un-mined adversarial-economics field). The rebuild resources that hunt properly rather
+   than treating it as one lens of six.
+
+**What this does not change:** the run stays **directional and structure-only**. It maps the space and
+produces a build-decision input — shortlist, probe queue, and drop-list as co-equal outputs (A-6). It
+does not select an architecture, choose a representation, or build (§10). The thesis sharpens *what is
+generated and how it is scored*; it does not license the run to start designing.
+
+*Rule-1 admission: N/A — a framing and resourcing directive. Note it passes the WHAT-or-HOW test anyway:
+"the LLM is required in as few places as possible" is a property of the system's operation, observable as
+a count of load-bearing inference points, not a mechanism.*
