@@ -266,3 +266,36 @@ art / nobody ships X," which anchors toward incremental deltas off the incumbent
 
 *Rule-1 admission: passes — the lens and the screen govern candidates; they are not themselves
 candidates. The declared inference surface is a property of a stated ability, not a mechanism claim.*
+
+### A-4 — 2026-07-25 · The inherited retro obligation, discharged into this run's CLOSE (leader)
+
+**Found by the run, about the run.** Two round-1 lenses independently flagged that **P-19 has reproduced
+into wfh-004**:
+
+- L5: *"P-19 has reproduced into this run: wfh-004's SCOPE carries no retro workstream — L5-27's pain,
+  live in the run that is cataloguing it."*
+- L1-49 (evidence field): *"the obligation is **currently evaporating again**, live."*
+
+The facts: wfh-002's close-out deferred `factory-retro` to its successor in writing — *"Not performed,
+not partially performed"* — the successor is this run, and this SCOPE was written without a retro
+workstream. That is the **fourth** occurrence of the same failure mode (P-19 records three), and it was
+about to happen inside the run whose own pain register documents it. Left alone it would have been
+discovered by a future W0-d sweep, exactly as P-12/P-14/P-26 were.
+
+**Recorded as a binding obligation on this run's CLOSE**, per `theme-scan` CLOSE (*"Trigger
+`factory-retro`"*):
+
+1. `factory-retro` runs at CLOSE, covering **both** wfh-002 (inherited, undischarged) and wfh-004.
+2. The close-out states the obligation as discharged or names it as breached. **Not silently omitted** —
+   the failure mode is silence, not refusal.
+3. If the owner defers it again, the deferral is recorded *here* with its carrier named, so the next
+   successor inherits a written obligation rather than a gap.
+
+**Scope discipline:** this is not scope expansion. `factory-retro` is already in the governing
+protocol's CLOSE; A-4 records an inherited obligation that was about to evaporate, and names where it
+discharges. No workstream is added and no generation is affected.
+
+*Rule-1 admission: N/A — an obligation record, not a candidate. Noted for the irony and for W6: the
+cheapest possible instance of emergent concern **E-1** (commitment tracking) is a run writing its own
+obligations down where the successor must read them. This amendment is that mechanism, executed by hand,
+at n=1.*
