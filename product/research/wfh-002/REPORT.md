@@ -77,12 +77,14 @@ is defined well enough for the proof bar to mean anything — which is why W6 fe
 
 Written by `factory-curator` (single-writer firewall); detail in `curation-ledger.md`.
 
-- Ontology technology node — **`grade:claimed`, unchanged.** Corrected to record the early close, that
-  W4 was never built, and that the forward path is gated on the successor's purpose definition
-  (replacing the now-dead "gated on the v0.3 structural decision" line).
+- Ontology technology node **#180 → #183** — **`grade:claimed`, unchanged.** Corrected to record the
+  early close, that W4 was never built, and that the forward path is gated on the successor's purpose
+  definition (replacing the now-dead "gated on the v0.3 structural decision" line). W1/W2/W3/W5
+  stress-test record kept intact; 7 incoming `Motivates` redirected.
 - Findings from W2/W3/W5 (#177, #178, #179, #181) — unchanged, still valid.
-- Two findings added at close: the provisional Option C `position`, and the queen-side-evaluation
-  constraint.
+- Two findings added at close: **#184** — the Option C `position`, tagged `provisional` /
+  `non-binding`; **#185** — the queen-side-evaluation constraint (durable, purpose-independent). Kept
+  as two nodes deliberately: #185 binds the successor, #184 explicitly does not.
 - **No grade moved anywhere. No `proven`. The firewall is untouched.**
 
 ## 7. Handoff
