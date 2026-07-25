@@ -1,0 +1,359 @@
+<title>Declare in the graph, evaluate in the queen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#f4f7fb; --ink:#0f1828; --muted:#586a83; --faint:#8494ab;
+    --line:#d6deea; --surface:#ffffff; --surface2:#eaf0f8;
+    --declare:#2f6bb0; --declare-soft:#e3edf8; --declare-line:#bcd2ec;
+    --queen:#b0741a; --queen-soft:#f7ecd7; --queen-line:#e6cfa2;
+    --fire:#b23f36; --fire-soft:#f5e1de; --fire-line:#e6bdb8;
+    --sp:clamp(1.5rem,4vw,3rem);
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0b1220; --ink:#e7eef8; --muted:#98a7bd; --faint:#6b7c95;
+      --line:#212d40; --surface:#111c2e; --surface2:#0f1828;
+      --declare:#6ea8e6; --declare-soft:#152439; --declare-line:#254063;
+      --queen:#e6a344; --queen-soft:#271f12; --queen-line:#4a3a1c;
+      --fire:#e2766c; --fire-soft:#2a1512; --fire-line:#4d2822;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7fb; --ink:#0f1828; --muted:#586a83; --faint:#8494ab;
+    --line:#d6deea; --surface:#ffffff; --surface2:#eaf0f8;
+    --declare:#2f6bb0; --declare-soft:#e3edf8; --declare-line:#bcd2ec;
+    --queen:#b0741a; --queen-soft:#f7ecd7; --queen-line:#e6cfa2;
+    --fire:#b23f36; --fire-soft:#f5e1de; --fire-line:#e6bdb8;
+  }
+  :root[data-theme="dark"]{
+    --paper:#0b1220; --ink:#e7eef8; --muted:#98a7bd; --faint:#6b7c95;
+    --line:#212d40; --surface:#111c2e; --surface2:#0f1828;
+    --declare:#6ea8e6; --declare-soft:#152439; --declare-line:#254063;
+    --queen:#e6a344; --queen-soft:#271f12; --queen-line:#4a3a1c;
+    --fire:#e2766c; --fire-soft:#2a1512; --fire-line:#4d2822;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:78rem;margin:0 auto;padding:var(--sp);}
+  h1,h2,h3{text-wrap:balance;line-height:1.12;letter-spacing:-.02em;margin:0;}
+  p{margin:0;}
+  .mono{font-family:var(--mono);}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--faint);}
+
+  /* header */
+  header{border-bottom:1px solid var(--line);padding-bottom:clamp(1.2rem,3vw,2rem);
+    margin-bottom:clamp(1.6rem,4vw,2.6rem);}
+  h1{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:680;margin:.5rem 0 .7rem;}
+  h1 .and{color:var(--muted);font-weight:400;}
+  h1 .d{color:var(--declare);} h1 .q{color:var(--queen);}
+  .lede{font-size:clamp(1.02rem,2vw,1.2rem);color:var(--muted);max-width:60ch;}
+  .premise{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.1rem;
+    font-family:var(--mono);font-size:.8rem;background:var(--queen-soft);
+    color:var(--queen);border:1px solid var(--queen-line);border-radius:999px;
+    padding:.34rem .8rem;}
+  .premise b{color:var(--ink);font-weight:600;}
+
+  section{margin-top:clamp(2rem,5vw,3.4rem);}
+  .h2row{display:flex;align-items:baseline;gap:.9rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+  h2{font-size:clamp(1.25rem,2.6vw,1.6rem);font-weight:640;}
+  .h2row .note{color:var(--muted);font-size:.95rem;}
+
+  /* stack of bands */
+  .stack{display:flex;flex-direction:column;gap:.9rem;}
+  .band{display:grid;grid-template-columns:8.5rem 1fr;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .rail{padding:1.1rem 1rem;display:flex;flex-direction:column;gap:.35rem;
+    justify-content:center;border-right:1px solid var(--line);}
+  .rail .verb{font-family:var(--mono);font-weight:600;font-size:1rem;letter-spacing:-.01em;}
+  .rail .sub{font-size:.72rem;color:var(--faint);line-height:1.3;}
+  .band .body{padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.55rem;min-width:0;}
+  .band .title{font-weight:620;font-size:1.05rem;}
+  .band .desc{color:var(--muted);font-size:.94rem;}
+  .band.b-source{border-left:4px solid var(--faint);}
+  .band.b-declare{border-left:4px solid var(--declare);}
+  .band.b-declare .rail .verb{color:var(--declare);}
+  .band.b-queen{border-left:4px solid var(--queen);background:linear-gradient(180deg,var(--queen-soft),var(--surface) 62%);}
+  .band.b-queen .rail{border-right-color:var(--queen-line);}
+  .band.b-queen .rail .verb{color:var(--queen);}
+
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.15rem;}
+  .tok{font-family:var(--mono);font-size:.8rem;background:var(--surface2);
+    border:1px solid var(--line);border-radius:7px;padding:.2rem .5rem;white-space:nowrap;}
+  .tok.d{background:var(--declare-soft);border-color:var(--declare-line);color:var(--declare);}
+  .tok.q{background:var(--queen-soft);border-color:var(--queen-line);color:var(--queen);}
+  .tok.f{background:var(--fire-soft);border-color:var(--fire-line);color:var(--fire);}
+  .spine{display:flex;justify-content:center;color:var(--faint);font-family:var(--mono);
+    font-size:.9rem;line-height:1;padding:.05rem;}
+
+  /* seam */
+  .seam{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:clamp(1.1rem,2.5vw,1.6rem);display:grid;
+    grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;}
+  .seam .node{border-radius:11px;padding:.9rem 1rem;border:1px solid;}
+  .seam .g{background:var(--declare-soft);border-color:var(--declare-line);}
+  .seam .e{background:var(--queen-soft);border-color:var(--queen-line);}
+  .seam .lab{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;
+    text-transform:uppercase;margin-bottom:.4rem;}
+  .seam .g .lab{color:var(--declare);} .seam .e .lab{color:var(--queen);}
+  .seam .node .big{font-family:var(--mono);font-weight:600;font-size:.98rem;}
+  .seam .node .small{color:var(--muted);font-size:.86rem;margin-top:.25rem;}
+  .seam .link{display:flex;flex-direction:column;align-items:center;gap:.3rem;
+    color:var(--faint);text-align:center;}
+  .seam .link .arrow{font-family:var(--mono);font-size:1.1rem;color:var(--muted);}
+  .seam .link .name{font-family:var(--mono);font-size:.72rem;color:var(--declare);
+    background:var(--declare-soft);border:1px solid var(--declare-line);
+    border-radius:6px;padding:.12rem .4rem;}
+  .seam-cap{color:var(--muted);font-size:.92rem;margin-top:.9rem;text-align:center;}
+  .seam-cap b{color:var(--ink);font-weight:600;}
+
+  /* bus / trace */
+  .bus{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;}
+  .bus-head{display:grid;grid-template-columns:2.4rem 1fr 1fr;gap:1px;
+    background:var(--line);}
+  .bus-head > div{background:var(--surface2);padding:.6rem .9rem;font-family:var(--mono);
+    font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .bus-head .qh{color:var(--queen);}
+  .step{display:grid;grid-template-columns:2.4rem 1fr 1fr;gap:1px;background:var(--line);}
+  .step > *{background:var(--surface);padding:.8rem .9rem;}
+  .step .n{font-family:var(--mono);color:var(--faint);font-size:.85rem;
+    display:flex;justify-content:center;font-variant-numeric:tabular-nums;}
+  .step .queen-col{border-left:3px solid var(--queen);}
+  .step .act{font-weight:560;font-size:.95rem;margin-bottom:.2rem;}
+  .step .det{color:var(--muted);font-size:.87rem;}
+  .step .work{color:var(--muted);font-size:.9rem;}
+  .step.loopback .queen-col{background:var(--queen-soft);}
+  .step.fire .queen-col{border-left-color:var(--fire);}
+  .step.fire .act{color:var(--fire);}
+  .flag{font-family:var(--mono);font-size:.72rem;border-radius:6px;padding:.1rem .45rem;
+    border:1px solid;display:inline-block;margin-top:.4rem;}
+  .flag.loop{color:var(--queen);background:var(--queen-soft);border-color:var(--queen-line);}
+  .flag.esc{color:var(--fire);background:var(--fire-soft);border-color:var(--fire-line);}
+
+  /* ledger */
+  .ledger{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .ledger .col{background:var(--surface);padding:1.1rem 1.2rem;display:flex;
+    flex-direction:column;gap:.6rem;}
+  .ledger .colhead{display:flex;align-items:center;gap:.55rem;margin-bottom:.3rem;}
+  .ledger .dot{width:.6rem;height:.6rem;border-radius:50%;}
+  .ledger .g .dot{background:var(--declare);} .ledger .e .dot{background:var(--queen);}
+  .ledger h3{font-size:1.02rem;font-weight:620;}
+  .ledger .g h3{color:var(--declare);} .ledger .e h3{color:var(--queen);}
+  .ledger .sub{font-size:.78rem;color:var(--faint);font-family:var(--mono);}
+  .ledger li{list-style:none;color:var(--muted);font-size:.92rem;padding-left:1.1rem;
+    position:relative;}
+  .ledger li::before{content:"—";position:absolute;left:0;color:var(--faint);}
+  .ledger ul{margin:0;padding:0;display:flex;flex-direction:column;gap:.4rem;}
+  .ledger li b{color:var(--ink);font-weight:600;}
+
+  /* degrade callout */
+  .callout{border:1px dashed var(--line);border-radius:14px;padding:clamp(1.1rem,2.5vw,1.5rem);
+    background:var(--surface2);display:flex;gap:1rem;align-items:flex-start;}
+  .callout .mk{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--faint);white-space:nowrap;padding-top:.15rem;}
+  .callout p{color:var(--muted);font-size:.95rem;}
+  .callout b{color:var(--ink);}
+
+  /* footer status */
+  .status{margin-top:clamp(2rem,5vw,3rem);border-top:1px solid var(--line);
+    padding-top:1.3rem;display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;}
+  .status .item{font-size:.86rem;color:var(--muted);display:flex;gap:.5rem;align-items:center;}
+  .status .k{font-family:var(--mono);font-size:.72rem;color:var(--faint);
+    text-transform:uppercase;letter-spacing:.08em;}
+
+  @media (max-width:760px){
+    .band{grid-template-columns:1fr;}
+    .rail{border-right:none;border-bottom:1px solid var(--line);flex-direction:row;
+      align-items:baseline;gap:.6rem;}
+    .band.b-queen .rail{border-bottom-color:var(--queen-line);}
+    .seam{grid-template-columns:1fr;}
+    .seam .link{flex-direction:row;}
+    .ledger{grid-template-columns:1fr;}
+    .bus-head,.step{grid-template-columns:1.8rem 1fr;}
+    .bus-head .wh,.step .work{display:none;}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .tok,.seam .node{transition:transform .15s ease;}
+    .tok:hover{transform:translateY(-1px);}
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">wfh-002 · operating-context architecture · Option C</div>
+    <h1><span class="d">Declare</span> in the graph, <span class="and">·</span> <span class="q">evaluate</span> in the queen</h1>
+    <p class="lede">The typed ontology says <em>what exists and how it wires</em>. It only ever <em>names</em> the rules. The queen — one rules engine — reads the graph, decides every rule, and drives the run.</p>
+    <span class="premise">✓ Premise locked:&nbsp;<b>the queen owns evaluation</b></span>
+  </header>
+
+  <!-- THE STACK -->
+  <section>
+    <div class="h2row"><h2>The stack</h2><span class="note">Read top to bottom. Humans edit the top; the queen drives the bottom.</span></div>
+    <div class="stack">
+
+      <div class="band b-source">
+        <div class="rail"><span class="verb">Source</span><span class="sub">what a human edits</span></div>
+        <div class="body">
+          <span class="title">Git-native files</span>
+          <span class="desc">The real source of truth — plain files, diffable, portable. Nothing below replaces them; the graph is an index over them.</span>
+          <div class="chips"><span class="tok">.claude/</span><span class="tok">AGENTS.md</span><span class="tok">CLAUDE.md</span><span class="tok">settings.json</span></div>
+        </div>
+      </div>
+
+      <div class="spine">↓</div>
+
+      <div class="band b-declare">
+        <div class="rail"><span class="verb">Declare</span><span class="sub">the ontology, on the graph</span></div>
+        <div class="body">
+          <span class="title">The typed graph — nouns, wiring, and rule <em>names</em></span>
+          <span class="desc">Five building blocks and four relationships. Every body preserved byte-for-byte. Plus a thin layer of <em>references</em>: it names the bars, cost meters, and loops — but holds <b>no rule logic</b>.</span>
+          <div class="chips">
+            <span class="tok d">instruction</span><span class="tok d">actor</span><span class="tok d">step</span><span class="tok d">checkpoint</span><span class="tok d">instrument</span>
+          </div>
+          <div class="chips">
+            <span class="tok">runs</span><span class="tok">depends-on</span><span class="tok">gated-by</span><span class="tok">injects</span>
+            <span class="tok d">branches_on: floor-of-X</span><span class="tok d">cost: {tokens, wall-clock}</span><span class="tok d">loop: until coverage-dry</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spine">↓&nbsp;&nbsp;reads&nbsp;&nbsp;↓</div>
+
+      <div class="band b-queen">
+        <div class="rail"><span class="verb">Evaluate</span><span class="sub">the queen · drives the bus</span></div>
+        <div class="body">
+          <span class="title">One rules engine + orchestrator</span>
+          <span class="desc">Reads the graph, then <em>runs it</em>: schedules steps in order, evaluates every named rule as deterministic, testable logic, meters cost, runs loops, escalates to a human, and enforces the firewall. The agents do the work <em>inside</em> steps; the queen owns everything <em>around</em> them.</span>
+          <div class="chips">
+            <span class="tok q">floor-of-X → met?</span><span class="tok q">coverage-dry → yes/no</span><span class="tok q">cost &lt; cap?</span><span class="tok q">loop · 2 strikes → escalate</span><span class="tok f">firewall verdict</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- THE SEAM -->
+  <section>
+    <div class="h2row"><h2>The seam</h2><span class="note">The one line the whole design turns on.</span></div>
+    <div class="seam">
+      <div class="node g">
+        <div class="lab">Graph declares</div>
+        <div class="big">checkpoint: firewall</div>
+        <div class="small">A named checkpoint that guards the jump to <span class="mono">proven</span>. It knows <em>which</em> bar it tests — not how to test it.</div>
+      </div>
+      <div class="link">
+        <span class="name">branches_on</span>
+        <span class="arrow">⇢</span>
+        <span class="mono" style="font-size:.72rem;color:var(--muted)">reference</span>
+      </div>
+      <div class="node e">
+        <div class="lab">Queen evaluates</div>
+        <div class="big">floor-of-X</div>
+        <div class="small">Real artifact attached, at the claimed altitude, demonstrated by us? A deterministic rule you can edit, test, and audit.</div>
+      </div>
+    </div>
+    <p class="seam-cap"><b>The graph names the rule. The queen owns what it means.</b> Change the bar → edit the queen's rule; the graph never moves.</p>
+  </section>
+
+  <!-- THE BUS -->
+  <section>
+    <div class="h2row"><h2>The bus in motion</h2><span class="note">A real run: the “research until it’s covered” loop, then the firewall.</span></div>
+    <div class="bus">
+      <div class="bus-head">
+        <div>#</div>
+        <div class="qh">Queen drives</div>
+        <div class="wh">Agents work (inside the step)</div>
+      </div>
+
+      <div class="step">
+        <div class="n">1</div>
+        <div class="queen-col"><div class="act">Schedule the step</div><div class="det">Walks <span class="mono">depends-on</span> order; opens the tech-discovery step, which carries a <span class="mono">loop</span>.</div></div>
+        <div class="work">Researchers fan out and search.</div>
+      </div>
+
+      <div class="step loopback">
+        <div class="n">2</div>
+        <div class="queen-col">
+          <div class="act">Meter, then test the loop</div>
+          <div class="det">Rolls up cost — <span class="mono">tokens</span> sum, <span class="mono">wall-clock</span> max — and checks it against the cap. Then evaluates <span class="mono">coverage-dry</span>.</div>
+          <span class="flag loop">not dry → run another round ↺</span>
+        </div>
+        <div class="work">A fresh round returns new candidates.</div>
+      </div>
+
+      <div class="step fire">
+        <div class="n">3</div>
+        <div class="queen-col">
+          <div class="act">Give up loudly, if it won’t converge</div>
+          <div class="det">Two rounds that still can’t clear the bar → stop. Never silent, never forever.</div>
+          <span class="flag esc">2 strikes → notify a human</span>
+        </div>
+        <div class="work">Human decides: continue · redirect · kill.</div>
+      </div>
+
+      <div class="step">
+        <div class="n">4</div>
+        <div class="queen-col"><div class="act">Coverage clears → advance</div><div class="det">Evaluates <span class="mono">coverage-dry → yes</span>; the loop exits clean and the step completes.</div></div>
+        <div class="work">Findings handed to the curator.</div>
+      </div>
+
+      <div class="step fire">
+        <div class="n">5</div>
+        <div class="queen-col"><div class="act">The firewall fires</div><div class="det">At the capability’s floor, evaluates <span class="mono">floor-of-X</span>. Real artifact at altitude? → allow <span class="mono">proven</span>. Otherwise → deny.</div></div>
+        <div class="work">No artifact → stays a claim, honestly.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LEDGER -->
+  <section>
+    <div class="h2row"><h2>Who owns what</h2><span class="note">The stable part vs the part that changes.</span></div>
+    <div class="ledger">
+      <div class="col g">
+        <div class="colhead"><span class="dot"></span><h3>The graph declares</h3></div>
+        <span class="sub">stable · rarely moves</span>
+        <ul>
+          <li><b>The nouns</b> — instruction, actor, step, checkpoint, instrument</li>
+          <li><b>The wiring</b> — what runs what, what depends on what, what guards what</li>
+          <li><b>The bodies</b> — every file preserved byte-for-byte</li>
+          <li><b>The rule names</b> — “this checkpoint tests the floor,” and nothing more</li>
+        </ul>
+      </div>
+      <div class="col e">
+        <div class="colhead"><span class="dot"></span><h3>The queen evaluates</h3></div>
+        <span class="sub">churns · where rules live</span>
+        <ul>
+          <li><b>The floor &amp; north-star</b> — is the bar met? (binary)</li>
+          <li><b>The coverage test</b> — has the search gone dry?</li>
+          <li><b>Cost &amp; caps</b> — the roll-up, and whether it’s over budget</li>
+          <li><b>Loops &amp; escalation</b> — repeat, count strikes, pull in a human</li>
+          <li><b>The firewall verdict</b> — the one rule that guards <span class="mono">proven</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEGRADE -->
+  <section>
+    <div class="callout">
+      <span class="mk">No queen?</span>
+      <p><b>It still works, quieter.</b> Hand the graph to a third-party tool that has no engine, and the named rules simply read as prose that tool’s own agent interprets — exactly where a plain-graph design already lives. So this is <b>that design plus determinism</b>: the same floor when nothing’s driving, testable rules the moment the queen is.</p>
+    </div>
+  </section>
+
+  <!-- STATUS -->
+  <div class="status">
+    <span class="item"><span class="k">Status</span> analysis only — nothing built, nothing graded</span>
+    <span class="item"><span class="k">H4</span> refined, not refuted — ontology-first survives; it declares, it doesn’t own governance</span>
+    <span class="item"><span class="k">Firewall</span> untouched — the ontology stays <span class="mono">&nbsp;claimed</span></span>
+    <span class="item"><span class="k">Next</span> a build that shows the queen evaluating one named rule end-to-end</span>
+  </div>
+</div>
