@@ -201,3 +201,68 @@ Architecture and mechanism selection (the point of the reframe); decomposition i
 ## Amendments
 
 *(append-only, dated; every amendment must pass the Rule-1 WHAT-or-HOW test at admission — D3)*
+
+### A-1 — 2026-07-25 · Budget envelope set (owner)
+
+`themes.md` carries no budget envelope for `theme:workflow-harness`. Owner set it at the INIT gate:
+**18–22 specialist spawns** — 3 surface (W0-a/b/d) · 6 round-1 lenses · ~6 targeted round-2 lenses ·
+curator (W6) · goal-owner (W7). Exhausting the §9 grid is the done-condition, and it costs more than
+one generation pass; the envelope is sized for two.
+
+*Rule-1 admission: N/A — an operating parameter, not a candidate.*
+
+### A-2 — 2026-07-25 · Exhaustion is the done-condition; generation runs ≥2 rounds (owner)
+
+> *"the purpose of this run MUST exhaust the options, so we can set real product goals"* — owner, 2026-07-25.
+
+Reinforces §9 and §4 Rule 1 against the run's dominant failure mode: **jumping to an architecture or a
+POC before the WHAT space is mapped** (the wfh-002 failure, repeated). Operationalized as:
+
+1. **Rule 1 enforced at the lens, not deferred to triage.** Each hypothesizer applies the WHAT-or-HOW
+   test as a hard output filter *before writing a candidate down*. The ability statement and the
+   mechanism are **separate required fields**, so a mechanism cannot smuggle itself into the ability.
+   A candidate statable only as *"the harness uses <mechanism>"* is never recorded.
+2. **Generation is ≥2 rounds.** Round 1 wide; round 2 re-spawns per lens against every §9 grid cell that
+   returned thin or empty, **handed round 1's output** so it cannot re-emit. A cell closes when a fresh
+   pass adds nothing substantively new. A cell no lens can populate is recorded as a **hole**, naming
+   which lens failed to see it.
+3. **Honest bound on the claim.** Exhaustion is **relative to the named lenses × named concerns**, plus
+   any §3.3 emergent concern. A run claiming absolute exhaustion would be lying; this one claims grid
+   closure with holes recorded.
+4. **The drift guard binds the back half too.** W6 dedups and counts convergence — it does not rank or
+   choose. W7 screen 7 ("cheapest proof artifact") is the one place HOW legitimately re-enters: naming
+   what would *settle* a question is in scope; selecting a design is not. **Nothing in this run selects
+   a substrate, a representation, or a build.**
+
+*Rule-1 admission: N/A — a run-discipline amendment, not a candidate.*
+
+### A-3 — 2026-07-25 · Inference minimality: a declared field, a triage screen, and a sixth lens (owner)
+
+> *"I'm motivated to try something novel, because I've not seen something out there that IMO has nailed
+> the solution, and really broken down the fewest number of parts in which inference is needed"* — owner, 2026-07-25.
+
+The owner's design intuition is the **dual of C-2**: C-2 establishes that semantic verdicts bottom out
+in a model call; this asks **where the minimal cut actually is**. Admitted in three places, deliberately
+**not** as a generation constraint:
+
+- **NOT a constraint on W1–L6 generation.** Inference-minimality is a *narrowing* criterion, and the
+  funnel narrows at the neck, not the mouth. Applied during generation it would suppress candidates
+  before they were written down — precisely the A-2 failure mode one level up.
+- **A required field on every candidate — the inference surface.** Each candidate declares where a model
+  call is **structurally irreducible** versus where it is **merely current practice**. Characterization,
+  not constraint; costs the lens nothing and gives triage something real to score.
+- **Triage screen 9 — inference minimality.** Appended to §7 W7's eight screens, scored on the declared
+  field: how few irreducible inference points does this ability need, and is the rest deterministic?
+- **A sixth round-1 lens, L6 — inference-minimality.** Charter: per concern, what is decidable
+  **deterministically**, what **genuinely requires** inference, and what **uses inference today only
+  because nobody built the deterministic path**. The third category is the novelty-with-benefit
+  reservoir. No existing lens asks this squarely — W2 (constraint inversion) glances at it via C-2.
+
+**Novelty posture — confirmed, not new.** Rule 2 (§4) already forbids a shipped-precedent screen and is
+exactly the owner's stated position: novelty is free, hand-waving is not. One guard added: **W0-a's
+landscape is a dedup reference, not a menu.** Its job is to stop us re-inventing what exists — never to
+bound what we may want. Lenses are told this explicitly, because W0-a returned framed as "state of the
+art / nobody ships X," which anchors toward incremental deltas off the incumbent.
+
+*Rule-1 admission: passes — the lens and the screen govern candidates; they are not themselves
+candidates. The declared inference surface is a property of a stated ability, not a mechanism claim.*
