@@ -299,3 +299,57 @@ discharges. No workstream is added and no generation is affected.
 cheapest possible instance of emergent concern **E-1** (commitment tracking) is a run writing its own
 obligations down where the successor must read them. This amendment is that mechanism, executed by hand,
 at n=1.*
+
+### A-5 — 2026-07-25 · The target is agentic workflows in general, not the garage (owner)
+
+> *"we're not just thinking about creating this for our garage… this is for all agentic workflows… SDLC
+> and research and potentially others. Don't get narrow."* — owner, 2026-07-25
+
+**The risk this names is real and specific to this run's construction.** The W0 surface is
+garage-shaped by design: **W0-b** is an inspection of *this repo's* incumbent, and **W0-d** is *this
+garage's* pain register. Generation was handed a research-domain evidence base, so an
+un-corrected triage would silently select for research-run abilities.
+
+**The honest structural read, which shapes the correction.** The skew is in the **evidence column**,
+not the **ability column**. The mechanisms the lenses paid in come from aviation, nuclear operations,
+finance, medicine, insurance, epidemiology, power grids, maritime, ocap security, distributed systems,
+military doctrine, manufacturing — **not one of them is a research discipline.** L2's inversions are
+structural, L3's adversarial work is domain-free, L4's scale axes are domain-free, L6's D/I/P partition
+is domain-free. So the candidate *abilities* are largely domain-neutral already; what is garage-shaped
+is which pain each cites. That means the correction belongs at **triage and distillation**, not in a
+re-generation pass — and it is therefore free.
+
+**Four binding consequences:**
+
+1. **Triage screen 10 — domain generality (appended to §7 W7's screens).** Every candidate is classified:
+   - **DOMAIN-NEUTRAL** — the ability and its mechanism hold unchanged across research, SDLC, ops,
+     support, data engineering. Most of the register is expected here.
+   - **DOMAIN-SHAPED** — the ability generalizes but its *statement* is research-flavored and must be
+     restated at the general altitude before it is routed `in`. The restatement is required, not optional.
+   - **GARAGE-SPECIFIC** — the ability only makes sense for this operation. **Demoted or dropped**, with
+     the reason recorded (a dropped ability is still a reusable finding — §7, D10/D11).
+2. **The second-domain substitution test.** For each candidate routed `in` or `needs-a-probe`, triage
+   substitutes **an SDLC delivery run** for the research run and asks whether the ability's *argument*
+   survives — not whether the example does. An ability whose argument dies under substitution is
+   DOMAIN-SHAPED at best. SDLC is the named substitute because JURATI's own value-target set spans it and
+   because the garage already runs an SDLC protocol family (`uni-*`) alongside the research one, so the
+   contrast is available in-house rather than imagined.
+3. **Prior art is binding, not optional.** **wfh-002's W5 ran exactly this test on the ontology** and
+   returned **AGNOSTIC-WITH-GAPS: the skeleton is neutral, with three structural general-workflow holes.**
+   W6 must read `product/research/wfh-002/FINDINGS-W5*` and carry those three named holes into
+   distillation; if this run's register does not populate them, that is a **coverage hole to report**, not
+   a silence. Do not re-derive what W5 already established.
+4. **Evidence-class honesty stays as-is.** A candidate whose only evidence is a garage pain is not thereby
+   GARAGE-SPECIFIC — P-19 (a dropped commitment) and P-01 (an interruption policy that would not bind) are
+   research-run instances of failure modes any multi-agent operation has. **Triage classifies on the
+   argument's reach, never on where the anecdote came from.** Conversely, "no field pain" does not mean
+   "not general" — L3's 18 `reasoned` rows and the entire steering-redirection cell are precedent-free by
+   construction, and their generality rests on mechanism alone.
+
+**Not changed:** the run stays directional and structure-only; no re-generation pass is spawned; the
+budget envelope (A-1) is unaffected. If triage finds the register genuinely narrow — more than a small
+minority routed GARAGE-SPECIFIC — that is a finding to report to the owner, and the remedy is a
+second-domain generation round in a *successor* run, not a mid-flight expansion of this one.
+
+*Rule-1 admission: N/A — a screen and a classification discipline governing candidates; not itself a
+candidate.*
