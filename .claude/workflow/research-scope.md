@@ -53,7 +53,12 @@ smart-edge: the proof-goal ran to a `partial` artifact with no Issue and no cycl
 - `phase-end phase:"synthesis"` → `stop`.
 
 ## CLOSE
-`context_cycle stop`. Git: research-stream PR `Closes #<issue>` (auto-merge after the synthesis gate).
+`context_cycle stop`. **Git (D15):** the scope's documents are already on `main` — they were committed
+there as the run produced them, not held on a branch. Only **executables** (POC code, datasets) travel on
+a `research/{scope-id}` branch and need a PR, which the leader rebase-merges after the gate; **auto-merge
+does not exist in this repo** (wf-v0.19). Close the **Issue** with the verdict comment — that is the
+record of the gate, which was always reviewed there (D1). Set the scope's `Status:` line to `done`, since
+on `main` it is the only marker distinguishing a finished run from a running one.
 Trigger `factory-retro`. **Frontier change (D3):** a discovered gap → curator updates the node + a
 dated Extension (in-envelope), or a new `capability` node + a new research-scope Issue (surface-expanding).
 

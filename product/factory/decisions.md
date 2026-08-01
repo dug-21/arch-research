@@ -36,6 +36,7 @@ once a real run validates them; provisional ones are revisited after the first r
 | D12 | Git strategy — two-stream, parallel-safe, auto-merge | locked | factory-git skill |
 | D13 | Garage reframe + funnel model (narrative-only; factory = proving-grounds stage) | locked | factory ADR (Uni) |
 | D14 | Citation provenance — `cites:` carries author/org/year; the watchlist is derived | locked | factory ADR (Uni) + `.claude/rules/` |
+| D15 | Research **documents** land on `main` continuously; only **executables** branch | locked | factory ADR (Uni) + factory-git |
 
 ---
 
@@ -353,6 +354,9 @@ Adapted from `uni-git` (which is SDLC-shaped); a sibling **`factory-git`** skill
   concurrently without sweeping each other's WIP.
 - **Always commit your work** before yielding — no uncommitted WIP left behind.
 - Scopes live in **disjoint directories** → parallel branches rebase-merge to main conflict-free.
+  *[2026-08-01 — this precondition is exactly what makes the research branch unnecessary for documents:
+  disjoint directories cannot conflict on `main` either. Revised by **D15**; the branch survives only for
+  executables. Path-scoped staging below is unchanged and becomes more load-bearing, not less.]*
 - *(Unimatrix side: each run's curator writes only its own scope's nodes; concurrent runs touch
   distinct entries — additive, no contention. Frontier-change to the shared board is append-only.)*
 
@@ -469,3 +473,62 @@ context_lookup(category:"finding", tags:["theme:<slug>"], limit:N)
    by the schema. Encoding an authority file for names would be its own project and is not worth it.
 
 **Eventual home:** factory ADR (Uni) + the operational form already in `.claude/rules/unimatrix-access.md`.
+
+---
+
+## D15 — Research documents land on `main` continuously; only executables branch
+**Status:** locked · 2026-08-01 · revises D12
+
+**The problem, observed.** D12 put every research artifact on a `research/{scope-id}` branch until the
+run closed. Research runs do not reliably close:
+
+- **wfh-004** is parked at its owner gate. Its entire evidence base — the landscape re-cut, the four
+  substrate constraints, the LLM component envelope, the conformance census, the 128-ability register,
+  the triage report — was invisible on `main` for a week, while **wfh-005 exists specifically to test
+  claims that live in those files**.
+- **wfh-002's** four durable verdicts reached `main` only because that run happened to close. Parked, they
+  would have been stranded identically.
+- **wfh-003** was scoped on 2026-07-22 and has no directory at all, on any branch — recoverable only by
+  reading its GitHub Issue.
+
+**The compounding failure underneath it.** A parked run's evidence compounds *nowhere*: not in git (the
+branch is unmerged) and not in Unimatrix (graph writes happen at formalize, post-gate). Reuse-first is
+load-bearing in this methodology, and two of five `wfh` runs were contributing to it not at all.
+
+**The argument that settles it is inside D12.** Its stated rationale for branching is parallelism safety —
+*"scopes live in disjoint directories → parallel branches rebase-merge to main conflict-free."* But if the
+directories are disjoint, they cannot conflict **on `main`** either. The precondition that makes branching
+safe is the same precondition that makes it unnecessary. For read-only documents the branch solves a
+problem that cannot occur, and charges visibility for it.
+
+**The decision — the line is the artifact kind, not the run:**
+
+| Artifact | Where it goes |
+|---|---|
+| **Documents** — `SCOPE.md`, `FINDINGS*`, `REPORT.md`, `reports/*`, ledgers | committed **straight to `main`** as the run produces them |
+| **Executables** — POC code, datasets, anything that builds | `research/{scope-id}` branch → PR → leader rebase-merges after the gate |
+
+**Documents accumulate; executables isolate.** Parallel agents writing code genuinely collide, and a
+half-built POC on `main` is a broken build. That is a real isolation need. A markdown file in a directory
+no other run touches is not.
+
+**What replaces the research PR.** Nothing is lost: the synthesis gate was **always reviewed on the Issue**
+(D1), and factory-git already conceded the PR merged *because* that review had happened. It rubber-stamped
+a decision made elsewhere. The leader now closes the Issue at CLOSE with the verdict comment — that is the
+record, and it is the surface the human actually used.
+
+**Two consequences to hold:**
+1. **Path-scoped staging becomes more load-bearing, not less** — there is no branch isolating a mistake
+   now. Never `git add -A`; stage exactly your scope's paths (D12, unchanged).
+2. **In-flight is not concluded.** A document on `main` may belong to a running scope, so the scope's
+   `Status:` line (scoped → researching → [feasibility] → synthesis → done) is the marker that says
+   which. Keep it current; read it before treating a findings file as a verdict.
+
+**Root cause worth recording.** `factory-git` was adapted from `uni-git`, an SDLC delivery workflow, and
+inherited its assumption that work is **transactional** — start, complete, commit atomically. Research runs
+park, close early, get superseded, and feed each other mid-flight; wfh-002 closed without an artifact,
+wfh-004 is parked, wfh-005 exists to attack wfh-004's premises. None of that is transactional. Expect more
+SDLC-shaped assumptions to chafe — the auto-merge claim (wf-v0.19) and the PR-per-change reflex were the
+same leak.
+
+**Eventual home:** factory ADR (Uni); operational form in the `factory-git` skill.
