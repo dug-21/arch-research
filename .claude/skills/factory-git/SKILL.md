@@ -1,6 +1,6 @@
 ---
 name: "factory-git"
-description: "Git conventions for the research factory — two-stream (method vs research), parallel-safe path-scoped commits, semver wf: stamp, auto-merge. Use when committing factory standards or research-run artifacts. Distinct from uni-git (SDLC)."
+description: "Git conventions for the research factory — two-stream (method vs research), parallel-safe path-scoped commits, semver wf: stamp derived from the git tag, one PR per session's method work, repo settings derived not asserted. Use when committing factory standards or research-run artifacts. Distinct from uni-git (SDLC)."
 ---
 
 # factory-git — Git Conventions for the Research Factory
@@ -82,10 +82,44 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
 
 ## Merge & PR
 
-- **Rebase-only** (merge commits disabled at repo level). **Auto-merge + delete-branch-on-merge** enabled.
-- **Research PR:** `Closes #<scope-issue>`; auto-merges after the synthesis gate (already
+**Do not trust a repo setting written down here — derive it.** A copied setting rots exactly like a
+copied version stamp, and this section was wrong about three of them at once:
+
+```
+gh api repos/dug-21/arch-research \
+  --jq '{allow_rebase_merge, allow_squash_merge, allow_merge_commit, allow_auto_merge, delete_branch_on_merge}'
+```
+
+As of 2026-08-01 that returns rebase **and** squash **and** merge-commit all allowed,
+`allow_auto_merge: false`, `delete_branch_on_merge: true`. Read it; don't trust this paragraph either.
+
+- **Rebase is our convention, not a guardrail.** The repo permits squash and merge commits. We rebase
+  anyway to keep `main` linear — which means nothing stops you doing otherwise, so it is on you.
+- **Auto-merge is NOT available** (`allow_auto_merge: false`). Everywhere a protocol says "auto-merge
+  after the gate," read it as: *the human gate already passed, so the leader **rebase-merges by hand**.*
+  (Observed in the wfh-001 retro as OBS-14 and left uncorrected for two weeks — this is that fix.)
+- **Branches are deleted on merge** (`delete_branch_on_merge: true`) regardless of merge flags. See the
+  stacking hazard below.
+- **Research PR:** `Closes #<scope-issue>`; the leader rebase-merges after the synthesis gate (already
   human-reviewed on the Issue, D1). Body = the run summary.
 - **Method PR:** reviewable (it ripples to every future run); on merge, tag + bump `wf:`.
+
+### One session's method work is ONE PR
+
+**Do not stack method PRs.** A session producing several related method changes puts them on **one
+branch as separate commits** and opens **one PR**. Reviewability comes from the commits; the PR is the
+review unit; the merge is one version bump. Splitting related work buys nothing and costs twice:
+
+1. **Stacking auto-closes the child.** With `delete_branch_on_merge: true`, merging the base deletes the
+   branch the stacked PR targets, and GitHub **closes** that PR rather than retargeting it. A closed PR
+   **cannot be reopened or given a new base** — the only recovery is to rebase the commits onto `main`
+   and open a fresh PR. (Cost on 2026-08-01: #50 discarded, reopened as #51.)
+2. **It mints dead versions.** One tag per method-PR merge means two PRs become two tags. Split
+   *dependent* work and you create a version no run will ever be stamped with — a dead entry in the exact
+   A/B slicing the stamp exists to serve (`wf-v0.17`).
+
+If you genuinely must stack — independent changes, different reviewers — **retarget the child PR to
+`main` BEFORE merging the base.** Doing it afterwards is impossible, not merely awkward.
 
 ## .gitignore essentials
 
