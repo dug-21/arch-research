@@ -24,6 +24,14 @@ top of the task. `agent_id: {scope-id}-researcher-{Wn}`.
 compact summary + citations + flags. **Persistence (OBS-2):** write the file yourself; if file-write
 is blocked for the subagent, return the markdown inline for the leader/curator to persist.
 
+**Cite with provenance (D14).** Each citation is structured: `type`
+(`paper|repo|product|standard|dataset|docs|blog`) · `ref` (DOI / arXiv id / URL / repo slug) · `title`
+— required; then `author` (`Surname; Surname`) · `org` · `year` where you can establish them, plus
+optional `venue`. **Omit a key you cannot establish — never guess one.** This is the same discipline as
+separating doc-claim from demonstrated: a guessed author is a fabricated fact, and the curator carries
+your citations into the graph verbatim. The provenance is what makes *"which sources keep appearing in
+our evidence"* computable instead of hand-tended (methodology §4).
+
 ## Evidence discipline (the firewall, from the researcher side)
 - Separate **doc-claim / user-report** from **demonstrated** evidence — explicitly, per claim.
 - Research moves *structure*, never *status*. Never assert a technology is `proven`.

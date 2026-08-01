@@ -26,6 +26,13 @@ Before creating any node, `context_search(category:"technology")` to **reuse** a
 ## Writes
 - `capability`/`nfr` (`missing`/`claimed`) + `Advances`/`About` edges; `technology` (`claimed`) +
   `Prerequisite→` capability; `finding` (`Motivates`, `cites:` field); `position` findings at synthesis.
+- **Citations carry provenance (D14).** Every `finding`'s `cites:` entry is structured: `type`
+  (`paper|repo|product|standard|dataset|docs|blog`) · `ref` · `title` required; `author` (`Surname;
+  Surname`) · `org` · `year` where the researcher or scout supplied them; optional `venue` and `surface`
+  (`literature|products|active-dev|adjacent`). **Omit an unknown key — never fill one in to make the
+  record look complete.** Carry through exactly what the source file gave you; if provenance is missing
+  and the field would be load-bearing, say so in the return rather than inventing it. Full schema:
+  methodology §4. Sources stay a **field** — never a node, never a `Cites` edge.
 - **Tag every entry** with the **run-id** (e.g. `shd-002`) for per-run yield.
 - **Grade every `capability`/`technology` with a `grade:` tag** — the firewall grade's single carrier
   and the board's queryable index (a `subgraph` board query reads it from tags, no content parse).

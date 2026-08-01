@@ -87,12 +87,29 @@ Four fields per entry, and no more: **what** we're watching · **which part of t
 **what change would make it interesting again** (the re-check condition) · **when we last looked**.
 Entries may be people, organizations, repositories, products, standards bodies, or conference tracks.
 
-*Derivation, not curation (pending).* A hand-tended list goes stale silently — the same failure the method
-rejects everywhere else in favour of a live query. The durable form is to record **author and organization**
-inside the structured citation field already carried on every finding, so "who keeps appearing in our own
-evidence" becomes a graph query that self-corrects. That is a change to the citation structure (the fix D8
-already sanctions — structure the `cites:` field further, never add a source node) and is **not yet made**;
-until it is, the watchlists below are curated by hand and must be pruned at each theme review.
+*Derived, not curated.* A hand-tended list goes stale silently — the same failure the method rejects
+everywhere else in favour of a live query. So the watchlist is **computed from our own evidence**: every
+citation carries `author` / `org` / `year` provenance and the `surface` that found it (**D14**), which
+makes "who keeps appearing" a calculation rather than a memory.
+
+```
+context_lookup(category:"finding", tags:["theme:<slug>"], limit:N)
+  → parse each entry's cites: block
+  → count distinct org / author across findings AND across scans
+  → an entity in ≥K findings spanning ≥2 scans is a watchlist candidate
+  → tally by `surface` — a surface that never appears in a citation is being staffed, not read
+```
+
+The `surface` tally is the honest check on this whole standard: it is how we find out whether the four
+reading surfaces are actually being read.
+
+*What it is not.* Sources remain a **field**, never a node and never a `Cites` edge (D8, unchanged), so
+this is a fetch-and-parse rather than a native graph query — tractable because findings-per-theme number
+in the tens. And there is **no backfill**: findings written before D14 carry unstructured citations, so
+the derivation only becomes useful as new ones accumulate. Until then the watchlists below stay
+hand-seeded, and the theme review reconciles the derived candidates against them — adding what the
+computation surfaced, pruning what has gone quiet. Near-duplicate name spellings are reconciled at that
+review, not by the schema.
 
 ### The coverage grid — the finish line
 
