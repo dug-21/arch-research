@@ -220,7 +220,11 @@ gap (enhancement #24) and D6 (agent_id not persisted). Until fixed, treat cycle-
 a **floor**, and take authoritative counts from a run-id `context_lookup` (as this retro did).
 
 Smaller operational notes from the same run: repo-level auto-merge is disabled (protocol says
-"auto-merge after the triage gate" — enable it or amend the protocol); WebFetch failed 4× clustered
+"auto-merge after the triage gate" — enable it or amend the protocol) *[resolved 2026-08-01 — the
+protocol was amended, not the setting: `factory-git` now derives repo settings via `gh api` instead of
+asserting them, and says the leader rebase-merges by hand. Two other settings claims in that skill were
+wrong at the same time, undetected for two weeks — a hard-coded setting rots exactly like a hard-coded
+version stamp]*; WebFetch failed 4× clustered
 during scan (retry/backoff or alternate fetcher for scouts); `context_correct` re-links on #11–#15
 skipped pre-existing invalid incoming sources (engine-side data quirk — pre-existing, not authored this
 run; watch whether it recurs).
