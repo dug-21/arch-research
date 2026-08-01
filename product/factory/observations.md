@@ -224,3 +224,37 @@ Smaller operational notes from the same run: repo-level auto-merge is disabled (
 during scan (retry/backoff or alternate fetcher for scouts); `context_correct` re-links on #11–#15
 skipped pre-existing invalid incoming sources (engine-side data quirk — pre-existing, not authored this
 run; watch whether it recurs).
+
+## OBS-15 — The theme mechanism, the garage's only divergent-reach engine, has effectively never run
+*2026-08-01 · from the wfh-004 direction review*
+
+The theme scan is designed to be exactly what an R&D funnel needs at the wide mouth: a recurring, divergent
+sweep that finds relevant, adjacent, and contrarian material and feeds it into structure. It is not missing.
+It has barely run. Across the first month: `smart-edge` seeded 2026-07-07, **one** scan (at seeding);
+`daystrom` seeded 2026-07-08, **zero** scans ever; `workflow-harness` seeded 2026-07-22, **one** scan (at
+seeding). Roughly seven scans owed against declared weekly cadence, two delivered, both at seed time. The
+mouth fired once per theme and the funnel drained downward for the rest of the month.
+
+**Four mechanical causes, all configuration rather than design:**
+1. **Cadence lives in a file and is scheduled nowhere.** "Scanned on cadence" plus "wave-0 = manual kick"
+   yields a cadence of zero, predictably.
+2. **The aperture was set to shipped tools.** Every theme's `source-mix` read *TBD*, so scouts defaulted to
+   product pages and repos. The first harness scan returned ~30 tools and no theory; the run that followed
+   generated 128 candidate abilities against **zero research literature**.
+3. **The scout had one mode.** *Discover candidates we lack* — with no mode for *take a position we hold and
+   find its prior art and counter-case*. Discovery cannot report that something we believe is already
+   solved, superseded, or wrong.
+4. **Dedup narrows and nothing widens.** Each scan filters against what the graph already knows, anchored
+   to a value-target, with no counter-pressure.
+
+**Measured cost.** The material that reframed `theme:workflow-harness` — a thirty-year workflow-authorization
+literature, the capability-security lineage, and a buy-versus-build question nobody had asked — arrived
+through an **owner conversation outside the funnel entirely**. The garage's divergent reach was, in practice,
+outsourced to the human, with no intake for the result except opening a new scope.
+
+**Response (this method change, wf-stream):** four declared reading surfaces each with its own question;
+a challenge mode alongside discovery; warm-leg/cold-leg discipline with the cold leg protected; a coverage
+grid as the scan's finish line; adopt and assemble added to the triage verdict set with a burden of proof on
+build; and a legal channel for a scan to propose reshaping its own theme. **Still open:** scheduling is
+interim (a theme review at each scan close), and the watchlist is hand-curated until author/organization are
+carried in the citation structure — the derived form D8 already points at.

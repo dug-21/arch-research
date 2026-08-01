@@ -42,6 +42,103 @@ narrative pass across CLAUDE.md / methodology / decisions / skills is a separate
 
 ---
 
+## How a scan reads — four surfaces, two legs, one finish line
+
+**Binding on every theme below.** This section replaces the per-theme `source-mix: TBD` that left every
+scout defaulting to product pages and code repositories.
+
+*Why it exists.* The first workflow-harness scan (wfh-001) came back with roughly thirty shipped tools and
+no theory. The run that followed it (wfh-004) then generated 128 candidate abilities against **zero
+research literature**, and the material that ultimately reframed the theme — a thirty-year body of work on
+deriving authorization from process definitions, plus the capability-security lineage — arrived through an
+owner conversation *outside the funnel entirely*. The aperture was set wrong, in configuration, and it cost
+a full run.
+
+### The four surfaces
+
+Each surface answers a **different question**. A scout told only "read more widely" returns a bibliography;
+a scout given the question returns a verdict.
+
+| Surface | The question it must answer | A thin answer looks like |
+|---|---|---|
+| **Research literature** | Is this already solved, formally characterized, or proven impossible? What are the known bounds, complexity results, and named failure modes? | a reading list with no verdict |
+| **Established products** | Does it exist commercially already? What is its **real scope against our need**, what does it cost, and what does adopting it lock us into? | a feature list instead of a scope-versus-need gap |
+| **Active development** | Is someone building this *right now*, how far have they got, and is the window closing? | a star count |
+| **Adjacent prior art** | Has another field solved the **structurally identical** problem under a different name? | "nothing found," without naming which fields were checked |
+
+**An unread surface is a declared hole, never a silent omission.** Every scan states which surfaces it
+touched and which it deliberately skipped, with the reason. This is the same honesty rule the methodology
+applies to coverage (§6): a judgment is legitimate when it is visible and specific.
+
+### Two legs on every recurring scan
+
+- **Warm leg — what moved.** Walk the theme's watchlist and check for deltas since the last look. Cheap,
+  fast, high signal density.
+- **Cold leg — what nobody flagged.** A **protected minimum** of the scan's effort spent reading outside
+  the watchlist, on a surface the theme has not touched recently.
+
+The cold leg is protected because the warm leg is cheap, satisfying, and produces visible output — left
+unprotected it crowds out cold searching inside about three cycles, and the theme becomes a very
+well-organized echo. **A scan that reports no cold-leg spend has not completed.**
+
+### The watchlist (steering config — lives here, not in the graph)
+
+Four fields per entry, and no more: **what** we're watching · **which part of the theme** it feeds ·
+**what change would make it interesting again** (the re-check condition) · **when we last looked**.
+Entries may be people, organizations, repositories, products, standards bodies, or conference tracks.
+
+*Derivation, not curation (pending).* A hand-tended list goes stale silently — the same failure the method
+rejects everywhere else in favour of a live query. The durable form is to record **author and organization**
+inside the structured citation field already carried on every finding, so "who keeps appearing in our own
+evidence" becomes a graph query that self-corrects. That is a change to the citation structure (the fix D8
+already sanctions — structure the `cites:` field further, never add a source node) and is **not yet made**;
+until it is, the watchlists below are curated by hand and must be pruned at each theme review.
+
+### The coverage grid — the finish line
+
+A theme declares the **dimensions** it cares about and the **lenses** it looks through. The grid is their
+cross-product. A scan is complete when **every cell is either populated or explicitly declared a hole
+naming which lens failed to see it.**
+
+*Default lens set*, carried forward from the harness run that validated the shape — a theme overrides or
+extends it, but does not silently drop it: **cross-domain transplant** (what does another field do here) ·
+**constraint inversion** (what if the binding constraint were removed) · **adversarial / failure-mode**
+(what breaks this, and how) · **scale extrapolation** (what changes at 10× or 1/10×) · **incumbent gap**
+(what the existing thing structurally cannot express) · **minimality** (what is irreducible versus merely
+current practice). The run that mapped harness abilities had to invent this mid-flight
+because the method supplies a coverage rule for narrow research scopes and none at all for divergent
+scanning; this generalizes it.
+
+**"More research needed" is a legitimate verdict only when it names the specific empty cell driving it.**
+That is what keeps the wide mouth honest without rushing it — the owner's gate lands on the holes, not on
+a feeling.
+
+### Assembly is the default answer
+
+A scan exists partly to make building unnecessary. If the theme can be **assembled** from things that
+already exist, that is the finding, and it is a good one. **A build recommendation carries a burden of
+proof: it must name the specific thing assembly cannot deliver.** See the triage verdict set in
+`.claude/agents/factory/goal-owner.md` §B.
+
+Watch the eighty-percent case, because it is where the damage lives: existing pieces will usually cover
+most of a theme, and the uncovered remainder is routinely the **load-bearing** part — the enforcement
+seam, the thing that makes a guarantee rather than a tendency. An assembly verdict must therefore state
+*which* part is uncovered and whether that part is the differentiating one. Otherwise "assemble" quietly
+becomes "adopt something that does not do the important thing," and we learn it during the build, which is
+the cost this whole section exists to avoid.
+
+### A scan may reshape its own theme
+
+A scan is permitted to return a **proposed revision to the theme itself** — a different framing, a changed
+lens, a retired value-target — as a first-class output alongside its candidates. It goes to the owner at
+the triage gate, where theme changes belong, and it **never rewrites the scan that produced it**.
+
+This is a direct repair. The ontology run (wfh-002) closed early because a reframing arrived mid-run with
+nowhere legitimate to go, became an unauthorized workstream, and took the run down with it. Capture is
+free; commitment is gated; the reshaping is the owner's call.
+
+---
+
 ## theme:smart-edge — smarter systems on edge-capable devices
 **Status:** active · seeded 2026-07-07
 
@@ -67,11 +164,27 @@ use-case, or vice versa; score on both):*
     are *liftable*, not hard constraints; triage must not park a hypothesis on a wall the owner can move.
 - *(others as they arise — the theme is not Unimatrix-only)*
 
-**Source-mix.** *TBD (config knob, not yet resolved — proposal §2/§12).* Candidate surfaces to settle:
-web search · arXiv · GitHub-trending · Hacker News · practitioner newsletters/blogs. Until set, the theme
-runs on **owner-injection** (the owner hand-feeds a candidate technology — e.g. the generative-grammars /
-low-memory non-LLM text article that seeded this theme) which enters the `theme-scan` at the candidate
-step and flows through triage identically.
+**Reading surfaces** *(the four, per "How a scan reads"; owner-injection remains a valid entry at any time
+and flows through triage identically):*
+- **Research literature** — compact/succinct data structures, streaming and sketch algorithms, formal
+  language theory and automata, information retrieval and learned-sparse ranking, quantization and
+  distillation. Venues worth naming: SIGIR · VLDB · ALENEX/SEA · ACL and EMNLP efficiency tracks · arXiv
+  `cs.IR`, `cs.DS`, `cs.CL`.
+- **Established products** — embedded and edge search engines, on-device NLP toolkits, commercial
+  small-model runtimes. The question is scope-versus-need and licence, not features.
+- **Active development** — Rust crates in the text/index/automata space (this is the fit discriminator:
+  the value-target's server is a Rust binary, so a Rust-native crate can live in-process), plus fast-moving
+  quantized-runtime repos.
+- **Adjacent prior art** — compiler and parser construction, spell-check and autocomplete, bioinformatics
+  sequence indexing, telecom and network stream processing, spam and intrusion detection. All four have
+  solved "recognize structure cheaply on constrained hardware" under different names.
+
+**Coverage grid — dimensions** (crossed with the default lens set): search and ranking quality · pattern
+and hotspot detection · text normalization and tagging · compact indexing and storage · safety and PII
+scanning (improve the existing scanner, not greenfield) · resource-envelope reduction.
+
+**Watchlist.** *Empty — populate on the next scan.* Seeded by hand until author and organization are
+carried in the citation structure; prune at each theme review.
 
 **Cadence.** Target **weekly** (owner intent: 1–2 days/week external research, other days closing goals).
 **Wave-0 = manual kick** — autonomous scheduled scanning is gated on the budget-metering capability
@@ -133,11 +246,34 @@ kick**. **Magpie guard:** the hazard of an inward tooling theme is chasing shiny
 closing goals — cap the spend and require a plausible process-capability line before a candidate
 advances past scan.
 
-**Source-mix.** *TBD (shared knob with `smart-edge` — proposal §2/§12).* Until set, runs on
-**owner-injection** + obvious hunting grounds (agent-framework / eval / KG-tooling release feeds). Label
-each candidate's origin `owner-injection · external-scan · dogfood-signal`. (Daystrom is inherently
-inward, so dogfood-fit is the *intent*, not the over-fit hazard `smart-edge` guards against — but still
-label origin for portfolio hygiene.)
+**Reading surfaces** *(the four; label every candidate's origin `owner-injection · external-scan ·
+dogfood-signal` — daystrom is inward by intent, so dogfood-fit is the point rather than the over-fit hazard
+`smart-edge` guards, but origin still gets labelled for portfolio hygiene):*
+- **Research literature** — empirical software engineering on developer productivity, agent evaluation and
+  benchmark design, experiment design for A/B on small samples (our A/B population is *runs*, and there are
+  few of them — the statistics matter), retrieval-augmented generation evaluation, knowledge-graph tooling.
+- **Established products** — agent orchestration platforms, evaluation and observability suites, workflow
+  and gate engines, research and knowledge management tooling. Cost and lock-in are first-class here
+  because adopting one changes how the garage runs.
+- **Active development** — agent-framework and evaluation-harness repos, MCP server ecosystem, prompt and
+  context tooling. High churn; the warm leg earns its keep on this surface.
+- **Adjacent prior art** — laboratory information management and electronic lab notebooks, systematic
+  review methodology (the discipline that formalized "have we covered the literature?"), clinical trial
+  protocol design, manufacturing process control and statistical quality control.
+
+*Systematic-review methodology deserves the explicit call-out:* it is a mature field whose entire subject
+is coverage, screening, and inclusion criteria for a literature scan. The garage keeps re-deriving pieces of
+it by hand.
+
+**Coverage grid — dimensions** (crossed with the default lens set): orchestration and spawn control ·
+gate and verdict machinery · evaluation and telemetry · knowledge capture and retrieval · cost metering and
+budget · human steering surfaces · reproducibility and audit.
+
+**Augment before replace** (unchanged, and it binds triage): adding a tool alongside the process clears the
+normal A/B bar; **replacing** load-bearing machinery mid-maturation clears a higher one plus a human call.
+
+**Watchlist.** *Empty — populate on the first scan.* This theme has run **zero scans since it was seeded**;
+that is the single largest coverage debt in the file.
 
 **First candidate (not yet run).** Owner-injection, TBD — run one tool end-to-end (scan → hypothesizer
 over the process-capability surface → triage → shortlist → A/B) as the theme's first exercise, and to
@@ -179,10 +315,47 @@ which the joint rec (issue #12) explicitly forbids. **Three layers, three owners
 workflow-*definition* layer reuse Unimatrix's graph engine in a hard-isolated plane, or run on a separate
 substrate?
 
-**Source-mix.** Owner-injection-heavy (the value-target already has a ratified architecture + PoCs) +
-external scan of the fast-moving coding-agent / context-engineering space (agent frameworks, MCP,
-skill/prompt-injection patterns, control/gate designs, visual workflow tooling). Label each candidate's
-origin `owner-injection · external-scan · dogfood-signal`.
+**Reading surfaces** *(the four; label every candidate's origin `owner-injection · external-scan ·
+dogfood-signal`. Owner-injection stays heavy here — the value-target already has a ratified architecture and
+PoCs — but it is no longer the only surface, which is what the first scan effectively made it):*
+- **Research literature** — workflow and task-based authorization, separation-of-duty and workflow
+  satisfiability, capability security and confused-deputy avoidance, information-flow control, policy
+  verification and symbolic policy analysis, and the recent agent-authorization / over-privilege
+  measurement work. Venues: CCS · S&P · USENIX Security · ESORICS · SACMAT · OOPSLA · arXiv `cs.CR`.
+- **Established products** — CI/CD platforms with derived job identity, workload-identity systems, policy
+  engines, secrets and credential brokers, commercial agent platforms with an authorization story. Ask
+  scope-versus-need and lock-in, not features.
+- **Active development** — agentic-workflow compilers, MCP authorization proposals, agent frameworks with
+  a gate or approval model, sandbox and tool-permission layers. Highest-churn surface in the theme.
+- **Adjacent prior art** — operating-system capability models, business-process management and workflow
+  engines, distributed-systems delegation and attenuation, supply-chain attestation, and safety-critical
+  domains with a formal gate concept (aviation, nuclear operations, medical device approval). The harness
+  run already mines these for *mechanism generation*; they are now also a **reading** surface.
+
+**Standing verification debt (owner-injected, 2026-08-01 — treat as `claimed`, not established).** An
+unconstrained conversation outside the funnel surfaced roughly thirty specific references spanning
+workflow-authorization theory from the mid-1990s, a published synthesis-to-runtime-monitor compiler,
+workflow-satisfiability complexity results, five spec-derived capability systems, and several 2026 agent
+authorization papers — along with an **absence-of-prior-art claim** on phase-indexed derivation. None of it
+is verified. Literature by citation never moves status (the firewall, §3), and an absence claim is the
+hardest kind to establish and the easiest for a model to assert. **The first challenge scan on this theme
+owes: confirm each reference exists and says what it is claimed to say, and actively attempt to falsify the
+novelty claim.** Full text: the owner conversation attached to Issue #48.
+
+**Coverage grid — dimensions** (the eight concerns, which survived the harness run's frame rebuild, crossed
+with the default lens set): structure · context provisioning · security · introspection · cost transparency
+and management · self-improvement · recovery and durability · human steering. Emergent concerns may be
+promoted into the grid; the promotion test lives in that run's scope.
+
+**Watchlist** *(hand-seeded, prune at review):*
+
+| Watching | Feeds | Re-check when | Last looked |
+|---|---|---|---|
+| GitHub Agentic Workflows (`gh-aw`) — nearest shipping instance of the design | structure · security | it gains multi-phase workflows or per-phase roles | 2026-07-22 (wfh-001) |
+| MCP authorization specification | security | scope granularity changes, or a derived-permission path appears | 2026-07-22 (wfh-001) |
+| `dug-21/jurati` issue #12 and the ratified joint recommendation | all eight | any amendment to the enforcement seam | 2026-07-25 (wfh-004) |
+| Coding-agent permission and hook models (this harness included) | security · human steering | a per-agent tool binding becomes enforceable rather than advisory | never — open probe |
+| Agent over-privilege measurement work | security · introspection | a new benchmark or replication lands | never — unverified lead |
 
 **Cadence.** Weekly, wave-0 manual kick. First exercise = capture + triage of the seed hypotheses below
 (structure-only); graph-formalization (`finding` + `hypothesis` tag, run-id, `theme:workflow-harness`)
