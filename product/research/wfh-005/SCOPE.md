@@ -1,14 +1,16 @@
 # wfh-005 — Challenge scan: attack the five positions `theme:workflow-harness` is standing on
 
-**Status:** SCOPE
+**Status:** researching *(INIT 2026-08-01 — Issue [#54](https://github.com/dug-21/arch-research/issues/54) ·
+cycle `wfh-005` · stamp `wf-v0.20` derived)*
 **Goal(s):** `theme:workflow-harness` → value-target **JURATI** (`dug-21/jurati`)
 **Capability target(s):** none directly — this run tests the *premises* under the harness capability
 space produced by wfh-004; it advances no capability and closes no `done_when`
 **Confidence-required:** directional — **structure only, nothing reaches `proven`**
 **Phase / area:** wide mouth → neck (theme-scan, **challenge mode**)
 **Cycle topic / Issue:** `wfh-005`
-**Method stamp:** derived at INIT (`git describe --tags --match 'wf-*'`) — first run under the
-wide-mouth standard (wf-v0.17 / wf-v0.18 / wf-v0.19)
+**Method stamp:** `wf-v0.20`, derived at INIT (`git describe --tags --match 'wf-*'`) — first run under the
+wide-mouth standard (wf-v0.17 / wf-v0.18 / wf-v0.19), now also carrying D14 (citation provenance) and
+D15 (documents land on `main`; no research branch)
 
 ---
 
