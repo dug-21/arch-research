@@ -1,6 +1,6 @@
 ---
 name: "factory-git"
-description: "Git conventions for the research factory — two-stream (method vs research), parallel-safe path-scoped commits, semver wf: stamp derived from the git tag, one PR per session's method work, repo settings derived not asserted. Use when committing factory standards or research-run artifacts. Distinct from uni-git (SDLC)."
+description: "Git conventions for the research factory — method vs research streams, research DOCUMENTS commit straight to main while only executables branch, parallel-safe path-scoped commits, semver wf: stamp derived from the git tag, one PR per session's method work, repo settings derived not asserted. Use when committing factory standards or research-run artifacts. Distinct from uni-git (SDLC)."
 ---
 
 # factory-git — Git Conventions for the Research Factory
@@ -16,10 +16,17 @@ two-stream split; the factory's parallelism forces a path-scoped commit discipli
 A research commit must never move the `wf:` version (it would break the §8 "proven under which
 method?" blast-radius logic). So keep them in separate commits, ideally separate branches:
 
-| Stream | Paths | Branch | Merge |
+| Stream | Paths | Branch | Lands |
 |---|---|---|---|
 | **Method** (the factory itself) | `.claude/**`, `product/factory/**` | `workflow/{desc}` | PR → reviewed → **bumps `wf:`** |
-| **Research** (run output) | `product/research/{scope-id}/**` | `research/{scope-id}` | PR `Closes #<issue>` → **auto-merge** after the synthesis gate |
+| **Research documents** | `product/research/{scope-id}/**.md` — scopes, findings, reports, ledgers | **none — commit straight to `main`** | **immediately, as produced** |
+| **Research executables** | POC code, datasets, builds — e.g. `product/research/{scope-id}/poc/**` | `research/{scope-id}` | PR after the gate; the leader rebase-merges (no auto-merge here) |
+
+**Documents accumulate; executables isolate** (D15). A research document is append-only in a directory
+no other run touches, so it cannot conflict on `main` any more than it can on a branch — and branching it
+makes a run's evidence unreadable to every other run until that run closes. Two of five `wfh` runs sat in
+exactly that state. POC code is different: parallel agents writing code genuinely collide, and a
+half-built POC on `main` is a broken build. That is the line, and it is about the artifact, not the run.
 
 ## Parallelism discipline (load-bearing)
 
@@ -60,7 +67,7 @@ source, one derivation — no copies to rot.)
 | Context | Pattern | Example |
 |---|---|---|
 | Method / workflow change | `workflow/{desc}` | `workflow/factory-git` |
-| Research scope | `research/{scope-id}` | `research/shd-002` |
+| Research scope — **executables only** (D15) | `research/{scope-id}` | `research/smart-edge-002` |
 | Ad-hoc docs | `docs/{short-desc}` | `docs/methodology-fix` |
 
 ## Commit format
@@ -100,9 +107,19 @@ As of 2026-08-01 that returns rebase **and** squash **and** merge-commit all all
   (Observed in the wfh-001 retro as OBS-14 and left uncorrected for two weeks — this is that fix.)
 - **Branches are deleted on merge** (`delete_branch_on_merge: true`) regardless of merge flags. See the
   stacking hazard below.
-- **Research PR:** `Closes #<scope-issue>`; the leader rebase-merges after the synthesis gate (already
-  human-reviewed on the Issue, D1). Body = the run summary.
+- **Research documents: no PR.** They commit straight to `main` as the run produces them (D15). The
+  synthesis gate was always reviewed on the **Issue** (D1) — the PR only rubber-stamped a decision made
+  elsewhere. The leader closes the Issue at CLOSE with the verdict comment; that is the record.
+- **Research PR (executables only):** for POC code and datasets. `Closes #<scope-issue>`; the leader
+  rebase-merges after the gate. Body = the run summary.
 - **Method PR:** reviewable (it ripples to every future run); on merge, tag + bump `wf:`.
+
+> **Committing documents to `main` makes the path-scoped rule MORE load-bearing, not less.** There is no
+> branch isolating your mistakes now. Stage exactly your own scope's paths, every time.
+
+> **In-flight is not concluded.** A document on `main` may belong to a run still in progress, so the
+> scope's `Status:` line (scoped → researching → [feasibility] → synthesis → done) is the marker that
+> says which — keep it current, and read it before treating a findings file as a verdict.
 
 ### One session's method work is ONE PR
 

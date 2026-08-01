@@ -45,8 +45,11 @@ validator — this protocol never proves.
      on the first call). The cycle is what makes the run **attributable and its transcript retained**
      (retention now works on stamped cycles — OBS-10); an unstamped run has no linked buffer at all.
      `phase-end` at **every** phase boundary; `stop` at CLOSE.
-  3. **Git** — research-stream commits under `product/research/{scan-id}/` (the `wf:` version rides the
-     cycle tag above; do not hand-type it).
+  3. **Git** — path-scoped commits under `product/research/{scan-id}/`, **straight to `main` as each
+     artifact is produced** (D15) — no branch, so a parked or slow scan is still readable by every other
+     run. Stage only your own scope's paths; with no branch isolating a mistake, that rule is now
+     load-bearing. Keep the scope's `Status:` line current — on `main` it is what distinguishes in-flight
+     from concluded. (The `wf:` version rides the cycle tag above; do not hand-type it.)
 - **GATE (advisory → owner):** confirm **theme + candidate source** (owner-injection vs external-scan)
   **+ budget envelope**. Wave-0 the owner's kick IS this approval; surface it, don't block on it.
 
@@ -142,8 +145,10 @@ condition flips?* If yes → the **cheapest searchable representation** below; i
 ## CLOSE
 - `context_cycle stop`. Record the **funnel counts** (scanned → generated → survived → promoted, by
   novelty class), tagged `{scan-id}` + `theme:<slug>` — the reflexive-loop telemetry (§9, #66).
-- Git: research-stream PR `Closes #<issue>` — merge after formalize (auto-merge if enabled at repo
-  level; else the leader rebase-merges — the blocking gate already passed). Trigger `factory-retro`.
+- **Git (D15):** the scan's documents — scout files, hypotheses, the coverage grid, the triage report —
+  are already on `main`, committed as the scan produced them. A scan writes no executables, so it
+  normally needs **no branch and no PR at all**. Close the **Issue** with the verdict comment; that is
+  the gate's record (D1). Set the scope's `Status:` to `done`. Trigger `factory-retro`.
 - **Promotion (frontier-change, D3):** each promoted hypothesis → a new **validated research-scope**
   Issue (a bounded proof-goal, real `done_when`), linked to this scan. That run — not this one — does the
   POC and the firewall, and on `proven` files the **Unimatrix issue** handoff (§7). The scan hands off;
