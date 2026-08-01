@@ -189,10 +189,32 @@ proven_by: "live: <hardware/context>, <result>, <artifact ref>"   (FIELD — cap
 ```
 category: finding
 content:  the evidenced claim (and a position, if it is a selection — tag: position)
-cites:    <papers / repos / datasets / docs>   (FIELD — targets are not graph nodes)
+cites:    a structured list, one entry per source   (FIELD — targets are not graph nodes)
+  - type:    paper | repo | product | standard | dataset | docs | blog   (required)
+    ref:     <DOI / arXiv id / URL / repo slug>                          (required)
+    title:   <as published>                                              (required)
+    author:  <Surname; Surname>                                          (provenance — omit if unknown)
+    org:     <lab / company / standards body>                            (provenance — omit if unknown)
+    year:    <YYYY>                                                      (provenance — omit if unknown)
+    venue:   <conference / journal / registry>                           (optional)
+    surface: literature | products | active-dev | adjacent               (optional — which reading surface found it)
 ```
 Findings never author a node and never satisfy one. They `Motivates` a technology (PPR-neutral,
 so raw evidence does not flood agent retrieval) and graduate structure, not status.
+
+**Provenance is load-bearing, and the rule about it is short: never invent a missing field — omit the
+key.** An absent author is information; a guessed one is contamination. The provenance fields exist so
+that *"which sources keep appearing in our own evidence"* is a computation over what we already store
+rather than a hand-tended list that rots silently — the derived **watchlist** behind the recurring
+theme scan (`product/factory/themes.md` → "How a scan reads"; decision **D14**). `org` is the primary
+aggregation key because organizations outlive name spellings; `surface` is how we check whether a
+declared reading surface is actually being read, or merely staffed.
+
+**Sources are still not nodes.** This structures the field; it does not promote citations to
+first-class graph objects, and `Cites` edges remain forbidden (D8). The derivation is therefore a
+fetch-and-parse over `context_lookup(category:"finding", tags:["theme:<slug>"])`, not a graph query —
+tractable because findings-per-theme number in the tens, and accepted deliberately to keep findings
+inert in retrieval (§2).
 
 ### lesson-learned  — process self-improvement
 ```
@@ -639,6 +661,9 @@ it by adding edges — no re-research — subject to the envelope rule (§4: a 1
   `goal` / `capability` near-zero decay
 - **Edge discipline:** `factory` edges connect `factory → factory` only; cross-plane links are
   field refs (`cites:`), never edges
+- **Citations:** `cites:` is a **structured field** on `finding` — `type`/`ref`/`title` required, plus
+  `author`/`org`/`year` provenance and an optional `surface` (D14). Never a node, never a `Cites` edge;
+  omit an unknown key rather than guessing it
 - **Run stamping:** every cycle tagged `wf:<version>`; yield sliced by version (§8, §10.5)
 - **Cycle:** one per research run, `topic: <goal-tag>-NNN`, phases per §7
 - **Pre-seed blockers: cleared.** Edges are entry-level (no category typing); briefing isolation

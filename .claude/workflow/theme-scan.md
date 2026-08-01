@@ -164,11 +164,27 @@ grid. Every one after it runs the two legs — warm deltas over the watchlist, p
 and asks what moved. Say which kind you are running in the Issue body.
 
 ## Watchlist maintenance (every scan, at CLOSE)
-Update `product/factory/themes.md` for the theme just scanned: record **last-looked** dates on the entries
-walked, **add** entries the scan earned (a repo, venue, product, or group worth re-checking, each with the
-change that would make it interesting again), and **prune** entries that have gone quiet or stopped feeding
-a live dimension. This is steering config, a method-stream commit, and it is the only thing keeping the warm
-leg from decaying into a stale list nobody notices.
+**Run the derivation first, then reconcile — do not just edit the list from memory.** Per D14, citations
+carry `author` / `org` / `year` / `surface`, so the candidate set is computed:
+
+```
+context_lookup(category:"finding", tags:["theme:<slug>"], limit:N)
+  → parse cites: → count org / author across findings and across scans
+  → tally by `surface`
+```
+
+Then update `product/factory/themes.md` for the theme just scanned: record **last-looked** dates on the
+entries walked, **add** what the derivation surfaced (each with the change that would make it interesting
+again), and **prune** entries that have gone quiet or stopped feeding a live dimension. Reconcile
+near-duplicate name spellings here — the schema does not do it for you.
+
+**Report the `surface` tally in the run's close.** A surface that appears in no citation was staffed and
+not read, and that is a finding about the scan, not a footnote. This is steering config, a method-stream
+commit, and it is the only thing keeping the warm leg from decaying into a stale list nobody notices.
+
+*Interim:* findings written before D14 carry unstructured citations, so early derivations will be thin and
+the hand-seeded entries carry the load. That is expected; it resolves as findings accumulate, not by
+backfilling (D14, limit 2).
 
 ## Output
 A triaged **shortlist** to the owner — adopt / assemble / build / probe, each with its required field —
