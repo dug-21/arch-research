@@ -1,7 +1,10 @@
 # wfh-005 — Challenge scan: attack the five positions `theme:workflow-harness` is standing on
 
-**Status:** researching *(INIT 2026-08-01 — Issue [#54](https://github.com/dug-21/arch-research/issues/54) ·
-cycle `wfh-005` · stamp `wf-v0.20` derived)*
+**Status:** synthesis — **AT THE BLOCKING TRIAGE GATE, awaiting the owner**
+*(INIT 2026-08-01 — Issue [#54](https://github.com/dug-21/arch-research/issues/54) · cycle `wfh-005` ·
+stamp `wf-v0.20` derived. Scan and triage complete: `reports/triage.md`. Formalize has NOT run — no graph
+writes until the gate clears. Verdicts: P1 wounded · P2 **falsified** · P3 wounded · P4 wounded
+(adopt+assemble+one build) · P5 wounded; two emergent positions. 6 of 10–12 budget spent.)*
 **Goal(s):** `theme:workflow-harness` → value-target **JURATI** (`dug-21/jurati`)
 **Capability target(s):** none directly — this run tests the *premises* under the harness capability
 space produced by wfh-004; it advances no capability and closes no `done_when`
