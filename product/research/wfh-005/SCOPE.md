@@ -1,10 +1,18 @@
 # wfh-005 — Challenge scan: attack the five positions `theme:workflow-harness` is standing on
 
-**Status:** synthesis — **AT THE BLOCKING TRIAGE GATE, awaiting the owner**
-*(INIT 2026-08-01 — Issue [#54](https://github.com/dug-21/arch-research/issues/54) · cycle `wfh-005` ·
-stamp `wf-v0.20` derived. Scan and triage complete: `reports/triage.md`. Formalize has NOT run — no graph
-writes until the gate clears. Verdicts: P1 wounded · P2 **falsified** · P3 wounded · P4 wounded
-(adopt+assemble+one build) · P5 wounded; two emergent positions. 6 of 10–12 budget spent.)*
+**Status:** **done** — gate cleared by the owner 2026-08-01; formalize complete; cycle stopped.
+*(Issue [#54](https://github.com/dug-21/arch-research/issues/54) · cycle `wfh-005` · stamp `wf-v0.20`
+derived. Verdicts: P1 wounded · P2 **falsified** · P3 wounded · P4 wounded (adopt + assemble + one build,
+re-cut to two legs in amendment 1) · P5 wounded. **Zero survived intact.** Three emergent positions filed,
+one proposed position falsified by owner evidence and filed as withdrawn. Read `reports/triage.md` **with**
+`triage-amendment-1.md` and `triage-amendment-2.md`, which govern where they conflict. 9 of 10–12 budget
+spent. **Status moves: 0 — the firewall is untouched by construction.***
+
+*Honest close: the **scope** is discharged — 20 of 20 coverage cells populated, cold-leg content on 4 of 4
+scouts. The **search** is not exhausted. Three verdict-moving finds arrived by owner injection rather than
+by the method, and two named holes (patent prior art; commercial CD stage-scoped role binding) were never
+closed and sit under the build recommendation. Neither would flip a verdict. Recorded as an unspent
+balance, not as completeness.*
 **Goal(s):** `theme:workflow-harness` → value-target **JURATI** (`dug-21/jurati`)
 **Capability target(s):** none directly — this run tests the *premises* under the harness capability
 space produced by wfh-004; it advances no capability and closes no `done_when`

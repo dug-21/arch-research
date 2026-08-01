@@ -349,30 +349,70 @@ PoCs — but it is no longer the only surface, which is what the first scan effe
   domains with a formal gate concept (aviation, nuclear operations, medical device approval). The harness
   run already mines these for *mechanism generation*; they are now also a **reading** surface.
 
-**Standing verification debt (owner-injected, 2026-08-01 — treat as `claimed`, not established).** An
-unconstrained conversation outside the funnel surfaced roughly thirty specific references spanning
-workflow-authorization theory from the mid-1990s, a published synthesis-to-runtime-monitor compiler,
-workflow-satisfiability complexity results, five spec-derived capability systems, and several 2026 agent
-authorization papers — along with an **absence-of-prior-art claim** on phase-indexed derivation. None of it
-is verified. Literature by citation never moves status (the firewall, §3), and an absence claim is the
-hardest kind to establish and the easiest for a model to assert. **The first challenge scan on this theme
-owes: confirm each reference exists and says what it is claimed to say, and actively attempt to falsify the
-novelty claim.** Full text: the owner conversation attached to Issue #48.
+**Verification debt — partially discharged by wfh-005 (2026-08-01). The absence-of-prior-art claim is
+FALSIFIED and is struck.** An unconstrained conversation outside the funnel asserted roughly thirty
+references and a novelty claim on phase-indexed derivation. wfh-005 attacked both from four reading
+surfaces. What it found:
+
+- **The novelty claim does not survive.** All three legs have prior art, reached independently by the
+  literature and adjacent-prior-art surfaces via different routes. Phase-indexed authority is Task-Based
+  Authorization Controls (Thomas & Sandhu, 1997) and the Workflow Authorization Model (Atluri & Huang,
+  1996). Gate independence appears under four names for one invariant — Clark-Wilson enforcement rule E4
+  (1987), DO-178C verification independence, SLSA Build L3 non-falsifiable provenance, and measured boot.
+  A ceiling derived from declared demand ships in WASI, Bazel, Nix, in-toto, and `gh aw compile`.
+  **What remains is a composition claim, not an absence claim, and it must be argued by name against that
+  prior art rather than asserted.** Residual caveat: **patents were never searched**, so even the narrowed
+  residual is an *unverified absence* rather than an established one.
+- **The reference set itself was never recorded.** It is not in Issue #48's body or comments, nor anywhere
+  under `product/research/wfh-004/`. An unrecorded citation set cannot be verified, deduped, re-checked by
+  a later scan, or used to seed a derived watchlist — the failure mode D14 exists to prevent, one level
+  upstream of where D14 operates. **Do not cite a count of references as evidence of anything.**
+- **What was verified is the theme's description of six fields, not the citations.** Four clusters resolve
+  to real, correctly attributed canonical work. Two do not: the "synthesis-to-runtime-monitor compiler" is
+  a field rather than an identifiable work, and "five spec-derived capability systems" is a count with no
+  members. **Both are marked unsupported.** A failure rate at cluster altitude is a floor for the failure
+  rate at reference altitude, never a ceiling.
+- **Naming, load-bearing:** do not ship the gate rule as "soundness" — that word is taken by workflow nets
+  and guarantees a misread by the audience most likely to take the claim seriously. Use **gate-input
+  independence**, stated in read-set/write-set vocabulary.
+
+*Standing and open:* if the enumerated list is ever recovered, one literature pass discharges the debt
+item-by-item. Until then the theme carries the cluster-level claims only. Full verdicts:
+`product/research/wfh-005/reports/triage.md` and its two amendments.
 
 **Coverage grid — dimensions** (the eight concerns, which survived the harness run's frame rebuild, crossed
 with the default lens set): structure · context provisioning · security · introspection · cost transparency
 and management · self-improvement · recovery and durability · human steering. Emergent concerns may be
 promoted into the grid; the promotion test lives in that run's scope.
 
-**Watchlist** *(hand-seeded, prune at review):*
+**Watchlist** *(reconciled at wfh-005 close, 2026-08-01 — derivation run first, then reconciled by hand):*
 
 | Watching | Feeds | Re-check when | Last looked |
 |---|---|---|---|
-| GitHub Agentic Workflows (`gh-aw`) — nearest shipping instance of the design | structure · security | it gains multi-phase workflows or per-phase roles | 2026-07-22 (wfh-001) |
-| MCP authorization specification | security | scope granularity changes, or a derived-permission path appears | 2026-07-22 (wfh-001) |
+| GitHub Agentic Workflows (`gh-aw`) — **the incumbent to beat**; ships mechanisms in 7 of 8 concerns | structure · security · cost · self-improvement | it derives capability from an **author-declared** phase, or leaves technical preview | 2026-08-01 (wfh-005) |
+| MCP authorization specification | security | **retightened** — a proposal for per-tool or per-resource scopes opens. The 2026-07-28 revision moved a lot and none of it was authorization granularity | 2026-08-01 (wfh-005) |
 | `dug-21/jurati` issue #12 and the ratified joint recommendation | all eight | any amendment to the enforcement seam | 2026-07-25 (wfh-004) |
-| Coding-agent permission and hook models (this harness included) | security · human steering | a per-agent tool binding becomes enforceable rather than advisory | never — open probe |
-| Agent over-privilege measurement work | security · introspection | a new benchmark or replication lands | never — unverified lead |
+| Coding-agent permission and hook models (this harness included) | security · human steering | **retightened** — `anthropics/claude-agent-sdk-typescript` #172 closes, or subagent permission-mode inheritance becomes overridable | 2026-08-01 (wfh-005) |
+| Agent over-privilege measurement work | security · introspection | a new benchmark or replication lands | 2026-08-01 (wfh-005) — confirmed a dense 2025–26 subfield with code |
+| **Cisco Outshift / AGNTCY** — `outshift-casa`, `ASTRA`, `tbac-research-datasets` (Linux Foundation) | security · structure | CASA leaves alpha, gains a non-Istio data plane, or the task-based line publishes a reference implementation | 2026-08-01 (wfh-005) — **new, derived** |
+| **`ruvnet`** — `ruflo`, `metaharness`, `agentic-flow` | security · self-improvement · cost | the policy engine ships **enforcing by default**, or the delegation propagator gains call sites | 2026-08-01 (wfh-005) — **new, derived** |
+| **`adrianco/retort`** — design-of-experiments evaluation of coding stacks | *(evaluation — a concern the grid does not name)* | replicate counts rise above n=1 on published routes, or the routing feed gains a versioned schema | 2026-08-01 (wfh-005) — **new, derived** |
+| Temporal agent plugins | recovery and durability · human steering | a plugin reaches general availability | 2026-08-01 (wfh-005) — **new, derived** |
+
+**Surface tally (the honesty check on the four-surface standard — first measurement, wfh-005).**
+158 structured citations across seven scout files: **active-dev 70 · products 32 · literature 30 ·
+adjacent 26.** No surface was staffed and unread — the failure the standard was written to catch did not
+occur. By type: 47 paper · 44 docs · 43 repo · 14 blog · 6 standard · 4 product. Organisations appearing
+in ≥2 findings, which is what promoted the four new entries above: GitHub 18 · ruvnet 16 · OpenAI 5 ·
+Cisco Outshift 5 · Amazon Web Services 5 · Microsoft 3 · Anthropic 3 · Temporal 2 · Model Context
+Protocol 2.
+
+**Method holes recorded against this list, not hidden.** Three of wfh-005's verdict-moving finds arrived
+by owner injection rather than by the method. The active-development surface needs three instruments it
+does not have: an **organization-walk**, a deliberately **low-star pass** (the decisive find had 17 stars),
+and a **by-function rather than by-vocabulary sweep** (retort self-describes as a "Platform Evolution
+Engine" and its README carries none of this theme's nouns). Unspent and still open: **patent prior art**,
+and **commercial CD stage-scoped role binding** (Harness, Spinnaker, Azure DevOps).
 
 **Cadence.** Weekly, wave-0 manual kick. First exercise = capture + triage of the seed hypotheses below
 (structure-only); graph-formalization (`finding` + `hypothesis` tag, run-id, `theme:workflow-harness`)
