@@ -55,7 +55,12 @@ Use only these six, mapped in methodology §5:
 ## Categories (D8)
 
 - Research: `goal · capability · technology · finding · lesson-learned`. Process: `factory`.
-- **Sources** = a `cites:` field on a `finding` (structured `{type, ref, title}`), not a category/node.
+- **Sources** = a `cites:` field on a `finding`, not a category/node. **Structured, with provenance (D14):**
+  `type` (`paper|repo|product|standard|dataset|docs|blog`) · `ref` · `title` — all required; then
+  `author` (`Surname; Surname`) · `org` · `year` where known, plus optional `venue` and `surface`
+  (`literature|products|active-dev|adjacent`). **Omit an unknown key — never invent one.** `org` is the
+  primary aggregation key. Full schema: methodology §4. This structures the field; it does **not** make
+  sources nodes, and `Cites` edges stay forbidden.
 - **Decisions** = a `finding` tagged `position`, not a category.
 
 ## agent_id (D6 — open)

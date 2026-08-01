@@ -102,8 +102,13 @@ For each survivor:
   discriminator). Be concrete.
 - **Maturity & evidence** — separate **demonstrated** results from **doc-claim / author-report** (firewall
   discipline, from the discovery side). Note what you could NOT verify.
-- **`cites:`** — structured `{type, ref, title}` sources (paper/repo/dataset/docs/blog), per D8. Include
-  **author and organization** where known — a scan's citations are the raw material for a derived watchlist.
+- **`cites:`** — structured sources **with provenance** (D14): `type`
+  (`paper|repo|product|standard|dataset|docs|blog`) · `ref` · `title` required; `author` (`Surname;
+  Surname`) · `org` · `year` where you can establish them; and **`surface:` set to your own assignment**
+  (`literature|products|active-dev|adjacent`). **Omit a key you cannot establish — never guess one.**
+  Your citations are the raw material for the **derived watchlist**, and `surface` is how the garage
+  checks whether a declared reading surface is actually being read or merely staffed. Full schema:
+  methodology §4.
 - **Source signal** — label origin `owner-injection` / `external-scan` / `dogfood-signal` (guards
   dogfood over-fit, §11).
 - **Lens rationale** — one line: why it passes the include test.

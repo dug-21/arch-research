@@ -35,6 +35,7 @@ once a real run validates them; provisional ones are revisited after the first r
 | D11 | Distributed multi-machine objective (architected now, build deferred) | objective | factory goal + shd N4 |
 | D12 | Git strategy — two-stream, parallel-safe, auto-merge | locked | factory-git skill |
 | D13 | Garage reframe + funnel model (narrative-only; factory = proving-grounds stage) | locked | factory ADR (Uni) |
+| D14 | Citation provenance — `cites:` carries author/org/year; the watchlist is derived | locked | factory ADR (Uni) + `.claude/rules/` |
 
 ---
 
@@ -252,6 +253,8 @@ for later dedup/dashboards while staying "field, not node." Confirm `finding` su
 citing paper X" or source-level dedup — sources aren't first-class. Accepted on purpose (keeps
 findings inert in retrieval, §2). If source-level dedup later becomes load-bearing, the fix is
 **structuring the `cites:` field**, not adding a source category/node.
+*[2026-08-01 — that option is now exercised: see **D14**, which extends the citation structure with
+provenance. The rule that sources stay a field and never become a node or a `Cites` edge is unchanged.]*
 
 **Config caveat:** Unimatrix currently has **no way to query available categories**; the enabled
 set is human-confirmed, not machine-verified. Edge types are documented in the Unimatrix README
@@ -402,3 +405,67 @@ learnings** as the identity without loosening the firewall (D10: architect the c
 proven reality).
 
 **Eventual home:** factory ADR (Uni), authored when the factory/process plane is stood up.
+
+---
+
+## D14 — Citation provenance; the watchlist is derived, not curated
+**Status:** locked · 2026-08-01 · extends D8
+
+**The problem.** The wide-mouth standard (`themes.md` → "How a scan reads") gives each theme a
+**watchlist** — the entries a recurring scan re-checks for deltas. Hand-curated, it rots silently:
+nobody notices when a source stops producing, and nobody notices when a new one starts. That is the same
+failure the method rejects everywhere else in favour of a live query ("what's done is a graph query, not
+a maintained list", §6).
+
+**The decision.** The `cites:` field on a `finding` carries **provenance**, so *"who keeps appearing in
+our own evidence"* becomes a computation over what we already store, rather than a list someone tends.
+This is D8's own stated remedy — *"the fix is structuring the `cites:` field, not adding a source
+category/node"* — now exercised. **Sources remain a field. They do not become nodes, and `Cites` edges
+stay forbidden.**
+
+**Canonical schema** (one list entry per source; the full form lives in methodology §4):
+
+```
+cites:
+  - type:    paper | repo | product | standard | dataset | docs | blog   (required)
+    ref:     <DOI / arXiv id / URL / repo slug>                          (required)
+    title:   <as published>                                              (required)
+    author:  <Surname; Surname>                                          (provenance)
+    org:     <lab / company / standards body>                            (provenance)
+    year:    <YYYY>                                                      (provenance)
+    venue:   <conference / journal / registry>                           (optional)
+    surface: literature | products | active-dev | adjacent               (optional)
+```
+
+- **`type` gains `product` and `standard`.** Established products and standards bodies are now first-class
+  reading surfaces; citing one needs a type that isn't `docs`.
+- **Never invent a missing field — omit the key.** An absent `author` is information; a guessed one is
+  contamination. Same discipline as "I could not confirm" beating a confident guess.
+- **`org` is the primary aggregation key**, `author` secondary — organizations are more stable than
+  personal-name spellings. Surnames, never initials-only.
+- **`surface`** records which reading surface produced the source. That is the measurement of whether the
+  four-surface change actually works: if a surface never appears in any citation, it is being staffed and
+  not read.
+
+**Derivation (the watchlist recipe).**
+
+```
+context_lookup(category:"finding", tags:["theme:<slug>"], limit:N)
+  → parse each entry's cites: block
+  → count distinct org / author across findings and across scans
+  → an entity in ≥K findings spanning ≥2 scans is a watchlist candidate
+  → tally by `surface` for the surface-yield check
+```
+
+**Three honest limits, accepted:**
+1. **This is parse-and-aggregate, not a native graph query.** Sources are still not first-class, exactly
+   as D8 intends. It is tractable because findings-per-theme number in the tens, not the millions — but it
+   is a fetch-and-parse, and anyone building on it should know that.
+2. **No backfill.** Existing findings keep their unstructured citations. Backfilling would be a mass
+   `context_correct` — an id reissue and re-link on every touched node — for low value. New findings carry
+   provenance; the derived watchlist becomes useful as they accumulate. Hand-seeded entries stay until
+   then, and the interim curation rule (prune at each theme review) stands.
+3. **Name normalization is best-effort.** Near-duplicate spellings are reconciled at watchlist review, not
+   by the schema. Encoding an authority file for names would be its own project and is not worth it.
+
+**Eventual home:** factory ADR (Uni) + the operational form already in `.claude/rules/unimatrix-access.md`.
