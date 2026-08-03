@@ -262,3 +262,74 @@ grid as the scan's finish line; adopt and assemble added to the triage verdict s
 build; and a legal channel for a scan to propose reshaping its own theme. **Still open:** scheduling is
 interim (a theme review at each scan close), and the watchlist is hand-curated until author/organization are
 carried in the citation structure — the derived form D8 already points at.
+
+---
+
+## OBS-16 — The four reading surfaces worked; their *instruments* are vocabulary-bound and popularity-bound
+*2026-08-03 · from wfh-005 (the first challenge scan, and the first run under the wide-mouth standard)*
+
+**The standard passed its first test, measurably.** 158 structured citations across seven scout files —
+active-dev 70 · products 32 · literature 30 · adjacent 26. **No surface was staffed and left unread**, which
+is the specific failure OBS-15 predicted and the `surface` field exists to catch. All four surfaces changed
+at least one verdict, and **no verdict in the run was reachable from a single surface**. The two surfaces
+that had never been staffed before — research literature and adjacent prior art — are the two that falsified
+the theme's central claim, from five unrelated fields, independently of each other.
+
+**And every verdict-moving correction still arrived from outside the method.** Three times:
+
+1. The run's own proposed sixth position was **falsified by the owner** with a repository the scan never
+   queried (354 merged pull requests against 31 protocol revisions).
+2. A 66,763-star ecosystem was missed entirely — **the owner asked about it by name.** It self-describes as
+   *swarm · flow · meta-harness · dream cycle*; a scan searching for *policy compiler · capability
+   derivation · agent authorization* emits none of those words and never collides with it.
+3. A third find — an evaluation harness whose conformance discipline independently reinvented our firewall —
+   **the owner named it from something they had been reading.** Its README contains none of the theme's
+   nouns at all.
+
+**The diagnosis is not effort, it is instrumentation.** A scout searches *by mechanism vocabulary* and
+*ranks by relevance or popularity*. Both are structurally blind in the same two directions:
+
+- **Vocabulary.** Adjacent work is filed under words the theme does not use. No amount of thoroughness inside
+  the theme's own lexicon reaches it.
+- **Popularity.** In this run the incumbent's answer arrived at **4,849 stars**, the *research* answer at
+  **17**, its predecessor at **5**, and its dataset repository at **4**. No star-ranked or relevance-ranked
+  search reaches two digits. Those were found only by walking an **organization** after something else named
+  it.
+
+**Response (method change, wf-stream):** three instruments added to the active-development surface — an
+**organization-walk**, a deliberately **low-star pass**, and a **by-function rather than by-vocabulary
+sweep** (*who else does this job, without using any of our nouns*). Cross-surface reconciliation is promoted
+from a leader step to a **requirement** wherever more than two surfaces are staffed. And the round-two
+trigger is re-keyed from *thin or empty cells* to *a named hole load-bearing for a verdict or a routing* —
+wfh-005 was 20-of-20 on cells while two holes sat under its only build recommendation, and the trigger
+correctly never fired.
+
+**Still open:** none of the three new instruments has run yet. They are `claimed`, on the same terms as
+every other enhancement.
+
+---
+
+## OBS-17 — Cycle telemetry is healthy for the leader session; OBS-14's subagent blindness persists, with a sharper shape
+*2026-08-03 · from the wfh-005 retro*
+
+`factory-retro` carries a standing caveat that its process-telemetry half is degraded pending an upstream
+attribution fix. **For wfh-005 it was not degraded at all.** `context_cycle_review` returned 439 records,
+1-of-1 session attribution, complete per-phase statistics carrying each phase's gate-outcome text, a
+friction hotspot with twelve timestamped evidence items, and a baseline comparison across eleven prior
+cycles. That is the full instrument. #63's partial unblock now reads as substantially complete **for the
+coordinating session**.
+
+**OBS-14 is not closed, and the retro must not read the above as closing it.** Two specifics from this run:
+
+- **`agents_spawned` returned empty** against **nine** specialist spawns.
+- **All 24 knowledge stores were attributed to the leader session.** The leader wrote none of them — the
+  curator did, in a subagent. The telemetry is not merely blind to subagent sessions; **it silently
+  reassigns their work to the parent**, which is worse than a gap because it reads as a complete record.
+
+**Consequence for the reflexive loop.** Any future comparison of *which role produced what* is unusable, and
+the single most useful autonomy question — *did an agent do this, or did the human steer it* — is invisible
+in the telemetry and recoverable only from the narrative. **#65 stays `partial` and stays blocked.**
+
+**Held against ourselves:** wfh-005 was heavily human-directed, so no factory capability advances on it.
+`grade:proven` on an autonomy capability requires an autonomous-run artifact, and three owner injections at
+the gate is the opposite of one.

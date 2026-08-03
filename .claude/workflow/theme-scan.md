@@ -65,11 +65,25 @@ validator — this protocol never proves.
   adopt-versus-assemble-versus-build (scope-versus-need gap · cost and licence · lock-in and exit ·
   composability). Read-only; returns markdown inline (OBS-7) → **leader persists**
   `product/research/{scan-id}/scout-{surface}.md`.
-- **Cross-surface alias merge (leader, after all scouts return).** The same idea routinely appears under
-  four names — one in the literature, one as a product category, one as a repo, one in an adjacent field.
-  Scouts cannot see each other and can only *flag* a suspected alias; the leader reconciles them into
-  `product/research/{scan-id}/scout-merged.md` before hypothesize. Deduping against the graph does not
-  catch this; nothing else in the protocol does either.
+- **Cross-surface alias merge (leader, after all scouts return) — MANDATORY wherever more than two surfaces
+  are staffed (wfh-005).** The same idea routinely appears under four names — one in the literature, one as
+  a product category, one as a repo, one in an adjacent field. Scouts cannot see each other and can only
+  *flag* a suspected alias; the leader reconciles them into `product/research/{scan-id}/scout-merged.md`
+  before hypothesize. Deduping against the graph does not catch this; nothing else in the protocol does
+  either. **Why it is now a requirement, not a step:** wfh-005's four surfaces returned what read as ~15
+  independent hits on one position; the merge collapsed them to **three clusters, two of which were the same
+  works reached by different routes**. Unmerged, that run would have overstated its evidence base roughly
+  fourfold *and had no way to notice*. A scan that skips the merge reports inflated convergence and cannot
+  tell.
+- **Instruments the active-development surface must carry (wfh-005).** Searching by mechanism vocabulary and
+  ranking by relevance or popularity is blind in two directions at once, and both fired on the first
+  challenge scan. Each scout on this surface runs, and reports, all three:
+  1. **An organization-walk** — enumerate the repositories of an organization something else has named.
+  2. **A deliberately low-star pass.** In wfh-005 the incumbent's answer sat at ~4,800 stars and the
+     *research* answer at **17**, its predecessor at 5, its dataset repo at 4. No ranked search reaches two
+     digits.
+  3. **A by-function sweep** — *who else does this job*, using none of the theme's own nouns. The find that
+     independently reinvented our proof discipline carries none of this theme's vocabulary anywhere.
 - **Coverage record.** Collect each scout's surface-coverage report (what was searched, found, and
   deliberately skipped) and cold-leg record, and open the **coverage grid** for the theme. The grid travels
   with the run and is filled in as hypothesize proceeds.
@@ -87,10 +101,17 @@ validator — this protocol never proves.
 - **Coverage (advisory, non-blocking):** if a candidate's fan-out is thin or its scout writeup too thin
   to reason from, leader re-spawns for more range (≤2) or flags the candidate as under-characterized.
 - **Grid-targeted second round.** Map the output onto the theme's **coverage grid** (dimensions × lenses).
-  Where cells are thin or empty, re-spawn hypothesizers **aimed at those cells**, handing back round one's
-  output. A cell no lens can populate is recorded as a **hole naming which lens failed to see it** — that
-  is a finding, not a gap to hide. Exhaustion here is honestly bounded: it is relative to the named lenses
-  and dimensions, never absolute, and the record should say so.
+  Where cells are thin or empty, re-spawn **aimed at those cells**, handing back round one's output. A cell
+  no lens can populate is recorded as a **hole naming which lens failed to see it** — that is a finding, not
+  a gap to hide. Exhaustion here is honestly bounded: it is relative to the named lenses and dimensions,
+  never absolute, and the record should say so.
+- **Round two fires on a load-bearing hole, not on an empty cell (wfh-005).** The cell test is necessary and
+  not sufficient. **Also re-spawn when a named hole is load-bearing for a verdict or a routing**, however
+  well-populated its cell is. wfh-005 was **20 of 20 on cells**, so the trigger correctly never fired —
+  while two named holes sat directly under the run's only **build** recommendation, either of which would
+  have converted it to assemble. The goal-owner dissented at the gate and was right. **The question is not
+  "is this cell thin," it is "would closing this hole change what we decide."** A run can be complete on
+  every cell and still have left unread the one thing that decides what gets built.
 - **NO graph writes in this phase** — hypotheses reach the graph only through formalize, post-triage.
 - `phase-end phase:"hypothesize" outcome:"H hypotheses (obvious/adjacent/non-obvious split)"`.
 
