@@ -333,3 +333,18 @@ in the telemetry and recoverable only from the narrative. **#65 stays `partial` 
 **Held against ourselves:** wfh-005 was heavily human-directed, so no factory capability advances on it.
 `grade:proven` on an autonomy capability requires an autonomous-run artifact, and three owner injections at
 the gate is the opposite of one.
+
+**Amendment (same day, from the retro's own curator).** The curator re-ran `context_cycle_review` rather
+than take the leader's brief on trust — correct behaviour — and **could not verify two of its claims**: it
+saw `Gate: UNKNOWN` on all four phases and no baseline-comparison section at all. Both of us were right.
+The leader called it with `format:"json"`; the curator took the **default `markdown` render**, and the
+markdown render **drops `gate_outcome_text` and the entire `baseline_comparison` block** that the JSON
+render carries. Same call, same cycle, materially different picture.
+
+**Why this matters beyond a formatting quibble.** An agent taking the default render sees no gate outcomes
+and no baseline, and would reasonably conclude the telemetry is degraded — the exact conclusion
+`factory-retro`'s standing caveat primes it to reach. **The data was there and the default view did not show
+it.** That is this run's own emergent position (#196) one level over: a mechanism present, believed, and
+not in force from where the reader stands. **Operational rule until parity lands: run
+`context_cycle_review` with `format:"json"` in any retro, and treat the markdown render as a summary, not
+as the record.**
