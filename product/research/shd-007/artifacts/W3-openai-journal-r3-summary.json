@@ -1,0 +1,13 @@
+{
+  "route": "openai:/v1/chat/completions",
+  "model": "qwen3-coder:30b",
+  "steps": 11,
+  "tool_calls": 11,
+  "wall_s": 53.7,
+  "taxonomy": [],
+  "taxonomy_counts": {},
+  "verify_exit": 0,
+  "verify_out": "........                                                                 [100%]\n8 passed in 0.01s\nPASS: suite green, tests/ pristine",
+  "passed": true,
+  "diffstat": "     |   2 ++\n .../.pytest_cache/CACHEDIR.TAG                     |   4 ++++\n .../null => work-openai-r3/.pytest_cache/README.md |   8 +++++++\n .../.pytest_cache/v/cache/lastfailed               |   1 +\n .../.pytest_cache/v/cache/nodeids                  |  10 +++++++++\n .../roster/__pycache__/__init__.cpython-314.pyc    | Bin 0 -> 223 bytes\n .../roster/__pycache__/parser.cpython-314.pyc      | Bin 0 -> 4113 bytes\n .../roster/__pycache__/report.cpython-314.pyc      | Bin 0 -> 2914 bytes\n .../roster/__pycache__/rules.cpython-314.pyc       | Bin 0 -> 2957 bytes\n .../fixture => work-openai-r3}/roster/parser.py    |   4 ++--\n .../fixture => work-openai-r3}/roster/report.py    |  25 ++++++++++++++++++---\n .../fixture => work-openai-r3}/roster/rules.py     |   7 ++++--\n .../test_roster.cpython-314-pytest-9.1.1.pyc       | Bin 0 -> 12272 bytes\n 13 files changed, 54 insertions(+), 7 deletions(-)"
+}

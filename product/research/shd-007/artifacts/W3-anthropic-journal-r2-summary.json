@@ -1,0 +1,13 @@
+{
+  "route": "anthropic:/v1/messages",
+  "model": "qwen3-coder:30b",
+  "steps": 30,
+  "tool_calls": 30,
+  "wall_s": 117.5,
+  "taxonomy": [],
+  "taxonomy_counts": {},
+  "verify_exit": 1,
+  "verify_out": "    def test_full_report():\n        spec = \"\"\"\n        Ana,0,22-6\n        ana,1,14-22\n        Bo,0,9-17\n        Bo,1,9-17\n        \"\"\"\n        r = build_report(parse(spec))\n        assert r[\"totals\"] == {\"Ana\": 16, \"Bo\": 16}\n>       assert r[\"busiest\"] == \"Ana\"\nE       AssertionError: assert 'Bo' == 'Ana'\nE         \nE         - Ana\nE         + Bo\n\ntests/test_roster.py:57: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_roster.py::test_full_report - AssertionError: assert 'Bo' =...\n1 failed, 7 passed in 0.03s\nFAIL: suite not green",
+  "passed": false,
+  "diffstat": "=> work-anthropic-r2/debug_test.py       |  18 +++++++++\n /dev/null => work-anthropic-r2/final_debug.py      |  42 +++++++++++++++++++++\n /dev/null => work-anthropic-r2/manual_test.py      |  35 +++++++++++++++++\n .../roster/__pycache__/__init__.cpython-314.pyc    | Bin 0 -> 226 bytes\n .../roster/__pycache__/parser.cpython-314.pyc      | Bin 0 -> 4116 bytes\n .../roster/__pycache__/report.cpython-314.pyc      | Bin 0 -> 2726 bytes\n .../roster/__pycache__/rules.cpython-314.pyc       | Bin 0 -> 2960 bytes\n .../fixture => work-anthropic-r2}/roster/parser.py |   4 +-\n .../fixture => work-anthropic-r2}/roster/report.py |  13 ++++++-\n .../fixture => work-anthropic-r2}/roster/rules.py  |   7 +++-\n /dev/null => work-anthropic-r2/simple_debug.py     |  32 ++++++++++++++++\n .../test_roster.cpython-314-pytest-9.1.1.pyc       | Bin 0 -> 12275 bytes\n 17 files changed, 172 insertions(+), 6 deletions(-)"
+}
