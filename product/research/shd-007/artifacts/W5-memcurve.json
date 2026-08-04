@@ -1,0 +1,74 @@
+[
+  {
+    "num_ctx_requested": 2048,
+    "num_ctx_in_force": 2048,
+    "size_bytes": 18573699316,
+    "size_vram_bytes": 18573699316,
+    "size_gib": 17.3,
+    "size_vram_gib": 17.3,
+    "fully_resident": true,
+    "server_load_duration_s": 6.68,
+    "wall_s": 6.87,
+    "utc": "2026-08-04T04:14:17Z"
+  },
+  {
+    "num_ctx_requested": 4096,
+    "num_ctx_in_force": 4096,
+    "size_bytes": 18682751220,
+    "size_vram_bytes": 18682751220,
+    "size_gib": 17.4,
+    "size_vram_gib": 17.4,
+    "fully_resident": true,
+    "server_load_duration_s": 1.57,
+    "wall_s": 1.73,
+    "utc": "2026-08-04T04:14:18Z"
+  },
+  {
+    "num_ctx_requested": 8192,
+    "num_ctx_in_force": 8192,
+    "size_bytes": 18900855028,
+    "size_vram_bytes": 18900855028,
+    "size_gib": 17.6,
+    "size_vram_gib": 17.6,
+    "fully_resident": true,
+    "server_load_duration_s": 1.55,
+    "wall_s": 1.73,
+    "utc": "2026-08-04T04:14:20Z"
+  },
+  {
+    "num_ctx_requested": 16384,
+    "num_ctx_in_force": 16384,
+    "size_bytes": 19337062644,
+    "size_vram_bytes": 19337062644,
+    "size_gib": 18.01,
+    "size_vram_gib": 18.01,
+    "fully_resident": true,
+    "server_load_duration_s": 1.55,
+    "wall_s": 1.73,
+    "utc": "2026-08-04T04:14:22Z"
+  },
+  {
+    "num_ctx_requested": 24576,
+    "num_ctx_in_force": 24576,
+    "size_bytes": 19773270260,
+    "size_vram_bytes": 19773270260,
+    "size_gib": 18.42,
+    "size_vram_gib": 18.42,
+    "fully_resident": true,
+    "server_load_duration_s": 1.48,
+    "wall_s": 1.65,
+    "utc": "2026-08-04T04:14:24Z"
+  },
+  {
+    "num_ctx_requested": 32768,
+    "num_ctx_in_force": 32768,
+    "size_bytes": 20209477876,
+    "size_vram_bytes": 20209477876,
+    "size_gib": 18.82,
+    "size_vram_gib": 18.82,
+    "fully_resident": true,
+    "server_load_duration_s": 1.54,
+    "wall_s": 1.7,
+    "utc": "2026-08-04T04:14:26Z"
+  }
+]
