@@ -7,6 +7,12 @@ MacBook Pro M4 Pro / 48 GB unified *(owner-attested — see W0)* · HTTP-only ov
 
 ---
 
+> **Owner ruling at the firewall gate (2026-08-04): C1 and C2 both `partial`.** The question this run was
+> asked to settle was whether local inference can support agentic development work. The answer is **"some,
+> and we now know which part."** Nothing reaches `proven`: C1's `done_when` requires *target hardware*, and
+> the production device is still undetermined. What was blocking downstream platform work is nevertheless
+> cleared — local inference does real multi-file work, verified.
+
 ## Verdict in one paragraph
 
 The local stack **does** serve a coding-grade agentic contract on this hardware. Over 107 sequential
@@ -207,6 +213,40 @@ clears it. The additions that carry the lesson are **TTFT**, **the stated depth*
 rather than a single attempt** (67 % observed; reliability is multiplicative, and one lucky run is not a
 capability).
 
+## Bandwidth-class read on DGX Spark  *(`claimed` — toward an open purchase decision)*
+
+The owner's production device is undetermined, with **DGX Spark** among the candidates. This run is more
+informative about that choice than "one measured point" implies, for one reason:
+
+> Position #67 records **DGX Spark at ~273 GB/s**. The machine measured here is attested at **~273 GB/s**.
+> **They are the same memory-bandwidth tier.** This is not extrapolation to an unknown class — it is a
+> measurement *of* the candidate's class.
+
+Since dense decode is bandwidth-bound (we measured 230 GB/s effective, 84 % of attested, and one constant
+predicts both arms), the transfer is direct:
+
+| on a ~273 GB/s machine | measured here | expected on Spark |
+|---|---|---|
+| 32B **dense** decode | 11.6 tok/s | **~11–12 tok/s** |
+| 30B-A3B **MoE** decode (shallow) | 60.4 tok/s | **~55–65 tok/s** |
+| MoE decode at 26k context | 24.0 tok/s | **~24 tok/s** |
+
+**The uncomfortable implication, stated plainly:** if a Spark performs like the laptop already on the desk,
+then buying one is not buying *speed* on the models actually in use. What it buys is **capacity** (larger
+models, longer contexts resident), **concurrency**, and **not tying up a personal machine**. Those may well
+justify it — but they are different reasons than "it will be faster," and the throughput case for it is
+weak on this evidence.
+
+**Bounds.** Same bandwidth tier is not the same machine: compute units, memory subsystem, driver stack and
+thermal envelope all differ, and Spark's figure is `[REPORTED]` in #67, not measured by us. Treat the table
+as *the right order of magnitude and the right ranking*, not as a benchmark. The **ranking** (sparse ≫
+dense) is the durable part; it follows from architecture and holds regardless of which ~273 GB/s box wins.
+
+**What would actually settle it:** run this same fixture and harness on the candidate hardware before
+committing. The measurement rig is now written, frozen and reusable (`poc/`, `task/`) — re-running it on a
+loaner or a returnable unit costs an afternoon, and would convert every number above from `claimed` to
+measured.
+
 ## Sizing note — `claimed`, never `proven`
 
 Measured **here**, on this machine, at this envelope. Everything below is inference from **one point**:
@@ -229,17 +269,40 @@ Measured **here**, on this machine, at this envelope. Everything below is infere
 
 ## Recommended firewall grades  *(advisory — the gate is the human's)*
 
-- **C1 (#4) → `proven`, within this envelope.** All three clauses are met by attached artifacts: the stack
-  serves the C2-slate endpoint (aider drives it end-to-end); sustained decode is measured with its depth
-  (24.0 tok/s @ 25.7k, 42.4 @ 7.4k); and a **passing** multi-file diff was produced through 11–14
-  sequential tool calls against the real proxy, verified green with `tests/` pristine. Different hardware
-  re-opens this to `partial`.
-- **C2 (#5) → `partial`, not `proven`.** The bar is a **slate** harness finishing with no manual steps.
-  None did. aider reached 7/8 unaided and stopped on its own cap; Claude Code failed at the tool-call
+**Owner ruling, 2026-08-04: both capabilities `partial`.** An earlier draft of this report recommended
+`proven` for C1. That was grading against the artifact instead of against the capability's own sentence,
+and it is withdrawn.
+
+- **C1 (#4) → `partial`.** The artifacts are strong and stand: the stack serves both routes; decode is
+  measured with its depth (24.0 tok/s @ 25.7k, 42.4 @ 7.4k); a **passing** multi-file diff was produced
+  through 11–14 sequential tool calls against the real proxy, verified green with `tests/` pristine.
+  **But `done_when` reads "…at ≥X tok/s *on target HW*", and this machine is explicitly not target
+  hardware** — the owner's production device is undetermined (DGX Spark or other, open as of this date).
+  The capability fails its own final clause no matter how good the evidence is. `partial` with the measured
+  envelope recorded; the blocker is **hardware selection, not evidence quality**.
+- **C2 (#5) → `partial`.** The bar is a **slate** harness finishing with no manual steps. None did. aider
+  reached 7/8 unaided and stopped on its own 3-reflection cap; Claude Code failed at the tool-call
   contract. Our bespoke loop completed 4/6 — evidence the *task and stack* are viable, but it is not a
-  slate harness and must not be counted toward C2.
+  slate harness and **must not be counted toward C2**.
 - **Finding #16 → amended, not simply confirmed.** Confirmed for Claude Code; contradicted at the protocol
   level (0/107 failures). The mechanism is prompt-level.
+
+### What this run did and did not settle
+
+**Settled — and it was the blocker:** local inference can drive real multi-file coding work to a verified
+pass. The "local models cannot do agentic work at all" hypothesis is dead, which unblocks building
+local-first. Also settled for any unified-memory machine: **sparse over dense**, on mechanism rather than
+brand.
+
+**Not settled:** which machine. That was never in this scope's power — one machine establishes one point.
+
+**Still open, and the right next question:** *what share of the work local can carry.* This run gives a
+**shape, not a percentage.** Local fixed the three mechanical defects quickly and reliably, then stalled on
+the one requiring a subtle inference (the tie-break). **Every failure, in both our loop and aider, was that
+same defect.** The failure is not distributed across the task — it sits at a specific difficulty step. So
+the answer is a **difficulty threshold, not a percentage**, and finding it needs a graded task ladder
+rather than one task repeated. That is the natural input to C3 (#103) routing/escalation — shd-006 —
+which now has its first real data point.
 
 ## Lessons learned *(first real exercise of the firewall machinery)*
 
