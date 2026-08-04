@@ -18,7 +18,10 @@ caching removes that cost almost entirely (**16.3 s → 0.32 s TTFT** at 7.4k), 
 context handling a *harness requirement*, not an optimisation. On the harness axis the result is worse:
 **no slate harness completed the task**. aider reached 7/8 before hitting its own reflection cap; Claude
 Code over local `/v1/messages` failed outright, and the cause is isolated to **its system prompt**, not
-the serving stack.
+the serving stack. The dense arm ran: position #67's bandwidth model is **calibrated** — it predicted
+10–12 tok/s for a 32B dense here and we measured **11.61** — but its *dense-first stack conclusion does not
+transfer*, because the MoE beats #67's own reported 3090-dense figure by 2× on a machine with 3.4× less
+bandwidth.
 
 ---
 
@@ -129,9 +132,63 @@ tool call to parse. **#16 is confirmed for this harness — but the mechanism is
 protocol-level.** That distinction matters: the serving stack is not at fault, and it parses tool calls
 correctly for aider and for our own loop. A fix lives in prompt/template alignment, not in the proxy.
 
-## W2 — dense/MoE calibration arm
+## W2 — dense/MoE calibration arm  *(run; human-approved pull)*
 
-*Pending — see the run log. Reported with its verdict, or as an explicit "not run" with the reason.*
+Raw: `artifacts/W2-throughput-dense.json`. `qwen2.5-coder:32b` Q4_K_M, 32.76 B dense, GQA 40:8, 64 layers.
+2 reps/cell (MoE variance was ≤0.05 %, so 2 suffices, and it limits eviction churn on the owner's laptop).
+
+**The MoE was evicted to load the dense model**, exactly as the gate-1 confound note predicted. During the
+load `/api/ps` read **empty** — the same signature wfh-005 #196 warns about, here a benign load window
+rather than a broken control. Resident dense footprint: 22.54 GiB at `num_ctx` 32768.
+
+| depth (tok) | MoE decode | dense decode | **MoE advantage** | MoE cold prefill | dense cold prefill |
+|---|---|---|---|---|---|
+| 1,001 | 60.4 | **11.61** | **5.2×** | 775 tok/s | 100 tok/s |
+| 3,744 | 50.0 | 10.75 | 4.6× | 601 | 90 |
+| 7,406 | 42.4 | 10.02 | 4.2× | 446 | 82 |
+| 14,746 | 32.0 | 8.61 | 3.7× | 303 | 69 |
+| 25,761 | 24.0 | 7.44 | 3.2× | 197 | 57 |
+
+Dense cold TTFT at 25,761 tokens: **452.6 s — seven and a half minutes to first token.** Warm: 0.57 s.
+
+### Verdict on #67's bandwidth model: **CALIBRATED**
+
+1. **Its numeric prediction was right.** #67's model implies a 32B dense lands **10–12 tok/s** on a
+   ~273 GB/s machine. **Measured: 11.61.**
+2. **One constant explains both arms.** Dense decode × full weights = 11.61 × 18.49 GiB ⇒ **230 GB/s
+   effective**, i.e. **84 % of the attested 273 GB/s** — the signature of a bandwidth-bound decode. Holding
+   that same 230 GB/s, the MoE's 60.4 tok/s implies **3.81 GB read per token = 21 % of its weights**,
+   consistent with 8-of-128 experts plus shared layers. The model predicts *both* arms without adjustment.
+3. **Direction check against #67's own citation.** Scaling our dense figure by the 936/273 bandwidth ratio
+   gives **39.8 tok/s** for a 3090 — same order as #67's `[REPORTED]` ~30. The thesis "bandwidth, not
+   capacity, sets dense decode" **survives contact with measurement.**
+
+### …but its *stack conclusion* does not transfer to this hardware class
+
+#67 treats Qwen3-Coder-30B-A3B as "the agentic / long-context **alternative**" and concludes a used 3090 is
+the value floor because unified-memory machines "decode dense models SLOWER than the cheap card." Both
+halves are true **for dense models** and misleading here:
+
+> **Our MoE on ~273 GB/s delivers 60.4 tok/s — 2.0× #67's `[REPORTED]` ~30 tok/s for a 3090 running 32B
+> dense.** A 3.4× bandwidth deficit is not merely recovered by the MoE; it is overturned.
+
+**Architecture is a bigger lever than bandwidth on this hardware.** MoE-vs-dense moved decode 5.2×; the
+3090's bandwidth edge is 3.4×. On low-bandwidth unified memory the MoE is not an alternative — it is the
+determining choice, and #67's dense-first ordering (protocol fit → tool-call reliability → bandwidth × VRAM)
+should gain **model architecture** as a first-class term above raw bandwidth.
+
+**Two honesty bounds on this comparison.** #67's 3090 figure is `[REPORTED]`, so this is our measurement
+against their citation — **not a head-to-head**; we do not own a 3090. And the 273 GB/s denominator is
+**owner-attested**, so the 84 %-of-bandwidth result is conditional on it. The *ratio* between our two arms
+(5.2×) is measured on identical hardware and depends on neither.
+
+### A second-order result worth keeping
+
+Dense decode degrades **less** with depth (−36 %) than the MoE (−60 %), despite dense KV costing ~5× more
+per token (256 KiB vs 50.6 KiB). Both are consistent: KV reads are a *small fraction* of the dense model's
+18.49 GiB per-token read but a *large fraction* of the MoE's 3.81 GB. The MoE's advantage therefore
+**narrows with context** — 5.2× at 1k down to 3.2× at 26k. Extrapolating the trend is not supported by five
+points, but the direction matters for long-context agentic work and is a candidate for a follow-on scope.
 
 ---
 
@@ -158,8 +215,17 @@ Measured **here**, on this machine, at this envelope. Everything below is infere
   need ~12.6 GiB of KV on top of ~17.2 GiB of weights — **~30 GiB, which would fit 48 GB**. Not measured;
   the owner capped the sweep at 32768.
 - A machine with less unified memory than ~24 GB could not hold this model at useful depth.
-- **Nothing here sizes a machine we do not own.** #67's bandwidth model is checkable only via W2, and W2's
-  verdict is itself conditional on the owner-attested 273 GB/s.
+- **Effective memory bandwidth measured 230 GB/s** (dense decode × weights), 84 % of the attested 273. That
+  constant predicts both arms, so it is the right number to reason with — for **this** machine.
+- **Architecture beats bandwidth on this hardware class.** MoE-vs-dense is worth 5.2× at shallow depth;
+  the 3090's bandwidth edge is 3.4×. A sizing decision that optimises bandwidth while ignoring model
+  architecture optimises the smaller term.
+- **Nothing here sizes a machine we do not own.** The 3090 comparison is our measurement against #67's
+  `[REPORTED]` figure, not a head-to-head, and the whole bandwidth-efficiency result is conditional on the
+  owner-attested 273 GB/s.
+- **The serving host was left as found** — MoE reloaded, 18.94 GiB, `num_ctx` 32768, never-expire pin
+  restored, matching the W0 opening capture. The dense model remains pulled (~18.5 GiB of the owner's disk),
+  which is a durable side effect of the approved W2 and is the owner's to reclaim.
 
 ## Recommended firewall grades  *(advisory — the gate is the human's)*
 
