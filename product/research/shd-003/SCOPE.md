@@ -1,6 +1,13 @@
 # shd-003 — Live multi-step tool-call smoke test for the C2 harness slate
 
-**Status:** SCOPE (staged — blocked on local hardware; see below)
+**Status:** **superseded by shd-007** (2026-08-05) — *not* done, and not independently run.
+
+Merged into shd-007 at its gate-1 (2026-08-04, owner decision: one hardware window, real overlap). P1 was
+discharged by shd-007's W0, P2 by its W4, and P3 ran there as **W7**. Result: **no slate harness completed
+the task** — aider 0.86.2 reached 7/8 and stopped on its own 3-reflection cap; Claude Code over local
+`/v1/messages` failed outright, bisected to its system prompt. C2 (#5 → #227) graded `partial`. Evidence:
+`product/research/shd-007/` and Issue #55. Anything this scope still wants that shd-007 did not cover needs
+a fresh scope, not a re-opening of this one.
 **Goal(s):** `shd` (primary, #3)
 **Capability target(s):** **C2 — An agentic harness drives research+coding tasks to completion** (#5)
 **Confidence-required:** validated

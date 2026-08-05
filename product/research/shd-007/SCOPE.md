@@ -1,6 +1,9 @@
 # shd-007 — Validated POC: local inference on owned hardware, and the first measured anchor for sizing
 
-**Status:** RUNNING (gate-1 scope approved 2026-08-04 — see *Gate-1 decisions* below)
+**Status:** **done** (closed 2026-08-05 · gate-1 approved 2026-08-04 · firewall gate ruled 2026-08-04)
+**Outcome:** both capability targets `partial` — **nothing reached `proven`**. C1 (#4 → #226) fails its own
+final clause, *"on target HW"*: the production device is undetermined. C2 (#5 → #227) — no slate harness
+finished. Blocker on C1 is **hardware selection, not evidence quality**. Report: `REPORT.md`.
 **Goal(s):** `shd` (primary, #3)
 **Capability target(s):** **C1 — Capable LLM inference runs on local hardware** (#4) ·
 **C2 — An agentic harness drives research+coding tasks to completion** (#5, merged from shd-003 at gate-1).
