@@ -348,3 +348,67 @@ it.** That is this run's own emergent position (#196) one level over: a mechanis
 not in force from where the reader stands. **Operational rule until parity lands: run
 `context_cycle_review` with `format:"json"` in any retro, and treat the markdown render as a summary, not
 as the record.**
+
+---
+
+## OBS-18 — Process control, not measurement, was this run's dominant friction — and one hazard bit three times
+*2026-08-05 · from the shd-007 retro*
+
+shd-007 was the first run to spend real compute over a long wall-clock window (two model arms, ~20 min and
+~50 min sweeps, four background harness runs). Telemetry flagged **two friction hotspots**, both about
+*driving background work from bash* rather than anything to do with the subject:
+
+- **`sleep_workaround_count: 10`, against a baseline mean of `0.0` — a `NewSignal`.** Every one was a poll
+  loop waiting on a long measurement. The harness blocks bare `sleep`, so the run kept re-deriving
+  `until <cond>; do sleep N; done` wrappers.
+- **`Bash` failed 10 times** (`friction_hotspot_count` 2 vs mean 0.33 — an outlier).
+
+**The recurring hazard, stated mechanically so it stops recurring: `pkill -f` / `pgrep -f` match the
+agent's own shell.** The wrapper's command line *contains the pattern string*, so the pattern matches the
+process issuing it. It bit **three times** in one run:
+
+1. `pkill -f "measure.py"` → exit 144, killed its own shell.
+2. `pkill -f "until ! pgrep -f"` → killed the shell **before** the `aider` launch on the same line, so the
+   run silently never started and the log file did not exist.
+3. `pgrep -f measure2.py` reported a live process that was only the watcher matching itself — twice read as
+   "still running" when the work had finished.
+
+Case 2 is the expensive one: **a self-kill that looks like a launch failure**, costing a full re-run.
+
+**Rules that would have prevented all three:**
+- Resolve a PID once (`ps -eo pid,args | awk '/[m]easure2\.py/ {print $1}'`) and act on the **PID**, never
+  re-match by pattern. The `[m]` bracket trick alone defeats self-match in `grep`, not in `pkill`.
+- Never put a `pkill` and the thing it must not kill in the same compound command.
+- Prefer `run_in_background` + a completion notification over any poll loop; where a poll is unavoidable,
+  wait on `kill -0 <pid>`, not on a name.
+
+**Not a subject finding.** If the research target were different this would still be true, which is the
+test — it belongs to the factory plane.
+
+## OBS-19 — A phase that correctly stops at a blocking human gate is recorded as `gate_result: "fail"`
+*2026-08-05 · from the shd-007 retro*
+
+`context_cycle_review` returned `gate_result: "fail"` for shd-007's **feasibility** phase. The phase did not
+fail. Every workstream ran, and the phase ended exactly as the protocol requires — parked at the
+**mandatory, blocking, human** firewall gate with grades recommended and deliberately **not written**. Its
+`gate_outcome_text` says so in as many words: *"Recommended C1 proven / C2 partial — NOT WRITTEN, awaiting
+blocking human firewall gate."*
+
+The classifier appears to read the refusal-to-advance language as failure. **The firewall working is being
+recorded as the phase failing.**
+
+**Why this is worse than a cosmetic mislabel.** These phase results feed `baseline_comparison`, which is the
+instrument every later retro measures itself against. A methodology whose central control is *declining to
+advance status without evidence* will, run after run, accumulate a baseline in which correct firewall
+behaviour reads as failure — and a future agent optimising against that baseline would be rewarded for
+advancing status at the gate. **The telemetry currently punishes the behaviour the firewall exists to
+enforce.**
+
+Recorded as a factory enhancement, `claimed`, pending a fix upstream. Until then: **read `gate_result` on any
+human-gated phase as unreliable, and take `gate_outcome_text` as the record.** That is the same shape as
+OBS-17's render caveat — the data is right, the derived view is not.
+
+**OBS-14 / OBS-17 recurrence (third data point, not a new observation).** `agents_spawned` came back **empty**
+against one curator spawn, and all 11 knowledge stores were attributed to the leader session though the
+curator wrote them in a subagent. OBS-17's sharper shape — telemetry does not merely miss subagent work, it
+**reassigns it to the parent** — reproduces exactly. **#65 stays `partial` and stays blocked.**
