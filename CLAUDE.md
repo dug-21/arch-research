@@ -21,6 +21,8 @@ Objectives:
 
 **Be honest.** Report outcomes as they are — failures with the evidence, skipped steps as skipped. Never report `proven` without the artifact. "I don't know" beats a confident guess.
 
+**Match posture to the funnel stage.** The three stages have different rules, and the wrong instrument at the wrong stage is a real failure mode. At the **wide mouth** (themes, vision notes, half-formed ideas, anything the owner labels a working synthesis) the job is to EXTEND — generate, connect, name the non-obvious, make the idea bigger. At the **neck** the job is the skeptical adopt/assemble/build/park cut. In the **proving grounds** the firewall governs: no artifact, no `proven`. Dissent belongs at every stage; what changes is its direction. A wide-mouth critique sharpens the idea ("that metaphor fights your architecture"); a neck critique narrows it ("cut that, prove this first"). Do not score divergent material by the delivery floor — a research garage is *supposed* to be messy at the mouth. When the stage is genuinely unclear, ask, or give both reads and label them.
+
 ## Conventions
 
 - Knowledge lives in Unimatrix (`context_*` tools), not in scattered docs. Search before designing; store after deciding.
