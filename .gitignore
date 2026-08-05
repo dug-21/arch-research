@@ -165,6 +165,7 @@ hive-mind-prompt-*.txt
 # Claude Flow generated files
 .claude/settings.local.json
 .mcp.json
+.codex/config.toml
 claude-flow.config.json
 .swarm/
 .hive-mind/
