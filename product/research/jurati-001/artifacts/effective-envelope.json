@@ -1,0 +1,36 @@
+{
+  "captured_at_utc": "2026-08-07T19:31:20Z",
+  "frontier": {
+    "reason": "no configured provider/model snapshot or ordinary task credential discovered",
+    "status": "blocked"
+  },
+  "human_arm": {
+    "reason": "two raters and adjudicator not assigned",
+    "status": "blocked"
+  },
+  "ollama": {
+    "authorization": "existing listed models only; no pulls, evictions, or host configuration",
+    "endpoint": "http://100.122.119.72:11434",
+    "host_hardware": "not measured",
+    "models": [
+      {
+        "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+        "modified_at": "2026-08-04T00:20:33.038217932-04:00",
+        "name": "qwen2.5-coder:32b",
+        "size": 19851349898
+      },
+      {
+        "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+        "modified_at": "2026-08-03T20:35:10.166996098-04:00",
+        "name": "qwen3-coder:30b",
+        "size": 18556700761
+      }
+    ],
+    "residency": "not measured",
+    "tags_probe_ms": 100.023387,
+    "version": "0.32.5",
+    "version_probe_ms": 245.980689
+  },
+  "platform": "Linux-6.12.100+deb13-amd64-x86_64-with-glibc2.39",
+  "python": "3.14.6"
+}

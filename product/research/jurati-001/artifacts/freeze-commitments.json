@@ -1,0 +1,28 @@
+{
+  "aggregate_sha256": "1ce3dc5f52545e820a69ec569cd09ca6c92f5a322f2207ab9b3e9ada5815e543",
+  "files": {
+    "EXAMPLES-v0.1-dev.md": "49c852988a3d508b24fc8e28811fb45ec83e0fe550ae585768a18a873ce8dcde",
+    "SCOPE.md": "e9fb87b475d8defacae2e7de88685663fea63dd916fcf368bbfa16633438713b",
+    "SPEC-v0.1-dev.md": "d839c5d0d63b69a40276d8184a44017bbae95333571bc72eb64aa75d8d4f9130",
+    "artifacts/effective-envelope.json": "f7738e5c1bd5b0672e4a7ea4adffac7e37438228d4a071cb0236e881828faafc",
+    "artifacts/non-inspection-attestations.json": "bed297f6878064bab6846a7bdcf05ac78771f0a02b62b25b72fdf85c548400b2",
+    "corpus-generated/SHA256SUMS": "9e1ce82360191a4c8cf1f5259bce1d81408c157738ab13761df76c11c6f82366",
+    "corpus-generated/manifest.jsonl": "765526933405c9c37f940791a9d9387bee43160ee94f9b85a6b277c4b570b5a2",
+    "corpus-generated/reference-labels-nonholdout.jsonl": "f4193a5a06403ac61f22f30d8e1091b477404fb6a4497b5c4c2d05ad16da2355",
+    "corpus-generated/restricted-map-commitment.json": "079d2ca4400bc18f45be9bfff4deeb8cd9f66b795c3956110f1ccd886342f1ae",
+    "corpus-generated/splits.json": "2ec47c34265bb7db8764c2493f0c904f6c28916a8477eb21f253f1d85ee27044",
+    "findings-W4.md": "d1b618ec5c60e043a23764446afd8a8028cfe03a23c566e96de70055e9112440",
+    "poc/capture_environment.py": "ab1507fb63a168f5e2a2519da39d28e32a7379a0a12d745c74d94443addc8e98",
+    "poc/generate_corpus.py": "0e475304ae66c181a2c863098ee8292e5a963aed4c3dde51f0d67b786fb07e48",
+    "poc/import_custody_handoff.py": "f7b5d9617869c3292b61e79a10680d602f881280fdc16abe0c1d8d58cf827e97",
+    "poc/jurati.py": "7969411b0b59db704511b026110eb2b95676dd596a4b6aedb993c28802e7ce7a",
+    "poc/run_mechanical_arm.py": "918dbd76675e2d95fe91627aa165106d733bf22fb4249d5f6d58997b6f10ae51",
+    "poc/run_semantic.py": "ffe31bd689530ae820d3815afa75735487ceff5dc2d98bed387a9e8978a96bfb",
+    "poc/test_jurati.py": "6b85b36c3ec54dc88eff2f208242630392af2f8b99c3592a87c38d9accac6716",
+    "poc/verify_freeze.py": "4f2c8560f67280435047f13552b68515194cf92e8a68e301921b5b907fac23e0",
+    "task/FREEZE-CANDIDATE.md": "db8712965333056506bfeef7b2e49d9b97603dfe09c7cea41668abd88f2e811d",
+    "task/semantic-policy-v1.json": "3649607c7197e875585c780784c368938e645ce4b7056e5663cb7acf3e100c3c",
+    "task/semantic-prompt-v1.txt": "b54c86a3d986d4de91e55599df2a83205b0e0d216b76cfab0c620ad3411d0416"
+  },
+  "schema": "jurati-freeze-commitment-v1"
+}
