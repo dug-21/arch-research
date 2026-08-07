@@ -114,3 +114,45 @@ After repair, a second and final rework gate may rerun. Capability #256 remains 
 #257 remains `claimed`; this intermediate artifact supports neither `partial` nor `proven` advancement.
 No Unimatrix read/write beyond the prior independent live-node fetch was needed for this rework ruling,
 and no restricted label/mapping value was inspected.
+
+---
+
+## Final ruling after feasibility rework 2/2 — `baf03aa`
+
+**Verdict:** **PASS**  
+**Human-freeze recommendation:** **Approve the corpus/language freeze.**  
+**B/C launch now:** **No — the authorized Ollama endpoint is presently unreachable. Launch B/C without
+edits when the pinned endpoint returns and its live version/model-digest preflight passes.**
+
+This PASS is necessary input to the human freeze ruling, not proof of capability #256 and not permission to
+advance a graph grade. The prior two failed rulings above remain preserved as the audit trail.
+
+### Independent clause mapping
+
+| Clause | Result | Evidence |
+|---|---|---|
+| Fresh repository/object boundary | PASS | The validator operated in independent clone `/tmp/jurati-001-fresh.IOh3Zj/repo`, with its own `.git`. Its branch ancestry is exactly `origin/main`/`4667db9` → `baf03aa`. `git fsck --full` is clean. Old hashes `2ae4b15`, `7d8c28e`, `d0905b4`, and `27c30b4` are unknown to `git cat-file` and cannot be resolved in this object database. |
+| Failed-ruling preservation | PASS | This report retains the original `2ae4b15` REWORKABLE FAIL and the `d0905b4` rework-1 REWORKABLE FAIL, including their evidence and remedies. |
+| Encrypted Custody2 commitment | PASS, bounded | Without opening restricted labels or possessing a key: custody root is mode `0700`; public handoff is mode `0600` and hashes to committed `de2e87b1...`; the opaque encrypted blob is mode `0600` and hashes to committed `2006fea9...`. Public metadata declares AES-256-CBC, PBKDF2-HMAC-SHA256/200,000 iterations, salt, no persisted key, and wrong-key rejection. No key-like file exists under the fresh clone or Custody2 directory. The 11-file judge-input manifest and every packet digest independently match commitment `1b310a13...`. |
+| Corpus invariants and packet integrity | PASS | Three fresh verifier invocations pass 45 episodes, 32/13 domain counts, exact per-domain split, cycle isolation, three-episode cap, 11 replacement holdouts, packet/final hashes, sanitized schema, and tracked/reachable-history leakage scans. |
+| Identity/path/reference leakage | PASS | Independent scans find no real source paths, identity fields, reference labels, next actions, verdict summaries, or historical-outcome fields in any replacement holdout packet. Serialized label fields occur only in the explicitly non-holdout reference file and generator schema code. Branch history contains no prior leaked objects. |
+| Outcome exclusion applied | PASS | `import_custody_handoff.py` actually transforms evidence before writing effective packets, deleting result-table blocks and summary/outcome-token lines, then fails closed if any remain. The committed exclusion summary records 18 removed lines. Independent scans of all 11 effective A2/B2 packets find zero outcome tokens, summary headings, result/status/transition tables, or real repository paths. |
+| W2/W4/W5/W6 non-inspection | PASS, attested | All four roles provide affirmative named attestations and caveats; none reports inspecting replacement identities, labels, or outcomes. |
+| Frozen task/checker/runner | PASS | All 26 freeze-commitment file hashes and aggregate hash independently match at candidate commit `baf03aa`; these cover scope/spec/examples, prompt, policy, runner, checker, importer, corpus commitments, exclusion summary, environment, Arm A summary, and attestations. The validator gate report is appended after that candidate commitment and is intentionally the only subsequent changed artifact. |
+| Checker self-tests / fresh replay | PASS | All 14 tests pass, including opaque sanitized packets and frozen policy, with three fresh-process deterministic replays producing one verdict/action. The verifier passes three separate invocations. |
+| Arm A repetition and plausibility | PASS, bounded | 225 unique episode/repetition rows equal 45 × 5; every row is Arm A, returns `insufficient_evidence`, and selects a non-advancing action. This demonstrates the deterministic reducer only, not semantic agreement. |
+| No semantic launch | PASS | No B/C result ledger or Arm B/C record exists. This validator made no `/api/generate` call. |
+| Ollama preflight | TEMPORARILY BLOCKED | Independent `/api/version` and `/api/tags` probes each timed out. The frozen effective envelope also records the endpoint as unreachable and version/models as unmeasured. This does not invalidate the offline corpus/language freeze, but it blocks B/C launch now. Before launch, require live server version `0.32.5` and `qwen2.5-coder:32b` digest `b92d6a0b...` exactly as frozen; otherwise fail closed without changing task artifacts. |
+
+### Ruling
+
+The human may freeze this replacement corpus and language at `baf03aa`. The experiment may launch Arms B
+and C only after the unchanged runner performs a successful live endpoint/model preflight; current timeout
+means **not now**. Endpoint recovery alone does not require another corpus-freeze gate because availability
+is outside the frozen semantic artifact, but any change to corpus, language, prompt, policy, checker,
+runner, model identity/digest, or exclusion logic invalidates this freeze and requires a new untouched
+holdout under the scope's leakage rule.
+
+Capability #256 remains `missing` and technology #257 remains `claimed` until sealed semantic replay and
+the later firewall evidence clear their own clauses. No graph write or grade mutation was made, and no
+restricted identity, mapping, label, or decryption key was inspected.
