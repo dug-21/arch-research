@@ -42,7 +42,7 @@ adjudication timestamp, `action_provenance`, and ordered action-source spans.
 | B-D03 | owner-directed early close | close; reset to broader investigation | explicit + observed | REPORT and SCOPE amendment agree |
 | B-D04 | scope approved | begin bounded workstreams | explicit + observed | status and produced artifacts agree |
 | B-D05 | P2 falsified/narrowed | strike and replace absence claim | prescribed | corrected question/action coupling |
-| B-D06 | P4 wounded | adopt/assemble; one conditional build | prescribed | bounded triage routing |
+| B-D06 | P4 wounded | ADOPT `github/gh-aw`; ASSEMBLE Temporal + policy + MCP gateway + AI gateway + SPIRE/Vault + OTel/Langfuse + sandbox; BUILD only the non-declarative-actor residual after the two unread falsifier cells close | prescribed | source-exact bounded triage routing |
 
 Everything else marked `review` in the manifest needs a second reader. Holdout identities and values must never be added
 to this main-branch document.
