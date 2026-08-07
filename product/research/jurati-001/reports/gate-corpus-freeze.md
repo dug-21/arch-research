@@ -65,3 +65,52 @@ judge or language/prompt author saw the exposed labels.
 
 No Unimatrix write or grade mutation was made, and no semantic B/C call was run. The validator did not read
 the values of the sealed holdout labels while performing the structural and digest checks.
+
+---
+
+## Feasibility rework 1 ruling — `d0905b4`
+
+**Verdict:** **REWORKABLE FAIL**  
+**Validator recommendation:** **Do not freeze the replacement corpus/language and do not launch B/C.**
+
+The rework closes the originally reported plaintext-files defect on the owned branch and supplies the
+missing runner, policy, prompt, attestations, and integrity commitment. It does not yet establish the
+claimed operational seal.
+
+### Independent results
+
+| Check | Result | Evidence |
+|---|---|---|
+| Owned branch ancestry | PASS, bounded | `research/jurati-001` is exactly `main` `4667db9` → gate record `99c3a60` → candidate `d0905b4`. Neither `2ae4b15` nor `7d8c28e` is an ancestor or contained by a branch. |
+| Old leaked object unreachability | **FAIL** | Both leaked commits remain in the local object database and are enumerated by `git reflog --all`; `git fsck --no-reflogs --unreachable` identifies both commit objects. They remain directly readable by hash/reflog even though excluded from branch ancestry. The assertion that the old leaked material is unreachable is therefore false for the effective repository available to the semantic roles. |
+| Strengthened corpus verifier | PASS, bounded | Three independent fresh invocations pass counts, split/cap, custody commitment, packet digests/schema, tracked-file scan, main-to-HEAD patch scan, and generated-file checksums. These scans omit reflogs/unreachable objects and therefore do not detect the preceding failure. |
+| Checker and replay | PASS | All 14 tests pass, including frozen-policy and opaque-packet tests; the test fixture performs three fresh-process replays with identical verdict/action. |
+| Freeze commitments | PASS | All 22 named file digests and the aggregate digest independently recompute exactly. |
+| Arm A | PASS, bounded | 225 unique episode/repetition rows (45 × 5) match the summary; all are arm A, `insufficient_evidence`, and non-advancing. This demonstrates reducer stability only, not semantic accuracy. |
+| Public custody handoff | PASS, bounded | Without opening restricted mapping/labels: public handoff is mode `0600`, SHA-256 `5b023908...`; its packet-manifest/schema commitments match the tracked commitment. Custody root and judge-input/restricted directories are mode `0700`. |
+| Custody access separation | **FAIL** | The custody root, restricted directory, worktree, PoC, and semantic runner are all owned/run as Unix principal `vscode`. Mode `0700` excludes other principals but does not exclude this runner or any other role in the current execution environment. Thus “external W1 custody” is procedural, not a filesystem/read-authority boundary. The validator honored the role restriction and did not open the restricted files, but the runtime does not enforce it. |
+| W2/W4/W5/W6 attestations | PASS, attested | All four named roles provide affirmative, role-specific non-inspection attestations with caveats. These are attestations, not measured access controls. |
+| Frozen B/C runner surface | PARTIAL | Prompt, strict response validation, model names/digests, seed/temperature/top-p, B=1/C=5 repetitions, timeout, and JSONL logging are committed and integrity-bound. No tracked or untracked B/C result ledger was found, and no B/C call was made by this validator. |
+| Evidence exclusion | **FAIL** | `semantic-policy-v1.json` declares verdict/recommendation/outcome line exclusions, but `run_semantic.py` never reads or applies `evidence_exclusion`; it sends packet evidence verbatim. Structural scanning without consulting labels finds outcome-bearing material in 9/11 holdout packets: two have explicit verdict/recommendation/outcome headings, nine have PASS/FAIL-style result tables, two have `Overall: PASS|FAIL|WARN`, and one has a direct result/status heading. This violates the scope rule that historical verdict summaries are withheld from judge inputs unless themselves the evidence under test. |
+| Ollama envelope | PASS | Live `/api/version` returns `0.32.5`. Live `/api/tags` returns the frozen `qwen2.5-coder:32b` digest `b92d6a0b...` and `qwen3-coder:30b` digest `06c1097e...`. |
+| Semantic launch status | NOT RUN | No B/C invocation or semantic result artifact was observed. This ruling made no model call. |
+
+### Failing clauses and remedies
+
+1. **Repository-object leakage:** use a clean clone/object store whose refs and reflogs have never contained
+   `2ae4b15`/`7d8c28e`, or remove the leaked objects from the effective repository and independently prove
+   they cannot be resolved through branches, tags, reflogs, alternate object stores, or direct object
+   lookup. Merely rebuilding the branch is insufficient.
+2. **Custody authority:** place restricted labels/mapping under a distinct OS principal or external service
+   whose ACL denies the account executing the language author, PoC, and semantic runner. Provide the runner
+   only the committed sanitized packets and the later scoring custodian only the sealed prediction ledger.
+3. **Verdict-summary contamination:** regenerate replacement judge packets through the frozen exclusion
+   policy, fail closed on residual outcome-bearing headings/tables, and have the verifier test the effective
+   bytes sent to Ollama. Alternatively, preregister per-episode cases where an outcome is intentionally the
+   evidence under test and exclude those fields from scoring the same historical outcome. The currently
+   unused policy declaration is not an implemented control.
+
+After repair, a second and final rework gate may rerun. Capability #256 remains `missing` and technology
+#257 remains `claimed`; this intermediate artifact supports neither `partial` nor `proven` advancement.
+No Unimatrix read/write beyond the prior independent live-node fetch was needed for this rework ruling,
+and no restricted label/mapping value was inspected.
