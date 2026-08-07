@@ -1,0 +1,23 @@
+{
+  "captured_at_utc": "2026-08-07T19:51:14Z",
+  "frontier": {
+    "reason": "no configured provider/model snapshot or ordinary task credential discovered",
+    "status": "blocked"
+  },
+  "human_arm": {
+    "reason": "two raters and adjudicator not assigned",
+    "status": "blocked"
+  },
+  "ollama": {
+    "authorization": "existing listed models only; no pulls, evictions, or host configuration",
+    "endpoint": "http://100.122.119.72:11434",
+    "host_hardware": "not measured",
+    "models": [],
+    "probe_error_type": "URLError",
+    "residency": "not measured",
+    "status": "unreachable",
+    "version": "not measured"
+  },
+  "platform": "Linux-6.12.100+deb13-amd64-x86_64-with-glibc2.39",
+  "python": "3.14.6"
+}

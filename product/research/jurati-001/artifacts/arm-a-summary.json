@@ -1,0 +1,14 @@
+{
+  "arm": "A",
+  "disagreement": 0,
+  "episodes": 45,
+  "false_advancements": 0,
+  "latency_ns": {
+    "max": 3856,
+    "mean": 943.7022222222222,
+    "min": 710
+  },
+  "n": 225,
+  "outcome": "all residual semantic clauses abstained/escalated",
+  "repetitions_per_episode": 5
+}

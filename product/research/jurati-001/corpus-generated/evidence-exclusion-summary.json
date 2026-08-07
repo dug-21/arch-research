@@ -1,0 +1,17 @@
+{
+  "removed_lines_by_opaque_episode": {
+    "A2-H01": 4,
+    "A2-H02": 1,
+    "A2-H03": 2,
+    "A2-H04": 3,
+    "A2-H05": 0,
+    "A2-H06": 0,
+    "A2-H07": 2,
+    "A2-H08": 0,
+    "B2-H01": 1,
+    "B2-H02": 1,
+    "B2-H03": 4
+  },
+  "schema": "jurati-evidence-exclusion-v1",
+  "total_removed_lines": 18
+}
