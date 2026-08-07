@@ -1,0 +1,18 @@
+{
+  "allowed_results": [
+    "demonstrated",
+    "contradicted",
+    "not_demonstrated",
+    "insufficient_evidence"
+  ],
+  "decision_type": "observability_gate",
+  "domain": "garage",
+  "episode_id": "B2-H01",
+  "evidence": "\n*Run `[cycle]` \u00b7 artifact `opcost_poc.py` \u00b7 executed 2026-07-10 on this machine (Claude Code v2.1.205)*\n\n\n## The R2 \"10\u2013100\u00d7 off\" flag is a field-selection artifact, NOT an inaccuracy\nWhere tokens actually live (all repos, all-time on this machine):\n\n\nA naive parser summing `input+output` captures **1.7%** of real usage \u2192 a **~60\u00d7 undercount** (matches R2's \"100\u00d7 off\"). Summing all four is complete and internally consistent. **Resolution: the transcript numbers are reliable; the bug is summing the wrong fields.**\n\n## The bucket is real \u2014 measured, not theoretical\n\n\u2192 cross-repo split \u2248 **96% / 4%**. Per-day buckets populated for every active day (peak 2026-06-26 = 92.7M). Model mix **~97% Opus** (3,129 Opus / 80 Haiku / 13 Fable) \u2192 token-share \u2248 real quota-share holds well; model-weighting error is small for this user.\n\n## Open design choice (surfaced, not decided)\n`cache_read` is 86.5% of tokens but is the **cheapest** input class and lightest on the real quota. Two valid bucket units:\n- **Raw context tokens** (sum all four) \u2014 simple, consistent; overstates quota/cost impact.\n- **Cost/quota-weighted** (e.g. `input + output + 1.25\u00d7cache_creation + 0.1\u00d7cache_read`) \u2014 closer to the real bucket. Recommended if the bucket should track the actual subscription cap rather than raw throughput.\n\n## Grade\n",
+  "required_output": {
+    "clause_assessments": "array",
+    "decision_class": "bounded string",
+    "evidence_refs": "array",
+    "transition": "bounded string"
+  }
+}

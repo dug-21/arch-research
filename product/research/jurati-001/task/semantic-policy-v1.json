@@ -1,0 +1,15 @@
+{
+  "endpoint": "http://100.122.119.72:11434",
+  "evidence_exclusion": {
+    "case_insensitive_line_patterns": ["^\\s*(verdict|recommendation|actual next action|next action|gate result|outcome)\\s*[:|]", "^\\s*\\*\\*(verdict|recommendation|outcome)\\*\\*"],
+    "minimum_retained_nonblank_lines": 3,
+    "on_exclusion_failure": "block"
+  },
+  "generation": {"format": "json", "options": {"seed": 17001, "temperature": 0, "top_p": 1}},
+  "arms": {
+    "B": {"model": "qwen2.5-coder:32b", "model_digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41", "repetitions": 1},
+    "C": {"model": "qwen2.5-coder:32b", "model_digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41", "repetitions": 5}
+  },
+  "parser": {"strict_single_json_object": true, "reject_unknown_fields": true},
+  "timeout_seconds": 300
+}

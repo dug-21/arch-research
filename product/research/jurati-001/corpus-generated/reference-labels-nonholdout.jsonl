@@ -1,0 +1,34 @@
+{"episode_id":"A-D01","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted"}
+{"episode_id":"A-D02","next_action":"risk gate","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted"}
+{"episode_id":"A-D03","next_action":"alignment/close","provenance":"prescribed: primary report","reference_class":"pass","state":"accepted"}
+{"episode_id":"A-D04","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"review"}
+{"episode_id":"A-D05","next_action":"registry-wiring rework","provenance":"explicit: primary report; later rework report is chronology","reference_class":"reworkable fail","state":"accepted-reviewer"}
+{"episode_id":"A-D06","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass-after-rework","state":"accepted-reviewer"}
+{"episode_id":"A-D07","next_action":"alignment/close","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted-reviewer"}
+{"episode_id":"A-D08","next_action":"merge/close","provenance":"prescribed: primary report","reference_class":"pass","state":"accepted"}
+{"episode_id":"A-D09","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass","state":"accepted"}
+{"episode_id":"A-D10","next_action":"risk gate","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted"}
+{"episode_id":"A-D11","next_action":"risk gate","provenance":"prescribed: primary report","reference_class":"pass-after-rework","state":"accepted-reviewer"}
+{"episode_id":"A-D12","next_action":"alignment/close","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted-reviewer"}
+{"episode_id":"A-D13","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass-after-rework","state":"accepted-reviewer"}
+{"episode_id":"A-D14","next_action":"risk gate","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted-reviewer"}
+{"episode_id":"A-D15","next_action":"merge/close","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted-reviewer"}
+{"episode_id":"A-D16","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass","state":"accepted"}
+{"episode_id":"A-C01","next_action":"implementation","provenance":"prescribed: primary report; initial fail is chronology","reference_class":"pass-after-rework","state":"accepted-reviewer"}
+{"episode_id":"A-C02","next_action":"alignment/close","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted"}
+{"episode_id":"A-C03","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass-after-rework","state":"accepted-reviewer"}
+{"episode_id":"A-C04","next_action":"alignment/close","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted-reviewer"}
+{"episode_id":"A-C05","next_action":"named bug-fix rework","provenance":"explicit: primary report","reference_class":"reworkable fail","state":"accepted-reviewer"}
+{"episode_id":"A-C06","next_action":"merge/close","provenance":"prescribed: primary report","reference_class":"pass","state":"accepted-reviewer"}
+{"episode_id":"A-C07","next_action":"implementation","provenance":"prescribed: primary report","reference_class":"pass-after-rework","state":"accepted-reviewer"}
+{"episode_id":"A-C08","next_action":"alignment/close","provenance":"prescribed: primary report","reference_class":"pass/advisory","state":"accepted-reviewer"}
+{"episode_id":"B-D01","next_action":"retain partial; human-gated follow-on","provenance":"explicit + observed: owner ruling and final scope/report state","reference_class":"refused proven; partial","state":"accepted-owner"}
+{"episode_id":"B-D02","next_action":"retain partial; follow-on","provenance":"explicit + observed: owner ruling and final scope/report state","reference_class":"partial","state":"accepted-owner"}
+{"episode_id":"B-D03","next_action":"close; reset to broader problem-space investigation","provenance":"explicit + observed: REPORT §§1/4/7/8 and SCOPE amendment","reference_class":"owner-directed early close","state":"accepted-reviewer"}
+{"episode_id":"B-D04","next_action":"begin bounded workstreams","provenance":"explicit + observed: status line and produced W1–W3/W5 artifacts","reference_class":"approved","state":"accepted-reviewer"}
+{"episode_id":"B-D05","next_action":"strike and replace absence-of-prior-art claim","provenance":"explicit/prescribed: triage §§2–3","reference_class":"falsified/narrowed","state":"accepted-reviewer"}
+{"episode_id":"B-D06","next_action":"ADOPT `github/gh-aw`; ASSEMBLE Temporal + policy + MCP gateway + AI gateway + SPIRE/Vault + OTel/Langfuse + sandbox; BUILD only the non-declarative-actor residual after the two unread falsifier cells close","provenance":"prescribed: triage §3","reference_class":"wounded; narrow build","state":"accepted-reviewer"}
+{"episode_id":"B-D07","next_action":"file in-server integration issue","provenance":"prescribed: handoff section; execution uncorroborated","reference_class":"partial","state":"accepted-reviewer"}
+{"episode_id":"B-C01","next_action":"adopt commodity gateway/harness; build only two hard layers","provenance":"prescribed: report","reference_class":"directional","state":"accepted-reviewer"}
+{"episode_id":"B-C02","next_action":"run three-part shd-006 POC proof gate","provenance":"prescribed: report §§6–7","reference_class":"insufficient; C3 missing","state":"accepted-reviewer"}
+{"episode_id":"B-C03","next_action":"execute bounded hypothesis workstreams","provenance":"explicit + observed: scope status and produced workstream artifacts","reference_class":"approved","state":"review"}

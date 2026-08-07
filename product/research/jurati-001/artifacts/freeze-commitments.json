@@ -1,0 +1,32 @@
+{
+  "aggregate_sha256": "ded40fe7330899e5b665fd2ffaa4c85b17e280aa4ae8fe35d6851d7933e6e5a0",
+  "files": {
+    "EXAMPLES-v0.1-dev.md": "49c852988a3d508b24fc8e28811fb45ec83e0fe550ae585768a18a873ce8dcde",
+    "SCOPE.md": "e9fb87b475d8defacae2e7de88685663fea63dd916fcf368bbfa16633438713b",
+    "SPEC-v0.1-dev.md": "d839c5d0d63b69a40276d8184a44017bbae95333571bc72eb64aa75d8d4f9130",
+    "artifacts/RESULTS.md": "c1c345552569e1e89bd452baae89f00f84884ade01b2e69dedee43206b14fefd",
+    "artifacts/arm-a-summary.json": "4b3e50190fae4a2be53fc6e47be8d8196d698a5ec3acca941588b5d18267b467",
+    "artifacts/effective-envelope.json": "49d0ce651ff06d1e7dc3c2c244e06efe8711af36d0bf2acbcb89db7db6f5e4fc",
+    "artifacts/non-inspection-attestations.json": "bed297f6878064bab6846a7bdcf05ac78771f0a02b62b25b72fdf85c548400b2",
+    "corpus-generated/SHA256SUMS": "b6593e422606d2d119964ca4450549b69a6691f6383961a9e0084f801af5e129",
+    "corpus-generated/evidence-exclusion-summary.json": "1e773b0e8364e1afb564e31a46cd037b9426fbd2f9124f12a10e3f019cb7f628",
+    "corpus-generated/manifest.jsonl": "2ab1def05934694a62390674c4ea549603127f4d6a0d99e6d3d775f539283ef0",
+    "corpus-generated/reference-labels-nonholdout.jsonl": "f4193a5a06403ac61f22f30d8e1091b477404fb6a4497b5c4c2d05ad16da2355",
+    "corpus-generated/restricted-map-commitment.json": "f44b0fd1c33ddb5707cb51ef2abefb3294f5f17ac32036b704df04d0ca1f5dbf",
+    "corpus-generated/splits.json": "ef1367f3db2e0541fe9d89b20e8cbf331b5605b0cf2674f5cef389612af3493c",
+    "findings-W4.md": "d1b618ec5c60e043a23764446afd8a8028cfe03a23c566e96de70055e9112440",
+    "poc/capture_environment.py": "314e9ce7e9bc6ff0127f38384010ce4ff59472a7604eb27f83914fcc47a26cad",
+    "poc/generate_corpus.py": "0e475304ae66c181a2c863098ee8292e5a963aed4c3dde51f0d67b786fb07e48",
+    "poc/import_custody_handoff.py": "294e9919c67a11134809639e46b3c1c4f0bd90834be2b57c3e32fdef61e3f5b2",
+    "poc/jurati.py": "7969411b0b59db704511b026110eb2b95676dd596a4b6aedb993c28802e7ce7a",
+    "poc/run_mechanical_arm.py": "918dbd76675e2d95fe91627aa165106d733bf22fb4249d5f6d58997b6f10ae51",
+    "poc/run_semantic.py": "ffe31bd689530ae820d3815afa75735487ceff5dc2d98bed387a9e8978a96bfb",
+    "poc/test_jurati.py": "55ac5f02d9c0f5a6ad888bf1de36390613812d5800d67cbd324167d5a47010b0",
+    "poc/verify_freeze.py": "f4d0007b9a1e774b1199086831565d4ebabc56d780c710fa8a915e57a2887d6b",
+    "reports/gate-corpus-freeze.md": "b61a1e72b14e3a0f8234b0125cdf8f63f31f1971f273298984c308ead29fd94d",
+    "task/FREEZE-CANDIDATE.md": "db8712965333056506bfeef7b2e49d9b97603dfe09c7cea41668abd88f2e811d",
+    "task/semantic-policy-v1.json": "3649607c7197e875585c780784c368938e645ce4b7056e5663cb7acf3e100c3c",
+    "task/semantic-prompt-v1.txt": "b54c86a3d986d4de91e55599df2a83205b0e0d216b76cfab0c620ad3411d0416"
+  },
+  "schema": "jurati-freeze-commitment-v1"
+}
