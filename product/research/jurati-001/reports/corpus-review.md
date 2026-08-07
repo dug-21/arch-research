@@ -63,3 +63,60 @@ decisions do not substitute for scope approval.
 
 No holdout verdict summary was inspected, no Unimatrix write was made, and no W1 source artifact was
 silently rewritten.
+
+---
+
+## Re-review — v0.2 at `90380e5` (2026-08-07)
+
+**Recommendation for proceeding to D15 corpus generation:** **REWORKABLE**.  
+**Final corpus-freeze gate after D15 generation:** **mandatory**.
+
+The v0.2 rework closes almost all document defects from the first ruling:
+
+- A-D06, A-D11, A-D13, A-C03, and A-C07 now select and label the post-rework PASS decisions actually
+  contained in their pinned primary artifacts.
+- A-D05 and A-C05/A-C06 preserve initial-failure versus rework chronology rather than collapsing it.
+- B-D04 and B-C03 now select genuine scope-approval decisions. At the pinned garage SHA, `wfh-002/SCOPE.md`
+  explicitly says owner-approved and its later artifacts demonstrate execution; `wfh-004/SCOPE.md` says
+  owner-kicked/active and the bounded workstream artifacts exist. A-D04's remaining `review` state is also
+  adjudicated here as accepted: its pinned report is an explicit design-gate PASS with implementation as
+  the prescribed consequence.
+- The provisional Option-C row, unaccepted amendment row, and omnibus triage row are no longer scored as
+  binding decisions. B-D03, B-D05, B-D07, B-C01, and B-C02 now have bounded, source-supported consequences.
+- Every visible row carries `explicit`, `observed`, or `prescribed` action provenance; no `inferred` action
+  remains. The packet schema correctly requires two independent pinned sources if inference is later added.
+- Counts and splits remain valid: 32/16 SDLC, 13/8 garage, 23/11/11 decisions, 12/6/6 cycles, exact
+  per-domain 50/25/25 cycle allocation, partition-exclusive cycles, and at most three episodes per cycle.
+- The current `jurati-001` working tree no longer contains the previously published clear-text holdout cycle
+  identities or source paths. Opaque IDs preserve cycle grouping and episode counts without exposing the
+  mapping. The old identities remain recoverable from git history, so opacity is an operational control,
+  not retroactive secrecy; W2–W5 non-inspection attestations and generator leakage tests remain mandatory.
+
+### Sole remaining document blocker
+
+B-D06's next action is not source-exact. The v0.2 manifest says **“adopt gateway, assemble composition”**.
+The pinned `wfh-005/reports/triage.md` §3 instead says:
+
+1. **ADOPT `github/gh-aw`** as incumbent baseline/reference implementation, explicitly as a recommendation
+   to evaluate rather than deploy;
+2. **ASSEMBLE** durable execution, an MCP gateway or AgentCore Policy, an AI gateway, SPIRE/Vault,
+   OTel/Langfuse, and a sandbox; and
+3. **BUILD exactly one residual** only after the two named unread cells are closed.
+
+Calling the ADOPT object “gateway” moves an ASSEMBLE ingredient into a different route and changes the
+historical decision. Correct B-D06 in the manifest and reference-label anchor to the three source-exact legs.
+No new independent review is needed if that correction is mechanical and cites triage §3 verbatim.
+
+### D15 work that is expected, not a present document defect
+
+The absence of generated JSONL, packets, sealed mapping, digests, and executable leakage tests is not a
+second v0.2 document failure: D15 intentionally puts datasets and extraction code on
+`research/jurati-001`. After the B-D06 correction, W1 may proceed to that executable work.
+
+The later final freeze gate cannot be skipped. It must verify the restricted opaque-to-real mapping,
+source and packet digests, action-source spans, partition/cap/count invariants, clear-text identity/path and
+reference-field leakage tests, verdict-summary contamination tests, adjudicator identity, non-inspection
+attestations, and published aggregate counts/hashes. No language or prompt finalization may precede that
+gate.
+
+No sealed holdout verdict summary was inspected during this re-review and no Unimatrix write was made.

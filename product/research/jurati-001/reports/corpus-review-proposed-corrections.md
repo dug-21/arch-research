@@ -33,3 +33,16 @@ explicitly.
    post-rework report stand in for an absent original report.
 5. Replace direct holdout verdict-report paths in broadly consumed allocation metadata with opaque source
    bundle IDs where practical; retain the path mapping only in the sealed generator input.
+
+---
+
+## v0.2 re-review correction
+
+The v0.2 rework at `90380e5` resolves all earlier proposed row corrections except this source-exact wording:
+
+| Episode | Remaining correction | Basis |
+|---|---|---|
+| B-D06 | Replace `adopt gateway, assemble composition, build one residual only after holes close` with `evaluate/adopt github/gh-aw as incumbent baseline; assemble Temporal + tool-policy/MCP gateway + AI gateway + SPIRE/Vault + OTel/Langfuse + sandbox; build the non-declarative-actor authority-bound residual only after the two unread falsifier cells close`. Keep provenance `prescribed`. | Pinned `wfh-005/reports/triage.md` §3 names `github/gh-aw`—not a gateway—as the ADOPT object and places gateways in ASSEMBLE. |
+
+A-D04 and B-C03 are independently accepted by the v0.2 re-review. Generated packets, sealed maps, hashes,
+and fail-closed tests remain D15 work and are not proposed markdown corrections.
