@@ -1,4 +1,4 @@
-# Reference-label policy and development labels
+# Reference-label policy and development labels v0.2
 
 The historical report is evidence, not unquestionable truth. A label is accepted only when the record
 supports both the verdict and the exact action that actually followed.
@@ -7,7 +7,7 @@ supports both the verdict and the exact action that actually followed.
 
 `episode_id`, bounded clause results, verdict, exact next action, source references, owner intervention,
 adjudication state (`accepted | accepted-owner | review | excluded`), reviewer identity, rationale, and
-adjudication timestamp.
+adjudication timestamp, `action_provenance`, and ordered action-source spans.
 
 ## Deterministic normalization
 
@@ -20,19 +20,31 @@ adjudication timestamp.
   packet chronology.
 - Exact actions remain domain terms (`implementation`, `risk_gate`, `human_firewall`, `assemble`, etc.);
   cross-domain aliases may be added only as a secondary field.
+- `prescribed` is not execution. `inferred` requires two independent pinned sources; one later artifact
+  establishes chronology, not necessarily causation or the exact action.
 
 ## Accepted anchors
 
-| Episode | Verdict | Exact next action | Why accepted |
-|---|---|---|---|
-| A-D01 | pass with advisory | implementation | report and subsequent gate chronology agree |
-| A-D02 | pass with advisory | risk gate | report explicitly says `Gate result: PASS`; gate 3c follows |
-| A-D03 | pass | alignment/close | final risk gate and alignment artifact agree |
-| A-D08 | pass | merge/close | bug-fix gate status is explicit |
-| B-D01 | partial (not proven) | retain partial; human-gated follow-on | owner corrected initial recommendation |
-| B-D02 | partial | retain partial; follow-on | owner ruling is explicit |
+| Episode | Verdict | Exact next action | Provenance | Why accepted |
+|---|---|---|---|---|
+| A-D01 | pass with advisory | implementation | prescribed | report states gate consequence |
+| A-D02 | pass with advisory | risk gate | prescribed | report states PASS and consequence |
+| A-D03 | pass | alignment/close | prescribed | final gate states consequence |
+| A-D05 | reworkable fail | registry-wiring rework | explicit | reviewer reconciled initial/rework reports |
+| A-D06 | pass-after-rework | implementation | prescribed | selected artifact is post-rework PASS |
+| A-D08 | pass | merge/close | prescribed | bug-fix report states consequence |
+| A-D11 | pass-after-rework | risk gate | prescribed | selected artifact is post-rework PASS |
+| A-D13 | pass-after-rework | implementation | prescribed | selected artifact is post-rework PASS |
+| A-C03 | pass-after-rework | implementation | prescribed | selected artifact is post-rework PASS |
+| A-C07 | pass-after-rework | implementation | prescribed | selected artifact is post-rework PASS |
+| B-D01 | partial (not proven) | retain partial; human-gated follow-on | explicit + observed | owner ruling and final state agree |
+| B-D02 | partial | retain partial; follow-on | explicit + observed | owner ruling and final state agree |
+| B-D03 | owner-directed early close | close; reset to broader investigation | explicit + observed | REPORT and SCOPE amendment agree |
+| B-D04 | scope approved | begin bounded workstreams | explicit + observed | status and produced artifacts agree |
+| B-D05 | P2 falsified/narrowed | strike and replace absence claim | prescribed | corrected question/action coupling |
+| B-D06 | P4 wounded | adopt/assemble; one conditional build | prescribed | bounded triage routing |
 
-Everything else marked `review` in the manifest needs a second reader. Holdout values must never be added
+Everything else marked `review` in the manifest needs a second reader. Holdout identities and values must never be added
 to this main-branch document.
 
 ## Provenance basis

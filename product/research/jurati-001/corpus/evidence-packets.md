@@ -1,4 +1,4 @@
-# Evidence packet specification and index
+# Evidence packet specification and index v0.2
 
 Each episode packet is a deterministic projection of the pinned source tree, not a new interpretation.
 The executable extraction and generated packet bodies belong on `research/jurati-001` under D15. This
@@ -6,17 +6,23 @@ document freezes what must be extracted before that branch is created.
 
 ## Packet schema
 
-1. `episode_id`, domain, cycle, decision point, partition.
+1. `episode_id`, domain, cycle or opaque holdout cycle ID, decision point, partition.
 2. Pinned repository SHA and ordered source paths with SHA-256 per file.
 3. Historical question and clause obligations quoted from scope/specification/acceptance artifacts.
 4. Evidence available at the decision time, excluding later rework and later verdict summaries.
 5. Admissibility notes: direct artifact, report claim, owner ruling, or inferred chronology.
 6. Reference-only envelope: historical verdict, exact next action, owner intervention, adjudicator notes.
 7. Judge-facing envelope: identical evidence with the reference-only envelope removed.
+8. `action_provenance`: `explicit | observed | inferred | prescribed`, with ordered source spans. `inferred`
+   requires two independent pinned sources or packet generation fails.
 
 All semantic claims retain source line spans. A packet must fail generation if a source path or digest does
 not match, a selected report has no antecedent evidence artifact, or a holdout reference field enters the
 judge-facing envelope.
+
+Holdout generation reads a sealed identity map unavailable to language/prompt authors. Main-visible files
+contain only opaque IDs. Generation fails on a clear-text holdout identity, path, verdict, reference result,
+or next action in allocation metadata or judge-facing output.
 
 ## Source bundle rules
 
@@ -36,8 +42,8 @@ judge-facing envelope.
   gate outcomes as chronology, but may not expose their own verdict summary.
 - `shd-007`: split C1 and C2. Quote each `done_when` verbatim and preserve the owner's explicit `partial`
   rulings. The initially proposed C1 `proven` grade is evidence of a corrected judgment, not the label.
-- `wfh-002`: preserve the unenforced boundary and the later out-of-scope decision as separate fields. A
-  packet that silently rewrites the boundary has erased the failure under test.
+- `wfh-002`: emit scope approval and owner-directed early close separately. Preserve the unenforced boundary
+  as early-close evidence; do not encode provisional Option C as binding.
 - Rework pairs (`col-023`, `bugfix-381`): the initial failure and later pass are separate chronological
   decisions. The later packet may see the earlier result; the earlier packet may not see the fix.
 
@@ -47,7 +53,12 @@ judge-facing envelope.
 - `corpus/packets/<episode-id>.json`
 - `corpus/reference-labels.jsonl` (not judge-facing)
 - `corpus/splits.json`
+- `corpus/sealed/holdout-map.json` (restricted; main publishes only its digest)
 - `corpus/SHA256SUMS`
 
 These generated files are intentionally not created on `main`; D15 classifies datasets and extraction code
 as research executables.
+
+Required fail-closed tests cover digest mismatch, missing transition evidence, under-sourced inference,
+cross-partition reuse, over-three contributions, holdout identity/path leakage, reference-field leakage,
+and verdict-summary contamination.

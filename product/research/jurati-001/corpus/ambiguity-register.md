@@ -1,22 +1,22 @@
-# Corpus ambiguity register
+# Corpus ambiguity register v0.2
 
 No item below may be silently converted into model error. `AR-*` items require independent review before
 the corpus-freeze gate.
 
 | ID | Episodes | Ambiguity | Required adjudication |
 |---|---|---|---|
-| AR-01 | A-D05 | Initial and rework gate-3b reports coexist. | Confirm initial verdict/action and whether rework1 is one later decision or merely amended evidence. |
-| AR-02 | A-D06–07 | A failing earlier gate and later final pass can hide intermediate decisions. | Reconstruct chronology from git/report dates; label only actions actually taken. |
-| AR-03 | A-D11–15, A-C03–08 | WARN/FAIL tokens occur in clause text as well as overall verdicts. | Read full reports; do not classify with regex. |
-| AR-04 | A-C01 | Report says re-validation PASS. | Decide whether the episode is the initial failure, re-validation, or two episodes; packet must preserve chronology. |
-| AR-05 | A-H* | Holdout outcomes are intentionally absent from main. | Reviewer writes sealed labels directly to generated branch artifact; record hash only at gate. |
+| AR-01 | A-D05 | RESOLVED: initial FAIL and rework PASS are distinct. | Score initial FAIL; retain later PASS as chronology. |
+| AR-02 | A-D06–07 | RESOLVED: named A-D06 artifact is post-rework PASS. | Question and label now select that later decision. |
+| AR-03 | A-D11–15, A-C03–08 | RESOLVED by full-report review. | Five mislabels corrected; bugfix pair stays separate. |
+| AR-04 | A-C01 | RESOLVED: select re-validation PASS only. | Initial failure remains chronology. |
+| AR-05 | A-H* | PARTIAL: main now uses opaque IDs. | Generate restricted map, leakage tests, digest, and attestations. |
 | AR-06 | B-D01 | Strong artifact supported a draft `proven`, but target-hardware clause was unmet. | Reference is owner's `partial`; preserve rejected draft as disagreement evidence. |
-| AR-07 | B-D03–04 | `wfh-002` failure combines boundary enforcement and product disposition. | Confirm two questions are independently labelable; otherwise merge or exclude one before freeze. |
-| AR-08 | B-D05–06 | Amendment may supersede rather than follow triage. | Establish whether these are two decisions or one corrected decision lineage. |
-| AR-09 | B-D07 | Findings may recommend a direction without evidence of executed next action. | Distinguish prescribed from observed action; exclude if no bounded consequence exists. |
-| AR-10 | B-C01–03 | Research reports use directional language rather than a common verdict enum. | Quote the question and action; avoid forcing PASS/FAIL. |
-| AR-11 | B-H* | Holdout outcomes and owner intervention are sealed. | Independent reviewer confirms labels and stores only their aggregate/hash on main. |
-| AR-12 | corpus-wide | Some historical next actions are inferred from the next artifact. | Mark `observed`, `explicit`, or `inferred`; inferred actions need two-source corroboration. |
+| AR-07 | B-D03–04 | RESOLVED: early close retained; provisional routing excluded. | B-D04 now selects scope approval. |
+| AR-08 | B-D05–06 | RESOLVED: P2 consequence separated from P4 routing. | Amendment episode excluded. |
+| AR-09 | B-D07 | RESOLVED as recommendation only. | Action is prescribed until corroborated. |
+| AR-10 | B-C01–03 | PARTIAL: B-C01/02 resolved; omnibus triage excluded. | B-C03 now selects scope approval; second review pending. |
+| AR-11 | B-H* | PARTIAL: main now uses opaque IDs. | Generate restricted map, leakage tests, digest, and attestations. |
+| AR-12 | corpus-wide | RESOLVED in manifest schema. | Every row has provenance; no inferred action remains. |
 
 ## Independent-review acceptance rule
 

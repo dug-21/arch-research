@@ -1,12 +1,15 @@
-# W1 findings — corpus and reference adjudication
+# W1 findings — corpus and reference adjudication v0.2
+
+This version supersedes the v0.1 selector reading at commit `f1fbfa8` and incorporates the independent
+review in `reports/corpus-review.md` without inspecting sealed holdout verdict summaries.
 
 ## Directional result
 
 A cross-domain corpus is feasible from repository artifacts, but it is **not ready to freeze**. The
 candidate manifest reaches the requested minimums (32 SDLC decisions and 13 garage decisions), includes a
 complete mature chain and a bug-fix gate, contains rework and owner-corrected firewall cases, and separates
-cycles across development/calibration/holdout. One control correctly blocks freeze: independent label
-adjudication has not yet occurred.
+cycles across development/calibration/holdout. Independent review corrected five post-rework PASS labels,
+replaced provisional or mismatched garage decisions, added scope approval, and required action provenance.
 
 The determining constraint is not document availability. It is whether an independent reviewer can recover
 the exact historical question and next action without silently treating a report's summary as ground truth.
@@ -20,23 +23,28 @@ Rework reports and research directional decisions are the highest-risk strata.
 - `vnc-047` supplies a complete source chain while yielding three bounded decisions.
 - `shd-007` supplies the required false-advancement control: the owner's ruling prevented a strong but
   clause-incomplete artifact from advancing C1 to `proven`.
+- Domain B now includes explicit scope-approval episodes and no longer scores `wfh-002`'s provisional
+  Option C or `wfh-004`'s unresolved omnibus triage as binding decisions.
+- Every visible row distinguishes explicit, observed, inferred, and prescribed action provenance; no
+  inferred action remains in v0.2.
 - Holdout labels can be physically separated from judge-facing packets; D15 requires those generated
   datasets and extraction code to live on `research/jurati-001`.
 
 ## What remains claimed or blocked
 
-- Proposed labels outside the accepted anchors are selector readings, not adjudicated references.
-- Exact next actions inferred from chronology are not accepted until corroborated.
-- Holdout outcomes are deliberately not exposed in main-branch documents.
+- Rows still marked `review`, including B-C03, need independent adjudication.
+- Holdout identities, paths, outcomes, and actions are absent from v0.2 main-visible metadata; opaque IDs
+  are not proof until a restricted mapping is generated and checked.
 - Final manifest/split/packet hashes do not exist until generated artifacts are created on the executable
   branch.
 
 ## Corpus-freeze gate recommendation
 
-**Do not approve yet.** First: (1) independently adjudicate every `review` row; (2) generate
-integrity-addressed packets and sealed labels on `research/jurati-001`; (3) verify the packet generator fails
-closed on digest mismatch and holdout-label leakage; and (4) present final counts, exclusions, adjudicator
-disagreements, and hashes.
+**Do not approve yet.** Residual blockers are exactly: (1) independently adjudicate remaining `review`
+rows; (2) generate integrity-addressed packets, labels, split data, and restricted opaque-to-real holdout
+mapping on `research/jurati-001`; (3) demonstrate fail-closed digest, action-provenance, partition, cap, and
+holdout-leakage tests; (4) record W2–W5 non-inspection attestations; and (5) publish only aggregate holdout
+counts plus final manifest/label/packet/split/mapping hashes on main.
 
 ## Artifacts
 
