@@ -1,0 +1,139 @@
+{
+  "aggregate": {
+    "B": {
+      "attempted": 11,
+      "by_domain": {
+        "garage": {
+          "abstention": {
+            "estimate": 0.0,
+            "k": 0,
+            "lower": 0,
+            "n": 2,
+            "upper": 0.6576197724933469
+          },
+          "result_counts": {
+            "not_demonstrated": 2
+          },
+          "valid_predictions": 2
+        },
+        "sdlc": {
+          "abstention": {
+            "estimate": 0.375,
+            "k": 3,
+            "lower": 0.13684428582359742,
+            "n": 8,
+            "upper": 0.6942576053973727
+          },
+          "result_counts": {
+            "demonstrated": 1,
+            "insufficient_evidence": 3,
+            "not_demonstrated": 4
+          },
+          "valid_predictions": 8
+        }
+      },
+      "malformed_fail_closed": {
+        "estimate": 0.09090909090909091,
+        "k": 1,
+        "lower": 0.016232172885884855,
+        "n": 11,
+        "upper": 0.37735843645159567
+      },
+      "not_run_after_fail_closed": 0,
+      "planned": 11,
+      "valid": 10
+    },
+    "C": {
+      "attempted": 51,
+      "by_domain": {
+        "garage": {
+          "abstention": {
+            "estimate": 0.0,
+            "k": 0,
+            "lower": 0,
+            "n": 10,
+            "upper": 0.2775327998628892
+          },
+          "result_counts": {
+            "not_demonstrated": 10
+          },
+          "valid_predictions": 10
+        },
+        "sdlc": {
+          "abstention": {
+            "estimate": 0.375,
+            "k": 15,
+            "lower": 0.2422297916723327,
+            "n": 40,
+            "upper": 0.5296756086269889
+          },
+          "result_counts": {
+            "demonstrated": 5,
+            "insufficient_evidence": 15,
+            "not_demonstrated": 20
+          },
+          "valid_predictions": 40
+        }
+      },
+      "malformed_fail_closed": {
+        "estimate": 0.0196078431372549,
+        "k": 1,
+        "lower": 0.0034696926410608536,
+        "n": 51,
+        "upper": 0.10304568726144975
+      },
+      "not_run_after_fail_closed": 4,
+      "planned": 55,
+      "valid": 50
+    }
+  },
+  "c_repetition": {
+    "complete_episode_groups": 10,
+    "disagreement_rate_95pct_wilson": {
+      "estimate": 0.0,
+      "k": 0,
+      "lower": 0,
+      "n": 10,
+      "upper": 0.2775327998628892
+    },
+    "groups_with_disagreement": 0,
+    "incomplete_due_fail_closed": 1
+  },
+  "digests": {
+    "encrypted_custody_sha256": "2006fea93c8be898b672e4f8538781f3ab8f67dcc19c9b5c4b64547e947c6fee",
+    "predictions_sha256": "5edfa947363d0064f3986b66f03611a0b2597abbaf18435c3c61a39b34ee6f1c"
+  },
+  "measured_fields": [
+    "valid/attempted/planned counts",
+    "result distribution",
+    "abstention",
+    "malformed fail-closed",
+    "C repeated-result disagreement"
+  ],
+  "notes": [
+    "Malformed outputs are excluded from semantic denominators and included in operational denominators.",
+    "Four C repetitions were not run after fail-closed; they are not abstentions.",
+    "Wilson intervals are descriptive for this frozen corpus, not population guarantees."
+  ],
+  "reference_scoring": {
+    "answered_clause_risk": "unavailable: no reference clause results",
+    "clause_agreement": "unavailable: custody has episode verdict/action only; no reference clause results",
+    "clause_confusion": "unavailable: no reference clause results",
+    "exact_action_agreement": "unavailable: predictions contain no action",
+    "exact_verdict_agreement": "unavailable: predictions contain no verdict",
+    "false_advancement": "unavailable: predictions contain clause result only and no frozen reducer output",
+    "scoreable_prediction_reference_fields": [],
+    "threshold_assessment": "not assessable"
+  },
+  "schema": "jurati-bc-custodian-score-v1",
+  "source_commit": "ed81b1d4eb0fa29e290d40b5af63bacc5015e4a76",
+  "unavailable_fields": [
+    "clause agreement/confusion/macro-F1",
+    "exact verdict/action agreement",
+    "false advancement",
+    "unsafe guesses avoided",
+    "unnecessary escalation",
+    "reliability threshold",
+    "least-cost reliable policy"
+  ]
+}

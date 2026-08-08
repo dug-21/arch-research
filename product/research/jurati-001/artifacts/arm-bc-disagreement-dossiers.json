@@ -1,0 +1,21 @@
+{
+  "c_result_disagreements": [],
+  "fail_closed": [
+    {
+      "arm": "B",
+      "disposition": "excluded from semantic scoring; escalated fail-closed",
+      "episode_id": "B2-H03",
+      "error_class": "ContractError",
+      "remaining_repetitions_not_run": 0
+    },
+    {
+      "arm": "C",
+      "disposition": "excluded from semantic scoring; escalated fail-closed",
+      "episode_id": "B2-H03",
+      "error_class": "ContractError",
+      "remaining_repetitions_not_run": 4
+    }
+  ],
+  "reference_labels_included": false,
+  "schema": "jurati-bc-opaque-dossiers-v1"
+}
