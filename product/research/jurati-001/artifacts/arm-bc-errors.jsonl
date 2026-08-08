@@ -1,0 +1,2 @@
+{"arm":"B","attempt":1,"episode_id":"B2-H03","error_class":"ContractError","error":"judge cited undeclared evidence","malformed_output":true,"prediction_appended":false,"retry":false}
+{"arm":"C","attempt":1,"episode_id":"B2-H03","error_class":"ContractError","error":"judge cited undeclared evidence","malformed_output":true,"prediction_appended":false,"remaining_repetitions_not_run":4,"retry":false}

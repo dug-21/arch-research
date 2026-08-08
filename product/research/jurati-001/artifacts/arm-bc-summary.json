@@ -1,0 +1,74 @@
+{
+  "C_reproducibility": {
+    "complete_episodes": 10,
+    "episodes_with_disagreement": 0,
+    "repeated_run_disagreement_rate": 0.0
+  },
+  "attempted": {
+    "B": 11,
+    "C": 51
+  },
+  "by_arm": {
+    "B": {
+      "abstentions": 3,
+      "latency_ms": {
+        "max": 250116.746936,
+        "mean": 92862.4821391,
+        "median": 64847.246089,
+        "min": 14433.39104
+      },
+      "result_counts": {
+        "demonstrated": 1,
+        "insufficient_evidence": 3,
+        "not_demonstrated": 6
+      },
+      "valid_predictions": 10
+    },
+    "C": {
+      "abstentions": 15,
+      "latency_ms": {
+        "max": 246263.847066,
+        "mean": 27239.5816344,
+        "median": 11748.9104985,
+        "min": 8935.3415
+      },
+      "result_counts": {
+        "demonstrated": 5,
+        "insufficient_evidence": 15,
+        "not_demonstrated": 30
+      },
+      "valid_predictions": 50
+    }
+  },
+  "cost": {
+    "local_api_charge": "not measured; endpoint is locally operated",
+    "monetary_cost": "not measured"
+  },
+  "energy": {
+    "reason": "no authorized host energy telemetry",
+    "status": "not measured"
+  },
+  "malformed_output": {
+    "B": 1,
+    "C": 1
+  },
+  "not_run_after_fail_closed": {
+    "B": 0,
+    "C": 4
+  },
+  "planned": {
+    "B": 11,
+    "C": 55
+  },
+  "prediction_ledger_sha256": "5edfa947363d0064f3986b66f03611a0b2597abbaf18435c3c61a39b34ee6f1c",
+  "schema": "jurati-bc-operational-summary-v1",
+  "scoring": "not performed; custody labels unavailable to PoC",
+  "timeouts": {
+    "B": 0,
+    "C": 0
+  },
+  "valid": {
+    "B": 10,
+    "C": 50
+  }
+}
