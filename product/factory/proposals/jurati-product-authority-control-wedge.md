@@ -1,10 +1,13 @@
 # Jurati product-authority control wedge
 
-**Status:** PROPOSAL · options and evaluation agenda, not an architecture decision  
-**Date:** 2026-08-09  
+**Status:** PROPOSAL · options and evaluation agenda, not an architecture decision
+
+**Date:** 2026-08-09
+
 **Purpose:** define the smallest useful enforcement problem for Jurati and Unimatrix: protect product
 vision and the capability roadmap behind one authenticated product principal, then use the result to
-evaluate broader three-party workflow control.  
+evaluate broader three-party workflow control.
+
 **Builds on:** `jurati-evolved-vision-2026-08-05.md`, `workflow-harness-scope-recut.md`, the current
 Unimatrix goal/capability graph, and the `jurati-001` lesson that deterministic consequence is useful but
 does not by itself establish delivery quality.
@@ -163,7 +166,8 @@ The proposal deliberately keeps several architectures open.
 Unimatrix authenticates the caller and enforces product/design/delivery policy in every graph mutation
 handler.
 
-**Strength:** the graph protects itself even if callers or hooks are compromised.  
+**Strength:** the graph protects itself even if callers or hooks are compromised.
+
 **Limit:** it governs only Unimatrix; delivery can still act through filesystem, Git, network, and other
 services.
 
@@ -173,7 +177,8 @@ Every agent tool request enters one hook. The hook sends the authenticated reque
 context to Jurati, which permits, denies, or requires escalation.
 
 **Strength:** one policy decision point, one visible audit stream, and a fast route to test cross-tool
-policy.  
+policy.
+
 **Questions that must be proved rather than assumed:**
 
 - Can every useful effect actually be forced through the hook?
@@ -192,7 +197,8 @@ Jurati authenticates workflow principals and issues short-lived, resource-specif
 Git, filesystem brokers, network gateways, and secret stores validate those capabilities locally.
 
 **Strength:** policy is coordinated while enforcement stays next to each resource; outages and revocation
-can be bounded explicitly.  
+can be bounded explicitly.
+
 **Limit:** more integration work and the risk that enforcement semantics drift between planes.
 
 ### Option D — hybrid
