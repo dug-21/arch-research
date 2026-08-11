@@ -1,6 +1,6 @@
 # jurati-001 — Validated probe: a decision-contract language for deterministic next action
 
-**Status:** researching — scope approved at gate 1; run initialized.
+**Status:** synthesis — terminal feasibility ruling is SCOPE FAIL; failed/inconclusive synthesis in progress.
 **Goal(s):** Jurati evolved vision (primary) · `theme:workflow-harness` · SHD model-routing evidence
 **Hypothesis target:** the load-bearing Jurati premise derived from position #191 and
 `product/factory/proposals/jurati-evolved-vision-2026-08-05.md`: success evaluation can be expressed as a
