@@ -28,11 +28,16 @@ curator's exclusive role. `agent_id: {scope-id}-leader`.
 3. **Gates** (§14.3):
    - **Advisory** (scope, synthesis incl. the **goal-owner** relevance review): relay the reviewer's stance verbatim to the human; never act on it directly.
    - **Blocking** (coverage, firewall/feasibility): PASS / REWORKABLE (re-spawn prior phase, **max 2**) / SCOPE-FAIL (stop, return to human).
-4. **Issue** (D1 / FX7): body = the SCOPE; post each phase-end status + gate requests as comments; read the human's reply back and act on it.
-5. **Git** (`factory-git`): research stream, **path-scoped** commits, auto-merge after the synthesis gate; `Closes #<issue>`.
+4. **Issue** (D1 / FX7): body = the SCOPE; post each phase-end status + gate requests as comments; read the human's reply back and act on it. At CLOSE, **close the Issue with the verdict comment — that is the gate's record** (D15; it replaced the research PR, which only ever rubber-stamped a review that had already happened here).
+5. **Git** (`factory-git`, D15) — the line is the **artifact kind, not the run**:
+   - **Documents** (`SCOPE.md`, `FINDINGS*`, scout files, `REPORT.md`, `reports/*`) → **straight to `main` as produced. No branch, no PR.** A parked run's evidence must stay readable by every other run.
+   - **Executables** (POC code, datasets) → `research/{scope-id}` branch → PR → **the leader rebase-merges by hand** after the gate. **Auto-merge does not exist in this repo** — derive settings, never trust a written one.
+   - **Stage only your own paths, always.** With no branch isolating a mistake, this is now load-bearing, not hygiene.
+   - Keep the scope's `Status:` line current — on `main` it is the only thing distinguishing in-flight from concluded.
 6. **CLOSE** — `context_cycle stop`; then trigger `factory-retro`.
 
-## Scope types
+## Run types — read the protocol, it owns the phase set
+- **theme-scan** (`.claude/workflow/theme-scan.md`) → `scan`→`hypothesize`→`triage`→`formalize`. Wide mouth → neck: `scout` (one per staffed reading surface, in one message) · `hypothesizer` · `goal-owner` (triage) · `factory-curator` (formalize — the run's ONLY graph-write phase). **No poc, no validator: this protocol never proves.** Its INIT carries a **governor** — an untriaged shortlist or an unrun promoted proof-goal must be surfaced to the owner *before* spawning.
 - **decompose-scope** → `scope`→`decompose` only (produces the board via the curator).
 - **research-scope, directional/empirical** → skip `feasibility`.
 - **research-scope, validated** → run `feasibility` (spawn `factory-poc` + `factory-validator`).
