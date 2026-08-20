@@ -68,3 +68,39 @@ Round two fires on these, **not** on thin cells. All three are *evidence* holes,
 ## Standing method holes, unspent after five surfaces and six generators
 
 Patent prior art (S3 narrowed it and found the instrument itself broken — Google Patents does not render for WebFetch, so keyword patent search is unavailable with these tools; **record as a method finding rather than re-tasking a scout**) · rail interlocking (open since wfh-005) · Manifest V3 developer attrition (S4's highest-value missing evidence for Axis B) · the OpenClaw ecosystem (51,996★, corroborated from three independent directions, entirely unread).
+
+---
+
+# AMENDMENT 1 — verification pass results (2026-08-20)
+
+Four targeted verification passes ran between hypothesize and triage: three on the load-bearing holes named above, plus one (**V4**) on a fourth target that **V2 surfaced mid-pass** and that bore on a claim the merge called *unsolved*. V4 was the **leader's call**, not an owner-named target; spawning it rather than carrying "aggregation is unsolved, forty years" into triage against a shipped artifact is the wfh-005 failure mode avoided.
+
+## Verdicts
+
+| Hole | Verdict | Effect on triage |
+|---|---|---|
+| **1. OpenShell hot-reload latency + atomicity** (`verify-V1-openshell.md`) | **CLOSED, and the question was wrong.** Latency is published and negligible (~200 µs for full L7 incl. policy eval, issue #2219). **The blocker is connection severance:** a reload closes every connection pinned to the previous generation, including SSE. Default failure mode is quarantine — a total egress blackout, not a rollback | **Phase-indexed authority is assemble-shaped — but over Claude Code's per-command sandbox, not OpenShell's reload path.** OpenShell is a *between-turn* instrument. The in-turn instrument costs one file write and is already installed |
+| **2. Cedar forbid-only-context lintability** (`verify-V2-cedar.md`) | **CLOSED — (a) enforceable and lintable, with two corrections.** `forbid_trumps_permit` proved in Lean; lintable via `cedar_policy::pst` × `Policy::effect()`. **But H-B H22's rule as written is bypassable** (`forbid … unless { context.X }` lets a forged intent suppress a deny) — the rule must be **polarity-scoped, not effect-scoped**. And **erroring forbids fail open**, so the attack is omission, not forgery | **H22's economic claim survives:** the intent leg is configuration-plus-a-small-linter over #202 (already ASSEMBLE), not a build. The linter is a polarity-aware AST walk plus a schema-validated-request obligation |
+| **3. CaMeL primary** (`verify-V3-camel.md`) | **CLOSED — S5's declared hole shut.** The minting move H-B H16 conjectures is confirmed and **not novel**; CaMeL already mints reader sets from real ACLs. But readers **intersect** over the transitive closure and nothing widens: **53.23% of benign, adversary-free, successfully-solved tasks trip a policy in the security-sound mode**, and **no declassification mechanism ships** | **Exposure gets a mechanism and a price.** Viable for one narrow, closed, high-value flow with a real ACL to mint from; implausible as an estate-wide control. **Corrects S5:** CaMeL's rug-pull coverage is exfiltration only, unmeasured, outside its evaluated threat model |
+| **4. Dogwood vs aggregation** (`verify-V4-dogwood.md`) — *leader's call* | **NARROWED, and falsified for one nameable subclass.** Within one mediated session, one chokepoint, ≤24h: counted repetitions and cumulative totals over **one** action class, and pairwise ordering/taint between **two named** classes with field correlation — shipped, GA, 16 regions. **Everything the merge leaned on stands:** cross-class is a *grammar impossibility* (no `\|\|`), cross-session is evadable by AWS's own admission, cross-program needs unbroken token propagation, semantic composition has no vocabulary, and >24h is a hard cap | **The framing correction matters more than the verdict:** *"aggregation reduces to counting"* is wrong — `since` with correlated variables expresses genuine relational trajectory invariants. **The barrier is disjunction, not statefulness.** H-B H18 doubly vindicated (the shipped artifact has H18's identical miss for the identical reason); H-B H19 must be re-scoped to the residue |
+
+## Corrections to artifacts already on file
+
+- **S1's C1 needs an amendment, not an annex.** Two statements are now wrong or materially incomplete: *"no latency figures are published"* is **false**, and the inference layer's reloadability is **gateway-global** (one provider, one model, every sandbox) — per-phase model authority is not expressible at that layer at all.
+- **Cluster H needs a split.** **OpenShell belongs in the counter-example column** — its sandbox-facing API has no approve or apply route; #1062 titles it a *"Non-Negotiable Trust Boundary"* and lists sandbox self-approval as an explicit non-goal. **Claude Code's sandbox stays in Cluster H** and gains a second, sharper instance pending the falsifier below.
+- **Cluster C's aggregation statement** should be replaced with the narrowed version in V4's decision line.
+- **S5's steelman** overstates CaMeL's rug-pull coverage (V3 §2).
+- **H-B H2, H-B H20 and COD-H04** should be re-read against V1 §2 rather than §1 — latency was never the binding constraint.
+
+## New named holes, created by the verification pass
+
+| # | Hole | Why it matters |
+|---|---|---|
+| **A** | **Can an agent widen its own sandbox by editing `.claude/settings.json`?** Settings live under a default-writable cwd and edits apply to the running session. V1 declined to test — *"it is a configuration mutation, and my instructions forbid it"* | **The single highest-value falsifier in the run.** One command, in a throwaway repo. **Requires owner authorization** — the leader will not self-authorize a configuration mutation with security implications |
+| **B** | **Header-versus-WAT precedence in AgentCore.** If a request carries both a service-propagated token and a caller-set session id, which wins? | The exact hinge on which "can the agent reset its own boundary" turns for an agent with independent egress |
+| **C** | **MFOTL / MonPoly correspondence.** Dogwood's temporal sublanguage appears to be bounded past-time metric first-order temporal logic wearing Cedar syntax — `formerly`=ONCE, `previous`=PREVIOUS, `since`=SINCE, mandatory bounded intervals, range-restriction as the acceptance discipline | **Four decades of runtime-verification literature (Basin, Klaedtke, Müller, Zălinescu) bears on this run's aggregation question, with known complexity and expressiveness bounds — and no surface in wfh-007 read it.** The adjacent scout searched aggregation from the *security* side; the *monitoring* side is unsearched. Highest-value adjacent-surface follow-up |
+| **D** | Whether Claude Code's **managed** scope overrides or merges `sandbox.filesystem.*` arrays (documented as *combined, not replaced*) | Union across scopes is the opposite of a ceiling for exactly the field a phase compiler would drive. The difference between a ceiling and a suggestion |
+
+## Standing instrument note
+
+The WebSearch cap did not bind this pass — all four scouts reached their targets via `WebFetch` and `gh api`, and V3 extracted a 125-page PDF locally. **Nothing in this amendment is demonstrated by us**; every number is the vendor's or a third party's. Firewall status for all of it: **`claimed`**.
