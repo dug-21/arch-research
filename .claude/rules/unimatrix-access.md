@@ -63,9 +63,17 @@ Use only these six, mapped in methodology §5:
   sources nodes, and `Cites` edges stay forbidden.
 - **Decisions** = a `finding` tagged `position`, not a category.
 
-## agent_id (D6 — open)
+## agent_id (D6 — corrected 2026-08-21)
 
-- Pass `agent_id` on every call (e.g. `{run-id}-{role}`). **Caveat:** attribution does not yet persist
-  (writes record `created_by: anonymous`); treat audit attribution as not-yet-trustworthy until the
-  platform agent registry lands.
+- Pass `agent_id` on every call (e.g. `{run-id}-{role}`).
+- **It persists.** `created_by` carries the string you passed — verified on live nodes 2026-08-21
+  (#266 records `jurati-001-retro-curator`; #97 and #260 likewise populated). **The former caveat that
+  writes record `created_by: anonymous` is struck: it is no longer true, and it was cited across
+  wfh-007 as grounds for conclusions that need re-reading.**
+- **But it is persisted self-assertion, not attestation, and that distinction is the whole point.** The
+  value is whatever the caller typed; nothing verifies the caller is who it claims. Attribution is
+  therefore reliable for **reconstructing what happened** and unreliable for **establishing who is
+  accountable** — it will not survive a party with a motive to misattribute.
+  **Do not build an authority check on it.** A guard whose input is a field the guarded party writes
+  is defeated by editing that field.
 - If calls are rejected unexpectedly, the MCP connection may have dropped — reconnect via `/mcp`.

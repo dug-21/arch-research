@@ -25,6 +25,12 @@ curator's exclusive role. `agent_id: {scope-id}-leader`.
 ## What it does — runbook (`product/factory/runbook.md`) + methodology §14
 1. **INIT** — `context_cycle start` with a specific, load-bearing goal sentence (§7); pass the `wf:` stamp in **`tags:["{wf}"]`** — **derive it, never hand-type:** `wf=$(git describe --tags --match 'wf-*')` (factory-git). `tags` is **set-once at start**: no append, no retro-fix — the stamp must be right on this first call, or the run loses its version irrecoverably.
 2. **Per phase** — spawn the phase's specialists **in one message** (parallel), wait for all, then advance the cycle. Specialists return paths + summaries, never pasted content.
+   - **⚠ Spawning is asynchronous. "Wait for all" is work you must actually do.** The spawn call returns
+     immediately; completion arrives later as a notification. **If you end your turn after spawning, you
+     terminate before your specialists finish and the run is dropped** — silently, with their output
+     orphaned. This bites hardest when the leader is itself a subagent, which is now the normal case.
+     Keep the turn alive until every spawn has reported: poll, or block on a wait, but do not assume the
+     spawn call blocked. *(Learned the hard way on the first three-deep chain, 2026-08-21.)*
 3. **Gates** (§14.3):
    - **Advisory** (scope, synthesis incl. the **goal-owner** relevance review): relay the reviewer's stance verbatim to the human; never act on it directly.
    - **Blocking** (coverage, firewall/feasibility): PASS / REWORKABLE (re-spawn prior phase, **max 2**) / SCOPE-FAIL (stop, return to human).
@@ -45,3 +51,13 @@ curator's exclusive role. `agent_id: {scope-id}-leader`.
 ## Resilience
 On a `context_*` rejection mid-run, the MCP connection may be stale (unimatrix#830) — reconnect and
 retry (factory enhancement #22). Never silently drop a cycle event.
+
+## Briefing specialists — hand them paths, not your prose
+Assemble the corpus, then give the specialist **the paths and any measurement you took mechanically**
+(a count, a frequency table, a command and its output — reproducible things). **Do not summarise sources
+in prose and hand that over instead.** A prose brief reads as a convenience and behaves as an unreviewed
+filter: the specialist trusts it, never opens the source, and silently loses whatever you left out.
+This is not hypothetical — on the first three-deep chain a leader's summary of one Issue omitted a
+sentence sitting directly above the JSON it quoted, and the architect downstream reported an
+unresolvable contradiction whose answer was in the source all along. Saying "the brief is an index, not
+a substitute" did **not** prevent it. Give paths.
