@@ -16,6 +16,39 @@ whose POC clears its `done_when`, demonstrated by us.
 
 **Status legend:** `active` (scanned on cadence) · `paused` (kept, not scanned) · `retired` (archived).
 
+## Coordinator authority — interruptible delegated autonomy
+
+An active theme may be owned across runs by `.claude/agents/factory/theme-coordinator.md`, operating via
+`.claude/workflow/theme-coordination.md`. The coordinator selects bounded work and launches a separate
+`research-leader` for every run. `factory-onboard` reconstructs its state; it does not execute.
+
+Each theme SHOULD declare this block before autonomous coordination begins:
+
+```yaml
+coordinator:
+  objective: <the outcome this coordinator steers toward>
+  may_launch:
+    confidence: [directional]
+    max_concurrent_runs: 1
+    max_autonomous_follow_on_depth: 2
+    allowed_value_targets: [<theme targets>]
+  may_spend:
+    compute: none
+    external_cost: 0
+  must_escalate:
+    - theme_revision
+    - material_spend
+    - validated_scope
+    - build_recommendation
+    - cross_theme_dependency
+    - proven_grade_change
+```
+
+Absent a block, the coordinator may reconstruct, plan, and report but may not autonomously launch. Human
+STOP is absolute. Premise-changing evidence is reported promptly; work is held when continuation could be
+wasteful, unsafe, or strategically wrong. The human interface is a short plain-English decision, with
+technical artifacts available as drill-down rather than pasted as the update.
+
 ---
 
 ## The garage funnel — where themes sit
@@ -300,6 +333,31 @@ measure the funnel's process-plane hit-rate.
 
 ## theme:workflow-harness — the control plane that drives the LLM, made visible
 **Status:** active · seeded 2026-07-22
+
+**Coordinator authority** *(first delegated-autonomy envelope; narrow by design):*
+
+```yaml
+coordinator:
+  objective: Evolve the workflow-harness theme toward the smallest defensible personal-OS/Jurati substrate, preferring adopt and assemble over build.
+  may_launch:
+    confidence: [directional]
+    max_concurrent_runs: 1
+    max_autonomous_follow_on_depth: 2
+    allowed_value_targets: [security, structure, context, cost, recovery, self-improvement, human-steering]
+  may_spend:
+    compute: none
+    external_cost: 0
+  must_escalate:
+    - theme_revision
+    - material_spend
+    - validated_scope
+    - build_recommendation
+    - cross_theme_dependency
+    - proven_grade_change
+```
+
+Human STOP is absolute. Premise-changing evidence follows the shared inform-and-continue / inform-and-hold
+rule. This envelope permits cheap directional follow-ups and forbids autonomous proof or build commitment.
 
 **Lens.** Context-injection & control architectures for LLM **coding agents**: how a harness *owns and
 injects* the operating context (skills, agent-definitions, protocols/workflows, tools, gates) into the

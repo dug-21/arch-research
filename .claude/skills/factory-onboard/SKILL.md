@@ -1,6 +1,6 @@
 ---
 name: "factory-onboard"
-description: "Catch a fresh-context agent up to the research & development garage's CURRENT status — read the canonical sources, query the live Unimatrix graph + git, then report where things stand. PLAN-ONLY: orients and recommends a next action; does NOT execute research runs (execution is a separate protocol session). Status is DERIVED from the graph, never a stored snapshot. Use when a new session/agent needs to orient from scratch."
+description: "Catch a fresh-context agent or theme coordinator up to the garage's CURRENT status from canonical sources, live Unimatrix, Issues, cycles, and git. Reconstruction only: it recommends or hands state to theme-coordination but never executes a research run itself."
 ---
 
 # factory-onboard — Fresh-Context Catch-Up
@@ -13,21 +13,20 @@ lands (methodology §6: "what's done is a graph query, not a maintained list").
 
 ## 0. Role boundary — plan, don't execute (load-bearing)
 
-`factory-onboard` is a **planning / ownership** context — the factory analog of the SDLC **product-owner**
-pair, and of `uni-zero` ("does not run delivery protocols"). Its deliverable is **orientation + a
-recommendation**; it does **not** execute research.
+`factory-onboard` is the garage's **state-reconstruction entrypoint**. It can serve a human directly or
+bootstrap a persistent `theme-coordinator`, but it never becomes the coordinator or executes research.
+Its deliverable is **orientation + a recommendation or theme-coordination handoff**.
 
-- **MAY:** read canonical sources, run the status queries (§2), plan/scope hypotheses, triage, and
-  **recommend** a next action.
+- **MAY:** read canonical sources, run the status queries (§2), plan/scope hypotheses, triage,
+  **recommend** a next action, and hand the reconstructed state to
+  `.claude/workflow/theme-coordination.md`.
 - **MUST NOT** (this session): launch a run — no spawning specialists (scout / researcher / hypothesizer /
   curator), no `context_cycle start`, no opening a run Issue, no graph writes.
 
-Executing a run is a **separate, deliberate session** invoking the research / theme-scan protocol
-(`.claude/workflow/{theme-scan,research-scope,decompose-scope}.md`), spun up per-hypothesis on the human's
-go, with **scope-approval as its explicit first gate**. This keeps the human gate meaningful and stops an
-orienting agent from sliding from "recommended next action" straight into running it (**OBS-13**). Wave-0
-hygiene enforced by instruction; the durable fix is a harness that enforces the boundary structurally, not
-the agent's compliance.
+Execution crosses an explicit role boundary: a human or authorized `theme-coordinator` launches a
+`research-leader`, which invokes the applicable run protocol. Onboarding never spawns that leader. This
+preserves OBS-13 while nested delegation gives the persistent coordinator a structurally separate way to
+govern multiple runs.
 
 ## 1. Orient — read in order
 1. `CLAUDE.md` — mission, how-to-work, the firewall.
@@ -65,7 +64,9 @@ reflexive loop (FC-Improve).
 
 ## 4. Report
 A concise status: method `wf:` version · research-board state for `shd` (what's proven/partial/
-missing) · factory-board autonomy state · open blockers · recommended next action.
+missing) · factory-board autonomy state · open blockers · recommended next action. When invoked by a
+theme coordinator, also return the active theme's open runs, promoted-but-unrun work, three-surface drift,
+and delegated-authority block.
 
 **Then STOP — do not execute the recommended action in this session (§0).** The recommendation is the
 handoff; execution is a separate, human-gated protocol session.

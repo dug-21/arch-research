@@ -37,6 +37,7 @@ once a real run validates them; provisional ones are revisited after the first r
 | D13 | Garage reframe + funnel model (narrative-only; factory = proving-grounds stage) | locked | factory ADR (Uni) |
 | D14 | Citation provenance — `cites:` carries author/org/year; the watchlist is derived | locked | factory ADR (Uni) + `.claude/rules/` |
 | D15 | Research **documents** land on `main` continuously; only **executables** branch | locked | factory ADR (Uni) + factory-git |
+| D16 | Theme coordinator + interruptible delegated autonomy | locked | agent + protocol + theme authority config |
 
 ---
 
@@ -532,3 +533,37 @@ SDLC-shaped assumptions to chafe — the auto-merge claim (wf-v0.19) and the PR-
 same leak.
 
 **Eventual home:** factory ADR (Uni); operational form in the `factory-git` skill.
+
+---
+
+## D16 — Theme coordinator + interruptible delegated autonomy
+**Status:** locked · 2026-08-26
+
+A persistent **`theme-coordinator`** owns the evolution of one theme across runs. It sits above, and never
+replaces, `research-leader`: the coordinator selects and scopes portfolio work; a fresh leader executes
+each bounded run and retains exclusive ownership of its cycle, Issue, phases, gates, and nested
+specialists. `factory-onboard` remains reconstruction-only and may bootstrap the coordinator's context,
+but never crosses into execution (OBS-13 remains binding).
+
+**Delegation is explicit and bounded.** Each theme declares the confidence levels, value targets,
+concurrency, follow-on depth, compute/external spend, and escalation classes the coordinator may exercise
+without asking. Absent that block, it may orient, plan, and report but not launch. Authority can flow down
+the agent tree; it cannot expand down it.
+
+**Human-reserved decisions:** theme/objective changes; strategic forks; material spend; validated scopes
+unless explicitly delegated; BUILD recommendations with unresolved adopt/assemble alternatives;
+cross-theme commitments; and any `grade:proven` advance/reopen. The human may stop, narrow, or redirect
+activity at any time.
+
+**Surprise duty:** premise-changing evidence is reported promptly in plain English. Reversible surprises
+inside the envelope are `inform + continue`; evidence that could make continuation wasteful, unsafe, or
+strategically wrong is `inform + hold`. A hold stops new launches and parks affected work safely before
+the human rules.
+
+**Platform parity:** the role and workflow are canonical repository artifacts under `.claude/`, readable
+by both Claude and Codex. They describe semantic operations and authority; platform-specific spawn/wait/
+interrupt mechanics live only in the execution adapter. Neither platform gets a different research
+method or governance contract.
+
+**Operational homes:** `.claude/agents/factory/theme-coordinator.md` ·
+`.claude/workflow/theme-coordination.md` · `product/factory/themes.md` coordinator authority block.

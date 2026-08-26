@@ -412,3 +412,20 @@ OBS-17's render caveat — the data is right, the derived view is not.
 against one curator spawn, and all 11 knowledge stores were attributed to the leader session though the
 curator wrote them in a subagent. OBS-17's sharper shape — telemetry does not merely miss subagent work, it
 **reassigns it to the parent** — reproduces exactly. **#65 stays `partial` and stays blocked.**
+
+## OBS-20 — Nested agents make persistent theme governance executable, but do not erase the authority boundary
+*2026-08-26 · owner direction following factory-onboard*
+
+Both primary platforms can now run an agent that delegates to another agent which itself delegates to
+specialists. This removes the mechanical reason an owner-like session could only recommend the next run.
+It does **not** remove OBS-13's governance failure: if onboarding itself may slide from reconstruction into
+execution, scope approval becomes implicit and the broadest-context role grades its own work.
+
+**Response.** Keep `factory-onboard` reconstruction-only; introduce a persistent `theme-coordinator`
+above `research-leader`. The coordinator may launch bounded runs only under a theme-specific delegated
+authority envelope, communicates decisions in layman's English, and has an affirmative duty to surface
+surprises early enough for the human's stop right to be meaningful. Premise-changing evidence either
+informs-and-continues (reversible, in-envelope) or informs-and-holds (waste/risk/strategy may change).
+
+**Cross-platform requirement.** Claude and Codex share the same canonical role/workflow files. Platform
+adapters translate spawning, waiting, interruption, and resumption only; they do not fork the method.

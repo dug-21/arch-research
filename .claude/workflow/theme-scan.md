@@ -8,6 +8,8 @@ hypotheses (`finding`+`hypothesis`); **nothing reaches `proven` here.** A promot
 *separate* bounded proof-goal (a normal validated research-scope) where the firewall bites. Run by
 `research-leader`. Its own cycle (`topic`) + GitHub Issue. Phases: **scan → hypothesize → triage → formalize.**
 Design: `product/factory/proposals/theme-driven-scanning-methodology.md` (§5 flow · §6 triage · §9 funnel).
+A `theme-coordinator` may select and launch this run within the theme's declared authority envelope, but
+the spawned `research-leader` still owns the run and every gate below.
 
 **The wide-mouth standard** (`product/factory/themes.md` → "How a scan reads") binds this protocol:
 scanning runs across **four reading surfaces** — research literature · established products · active
@@ -51,7 +53,9 @@ validator — this protocol never proves.
      load-bearing. Keep the scope's `Status:` line current — on `main` it is what distinguishes in-flight
      from concluded. (The `wf:` version rides the cycle tag above; do not hand-type it.)
 - **GATE (advisory → owner):** confirm **theme + candidate source** (owner-injection vs external-scan)
-  **+ budget envelope**. Wave-0 the owner's kick IS this approval; surface it, don't block on it.
+  **+ budget envelope**. The owner is either the human or an authorized `theme-coordinator`. The latter
+  may approve only within `product/factory/themes.md` → `Coordinator authority`; otherwise this remains a
+  human gate.
 
 ## Phase: scan
 - Leader spawns **one `scout` per staffed reading surface, all in one message** (parallel). The four
@@ -130,7 +134,8 @@ validator — this protocol never proves.
 - **GATE (blocking → owner):** the owner reviews the coverage call, the shortlist, and any theme-revision
   proposal, then **promotes 0..n** items to bounded proof-goals and accepts or rejects the reframing.
   Promoting nothing is a valid, common outcome; so is coming out of the scan with a differently-shaped
-  theme than went in.
+  theme than went in. A theme coordinator may park or launch a bounded directional follow-up inside its
+  envelope; theme revision, material spend, BUILD commitment, and `proven` changes go to the human.
 - `phase-end phase:"triage" outcome:"coverage=<COVERED|NOT COVERED:cell>; A adopt, S assemble, B build, D probe, rest parked"`.
 
 ## Phase: formalize (post-gate — ALL graph writes live here)

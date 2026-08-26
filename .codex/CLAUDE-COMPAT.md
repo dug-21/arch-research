@@ -15,6 +15,18 @@ This file translates platform mechanics only. Research policy and workflow remai
 | `/skill-name` | Invoke the corresponding discovered Codex skill, whose canonical `SKILL.md` remains under `.claude/skills/`. |
 | `/mcp` reconnect | Diagnose/restart the Codex Unimatrix MCP connection, then retry the rejected call; never silently omit a cycle event. |
 
+## Nested coordination and interruption
+
+Canonical roles may delegate through more than one agent level. A `theme-coordinator` spawns a
+`research-leader`; that leader spawns the specialists named by its run protocol. In Codex, keep the
+coordinator turn alive while the leader is running, and keep the leader alive until every required child
+returns. Use Codex's agent message/follow-up/wait operations for status and its interrupt operation for a
+human STOP or an `inform-hold` surprise.
+
+These are execution translations only. Delegated authority, mandatory human decisions, surprise
+classification, and safe-stop behavior remain canonical in
+`.claude/agents/factory/theme-coordinator.md` and `.claude/workflow/theme-coordination.md`.
+
 ## Role loading
 
 Codex does not infer a runnable named agent from Claude frontmatter. Before spawning a factory role,

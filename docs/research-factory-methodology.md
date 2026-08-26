@@ -693,6 +693,13 @@ work. The roster:
 | `factory-retro` | specialist | write (process plane) | `lesson-learned` + `factory`-plane entries (§9) |
 | `goal-owner` | specialist (advisory) | read-only | **strategic-alignment review** at synthesis — guards **drift** (wrong question) and **under-reach** (a step-function level-up the objective missed; directional/empirical only, suppressed on proof unless stated). Advisory input to the human gate (OBS-1, OBS-4). |
 
+Above the per-run roster, an optional **`theme-coordinator`** role persistently owns one theme's evolution. It
+selects and scopes bounded work, launches a separate `research-leader` for each run, reconciles results,
+and presents surprises/decisions to the human in plain English. Its autonomy is explicitly delegated in
+`product/factory/themes.md`; strategic, expensive, irreversible, cross-theme, and firewall decisions stay
+human. The human may stop activity at any time. `factory-onboard` reconstructs state for this role but
+never executes a run itself. Canonical protocol: `.claude/workflow/theme-coordination.md`.
+
 **The cardinal write rule (reconciles the research-spike "no writes" stance with our compounding goal):**
 
 > Researchers are **read-only and produce files**. A run's provisional narrative lives in files;
