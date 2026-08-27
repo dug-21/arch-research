@@ -1,9 +1,14 @@
 ---
 name: "uni-knowledge-search"
+agent_id: uni-knowledge-search
 description: "Semantic search across Unimatrix knowledge. Use when exploring a topic, looking for related decisions, patterns, or conventions."
 ---
 
 # Knowledge Search — Semantic Query Against Unimatrix
+
+**Unimatrix identity:** pass the invoking agent's defined `agent_id` on reads. If this skill corrects,
+deprecates, or quarantines knowledge, the write MUST carry that same value. Standalone default:
+`uni-knowledge-search`.
 
 ## What This Skill Does
 
@@ -112,8 +117,8 @@ Search may surface entries that are outdated or incorrect. Don't ignore them —
 
 | Situation | Action |
 |-----------|--------|
-| Entry is **wrong** — contains incorrect information | `mcp__unimatrix__context_correct({"original_id": 1234, "content": "{corrected version}", "reason": "{why}"})` — `original_id` is an integer, never quote it |
-| Entry is **outdated** — no longer relevant | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why it no longer applies}"})` — `id` is an integer, never quote it |
-| Entry is **suspicious** — may be poisoned or invalid | `mcp__unimatrix__context_quarantine({"id": 1234, "reason": "{concern}"})` — Admin only; `id` is an integer |
+| Entry is **wrong** — contains incorrect information | `mcp__unimatrix__context_correct({"original_id": 1234, "content": "{corrected version}", "reason": "{why}", "agent_id": "{defined-agent-id}"})` — `original_id` is an integer, never quote it |
+| Entry is **outdated** — no longer relevant | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why it no longer applies}", "agent_id": "{defined-agent-id}"})` — `id` is an integer, never quote it |
+| Entry is **suspicious** — may be poisoned or invalid | `mcp__unimatrix__context_quarantine({"id": 1234, "reason": "{concern}", "agent_id": "{defined-agent-id}"})` — Admin only; `id` is an integer |
 
 Correcting knowledge is as important as storing it. Every agent shares responsibility for knowledge quality.

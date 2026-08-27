@@ -1,9 +1,14 @@
 ---
 name: "factory-retro"
+agent_id: factory-retro
 description: "Research-run retrospective — extracts research lessons + factory-plane enhancements/ADRs from a completed run. The factory variant of uni-retro (which is SDLC). Triggered by a research cycle closing, not a PR merge. Plane-aware; no pattern/procedure."
 ---
 
 # factory-retro — Research Run Retrospective
+
+**Unimatrix identity:** every `context_*` mutation in this skill passes `agent_id: factory-retro`,
+including content, edges, tags, lifecycle changes, and auto-closing review calls. Never omit it from a
+shorthand write.
 
 Extracts reusable knowledge from a completed research run into Unimatrix. The **factory variant of
 `uni-retro`** (which is SDLC-shaped — PR-merge trigger, ARCHITECTURE/gate-3x artifacts, pattern/
@@ -35,7 +40,7 @@ procedure, `uni-architect`, cargo/worktree cleanup — none of which apply here)
 1. **Knowledge-yield (works now)** — query by the run-id tag (requires the run-id tagging convention):
    - `context_lookup(tags:["{run-id}"], category:"technology")` → status histogram → **proven/claimed ratio** (the firewall ratio: validating, or just collecting optimism?)
    - same for `finding` and `lesson-learned` → findings/run, dead-end rate.
-2. **Process telemetry (degraded)** — `context_cycle_review(feature_cycle:"{run-id}", auto_close:true, format:"json")`. If it returns **"No observation data"**, note the upstream block and proceed on (1) + qualitative — do NOT fabricate telemetry.
+2. **Process telemetry (degraded)** — `context_cycle_review(feature_cycle:"{run-id}", auto_close:true, format:"json", agent_id:"factory-retro")`. If it returns **"No observation data"**, note the upstream block and proceed on (1) + qualitative — do NOT fabricate telemetry.
 3. **Qualitative (3 questions):** what worked · what wasted budget / chased a dead end · what surprised.
 
 ## Phase 2 — Extract (role: factory-retro/curator; SELECTIVE — more entries is not better)
@@ -43,7 +48,7 @@ procedure, `uni-architect`, cargo/worktree cleanup — none of which apply here)
 1. **Research lesson-learned** — process lessons about the *research* (e.g. "harness research needs a live smoke"). Store research-plane.
 2. **Factory enhancements** — friction, role gaps, operational hazards → `factory` `kind:technology`, `status:claimed` (the testing backlog). Each `Prerequisite→` the **factory capability** it improves.
 3. **Decision ADRs** — decisions this run *validated* → graduate to `factory` `kind:finding` tagged `position`; `cites:` the run + `product/factory/decisions.md`.
-4. **Factory board status** — did the run move any factory capability? **Manual** demonstration → `partial`; **autonomous** (an agent did it, with a run artifact) → `proven`. `context_correct` the capability node. (Never `proven` on a manual run — see Phase 3.)
+4. **Factory board status** — did the run move any factory capability? **Manual** demonstration → `partial`; **autonomous** (an agent did it, with a run artifact) → `proven`. `context_correct` the capability node with `agent_id:"factory-retro"`. (Never `proven` on a manual run — see Phase 3.)
 5. **Operational learnings** — append new `OBS-*` to `product/factory/observations.md`.
 
 ## Phase 3 — The firewall, on ourselves

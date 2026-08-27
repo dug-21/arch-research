@@ -6,11 +6,13 @@ garage funnel) researches against. Run by `research-leader`. One decompose-scope
 
 ## Roles
 `research-leader` (coordinator) · `factory-researcher` (read-only) · `factory-curator` (single writer).
+Every Unimatrix mutation carries the acting role's defined identity: `research-leader` for cycle events,
+`factory-curator` for content/edge/tag/lifecycle writes.
 
 ## INIT
 `context_cycle start` topic=`{goal}-NNN`, goal=`<specific goal sentence (§7)>`, next_phase=`scope`,
 **`tags:["{wf}"]`** (the derived `wf:` — `git describe --tags --match 'wf-*'`; **set-once at start**, no
-append/retro-fix, so get it right on the first call), agent_id=`{scope-id}-leader`. Create the GitHub Issue
+append/retro-fix, so get it right on the first call), agent_id=`research-leader`. Create the GitHub Issue
 (body = the SCOPE).
 
 ## Phase: scope

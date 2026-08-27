@@ -27,7 +27,7 @@ once a real run validates them; provisional ones are revisited after the first r
 | D3 | Frontier-change protocol (re-entrant capability board) | locked | factory ADR + scope template |
 | D4 | Scope template / required fields | locked | template file |
 | D5 | Unimatrix ID-resolution + tool-selection rule | locked | `.claude/rules/` + lesson-learned |
-| D6 | `agent_id` attribution gap | finding | carry-forward |
+| D6 | Stable agent-type `agent_id` on every Unimatrix mutation | locked | agent/skill contracts + `.claude/rules/` |
 | D7 | Confidence-required axis (replaces Type) + firewall refinement | locked | factory ADR + scope template |
 | D8 | Research category set; sources = `cites:` field; pattern/decisions stay off | locked | factory ADR (Uni) |
 | D9 | Run 1 = `shd`, decompose then C2 directional, inline-roles | locked | — |
@@ -177,12 +177,21 @@ drops the integrity/telemetry fields. Minor wart: `graph` reports `status:"Activ
 ---
 
 ## D6 — `agent_id` attribution gap
-**Status:** finding (carry-forward) · 2026-06-22
+**Status:** locked · 2026-08-27 correction of 2026-06-22 finding
 
-The `agent_id` passed to context tools does **not** land as attribution — writes recorded
-`created_by: "anonymous"` / `trust_source: "agent"` regardless. The firewall's audit value depends
-on knowing *which* agent wrote a node, so the platform agent registry must formalize how `agent_id`
-becomes durable attribution before the audit trail is trustworthy.
+~~The `agent_id` passed to context tools does not land as attribution; writes record
+`created_by: "anonymous"`.~~ **This original finding is false on the current platform.** `agent_id`
+persists as `created_by`; `context_store` and `context_correct` reject anonymous/missing identity.
+
+Repository policy is deliberately stronger than the server minimum: **every Unimatrix mutation carries
+the acting agent's defined `agent_id`, equal to its stable agent type** (`research-leader`,
+`hypothesizer`, `factory-curator`, etc.). This includes content, edges, tags, lifecycle, cycle events, and
+review calls that may auto-close. Run identity belongs in `topic`, `feature_cycle`, and tags, not in
+`agent_id`. Every writer-facing role and `uni-*` skill must carry this rule locally; the separate access
+rule is a shared semantic reference, not the only place the agent is expected to learn it.
+
+The persisted value remains caller-declared rather than authenticated. It is reliable for reconstructing
+which identity was asserted and must not alone establish role authorization or accountability.
 
 Separately observed: an idiosyncratic backend interaction can reject calls until the MCP connection
 is reconnected (`/mcp`); reconnect clears it. Not `agent_id`-related.

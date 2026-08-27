@@ -1,9 +1,13 @@
 ---
 name: "uni-seed"
+agent_id: uni-seed
 description: "Populate Unimatrix with foundational repository knowledge through human-directed, gated exploration."
 ---
 
 # /uni-seed — Knowledge Base Seeding
+
+**Unimatrix identity:** every Unimatrix mutation in this skill MUST pass `agent_id: uni-seed`, including
+all content, edge, tag, and lifecycle writes. Never omit it from abbreviated follow-on calls.
 
 ## Prerequisites
 
@@ -205,7 +209,8 @@ Store this entry? (yes / no)
 
 **STOP. Wait for human response before proceeding.**
 
-- **yes**: Store via `context_store` with tags `["seed", "level-1"]`. Report success or failure.
+- **yes**: Store via `context_store` with tags `["seed", "level-1"]` and `agent_id: "uni-seed"`.
+  Report success or failure.
 - **no**: Skip this entry.
 
 Continue until all Level 1 entries have been presented.

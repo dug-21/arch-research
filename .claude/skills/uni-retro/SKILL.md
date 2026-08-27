@@ -1,9 +1,14 @@
 ---
 name: "uni-retro"
+agent_id: uni-retro
 description: "Post-merge retrospective — extracts patterns, procedures, and lessons from shipped features into Unimatrix. Use after a feature PR is merged."
 ---
 
 # Retro — Post-Merge Knowledge Extraction
+
+**Unimatrix identity:** the retro coordinator uses `agent_id: uni-retro`; the spawned architect uses its
+defined `agent_id: uni-architect`. Every Unimatrix mutation in this workflow MUST carry the identity of
+the role making that call, including content, edges, lifecycle changes, and auto-closing review calls.
 
 ## What This Skill Does
 
@@ -42,7 +47,7 @@ Gather all evidence about the shipped feature:
    opt in to verbatim candidates via the read-only scoped `transcript: {}` block — a bare call returns
    the summary report with NO candidates:
    ```
-   mcp__unimatrix__context_cycle_review({"feature_cycle": "{feature-id}", "format": "markdown", "transcript": {}})
+   mcp__unimatrix__context_cycle_review({"feature_cycle": "{feature-id}", "format": "markdown", "transcript": {}, "agent_id": "uni-retro"})
    ```
    This returns structured data: metrics, hotspots, baseline comparisons, narratives, and recommendations,
    PLUS the scoped `transcript_candidates` section (candidates + per-session `SessionLossInfo`).
@@ -284,7 +289,7 @@ Agent(uni-architect, "
      b. If the component followed an existing pattern: verify it's still accurate.
         If the pattern drifted, use /uni-store-procedure or context_correct to update it.
      c. If the component established a NEW reusable structure (used in 2+ features
-        or clearly generic): store it via mcp__unimatrix__context_store({"category": "pattern", ...}).
+        or clearly generic): store it via mcp__unimatrix__context_store({"category": "pattern", "agent_id": "uni-architect", ...}).
      d. If the component was one-off: skip — don't store patterns for unique work.
 
   2. PROCEDURE REVIEW — Check if any HOW-TO changed:
@@ -339,7 +344,7 @@ Agent(uni-architect, "
      when a future agent must TRAVERSE the link to avoid a wrong decision; most entries get ZERO
      edges and that is correct. Three types only:
         - Supports: a lesson/pattern from this cycle that DIRECTLY caused or validates an ADR
-          (context_edge add, source = lesson/pattern, target = decision).
+          (`context_edge` add with `agent_id: "uni-architect"`, source = lesson/pattern, target = decision).
         - Prerequisite: an intra-feature ADR that must be read before another is correct.
         - Contradicts: a real, decision-blocking conflict surfaced this cycle.
      Do NOT assert RelatedTo/Mentions/About/Informs; do NOT use edges for supersession (that is

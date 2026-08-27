@@ -1,9 +1,13 @@
 ---
 name: "uni-store-adr"
+agent_id: uni-store-adr
 description: "Store an architectural decision record in Unimatrix. ADRs live in Unimatrix only — no ADR files. Use after each design decision."
 ---
 
 # Store ADR — Architectural Decisions in Unimatrix
+
+**Unimatrix identity:** every write below MUST include the invoking agent contract's defined `agent_id`.
+When invoked standalone, use `uni-store-adr`. Never omit identity from content, edge, or lifecycle writes.
 
 ## What This Skill Does
 
@@ -34,7 +38,7 @@ mcp__unimatrix__context_store({
   "tags": ["adr", "{phase-prefix}", "{domain-tags}"],
   "source": "architect",
   "feature_cycle": "{feature-id}",
-  "agent_id": "{your role name, e.g. uni-architect}"
+  "agent_id": "{defined-agent-id}"
 })
 ```
 
@@ -73,6 +77,7 @@ Note the old entry's ID.
 ```
 mcp__unimatrix__context_correct({
   "original_id": 1234,  // integer — never quote it
+  "agent_id": "{defined-agent-id}",
   "content": "## Context\n{why the old decision is being replaced}\n\n## Decision\n{new decision}\n\n## Consequences\n{what changes}",
   "title": "ADR-NNN: {new decision title}",
   "reason": "Superseded by {feature-id}: {short explanation}"
@@ -131,7 +136,7 @@ because you'll act wrongly without reading it first," don't assert it.
   edges you couldn't make at authoring (the intra-feature `Prerequisite` spine; `Supports` from a
   lesson/pattern to the decision it validates) via:
   ```
-  mcp__unimatrix__context_edge({"mode": "add", "source_id": <from>, "edge_type": "Supports", "target_id": <to>})
+  mcp__unimatrix__context_edge({"mode": "add", "source_id": <from>, "edge_type": "Supports", "target_id": <to>, "agent_id": "{defined-agent-id}"})
   ```
 
 ---

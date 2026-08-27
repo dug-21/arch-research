@@ -34,6 +34,9 @@ the coordinator must read its complete file under `.claude/agents/factory/` and 
 spawn prompt. Frontmatter such as `model: fable` is advisory unless an explicit Codex model mapping is
 configured; the role boundaries and output contract remain binding.
 
+The role's frontmatter `agent_id` is binding on both platforms. Pass that exact stable agent-type value
+on every Unimatrix mutation the role performs; use `topic`, `feature_cycle`, and tags for run identity.
+
 ## Tool names
 
 Treat `context_*` and `mcp__unimatrix__context_*` as equivalent references to the tools exposed by the

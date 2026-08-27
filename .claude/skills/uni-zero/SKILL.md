@@ -1,9 +1,13 @@
 ---
 name: "uni-zero"
+agent_id: uni-zero
 description: "Unimatrix Zero — vision guide mode. Strategic advisor for product evolution, feature ordering, vision alignment, security posture, and codebase health. Conversational. Does not modify application code or run delivery protocols."
 ---
 
 # /uni-zero — Unimatrix Zero
+
+**Unimatrix identity:** every `context_*` call uses `agent_id: uni-zero`. This is mandatory on every
+mutation, including content, edge, tag, and lifecycle writes; do not omit it from shorthand calls.
 
 > *A space within the Collective where individual thought is permitted.*
 
@@ -302,7 +306,7 @@ bloating the goal's correction chain.
 **Adding a new goal:**
 1. Discuss and agree in conversation first — goals emerge from problem exploration, not top-down planning.
 2. Look up the vision root ID: `context_lookup(category="goal", tags=["vision", "root"])`.
-3. Create a thin entry: `context_store(category="goal", topic="product-vision", tags=["goal", "{tag}"], edges=[{Advances → {vision_root_id}}])`
+3. Create a thin entry: `context_store(category="goal", topic="product-vision", tags=["goal", "{tag}"], edges=[{Advances → {vision_root_id}}], agent_id="uni-zero")`
 4. Create the corresponding `goal:*` GitHub label.
 5. Update `PRODUCT-VISION.md` strategic goals table (add a row with tag + summary — no IDs).
 6. Enrich via `context_correct` as the strategy matures — each correction preserves the evolution.
@@ -310,14 +314,15 @@ bloating the goal's correction chain.
 **Updating a goal** — use `context_correct` to preserve the correction chain:
 1. Propose the change in conversation. Quote what is changing and why.
 2. Confirm with the human before writing.
-3. Apply via `context_correct`.
+3. Apply via `context_correct(agent_id="uni-zero", ...)`.
 4. Update `PRODUCT-VISION.md` if the goals table needs to reflect the change.
 
 > **Edges carry forward automatically (vnc-035).** `context_correct` copies the original entry's
 > eligible outgoing edges — including a goal's `Advances → {vision_root}` link — onto the new
 > entry **by default**. You do NOT need to re-pass them in `edges`; the response reports an
 > `edges_carried` count so you can confirm the link survived. To intentionally **drop** an edge
-> that no longer holds, use `context_edge remove`/`redirect` with `source_id = {the new entry id}`
+> that no longer holds, use `context_edge remove`/`redirect` with `source_id = {the new entry id}` and
+> `agent_id = "uni-zero"`
 > — the only Active source after correction. Never target the Deprecated original (the pre-correction
 > id): it is frozen and rejects edits as a frozen source.
 

@@ -1,9 +1,14 @@
 ---
 name: "uni-knowledge-lookup"
+agent_id: uni-knowledge-lookup
 description: "Deterministic lookup of Unimatrix knowledge by exact filters. Use when you know what you want — a specific feature, category, entry ID, or status."
 ---
 
 # Knowledge Lookup — Deterministic Query Against Unimatrix
+
+**Unimatrix identity:** pass the invoking agent's defined `agent_id` on reads. If this skill corrects,
+deprecates, or quarantines knowledge, the write MUST carry that same value. Standalone default:
+`uni-knowledge-lookup`.
 
 ## What This Skill Does
 
@@ -121,8 +126,8 @@ Lookup may surface entries that are outdated or incorrect. Fix them:
 
 | Situation | Action |
 |-----------|--------|
-| Entry is **wrong** | `mcp__unimatrix__context_correct({"original_id": 1234, "content": "{corrected version}", "reason": "{why}"})` — `original_id` is an integer, never quote it |
-| Entry is **outdated** | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why}"})` — `id` is an integer, never quote it |
-| Entry is **suspicious** | `mcp__unimatrix__context_quarantine({"id": 1234, "reason": "{concern}"})` — Admin only; `id` is an integer |
+| Entry is **wrong** | `mcp__unimatrix__context_correct({"original_id": 1234, "content": "{corrected version}", "reason": "{why}", "agent_id": "{defined-agent-id}"})` — `original_id` is an integer, never quote it |
+| Entry is **outdated** | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why}", "agent_id": "{defined-agent-id}"})` — `id` is an integer, never quote it |
+| Entry is **suspicious** | `mcp__unimatrix__context_quarantine({"id": 1234, "reason": "{concern}", "agent_id": "{defined-agent-id}"})` — Admin only; `id` is an integer |
 
 Every agent shares responsibility for knowledge quality. Don't leave wrong entries for the next agent to trip over.

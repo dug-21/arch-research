@@ -1,9 +1,13 @@
 ---
 name: "uni-store-procedure"
+agent_id: uni-store-procedure
 description: "Store or update a technical procedure (how-to) in Unimatrix. Use during retrospectives when a technique has evolved or been discovered."
 ---
 
 # Store Procedure — Technical How-To Knowledge
+
+**Unimatrix identity:** every write below MUST include the invoking agent contract's defined `agent_id`.
+When invoked standalone, use `uni-store-procedure`. Never omit identity from content or lifecycle writes.
 
 ## What This Skill Does
 
@@ -48,7 +52,7 @@ mcp__unimatrix__context_store({
   "topic": "{crate or area — e.g., 'unimatrix-server'}",
   "category": "procedure",
   "tags": ["{domain}", "{consuming-roles}"],
-  "agent_id": "{your role name, e.g. uni-architect}"
+  "agent_id": "{defined-agent-id}"
 })
 ```
 
@@ -57,6 +61,7 @@ mcp__unimatrix__context_store({
 ```
 mcp__unimatrix__context_correct({
   "original_id": 1234,  // integer — never quote it
+  "agent_id": "{defined-agent-id}",
   "content": "{updated step-by-step content}",
   "reason": "Updated: {what changed and why}"
 })

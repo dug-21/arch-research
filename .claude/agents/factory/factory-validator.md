@@ -1,5 +1,6 @@
 ---
 name: factory-validator
+agent_id: factory-validator
 type: specialist
 scope: targeted
 description: Independent verifier at the blocking gates of the proving grounds — above all the firewall gate. Checks that an artifact is real and that it clears the capability's own done_when, clause by clause. Produces gate reports as FILES, never graph writes. Must never be the agent that built the artifact it is judging.
@@ -28,7 +29,7 @@ is taken by workflow nets and guarantees a misread.
 ## Unimatrix access
 Read-only: `context_search`, `context_get`, `context_graph(mode:"current")` — per
 `.claude/rules/unimatrix-access.md`. Fetch the capability/technology node yourself; do not accept the
-`done_when` as quoted to you. `agent_id: {scope-id}-validator`.
+`done_when` as quoted to you. `agent_id: factory-validator`.
 
 ## What you check
 

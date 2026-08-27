@@ -478,18 +478,18 @@ opens it, marks phase boundaries, and closes it; `context_cycle_review` analyzes
 # open the run — the goal sentence is LOAD-BEARING: it drives goal-conditioned briefing (and
 # thereby plane selection, §9) AND binds this run's entries to telemetry. The wf: version rides in
 # `tags` (set-once at start; derived via git describe — never hand-typed).
-context_cycle({ type:"start", topic:"shd-001", goal:"<specific goal sentence>", next_phase:"scope", tags:["wf-v0.13"] })
+context_cycle({ type:"start", topic:"shd-001", goal:"<specific goal sentence>", next_phase:"scope", tags:["wf-v0.13"], agent_id:"research-leader" })
    # the CYCLE carries the wf: tag (run-level, immutable). Knowledge NODES stored this run carry the
    # RUN-ID tag ("shd-001") for per-run yield (§10.4) — join cycle↔nodes on run-id, don't tag nodes with wf.
 
 # close each phase as it ends (advances the phase signal; records the outcome)
-context_cycle({ type:"phase-end", topic:"shd-001", phase:"scope",          outcome:"…",                    next_phase:"decompose" })
-context_cycle({ type:"phase-end", topic:"shd-001", phase:"decompose",      outcome:"6 capabilities mapped", next_phase:"tech-discovery" })
-context_cycle({ type:"phase-end", topic:"shd-001", phase:"tech-discovery", outcome:"7 technologies, claimed", next_phase:"feasibility" })
-context_cycle({ type:"phase-end", topic:"shd-001", phase:"feasibility",    outcome:"2 proven, 1 partial",   next_phase:"synthesis" })
+context_cycle({ type:"phase-end", topic:"shd-001", phase:"scope",          outcome:"…",                    next_phase:"decompose", agent_id:"research-leader" })
+context_cycle({ type:"phase-end", topic:"shd-001", phase:"decompose",      outcome:"6 capabilities mapped", next_phase:"tech-discovery", agent_id:"research-leader" })
+context_cycle({ type:"phase-end", topic:"shd-001", phase:"tech-discovery", outcome:"7 technologies, claimed", next_phase:"feasibility", agent_id:"research-leader" })
+context_cycle({ type:"phase-end", topic:"shd-001", phase:"feasibility",    outcome:"2 proven, 1 partial",   next_phase:"synthesis", agent_id:"research-leader" })
 
 # review at run end — auto_close shuts the final phase so it isn't mis-counted as never-closed
-context_cycle_review({ feature_cycle:"shd-001", auto_close:true, format:"json" })
+context_cycle_review({ feature_cycle:"shd-001", auto_close:true, format:"json", agent_id:"research-leader" })
 ```
 
 Parameters that matter:
@@ -641,7 +641,7 @@ L1 "Three harnesses 'claim' local support; only one streamed tool-calls correctl
 move them `missing → claimed` from literature. It may **not** mark any `proven` without an
 artifact:
 ```
-context_correct T1a → status: proven,
+context_correct T1a (agent_id:"factory-curator") → status: proven,
   proven_by: "live: M2 Ultra 192GB, Claude Code + local 30B-4bit completed shd harness task in N min, transcript <repo>"
 ```
 
@@ -723,7 +723,7 @@ never executes a run itself. Canonical protocol: `.claude/workflow/theme-coordin
 # starts un-tagged loses its version irrecoverably). Only INIT-known facts belong here (wf: qualifies).
 wf=$(git describe --tags --match 'wf-*')          # e.g. wf-v0.13  (or wf-v0.13-2-gSHA if HEAD is ahead)
 context_cycle(type:"start", topic:"{run-id}", goal:"{specific goal sentence}",
-              next_phase:"scope", tags:["{wf}"], agent_id:"{run-id}-leader")
+              next_phase:"scope", tags:["{wf}"], agent_id:"research-leader")
 ```
 
 | Phase | Who acts | Unimatrix touchpoints | Gate | `context_cycle` close |
@@ -738,13 +738,13 @@ context_cycle(type:"start", topic:"{run-id}", goal:"{specific goal sentence}",
 # CLOSE — the wf: version is the cycle's start tag (do NOT re-stamp it into the outcome string).
 context_cycle(type:"stop", topic:"{run-id}",
               outcome:"Run complete. Board: A proven / B partial / C claimed.",
-              agent_id:"{run-id}-leader")
+              agent_id:"research-leader")
 ```
 
 ```
 # RETRO (process plane, §8–§9) — after the run, off the research cycle
 factory-retro → lesson-learned (research plane) + factory-plane enhancement/A-B entries (process plane)
-research-leader → context_cycle_review(feature_cycle:"{run-id}", auto_close:true, format:"json")  # yield → §10
+research-leader → context_cycle_review(feature_cycle:"{run-id}", auto_close:true, format:"json", agent_id:"research-leader")  # yield → §10
 ```
 
 ### 14.3 Gates & rework

@@ -1,9 +1,14 @@
 ---
 name: "uni-capability"
+agent_id: uni-capability
 description: "Manage a goal's capability map in Unimatrix — the behaviorally-proven units that must exist for a goal to be delivered. Decompose goals into capabilities, track delivery status, and report what's left. Status advances to proven ONLY on attached behavioral evidence."
 ---
 
 # uni-capability — Goal Capability Management
+
+**Unimatrix identity:** every call that can mutate Unimatrix MUST include `agent_id`. Use the invoking
+agent contract's defined value; when invoked standalone, use `uni-capability`. This applies to content,
+tags, edges, and lifecycle changes without exception.
 
 > The layer between **goals** (intent) and **features** (delivery). A *capability* is a concrete,
 > outcome-phrased unit that must **exist and behaviorally work** for a goal to be delivered. It is
@@ -89,7 +94,7 @@ lifecycle) vs THIS capability delivery status. Only the latter is a `delivery:` 
 - **Firewall holds** — `delivery:proven` ONLY with behavioral evidence in `proven_by`.
 - **How to set/change status — use the fast path (`context_tag`, vnc-045):**
   - **Pure status flip** (the `proven_by` evidence is already in content — the normal verify-then-flip case, and a
-    downgrade): `context_tag(id, action="replace", tag="delivery:{value}")`. In-place, atomic, single-value-**per-prefix**
+    downgrade): `context_tag(id, action="replace", tag="delivery:{value}", agent_id="{defined-agent-id}")`. In-place, atomic, single-value-**per-prefix**
     (it swaps only the `delivery:` tag, leaves all others), and it **preserves the entry's learning vector, edges, and
     content hash**. Do NOT use `context_correct` for a pure flip — it rewrites the record and resets learning.
   - **Status change that ALSO writes content** (attaching *new* `proven_by`, sharpening `done_when`): `context_correct` —
@@ -272,17 +277,18 @@ claimed = asserted (often inherited from a goal criterion) with no behavioral te
    context_store({ category: "capability", topic: "<goal-tag>",
      content: "kind: …\nname: …\nwhy: …\ndone_when: …\ndelivered_by:\nproven_by:",   // NO status line — status is a tag
      tags: ["capability", "<goal-tag>", "<kind>", "delivery:missing"],
-     edges: [{ relation: "Advances", target_id: <goal_id> }] })
+     edges: [{ relation: "Advances", target_id: <goal_id> }],
+     agent_id: "{defined-agent-id}" })
    ```
 4. Add `Prerequisite` edges for dependencies (source = the prerequisite).
 
 ### Mark a capability proven (the gate)
 - ONLY with attached behavioral evidence in `proven_by`.
-  - If the evidence is **already in content** (the usual verify-then-flip case): `context_tag(id, action="replace", tag="delivery:proven")` — the fast path. No evidence ⇒ leave `delivery:partial`/raise variance.
-  - If you are **attaching new evidence** (writing `proven_by`/`delivered_by` now): `context_correct` (content + `delivery:proven` tag in one call).
+  - If the evidence is **already in content** (the usual verify-then-flip case): `context_tag(id, action="replace", tag="delivery:proven", agent_id="{defined-agent-id}")` — the fast path. No evidence ⇒ leave `delivery:partial`/raise variance.
+  - If you are **attaching new evidence** (writing `proven_by`/`delivered_by` now): `context_correct(agent_id="{defined-agent-id}", ...)` (content + `delivery:proven` tag in one call).
 
 ### Record a gap / regression
-- Pure downgrade: `context_tag(id, action="replace", tag="delivery:partial")`. If you also **sharpen `done_when`** to encode the newly-discovered bar (a content change), use `context_correct` instead.
+- Pure downgrade: `context_tag(id, action="replace", tag="delivery:partial", agent_id="{defined-agent-id}")`. If you also **sharpen `done_when`** to encode the newly-discovered bar (a content change), use `context_correct(agent_id="{defined-agent-id}", ...)` instead.
   This is the dev-process self-learning loop — reality contradicted "proven," the definition tightens.
 
 ### Report what's left for a goal (the strategic query)
@@ -291,7 +297,8 @@ claimed = asserted (often inherited from a goal criterion) with no behavioral te
   `Prerequisite` is **what to build next**; ⚪ are **honest-unknowns to retire** (claimed, never tested).
 
 ### Link research
-- `context_edge` add `Motivates` from the research entry → the capability it shaped. PPR-neutral by design.
+- `context_edge` add `Motivates` from the research entry → the capability it shaped, passing
+  `agent_id: "{defined-agent-id}"`. PPR-neutral by design.
 
 ---
 

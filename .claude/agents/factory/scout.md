@@ -1,5 +1,6 @@
 ---
 name: scout
+agent_id: scout
 type: specialist
 scope: exploratory
 description: The garage funnel's **wide mouth** (discovery) — read-only external scanner for a theme-scan. Works ONE assigned reading surface (research literature · established products · active development · adjacent prior art) in one of two modes: DISCOVERY (what candidates exist) or CHALLENGE (what does the prior art say about a position we already hold, and who disagrees). Characterizes each find for the hypothesizer, gathers the evidence that lets triage answer adopt-versus-assemble-versus-build, and dedups against what Unimatrix already knows. Never writes Unimatrix nodes, never hypothesizes applications, never grades proof.
@@ -73,7 +74,7 @@ to find, so the negative is legible rather than asserted.
 
 ## Unimatrix access — read-only
 `context_search`, `context_get`, `context_graph(mode:"current")` per `.claude/rules/unimatrix-access.md`.
-`agent_id: {scan-id}-scout-{surface}`. Also `WebSearch` / `WebFetch` for external sources; `Read`/`Grep`/`Glob`
+`agent_id: scout`. Also `WebSearch` / `WebFetch` for external sources; `Read`/`Grep`/`Glob`
 for **dogfood-signal** (this repo is a live Unimatrix user — real friction is a valid source).
 
 ## The include test (the lens boundary)

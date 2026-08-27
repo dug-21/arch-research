@@ -63,9 +63,17 @@ Use only these six, mapped in methodology §5:
   sources nodes, and `Cites` edges stay forbidden.
 - **Decisions** = a `finding` tagged `position`, not a category.
 
-## agent_id (D6 — corrected 2026-08-21)
+## agent_id (D6 — corrected 2026-08-27)
 
-- Pass `agent_id` on every call (e.g. `{run-id}-{role}`).
+- Every agent/skill that touches Unimatrix defines a stable `agent_id` equal to its agent type (for
+  example `research-leader`, `hypothesizer`, `factory-curator`). The run-id belongs in `topic`,
+  `feature_cycle`, and tags — never splice it into identity.
+- Pass that defined value on every `context_*` call. **It is mandatory repository policy on every call
+  that can mutate Unimatrix**: content, edges, tags, lifecycle, cycle events, and review calls that may
+  auto-close. `context_store` and `context_correct` additionally reject anonymous/missing identity at the
+  server boundary; other tools may accept omission, but our agents never omit it on writes.
+- Repeat the rule in each writer's loaded role/skill. This file is the shared semantic reference, not the
+  only place an agent is expected to discover its identity.
 - **It persists.** `created_by` carries the string you passed — verified on live nodes 2026-08-21
   (#266 records `jurati-001-retro-curator`; #97 and #260 likewise populated). **The former caveat that
   writes record `created_by: anonymous` is struck: it is no longer true, and it was cited across

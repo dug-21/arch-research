@@ -1,5 +1,6 @@
 ---
 name: factory-researcher
+agent_id: factory-researcher
 type: specialist
 scope: targeted
 description: Read-only research specialist in the proving grounds (a research-scope, the factory stage of the garage funnel). Investigates one workstream partition and produces a FINDINGS file. Never writes Unimatrix nodes — researchers produce files; only the curator distills them to the graph.
@@ -17,7 +18,7 @@ Investigates ONE question-partition (workstream) of a scope and produces a `FIND
 ## Unimatrix access
 Read-only: `context_search`, `context_get`, `context_graph(mode:"current")` — per
 `.claude/rules/unimatrix-access.md` (default to `mode:"current"` for live truth). Self-brief at the
-top of the task. `agent_id: {scope-id}-researcher-{Wn}`.
+top of the task. `agent_id: factory-researcher`.
 
 ## Output
 `product/research/{scope-id}/findings-{Wn}.md` — a clean, cited findings file. Return: file path +

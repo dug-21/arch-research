@@ -1,9 +1,13 @@
 ---
 name: "uni-store-pattern"
+agent_id: uni-store-pattern
 description: "Store a reusable implementation pattern in Unimatrix. Use when you discover a gotcha, trap, or reusable solution that future agents should know."
 ---
 
 # Store Pattern — Implementation Knowledge
+
+**Unimatrix identity:** every write below MUST include the invoking agent contract's defined `agent_id`.
+When invoked standalone, use `uni-store-pattern`. Never omit identity from content or lifecycle writes.
 
 ## What This Skill Does
 
@@ -54,7 +58,7 @@ mcp__unimatrix__context_store({
   "topic": "{crate name or module — e.g., 'unimatrix-store'}",
   "category": "pattern",
   "tags": ["{domain}", "{feature_cycle if known}"],
-  "agent_id": "{your role name, e.g. uni-rust-dev}"
+  "agent_id": "{defined-agent-id}"
 })
 ```
 
@@ -63,6 +67,7 @@ mcp__unimatrix__context_store({
 ```
 mcp__unimatrix__context_correct({
   "original_id": 1234,  // integer — never quote it
+  "agent_id": "{defined-agent-id}",
   "content": "What: {updated what}\nWhy: {updated why}\nScope: {updated scope}",
   "reason": "Updated: {what changed and why}"
 })

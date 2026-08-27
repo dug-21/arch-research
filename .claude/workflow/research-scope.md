@@ -10,6 +10,8 @@ if needed); its own cycle (`topic`) and GitHub Issue. Phases: **scope → tech-d
 ## Roles
 `research-leader` · `factory-researcher` (×N, one per workstream) · `factory-curator` · `goal-owner`
 (synthesis) · *validated only:* `factory-poc`, `factory-validator`.
+Every Unimatrix mutation carries the acting role's defined identity: `research-leader` for cycle events,
+`factory-curator` for content/edge/tag/lifecycle writes.
 
 ## INIT — open all three surfaces FIRST (MANDATORY, D1)
 A run that skips these is invisible on two of three surfaces (OBS-10 — learned the hard way on
@@ -19,7 +21,7 @@ smart-edge: the proof-goal ran to a `partial` artifact with no Issue and no cycl
    title `{scope-id} — <Type>: <subject>`, body = the SCOPE. Cross-linked by **title, not # equality** (D4).
 2. **Cycle** — `context_cycle start` topic=`{scope-id}` (= `{program}-NNN`), goal=`<capability-focused goal
    sentence>`, next_phase=`scope`, **`tags:["{wf}"]`** (the derived `wf:` — `git describe --tags --match 'wf-*'`),
-   agent_id=`{scope-id}-leader`. `tags` is **set-once at start** — no append, no retro-fix, so the stamp
+   agent_id=`research-leader`. `tags` is **set-once at start** — no append, no retro-fix, so the stamp
    must be right on this first call. The cycle makes the run **attributable + its transcript retained**
    (OBS-10). `phase-end` at **every** phase boundary; `stop` at CLOSE.
 3. **Git** — commit under `product/research/{scope-id}/` (the `wf:` version rides the cycle tag above; do

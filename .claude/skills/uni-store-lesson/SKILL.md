@@ -1,9 +1,13 @@
 ---
 name: "uni-store-lesson"
+agent_id: uni-store-lesson
 description: "Store a lesson learned from a failure, gate rejection, or unexpected issue. Use after bugfixes and gate failures to prevent recurrence."
 ---
 
 # Store Lesson — Failure Knowledge
+
+**Unimatrix identity:** every write below MUST include the invoking agent contract's defined `agent_id`.
+When invoked standalone, use `uni-store-lesson`. Never omit identity from content or lifecycle writes.
 
 ## What This Skill Does
 
@@ -36,7 +40,7 @@ mcp__unimatrix__context_store({
   "topic": "{feature-id or crate}",
   "category": "lesson-learned",
   "tags": ["{domain}", "{failure-type}"],
-  "agent_id": "{your role name, e.g. uni-architect}"
+  "agent_id": "{defined-agent-id}"
 })
 ```
 
@@ -45,6 +49,7 @@ mcp__unimatrix__context_store({
 ```
 mcp__unimatrix__context_correct({
   "original_id": 1234,  // integer — never quote it
+  "agent_id": "{defined-agent-id}",
   "content": "{updated lesson with new evidence or broader scope}",
   "reason": "Updated: {what new evidence or context was added}"
 })
@@ -57,7 +62,7 @@ This deprecates the old lesson and creates a corrected version with a supersessi
 If a lesson is simply wrong or no longer applies (e.g., the underlying code was redesigned):
 
 ```
-mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why it no longer applies}"})  // id is an integer — never quote it
+mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why it no longer applies}", "agent_id": "{defined-agent-id}"})  // id is an integer — never quote it
 ```
 
 ---

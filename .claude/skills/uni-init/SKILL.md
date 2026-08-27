@@ -1,5 +1,6 @@
 ---
 name: "uni-init"
+agent_id: uni-init
 description: "Initialize Unimatrix in a repository: append knowledge block to CLAUDE.md and produce agent orientation recommendations."
 ---
 

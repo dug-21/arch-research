@@ -1,9 +1,14 @@
 ---
 name: "factory-onboard"
+agent_id: factory-onboard
 description: "Catch a fresh-context agent or theme coordinator up to the garage's CURRENT status from canonical sources, live Unimatrix, Issues, cycles, and git. Reconstruction only: it recommends or hands state to theme-coordination but never executes a research run itself."
 ---
 
 # factory-onboard — Fresh-Context Catch-Up
+
+**Unimatrix identity:** every `context_*` call passes `agent_id: factory-onboard`. This skill is
+reconstruction-only and normally read-only; any review call that can auto-close is a mutation and must
+carry the same identity.
 
 Bring an agent that has **no prior context** current on the autonomous research & development **garage**
 (built on Unimatrix; Claude is the platform; the **factory** is its firewall-gated proving-grounds stage —
@@ -51,7 +56,7 @@ govern multiple runs.
     to pull goal ← capabilities ← technologies together (depth>1 reads the tick-cache, ~30-60s lag —
     fine for orientation).
 - **Issues:** `gh issue list --repo dug-21/arch-research --label factory`.
-- **Telemetry:** `context_cycle_review(feature_cycle:"<latest run-id>")`.
+- **Telemetry:** `context_cycle_review(feature_cycle:"<latest run-id>", agent_id:"factory-onboard")`.
 - Resolution per `.claude/rules/unimatrix-access.md` — `subgraph`/`neighbors` at depth 1 are live
   (reflect committed writes immediately); pass `agent_id`. Note: `neighbors` returns **edges only**
   (even with `detail:"full"`) — use `subgraph` when you want the nodes. If a `context_*` call is

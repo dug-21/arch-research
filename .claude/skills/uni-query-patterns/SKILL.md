@@ -1,9 +1,13 @@
 ---
 name: "uni-query-patterns"
+agent_id: uni-query-patterns
 description: "Query Unimatrix for component patterns, procedures, and conventions before designing or implementing. Use BEFORE writing pseudocode or code."
 ---
 
 # Query Patterns — Find How Things Are Done Here
+
+**Unimatrix identity:** pass the invoking agent's defined `agent_id` on reads. Any correction or lifecycle
+write MUST carry the same value. Standalone default: `uni-query-patterns`.
 
 ## What This Skill Does
 
@@ -95,9 +99,9 @@ Query results may include entries that are outdated or incorrect. Fix them befor
 
 | Situation | Action |
 |-----------|--------|
-| Pattern/procedure is **wrong** | `mcp__unimatrix__context_correct({"original_id": 1234, "content": "{corrected version}", "reason": "{why}"})` — `original_id` is an integer, never quote it |
-| Pattern/procedure is **outdated** | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why}"})` — `id` is an integer, never quote it |
-| Convention no longer applies | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why}"})` — `id` is an integer, never quote it |
+| Pattern/procedure is **wrong** | `mcp__unimatrix__context_correct({"original_id": 1234, "content": "{corrected version}", "reason": "{why}", "agent_id": "{defined-agent-id}"})` — `original_id` is an integer, never quote it |
+| Pattern/procedure is **outdated** | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why}", "agent_id": "{defined-agent-id}"})` — `id` is an integer, never quote it |
+| Convention no longer applies | `mcp__unimatrix__context_deprecate({"id": 1234, "reason": "{why}", "agent_id": "{defined-agent-id}"})` — `id` is an integer, never quote it |
 
 If you correct or deprecate an entry during your session, mention it in your return to the coordinator so it can be noted in the outcome.
 
