@@ -1,6 +1,6 @@
 # wfh-009 — portable, ruvnet-ecosystem-free concepts in the MetaHarness packages wfh-008 never opened
 
-**Status:** scoped  <!-- scoped → researching → synthesis → done · maintained by research-leader -->
+**Status:** held — tech-discovery artifacts complete; coverage audit and synthesis not started
 **Goal(s):** workflow-harness — inform the smallest defensible personal-OS/Jurati substrate (primary)
 **Capability target(s):** **none.** This run advances no Unimatrix capability id and no grade, exactly as
 wfh-008 did not. It produces a concept register and, if the curator distils it, `finding` nodes and at most
@@ -383,3 +383,29 @@ origin costs nothing — the description fields already state it — and it feed
 directly, since D14 provenance (`org` / `author` / `year` / `surface`) is what makes "who keeps appearing"
 computable. **Recording the declared origin is in scope; reading the upstream paper is not** (that would be
 a literature surface, and this run does not open one).
+
+---
+
+## Hold record — 2026-08-28
+
+**Human direction:** hold this run before synthesis while the `workflow-harness` theme is revised around
+the broader agentic-organization target and its common-vocabulary hypothesis. This is a strategic pause,
+not a failed run and not a ruling on the findings.
+
+**Completed and preserved:** the approved scope, mechanical package universe, four workstream findings,
+and their handoff-round addenda. These documents remain readable on `main`.
+
+**Not performed:** independent coverage audit, curator distillation or any Unimatrix knowledge write,
+coverage gate, synthesis/`REPORT.md`, goal-owner review, synthesis gate, cycle stop, Issue close, or
+retrospective. No technology or capability grade moved.
+
+**Cycle boundary:** the live cycle remains open in `tech-discovery`. The canonical cycle interface has no
+hold/park event, and `tech-discovery` cannot honestly end until the independent coverage audit rules on
+the existing findings. No synthetic phase event was issued.
+
+**Smallest safe resume point:** first reconcile the approved scope's old personal-OS/Jurati framing with
+the owner-approved agentic-organization target and decide whether synthesis needs a bounded scope
+amendment. If the existing evidence remains in scope, commission an independent coverage audit over the
+four preserved findings; only after a PASS may the curator and synthesis roles begin. Do not rerun the
+four workstreams unless that audit returns a protocol-defined `REWORKABLE` verdict or the revised target
+requires newly approved research.
