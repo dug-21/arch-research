@@ -1,6 +1,6 @@
 # wfh-007 — theme-scan (recurring, discovery + challenge): if we build a personal operating system, what do we actually build — and what is critical
 
-**Status:** research corpus complete; scope reconciled retrospectively 2026-08-27. Repository artifacts include a completed bounded scan, owner-directed hypothesis/verification/triage work, and a post-triage architecture draft plus checkability review. This status does **not** assert GitHub Issue, cycle, or Unimatrix closure.
+**Status:** done — officially closed 2026-08-28. The bounded directional scan, evolved research corpus, and retrospective scope reconciliation are complete; formalize stored the accepted reusable output in Unimatrix at `grade:claimed`, and cycle telemetry was stopped without fabricating missing historical events. The post-triage architecture draft remains unratified and its independent checkability verdict remains `REWORKABLE FAIL`.
 **Protocol:** `.claude/workflow/theme-scan.md` — **recurring** scan (warm leg + protected cold leg), not a first map. Prior scan: wfh-005, closed 2026-08-01.
 **Theme:** `theme:workflow-harness` — **scanned under its current name deliberately.** The personal-OS reframe would change the theme's lens; the scan may *propose* that revision but must not assume it, so the run keeps the old key until the triage gate rules (themes.md → "A scan may reshape its own theme"; the failure that closed wfh-002).
 **Confidence-required (INIT and retained):** **directional** — structure only. No status reaches `partial` or `proven`. No compute-spending arm.
@@ -301,3 +301,18 @@ scope**, but the corpus records that they were performed without the separately 
 scope and without a `context_cycle`. This amendment cannot erase that process discrepancy. It makes the
 discrepancy explicit and preserves the authority ceiling: the draft is a claimed input to any follow-on,
 not an accepted result of the original theme-scan charter.
+
+## Part IV — Official closeout (2026-08-28)
+
+- **Scan verdict:** `COVERED` as a bounded directional scan; 3 ADOPT, 4 ASSEMBLE, 1 BUILD,
+  3 PROBE, and approximately 136 PARK from approximately 147 hypotheses.
+- **Unimatrix formalize:** created claimed entries `#269–#300`; reused and tagged `#190`, `#202`,
+  and `#205`; added 11 `Motivates` edges. No entry advanced to `partial` or `proven`.
+- **Contract disposition:** `specs/work-contract-v0-draft.md` remains a Git-only, unratified draft.
+  Finding `#295` records its `REWORKABLE FAIL` status and the need for separately led, narrowly
+  bounded rework; it does not ratify or store the draft as accepted design.
+- **Telemetry reconciliation:** the cycle retained its immutable `wf-v0.24` INIT stamp. The live record
+  already contained scan, hypothesize, and triage boundaries; formalize was completed and the cycle was
+  stopped on 2026-08-28. No historical event was backfilled or invented.
+- **Deferred owner rulings:** the proposed theme revision and creation/re-parenting of a Jurati goal for
+  capability `#256` had no recorded owner ruling, so neither was mutated during closeout.
