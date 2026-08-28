@@ -1,0 +1,578 @@
+<title>The Substrate Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap">
+
+<style>
+:root{
+  --paper:#EBEDE7;
+  --raised:#F5F6F2;
+  --sunk:#E1E4DC;
+  --ink:#191F1C;
+  --muted:#5B665F;
+  --faint:#828C85;
+  --rule:#C7CCC2;
+  --rule-strong:#9AA398;
+  --accent:#2C5C55;
+  --accent-soft:#D8E4E0;
+  --refuse:#93392A;
+  --refuse-soft:#F0DCD6;
+  --cond:#8A6215;
+  --cond-soft:#EFE4CC;
+  --build:#38578A;
+  --build-soft:#D9E2EE;
+  --shadow:rgba(25,31,28,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121614;
+    --raised:#1A201D;
+    --sunk:#0D110F;
+    --ink:#DEE4DE;
+    --muted:#96A29A;
+    --faint:#6F7A73;
+    --rule:#2C3531;
+    --rule-strong:#4A554F;
+    --accent:#74B7A9;
+    --accent-soft:#1E312D;
+    --refuse:#DB8770;
+    --refuse-soft:#33201B;
+    --cond:#D2A455;
+    --cond-soft:#312814;
+    --build:#84A9DA;
+    --build-soft:#1A2637;
+    --shadow:rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121614;
+  --raised:#1A201D;
+  --sunk:#0D110F;
+  --ink:#DEE4DE;
+  --muted:#96A29A;
+  --faint:#6F7A73;
+  --rule:#2C3531;
+  --rule-strong:#4A554F;
+  --accent:#74B7A9;
+  --accent-soft:#1E312D;
+  --refuse:#DB8770;
+  --refuse-soft:#33201B;
+  --cond:#D2A455;
+  --cond-soft:#312814;
+  --build:#84A9DA;
+  --build-soft:#1A2637;
+  --shadow:rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Spectral,Georgia,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px 96px}
+.measure{max-width:66ch}
+
+/* ---------- type ---------- */
+h1,h2,h3,.label,.chip,.eyebrow,th,.bignum{
+  font-family:"IBM Plex Sans Condensed","Helvetica Neue",Arial,sans-serif;
+}
+h1{
+  font-size:clamp(38px,6vw,64px);
+  line-height:1.02;
+  font-weight:700;
+  letter-spacing:-.015em;
+  margin:0 0 18px;
+  text-wrap:balance;
+}
+h2{
+  font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.005em;
+  margin:0 0 6px;text-wrap:balance;
+}
+h3{font-size:18px;font-weight:600;margin:0 0 6px;letter-spacing:.005em}
+p{margin:0 0 16px}
+strong{font-weight:600}
+em{font-style:italic}
+a{color:var(--accent);text-underline-offset:3px}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+code{font-size:.85em;background:var(--sunk);padding:.1em .34em;border-radius:2px}
+.eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);
+}
+
+/* ---------- masthead ---------- */
+.standing{
+  border-bottom:1px solid var(--rule);
+  background:var(--raised);
+  margin-bottom:56px;
+}
+.standing-in{
+  max-width:1080px;margin:0 auto;padding:11px 28px;
+  display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline;
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
+  letter-spacing:.02em;
+}
+.standing-in b{color:var(--refuse);font-weight:600}
+.masthead{padding-top:8px;border-bottom:2px solid var(--ink);padding-bottom:34px;margin-bottom:44px}
+.thesis{font-size:20px;line-height:1.5;color:var(--muted);max-width:60ch;margin:0}
+.thesis b{color:var(--ink);font-weight:600}
+
+/* ---------- section frames ---------- */
+section{margin:0 0 68px}
+.sechead{
+  display:flex;gap:16px;align-items:baseline;
+  border-top:1px solid var(--rule-strong);padding-top:12px;margin-bottom:22px;
+}
+.sechead .eyebrow{flex:0 0 auto;padding-top:4px}
+.sechead .t{flex:1 1 auto}
+.sechead p{margin:4px 0 0;color:var(--muted);font-size:15.5px}
+
+/* ---------- answer cards ---------- */
+.answers{display:grid;gap:2px;background:var(--rule);border:1px solid var(--rule);}
+@media(min-width:860px){.answers{grid-template-columns:repeat(3,1fr)}}
+.ans{background:var(--raised);padding:22px 22px 24px;display:flex;flex-direction:column;gap:10px}
+.ans .q{font-family:"IBM Plex Sans Condensed",sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--faint)}
+.ans .a{font-family:"IBM Plex Sans Condensed",sans-serif;font-size:23px;font-weight:600;
+  line-height:1.16;color:var(--accent);letter-spacing:-.005em}
+.ans p{font-size:15px;line-height:1.55;margin:0;color:var(--muted)}
+.ans p b{color:var(--ink)}
+
+/* ---------- chips ---------- */
+.chip{
+  display:inline-block;font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 7px;border-radius:2px;white-space:nowrap;
+  vertical-align:.08em;
+}
+.c-adopt{background:var(--accent-soft);color:var(--accent)}
+.c-asm{background:var(--sunk);color:var(--muted);border:1px solid var(--rule)}
+.c-build{background:var(--build-soft);color:var(--build)}
+.c-pass{background:var(--accent-soft);color:var(--accent)}
+.c-cond{background:var(--cond-soft);color:var(--cond)}
+.c-fail{background:var(--refuse-soft);color:var(--refuse)}
+
+/* ---------- diagram ---------- */
+.figure{margin:0 0 14px}
+.scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--raised);padding:20px}
+svg.map{display:block;min-width:900px;width:100%;height:auto}
+.map text{font-family:"IBM Plex Sans Condensed","Helvetica Neue",Arial,sans-serif;fill:var(--ink)}
+.map .bandbox{fill:var(--sunk);stroke:var(--rule);stroke-width:1}
+.map .bandlabel{font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;fill:var(--faint)}
+.map .node{fill:var(--raised);stroke:var(--ink);stroke-width:2}
+.map .node.judged{stroke:var(--rule-strong);stroke-width:1.5;stroke-dasharray:6 4}
+.map .plane{fill:var(--raised);stroke:var(--accent);stroke-width:2}
+.map .nm{font-size:13px;font-weight:600}
+.map .sub{font-size:10.5px;fill:var(--muted);font-weight:500}
+.map .route{font-size:9.5px;font-weight:700;letter-spacing:.09em}
+.map .flow{stroke:var(--rule-strong);stroke-width:1.6;fill:none}
+.map .flow.strong{stroke:var(--ink);stroke-width:2.2}
+.map .flowlabel{font-size:10px;fill:var(--muted);font-style:italic;font-family:Spectral,serif}
+.legend{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:13px;color:var(--muted);margin-top:14px}
+.legend span{display:flex;align-items:center;gap:8px}
+.swatch{width:22px;height:0;border-top:2px solid var(--ink)}
+.swatch.dash{border-top:1.5px dashed var(--rule-strong)}
+.swatch.pl{border-top:2px solid var(--accent)}
+figcaption{font-size:14.5px;color:var(--muted);margin-top:12px;max-width:70ch}
+
+/* ---------- callouts ---------- */
+.invariant{
+  border-left:3px solid var(--accent);background:var(--raised);
+  padding:20px 24px;margin:0 0 20px;
+}
+.invariant p{margin:0;font-size:18.5px;line-height:1.5}
+.invariant .eyebrow{margin-bottom:8px;display:block}
+.alarm{
+  border:1px solid var(--refuse);background:var(--refuse-soft);
+  padding:20px 24px;margin:0 0 20px;
+}
+.alarm .eyebrow{color:var(--refuse);display:block;margin-bottom:8px}
+.alarm p{margin:0 0 12px}
+.alarm p:last-child{margin:0}
+.note{
+  border:1px solid var(--rule);background:var(--raised);padding:18px 22px;margin:0 0 20px;
+}
+.note .eyebrow{display:block;margin-bottom:8px}
+.note p{margin:0}
+
+/* ---------- tables ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);margin:0 0 14px}
+table{border-collapse:collapse;width:100%;min-width:720px;background:var(--raised)}
+th{
+  text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--faint);padding:11px 14px;border-bottom:1px solid var(--rule-strong);
+  background:var(--sunk);white-space:nowrap;
+}
+td{
+  padding:11px 14px;border-bottom:1px solid var(--rule);font-size:14.5px;
+  line-height:1.45;vertical-align:top;
+}
+tr:last-child td{border-bottom:none}
+td.num{
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--faint);
+  font-variant-numeric:tabular-nums;width:34px;
+}
+td.k{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;font-size:14.5px}
+tr.hot td{background:var(--refuse-soft)}
+tr.hot td.num{color:var(--refuse)}
+.tnote{font-size:13.5px;color:var(--muted);margin:0 0 26px}
+
+/* ---------- build list ---------- */
+.builds{display:grid;gap:2px;background:var(--rule);border:1px solid var(--rule);margin-bottom:20px}
+@media(min-width:760px){.builds{grid-template-columns:1fr 1fr}}
+.bd{background:var(--raised);padding:18px 20px}
+.bd h3{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.bd p{margin:0;font-size:14.5px;line-height:1.5;color:var(--muted)}
+.bd p b{color:var(--ink)}
+
+/* ---------- open questions ---------- */
+.oq td.k{white-space:nowrap}
+
+footer{
+  border-top:1px solid var(--rule);padding-top:22px;margin-top:12px;
+  font-size:13.5px;color:var(--faint);
+}
+footer code{background:none;padding:0;color:var(--muted)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){
+  a{transition:color .15s ease}
+}
+</style>
+
+<div class="standing">
+  <div class="standing-in">
+    <span>STANDING <b>claimed</b></span>
+    <span>theme workflow-harness</span>
+    <span>author factory-architect</span>
+    <span>2026-08-28</span>
+    <span>does not ratify jurati-arch-002 · no grade moves · nothing demonstrated-by-us</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow" style="margin-bottom:20px">Workflow-harness · the substrate</div>
+    <h1>Where Unimatrix fits, what Jurati is, and how work is bounded</h1>
+    <p class="thesis">Definitions flow down from the owner under forge custody. The queen turns them into a bounded unit of work and calls the model once per step across a single edge. <b>The model can ask for effects but cannot cause them</b> — every effect leaves through one of four planes holding credentials the model does not. Each plane must prove it refuses <em>before</em> the run starts.</p>
+  </header>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">The three answers</div>
+      <div class="t"><h2>What was blocking the decision</h2>
+      <p>Two questions have been unanswerable, and a third has been open since the theme was seeded.</p></div>
+    </div>
+
+    <div class="answers">
+      <div class="ans">
+        <div class="q">Where does Unimatrix fit?</div>
+        <div class="a">Two places, never a third.</div>
+        <p>The <b>knowledge layer</b>, and one of four <b>enforcement planes</b> — the semantic-commitment leg. Never the workflow-definition store, never the event sink: both would make it the orchestrator issue #12 forbids, and both fight its read/write/version profile. Three profiles, three stores.</p>
+        <p><b>The sharp part:</b> Unimatrix is today an enforcement plane that does not enforce. Its custody is real; its input is authored by the governed party.</p>
+      </div>
+      <div class="ans">
+        <div class="q">Is Jurati one capability or several?</div>
+        <div class="a">One object, six capabilities — four of them ours.</div>
+        <p>Not five independent gaps but <b>one missing object model with five faces</b>. The seams are cut by <b>custody and rate-of-change, not by feature</b> — which is what makes the list terminate rather than grow.</p>
+        <p>The decomposition has literally never been done: the theme namespace holds 22 technology nodes and <b>zero capability nodes</b>, re-checked live.</p>
+      </div>
+      <div class="ans">
+        <div class="q">Graph engine, or separate substrate?</div>
+        <div class="a">Resolved — by rejecting the fork.</div>
+        <p>Git files are the source of truth; the <b>forge</b> holds custody; any store is a <b>derived, rebuildable index with no authority</b>. The custody predicate refuses both branches identically, so the fork was asked one altitude below where the decision lives.</p>
+        <p><b>Falsifier:</b> rebuild the index from the pinned ref and diff it. If it differs in any field the queen reads, the store held authority it should not have.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">The map</div>
+      <div class="t"><h2>Ten boundaries, four exits</h2>
+      <p>A box is a <em>boundary of responsibility</em> — not a service, process, repository or deployable. Two boxes may live in one file. The map is silent on deployment on purpose.</p></div>
+    </div>
+
+    <figure class="figure">
+      <div class="scroll">
+        <svg class="map" viewBox="0 0 940 812" role="img" aria-label="Layered architecture map: owner, definition, control plane, the LLM, four enforcement planes, and the record layer.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--rule-strong)"/>
+            </marker>
+            <marker id="arS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink)"/>
+            </marker>
+          </defs>
+
+          <!-- OWNER -->
+          <rect class="node" x="330" y="10" width="280" height="44" rx="22"/>
+          <text class="nm" x="470" y="30" text-anchor="middle">OWNER</text>
+          <text class="sub" x="470" y="45" text-anchor="middle">the only authority root · authors intent · approves at gates</text>
+          <path class="flow strong" d="M470 54 L470 84" marker-end="url(#arS)"/>
+
+          <!-- DEFINITION -->
+          <rect class="bandbox" x="150" y="88" width="640" height="92"/>
+          <text class="bandlabel" x="164" y="105">Definition — stable · versioned · read-heavy</text>
+          <rect class="node judged" x="170" y="114" width="290" height="50"/>
+          <text class="nm" x="182" y="134">Workflow definition</text>
+          <text class="sub" x="182" y="149">typed operating-context graph, as files in git</text>
+          <text class="route" x="446" y="134" text-anchor="end" fill="var(--muted)">ASSEMBLE</text>
+          <rect class="node" x="480" y="114" width="290" height="50"/>
+          <text class="nm" x="492" y="134">Definition custody</text>
+          <text class="sub" x="492" y="149">forge ref protection + required checks</text>
+          <text class="route" x="756" y="134" text-anchor="end" fill="var(--accent)">ADOPT</text>
+          <path class="flow strong" d="M470 180 L470 208" marker-end="url(#arS)"/>
+
+          <!-- CONTROL -->
+          <rect class="bandbox" x="30" y="212" width="600" height="118"/>
+          <text class="bandlabel" x="44" y="229">Control — the queen · deterministic · no inference on this path</text>
+          <rect class="node judged" x="48" y="238" width="172" height="62"/>
+          <text class="nm" x="60" y="258">Sequencer</text>
+          <text class="sub" x="60" y="272">order · waves · gates</text>
+          <text class="route" x="60" y="290" fill="var(--muted)">ASSEMBLE</text>
+          <rect class="node" x="234" y="238" width="176" height="62"/>
+          <text class="nm" x="246" y="258">Bound derivation</text>
+          <text class="sub" x="246" y="272">ceiling from observed demand</text>
+          <text class="route" x="246" y="290" fill="var(--build)">BUILD</text>
+          <rect class="node judged" x="424" y="238" width="190" height="62"/>
+          <text class="nm" x="436" y="258">Dispatch edge</text>
+          <text class="sub" x="436" y="272">single origin of every LLM call</text>
+          <text class="route" x="436" y="290" fill="var(--muted)">ASSEMBLE</text>
+          <path class="flow" d="M220 269 L232 269" marker-end="url(#ar)"/>
+          <path class="flow" d="M410 269 L422 269" marker-end="url(#ar)"/>
+
+          <!-- LLM -->
+          <rect class="node" x="676" y="222" width="248" height="98"/>
+          <text class="nm" x="700" y="248">The LLM</text>
+          <text class="sub" x="700" y="265">a directed component</text>
+          <text class="sub" x="700" y="284">sees the resolved context — never</text>
+          <text class="sub" x="700" y="299">the ceiling, the credentials, or the</text>
+          <text class="sub" x="700" y="314">gate rule</text>
+          <path class="flow strong" d="M614 256 L672 246" marker-end="url(#arS)"/>
+          <text class="flowlabel" x="618" y="240">context out</text>
+          <path class="flow strong" d="M672 296 L614 288" marker-end="url(#arS)"/>
+          <text class="flowlabel" x="618" y="312">a request — never an effect</text>
+
+          <!-- PROBE -->
+          <path class="flow strong" d="M330 330 L330 356" marker-end="url(#arS)"/>
+          <rect class="node" x="30" y="360" width="600" height="46"/>
+          <text class="nm" x="46" y="381">Plane liveness prober</text>
+          <text class="sub" x="46" y="396">seed one forbidden action per plane, per run · require a recorded refusal · record the effective config</text>
+          <text class="route" x="614" y="381" text-anchor="end" fill="var(--build)">BUILD</text>
+          <path class="flow strong" d="M330 406 L330 438" marker-end="url(#arS)"/>
+          <text class="flowlabel" x="342" y="426">no refusal, no run</text>
+
+          <!-- ENFORCEMENT -->
+          <rect class="bandbox" x="30" y="442" width="894" height="116"/>
+          <text class="bandlabel" x="44" y="459">Enforcement — externally custodied · the only four exits · adopted, never built</text>
+          <rect class="plane" x="48" y="470" width="204" height="70"/>
+          <text class="nm" x="60" y="492">OS sandbox</text>
+          <text class="sub" x="60" y="507">resource effects · fs · net</text>
+          <text class="route" x="60" y="527" fill="var(--cond)">ADOPT — COND.</text>
+          <rect class="plane" x="266" y="470" width="204" height="70"/>
+          <text class="nm" x="278" y="492">Forge</text>
+          <text class="sub" x="278" y="507">repository consequence</text>
+          <text class="route" x="278" y="527" fill="var(--cond)">ADOPT — COND.</text>
+          <rect class="plane" x="484" y="470" width="204" height="70"/>
+          <text class="nm" x="496" y="492">Gateway</text>
+          <text class="sub" x="496" y="507">tool authority · spend ceiling</text>
+          <text class="route" x="496" y="527" fill="var(--accent)">ADOPT</text>
+          <rect class="plane" x="702" y="470" width="204" height="70"/>
+          <text class="nm" x="714" y="492">Unimatrix write path</text>
+          <text class="sub" x="714" y="507">semantic commitment</text>
+          <text class="route" x="714" y="527" fill="var(--refuse)">ADOPT — LIVE GAP</text>
+          <path class="flow strong" d="M470 558 L470 586" marker-end="url(#arS)"/>
+
+          <!-- RECORD -->
+          <rect class="bandbox" x="30" y="590" width="894" height="110"/>
+          <text class="bandlabel" x="44" y="607">Record — high-churn · append-only · machine-written · keyed by the unit</text>
+          <rect class="node" x="48" y="618" width="278" height="64"/>
+          <text class="nm" x="60" y="639">Unit-of-work object</text>
+          <text class="sub" x="60" y="654">identity · attempt · lifecycle · join key</text>
+          <text class="route" x="60" y="672" fill="var(--build)">BUILD</text>
+          <rect class="node judged" x="340" y="618" width="272" height="64"/>
+          <text class="nm" x="352" y="639">Verdict ledger</text>
+          <text class="sub" x="352" y="654">closed clauses → one action</text>
+          <text class="route" x="352" y="672" fill="var(--muted)">ASSEMBLE</text>
+          <rect class="node" x="626" y="618" width="280" height="64"/>
+          <text class="nm" x="638" y="639">Gate and call events</text>
+          <text class="sub" x="638" y="654">refusals · owner silence · effective config</text>
+          <text class="route" x="638" y="672" fill="var(--build)">BUILD</text>
+
+          <!-- KNOWLEDGE + CANVAS -->
+          <path class="flow" d="M470 700 L470 726" marker-end="url(#ar)"/>
+          <text class="flowlabel" x="482" y="718">only at a gate does anything become a graded claim</text>
+          <rect class="node" x="48" y="730" width="420" height="62"/>
+          <text class="nm" x="60" y="752">Unimatrix — knowledge</text>
+          <text class="sub" x="60" y="767">graded, decaying, retrieval-ranked evidence about the world</text>
+          <text class="route" x="60" y="784" fill="var(--accent)">ADOPT</text>
+          <rect class="node judged" x="486" y="730" width="420" height="62"/>
+          <text class="nm" x="498" y="752">Canvas — a view</text>
+          <text class="sub" x="498" y="767">overlays the layers across a reference seam, never a merged graph</text>
+          <text class="route" x="498" y="784" fill="var(--muted)">DEFERRED</text>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i class="swatch"></i> The evidence forces this boundary</span>
+        <span><i class="swatch dash"></i> One architect's judgement — delete it freely</span>
+        <span><i class="swatch pl"></i> Externally custodied plane</span>
+      </div>
+      <figcaption>Provenance: 10 boxes derived from recorded findings, 1 adapted, 4 authored. <strong>The four authored boxes are exactly the four dashed ones — if you disagree, disagree there first.</strong></figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">How work is bounded</div>
+      <div class="t"><h2>One invariant, twelve hops</h2>
+      <p>The trace below is a real unit of work from this month, not a toy: read seven findings files, write one synthesis report, write four knowledge nodes, commit path-scoped.</p></div>
+    </div>
+
+    <div class="invariant">
+      <span class="eyebrow">The invariant</span>
+      <p>Work enters as a definition under external custody, crosses the dispatch edge <strong>exactly once per step</strong>, and leaves through <strong>exactly four effect planes</strong>. There is no fifth exit. Nothing the model says is ever consumed as fact about what happened — only what a plane recorded is.</p>
+    </div>
+
+    <p class="measure">The first half of that invariant is a design intention. The second half is mechanically checkable. The sole-path claim — <em>there is no fifth exit</em> — is not demonstrated for any plane in this repository today, and every authority claim on the map rests on it. That is the single most expensive unknown on this page.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>Hop</th><th>What crosses</th><th>What does not</th><th>Enforcement point</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="k">Owner states intent</td><td>a scope file and an Issue, in git</td><td>nothing executable</td><td>Forge ref protection. <strong>Nothing checks this today.</strong></td></tr>
+          <tr><td class="num">2</td><td class="k">Definition resolved</td><td>definition bytes at a content hash pinned to a protected ref</td><td>runtime state, telemetry, credentials</td><td>Forge pre-receive. <strong>Reading the local worktree instead bypasses it entirely.</strong></td></tr>
+          <tr><td class="num">3</td><td class="k">Unit minted</td><td>nothing outward</td><td>—</td><td>None needed — the unit id becomes the join key every later record carries</td></tr>
+          <tr><td class="num">4</td><td class="k">Bound derived</td><td>the ceiling, into the queen only</td><td><strong>the ceiling never enters the model's context</strong></td><td>The ceiling is data the planes consume; holding it is not enforcing it</td></tr>
+          <tr><td class="num">5</td><td class="k">Liveness probe</td><td>one deliberately forbidden action per plane</td><td>—</td><td>Each plane. No refusal, no run. The only hop that detects a control that is present, believed and inert.</td></tr>
+          <tr class="hot"><td class="num">6</td><td class="k">Dispatch</td><td>instructions, file contents, tool schemas</td><td>the ceiling · credentials · the gate rule · other units' state</td><td>None. <strong>This is a trust boundary, not a control point</strong> — and saying so is the point.</td></tr>
+          <tr class="hot"><td class="num">7</td><td class="k">Model asks for an effect</td><td>a tool request, out of the model's context</td><td>the effect itself</td><td>In-process with the queen. Bounds the model, not the queen. <strong>Do not call this a gate.</strong></td></tr>
+          <tr><td class="num">8</td><td class="k">Effect lands</td><td>the syscall, the push, the API call, the spend</td><td>—</td><td>Kernel · forge · gateway · Unimatrix API. Each holds a credential the acting party does not.</td></tr>
+          <tr><td class="num">9</td><td class="k">Record appended</td><td>decision, refusal, elapsed, <strong>effective</strong> config, keyed by unit</td><td>the model's narration of what it did</td><td>Append-only. The record must never consume self-report as fact.</td></tr>
+          <tr><td class="num">10</td><td class="k">Gate</td><td>clause results → one verdict → one predeclared action</td><td>an assessor-invented transition</td><td><strong>Fails today</strong> — the reducer, where it exists, runs inside the proposing process.</td></tr>
+          <tr><td class="num">11</td><td class="k">Commitment</td><td>a store, a correction, or a grade tag</td><td>—</td><td><strong>The firewall's own rule is checked by no code.</strong> The evidence reference is supplied by the writing agent.</td></tr>
+          <tr><td class="num">12</td><td class="k">Return</td><td>a report, four graded nodes, one commit</td><td>the definition is unchanged</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tnote">Hops 6 and 7 carry the whole design: the model receives context and never the thing that governs it; the model asks, the queen carries, the plane decides.</p>
+
+    <div class="alarm">
+      <span class="eyebrow">Where the live failure is — hops 10 and 11, in our own garage, right now</span>
+      <p>The curator is the single writer. The rule that stops it claiming proof without an artifact is prose in a role file. The evidence field is authored by the same agent the rule governs, and the actor identity is a self-asserted string.</p>
+      <p><strong>That is the custody predicate firing inside our own toolchain, on the control the whole methodology is named after.</strong> The MetaHarness run found seven instances of this shape in someone else's repository. This is the eighth, and it is ours.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">The control register</div>
+      <div class="t"><h2>Where “smallest defensible” gets its stopping rule</h2>
+      <p>Every control names who supplies its input, who holds its custody, and who enumerates its call sites. A control naming the governed party in any of the three is refused at admission.</p></div>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>Control</th><th>Input supplied by</th><th>Custody</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="k">Definition integrity</td><td>git hashes + protection state</td><td>Forge server</td><td><span class="chip c-cond">Conditional</span> fails at read time unless resolved by hash against the protected ref</td></tr>
+          <tr><td class="num">2</td><td class="k">Resource ceiling</td><td>sandbox configuration</td><td>OS kernel</td><td><span class="chip c-cond">Conditional</span> custody ideal; input contested if project-writable settings widen it</td></tr>
+          <tr><td class="num">3</td><td class="k">Repository consequence</td><td>ref protection state</td><td>Forge server</td><td><span class="chip c-cond">Conditional</span> same falsifier as 1</td></tr>
+          <tr><td class="num">4</td><td class="k">Per-call tool authority</td><td>the derived ceiling</td><td><strong>the queen process</strong></td><td><span class="chip c-fail">Fails</span> against the queen. It is a <strong>broker, not a gate</strong> — rename it</td></tr>
+          <tr><td class="num">5</td><td class="k">Spend ceiling</td><td>token counts observed by the gateway</td><td>Gateway</td><td><span class="chip c-pass">Passes</span> <strong>only composed with control 2</strong> — any unsandboxed egress is unmetered</td></tr>
+          <tr class="hot"><td class="num">6</td><td class="k">Semantic-commitment firewall</td><td><strong>the writing agent</strong></td><td>Unimatrix server</td><td><span class="chip c-fail">Fails on input</span> ours, and fixable</td></tr>
+          <tr class="hot"><td class="num">7</td><td class="k">Actor identity</td><td><strong>the caller</strong></td><td>nobody</td><td><span class="chip c-fail">Not a control</span> unfixable — must be relabelled wherever it appears</td></tr>
+          <tr class="hot"><td class="num">8</td><td class="k">Gate independence</td><td>clause results</td><td><strong>the proposing process</strong></td><td><span class="chip c-fail">Fails</span> ours, and fixable</td></tr>
+          <tr><td class="num">9</td><td class="k">Bound derivation</td><td>the observed exec/tool/syscall surface</td><td>the observer — which must not be the observed</td><td><span class="chip c-pass">Passes by construction</span> only if the observation is taken at a plane</td></tr>
+          <tr><td class="num">10</td><td class="k">Plane liveness</td><td>a real refusal emitted by the plane</td><td>the plane</td><td><span class="chip c-pass">Passes</span> the only control that detects an inert one</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="eyebrow">The minimum defensible set is what survives</span>
+      <p><strong>Controls 1, 2, 3, 5, 9 and 10</strong> — four externally-custodied planes, one derivation whose input the governed party cannot author, and one prober. Four of the ten are refused at admission; two of those four are ours and fixable, one is unfixable and must be relabelled, one must be renamed. The map has <strong>two</strong> in-process controls and names both as failing — it does not reproduce the seven-gates-zero-boundaries shape it was drawn against.</p>
+    </div>
+
+    <div class="alarm">
+      <span class="eyebrow">Stated plainly</span>
+      <p>Controls 1, 5, 6, 8, 9 and 10 have <strong>no implementation in this repository at all</strong>. Controls 2 and 3 exist as configuration whose effective value has never been measured. <strong>Zero of the ten have ever produced a recorded refusal we generated ourselves.</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Build markers</div>
+      <div class="t"><h2>Four boxes, and what forced each</h2>
+      <p>A <span class="chip c-build">Build</span> means no plausible adopt or assemble route was found, or a custody requirement nothing available satisfies. Four is more than anyone would like.</p></div>
+    </div>
+
+    <div class="builds">
+      <div class="bd">
+        <h3>Bound derivation <span class="chip c-build">Build</span></h3>
+        <p>Every component on the shelf assumes the principal is a program with a statically declared interface — a build target, a WIT world, a layout, a schema, frontmatter. <b>An LLM agent has none.</b> The assumption is invisible because it is universal. This is the only box on the map that is <b>differentiated</b> rather than merely necessary.</p>
+      </div>
+      <div class="bd">
+        <h3>Unit-of-work object <span class="chip c-build">Build</span></h3>
+        <p>Not a missing feature — <b>a missing noun</b>. Every available switch is a predicate over the wrong one: tool calls, pipelines, sessions, files, branches. 43 of 128 canonical abilities are faces of it. <i>Caveat: 11 of the 128 have their absence contested by an unflipped switch. Flip those first.</i></p>
+      </div>
+      <div class="bd">
+        <h3>Plane liveness prober <span class="chip c-build">Build</span></h3>
+        <p>Nothing in this theme detects a control that is present, configured, believed and <b>inert</b>. No product ships a seeded-refusal preflight. It is also the <b>cheapest box on the map</b> and the only one runnable against our existing setup at zero external cost.</p>
+      </div>
+      <div class="bd">
+        <h3>Write-time gate events <span class="chip c-build">Build</span></h3>
+        <p>Refusals and owner silence are not presently artifacts and cannot be reconstructed. Their absence <b>biases trust-graduation counts in the agent's favour</b> — the record quietly flatters the thing it is meant to check.</p>
+      </div>
+    </div>
+
+    <div class="invariant">
+      <span class="eyebrow">If you build one thing</span>
+      <p><strong>Build the prober.</strong> It is small, it attacks the failure mode this theme has now documented three times independently, it runs against the garage as it stands, and it would be this theme's <strong>first demonstrated-by-us artifact</strong>. The theme currently has zero.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">The counter-case</div>
+      <div class="t"><h2>The strongest objection, unanswered</h2></div>
+    </div>
+    <div class="measure">
+      <p>The map treats the queen as a single trust boundary while arguing that in-process controls fail the custody predicate. But <strong>from your adversary model the queen is also a governed party</strong> — it can be prompt-injected, mis-configured, or simply wrong.</p>
+      <p>Under that reading, controls 4 and 8 fail, control 9's observer collapses into the observed if the queen takes its own observations, and the four external planes become the <em>only</em> real controls on the page. If that reading holds, the honest smallest defensible substrate is <strong>four adopted planes plus a prober, and no Jurati at all</strong> until definition integrity is externally custodied.</p>
+      <p><strong>What can be answered:</strong> the queen buys sequencing determinism and the join key. Neither is an authority claim, and neither should ever be described as one.</p>
+      <p><strong>What cannot:</strong> whether a queen that is itself unattested can carry the observation without the observer collapsing into the observed. The fix — take the observation at the plane — is stated in the register, but <strong>no plane we have adopted emits a demand set in a form the derivation can consume.</strong> That is a genuine hole in the differentiating leg, found by writing this document, and it is recorded nowhere in the graph.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechead">
+      <div class="eyebrow">Open questions</div>
+      <div class="t"><h2>Travelling with the map, not behind it</h2></div>
+    </div>
+    <div class="tablewrap">
+      <table class="oq">
+        <thead><tr><th></th><th>Question</th><th>What would settle it</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td class="k">OQ-1</td><td>Is the sequencer adopt or assemble?</td><td><strong>Nobody has ever run the incumbent.</strong> Stand one workflow up and record which mechanisms actually fire.</td><td>~1 day, zero external</td></tr>
+          <tr class="hot"><td class="k">OQ-2</td><td>Is any plane actually sole-path?</td><td>The seeded-refusal admission test. <strong>Every authority claim on this map rests on this, and none of it is demonstrated.</strong></td><td>Low, local</td></tr>
+          <tr><td class="k">OQ-3</td><td>Can the executing principal alter forge protections, or widen the sandbox?</td><td>A credential-reachability audit and the sandbox self-lift test — both already specified.</td><td>Low, local</td></tr>
+          <tr><td class="k">OQ-4</td><td>One product or two?</td><td>Express one research and one SDLC evidence record in the same typed field, and measure what either loses.</td><td>Low</td></tr>
+          <tr><td class="k">OQ-5</td><td>Does the derived index ever need authority?</td><td>The rebuild-and-diff check, once the definition corpus is real.</td><td>Low</td></tr>
+          <tr><td class="k">OQ-6</td><td>Does SaaS-from-start still stand against open-source-first?</td><td><strong>Your decision, not evidence.</strong> It changes the custody story materially. Unresolved since 2026-08-01.</td><td>—</td></tr>
+          <tr><td class="k">OQ-7</td><td>Can any adopted plane emit an observed demand set the deriver can consume?</td><td>A one-plane spike against the sandbox's audit surface. <strong>New — found by writing this.</strong></td><td>Low</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>Everything here is <strong>claimed</strong>. No component is proven, no <code>done_when</code> clears, no grade moves, and the map introduces no obligation. <strong>Every enforcement point named on this page is a design intention until a plane of ours has refused something and we recorded it.</strong> The theme has produced zero such records.</p>
+    <p>Full document, with per-component provenance and the conforming/non-conforming readings: <code>product/factory/proposals/workflow-harness-substrate-map.md</code></p>
+  </footer>
+
+</div>
