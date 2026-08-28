@@ -338,7 +338,7 @@ measure the funnel's process-plane hit-rate.
 
 ```yaml
 coordinator:
-  objective: Evolve the workflow-harness theme toward the smallest defensible personal-OS/Jurati substrate, preferring adopt and assemble over build.
+  objective: Discover the smallest operating model and technical substrate that turns centralized human intent into distributed agentic execution, cross-program learning, and rapid redirection while keeping consequential authority outside the agents being governed.
   may_launch:
     confidence: [directional]
     max_concurrent_runs: 1
@@ -359,36 +359,44 @@ coordinator:
 Human STOP is absolute. Premise-changing evidence follows the shared inform-and-continue / inform-and-hold
 rule. This envelope permits cheap directional follow-ups and forbids autonomous proof or build commitment.
 
-**Lens.** Context-injection & control architectures for LLM **coding agents**: how a harness *owns and
-injects* the operating context (skills, agent-definitions, protocols/workflows, tools, gates) into the
-LLM, and *structurally enforces* gates + access boundaries the LLM cannot circumvent — the LLM a
-**directed, supporting component, not the driver**. Deliberate bias toward **build-once / any-LLM-pluggable**
-designs that reduce vendor-ecosystem lock-in (the durable asset is the harness + its graph; the LLM is a
-swappable backend). Claude-Code / coding-agent mechanisms are in-lens as *reference implementations to
-generalize from*, not endpoints.
+**Lens — revised 2026-08-28 by owner decision.** Organizational architectures for mixed human/agent
+execution: how a continuously improving organization turns centralized intent into distributed,
+governed work; forms capabilities and teams; communicates across programs; preserves institutional
+memory; and redirects quickly without granting its workers authority to rewrite their own rules. The
+first operating domains are research and software delivery, but the common model must not be specific to
+either. Context injection, workflow execution, and control architectures remain in-lens as mechanisms,
+not as the product boundary.
 
-**Value-target #1 — JURATI** (`dug-21/jurati`, "the Queen"). The deterministic control model in front of
-the substrate — the single edge where all LLM calls originate; enforcement (identity, per-agent capability
-gating, sequencing, budget) lives here, **outside the LLM context**. Grounded in the ratified
-Unimatrix↔JURATI joint recommendation (**JURATI issue #12**), **ASS-009** (control-model PoC — "ship one
-control model, the controller"), **ass-100/101** (edge-minted identity → single-root delegation → Anchor B).
-Dogfoodable like Unimatrix (repo + capability board knowable). Proven findings hand off as issues to
-`dug-21/jurati`'s SDLC (§7 product bridge) — the factory proves, JURATI ships.
+The LLM remains a **directed, supporting component, not the authority root**. Prefer deterministic
+capability wherever it can carry the required semantics, use non-deterministic reasoning where it adds
+value, and keep consequential governance and effect credentials outside the governed activity. Preserve
+provider flexibility and a credible path toward locally operated models. Centralize intent, constraints,
+consequential decisions, and institutional memory; distribute reasoning, exploration, planning,
+communication, and reversible execution.
 
-**Plane — research (feeds JURATI's delivery).** This garage *researches and proves* the ontology +
-injection/gating model; JURATI *productizes* it (queen executes, ships the UI/ecosystem). *Reflexive-for-
-later (D10):* the Queen is a candidate to eventually become **this garage's own** harness (retiring the
-current "LLM-is-the-harness" model here) — a `daystrom` / process-plane, higher-bar move, architected-now /
-deferred, NOT this theme's build.
+**Primary value-target — the agentic organization.** The durable target is the organizational operating
+model: shared vocabulary, tiered autonomy, explicit authority envelopes, distributed execution,
+cross-program communication, institutional learning, and owner-directed adaptation. The research garage
+is its first substantial implementation and software delivery its first transfer test.
 
-**Load-bearing boundary — workflow ≠ knowledge.** The executable workflow (agent-defs / skills / steps /
-gates + edges) and its runtime state (token spend, live errors) are **not** Unimatrix knowledge and must
-not be stored as graded, decaying, retrieval-ranked evidence — doing so makes Unimatrix an **orchestrator**,
-which the joint rec (issue #12) explicitly forbids. **Three layers, three owners:** *Unimatrix* = knowledge;
-*queen* = workflow definition + execution + telemetry; *canvas* = a view overlaying them across a
-`cites:`-style **reference** seam (never a merged graph). Open fork this theme must resolve: does the
-workflow-*definition* layer reuse Unimatrix's graph engine in a hard-isolated plane, or run on a separate
-substrate?
+**JURATI's place — candidate, not premise.** `dug-21/jurati` may become an implementation of some or all
+of the command-and-operations coordination layer. Its boundary must emerge from the operating model and
+evidence; this theme does not assume that Jurati is one product, the authority boundary, or the required
+answer. Prior JURATI findings remain research inputs rather than active product constraints.
+
+**Plane — research and reflexive use.** This garage researches and proves the common organizational model
+and candidate mechanisms, while also serving as the first real program against which they are tested.
+Productization follows demonstrated boundaries; it is not assigned to Jurati in advance. Replacing the
+garage's current "LLM-is-the-harness" execution model remains a higher-bar, evidence-gated move rather
+than an assumption of this revision.
+
+**Load-bearing boundary — operations ≠ knowledge.** Workflow definitions and runtime state are not, by
+default, graded knowledge about the world. Unimatrix is the flexible durable-memory substrate: its
+categories may expand when distinct record semantics earn them, including process lessons or other
+organizational artifacts. That extensibility does not make it the orchestrator. Execution, live telemetry,
+and effect authority remain outside the knowledge plane; durable records enter Unimatrix through explicit
+category and admission semantics. Views may overlay operational and knowledge records across references,
+but do not create a merged authority surface.
 
 **Reading surfaces** *(the four; label every candidate's origin `owner-injection · external-scan ·
 dogfood-signal`. Owner-injection stays heavy here — the value-target already has a ratified architecture and
