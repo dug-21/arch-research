@@ -239,3 +239,106 @@ required.** Directional synthesis begins only after coverage passes; `wfh-009` r
 ---
 
 <!-- Amendments are append-only. Never overwrite a validated verdict; explicitly reconcile any extension. -->
+
+## Extension — 2026-08-28: targeted ontology/data-model round before synthesis
+
+**Authority:** owner-approved scope extension, 2026-08-28.
+**Reconciliation:** the completed W1–W3 findings and independent coverage `PASS` remain valid and are not
+overwritten. This extension supersedes only `reports/gate-coverage.md`'s instruction to proceed directly
+to synthesis. Synthesis remains blocked until the bounded W4 round and its supplemental independent audit
+complete.
+
+### Extended question and provisional Capability rule
+
+Can the recurrent qualifiers exposed by W1–W3 be expressed as a coherent common ontology/data model—rather
+than recurring prose—without collapsing program-specific workflow, proof, admission, and category
+semantics?
+
+For this round, preserve **Capability** provisionally if and only if one intended meaning remains consistent
+at every organizational level. The candidate meaning is:
+
+> **Capability:** an observable behavior required for a goal and delivered or enabled by features and/or
+> technologies.
+
+Organizational level may change a Capability's scope or composition, but not its semantics. Actor
+competence is a **qualification/skill**, not a Capability. W4 must test this rule against both historical
+cases and may recommend `retain | revise | reject`; it must not preserve Capability merely by introducing
+level-specific meanings.
+
+### W4 — common ontology/data-model analysis
+
+Assign one `factory-architect` who authored none of W1–W3 to perform a targeted, read-only conceptual
+modeling round using the existing W1–W3 ledgers, residues, replays, and fixed R/S alphabets. No historical
+case is to be redesigned or rerun.
+
+**Output:** `product/research/wfh-010/findings-W4-data-model.md`
+
+W4 must provide:
+
+1. A minimal identity model for **Capability, Unit, Record, Signal, and Admission Contract**, including
+   which have durable identity, how identity survives versioning/supersession, and which are values,
+   events, relations, or entities rather than assumed nouns.
+2. A relationship/cardinality model connecting goals, Capabilities, features, technologies, Units,
+   Records, Signals, actors, envelopes, evidence, decisions, effects, and admission outcomes. It must make
+   custody/independence, provenance, attempt/baseline, currentness/supersession, and effect receipt explicit
+   wherever the evidence requires them.
+3. A **type-versus-scope** analysis for each of Capability, Unit, Record, Signal, and Admission Contract:
+   determine which differences require stable common types or orthogonal fields, which are scoped or
+   composed instances of one semantic, and which must remain program/category/workflow-owned extensions.
+   Moving semantics into free text does not count as resolution.
+4. A re-adjudication of all five concepts against W1–W3's evidence and falsifiers, with an explicit
+   `retain | revise | reject | insufficient evidence` ruling, definition, invariants, and unresolved
+   residue for each. **Admission Contract** must be tested as a possible first-class construct joining
+   evidence, assessor/decision authority, independence/custody, verdict, consequence, and durable state;
+   it is not accepted by assertion.
+5. A concrete cross-case representation showing how the proposed model distinguishes research claims and
+   admission from demonstrated software behavior and repository effects, while preserving interruption,
+   rework, and safe-resume lineage.
+6. A delta against W3's nine recurrent qualifiers: identify which become typed fields/relations, which
+   remain native workflow/category semantics, and which remain unresolved. Report whether semantic
+   compression becomes plausible; do not claim it proven.
+7. A residue and contradiction ledger. Any incompatible Capability meaning, identity ambiguity, hidden
+   domain exception, or Record/Signal/admission collapse remains a falsifier rather than being normalized
+   away.
+
+W4 may record **a shared skill catalog with repository-local bindings** only as a future Capability
+hypothesis: shared qualifications/skills could be cataloged durably while a repository binds them to its
+local tools, roles, constraints, and evidence. This round must not design, select, implement, configure,
+or recommend that catalog or binding mechanism, and it must not treat the hypothesis as evidence for the
+Capability ruling.
+
+### Supplemental independent audit
+
+After W4 is complete, an auditor who authored none of W1–W4 must write
+`product/research/wfh-010/reports/gate-coverage-r2.md` and rule `PASS | REWORKABLE | SCOPE-FAIL` on this
+extension only. The original coverage `PASS` remains the verdict on W1–W3.
+
+The supplemental audit must check that W4:
+
+- satisfies every required output above and accounts for every W3 recurrent qualifier and relevant
+  X01–X16 residue;
+- applies the provisional Capability rule consistently at every organizational level and keeps actor
+  competence in qualification/skill;
+- distinguishes identity from type, scope, version, state, category, and relation;
+- preserves category/workflow-specific admission, retrieval, lifecycle, proof bar, and consequence rather
+  than hiding them in generic prose;
+- keeps Signal transport distinct from Record durability and keeps admission distinct from evidence,
+  decision, effect, and Record existence;
+- preserves disclosure/observation, custody/independence, currentness/supersession, and effect-receipt
+  boundaries; and
+- leaves the shared-skill-catalog/repository-binding idea as an explicitly untested future Capability
+  hypothesis only.
+
+`REWORKABLE` permits at most **two targeted W4 rework rounds**, each limited to exact audit defects and
+followed by independent re-audit in `gate-coverage-r2.md`. Unresolved material identity, relationship,
+semantic-consistency, or residue gaps after round two are `SCOPE-FAIL`. Only supplemental `PASS` permits
+curator synthesis.
+
+### Extension envelope and exclusions
+
+This remains a **directional, zero-external-cost, deterministic read-only conceptual round**. It authorizes
+no implementation, schema or configuration change, Unimatrix category creation, workflow mutation,
+product/service architecture, repository-topology decision, graph write, synthesis, capability or
+technology grade movement, validated claim, proof-goal, build recommendation, or execution of either
+historical case. `wfh-009` remains held and excluded; this extension authorizes neither its synthesis nor
+additional work on it.
