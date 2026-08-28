@@ -567,3 +567,276 @@ source, not demonstrated vulnerabilities**, and the two passes are readings of s
 harvested concept *works* requires a separately approved scope building an artifact at that claim's
 altitude, demonstrated and independently validated by us — and, per `#319` §7, built against our own
 intended enforcement plane rather than against MetaHarness.
+
+---
+
+# Handoff round (post-first-pass)
+
+**Appended by `factory-researcher` (W4) after the leader's handoff round, before the coverage gate.**
+Same envelope: static reading only, nothing installed/built/run, no Unimatrix write, no git commit.
+Labels as in §0 (`[SC]` · `[SCE]` · `[PDE]` · `[UI]`).
+
+---
+
+## H1. My own largest declared gap, closed — `radio/src/sim.ts` read in full
+
+**I read all 918 lines.** §8 item 8 recorded that I had read only the 140-line design header and bet the
+gap mattered. **Settling the bet: it was not empty.** It yields **one amendment to an existing concept**
+(the stronger result) and **one new concept**. It also corroborates C-4 from a second direction, which I
+am recording as corroboration rather than inflating into a third row.
+
+### H1.a — **Amendment to C-6: price the meter in the unit the resource is actually consumed in**
+
+C-6 established *who* holds the meter (the driver, not the metered party). `sim.ts` supplies the axis C-6
+did not cover: **what the meter counts** — and it is a custody property, not an accounting nicety.
+
+`[SCE]` `packages/radio/src/sim.ts:620-627`. The digest context surcharge is charged **per fact digested**,
+never per message read, and the code states exactly why:
+
+> *"'batched' posting coalesces the same facts into fewer messages, so an envelope-count surcharge would
+> let a reader dodge the whole snapshot cost by batching. Content is what actually burns context, so the
+> cost is the number of facts digested."*
+
+`[SCE]` The implementation matches the comment: `digestedTotal[a] += read` accumulates **facts**, and
+`batchFlushEvery` (`:270-273`, `:822-828`) is a lever the *metered agent's own policy* controls. `[SCE]`
+`sim.ts:275` repeats the rule in the config docs.
+
+**The generalisation, stated as the amendment:** *if the metered party controls the denominator, the meter
+is a label.* Batching is a re-enveloping operation available to the governed party at zero cost; a meter
+counting envelopes is therefore an input the governed party authors, and it fails the custody predicate for
+exactly the reason `#318`'s `bypassesSandbox` does. The fix is not to guard the meter but to **choose a
+unit the governed party cannot re-shape** — content consumed, not containers delivered.
+
+**Why this matters here specifically:** the theme's **H2** wants the harness to meter token spend per step.
+Tokens are content; *requests* and *turns* are envelopes. A queen metering per-call or per-turn is meterable
+around by any agent that learns to batch. **C-6 as originally written would not have caught that.** It does
+now.
+
+- **Novelty:** folded into **C-6** (`sharpens #200`). Not a separate row — it is the same concept, correctly
+  stated. `#200` holds token bounds and pre-authorised spend per unit of work; it does not say the unit must
+  be adversarially chosen.
+- **Custody verdict:** unchanged for C-6 as amended — **passes**, and the amendment is *why* it passes
+  rather than an additional caveat.
+- **Evidence:** `[SCE]` `sim.ts:620-627,275,270-273`. `[SC]` the design rationale in the same comment.
+- **Provenance:** **none declared.** The digest lever is described as "the surface AgentRadio left open
+  (ADR-241)" (`sim.ts:154-157`) — i.e. explicitly **not** from the cited paper. This is one of the few
+  places in my set where MetaHarness claims its own ground, and it is worth recording as such.
+
+### H1.b — **New concept C-8: a new gate term must have a zero-point at the configuration already measured**
+
+| field | content |
+|---|---|
+| **Concept** | When adding a cost or penalty term to an evaluator that already has a record of results, define the term so it evaluates **identically to zero at the configuration those results were measured under** — not "small", not "tuned to be negligible", but provably zero, independent of the term's own coefficient. The old record then remains comparable by construction, and the new term can only reorder configurations nobody has yet measured. |
+| **Why it matters** | C-1 lets a reader *detect* that the judging rule changed. This is the complement: how to change the rule **without invalidating the history**. For a substrate whose improvement loop must run for a long time on a growing evidence base, the alternative is ugly — either the gate is frozen forever, or every gate change silently re-bases every prior promotion and the record set quietly stops meaning one thing. A zero-point makes "we extended the gate" and "we changed the gate" different, checkable events. |
+| **How it would be used** | Every proposed change to the queen's promotion gate ships with a **zero-point assertion**: a test showing the new term contributes exactly 0 on the configuration the existing corpus was scored under. If the assertion cannot be written, the change is a re-basing, not an extension, and the prior corpus must be re-scored or explicitly segregated (per C-1's fingerprint). |
+| **Novelty** | **`new`, and it is the weakest of my four `new` grades — I am flagging that rather than hiding it.** No node holds it: `#316`'s *immutable generation envelopes closed only after all post-processing* concerns input closure, not evaluator evolution; `#200` holds nothing about gate change; `#324` is about verification scope. A reviewer could fairly argue this is disciplined engineering practice rather than a mechanism. My reason for keeping it: it is crisply statable, mechanically checkable as an assertion, and it fills a gap C-1 opens rather than duplicating it. **If the synthesis gate wants to cut one row to protect the register's grading discipline, cut this one.** |
+| **Custody verdict** | **Not control-shaped.** It is a property of how an evaluator may evolve, not a control over a party. |
+| **Evidence** | `[SCE]` `packages/radio/src/sim.ts:552-553` — `stalenessOn` is false unless `passive && postPolicy !== 'silent' && !blackboard && stalenessCost > 0`. `[SCE]` `:264-268` and `:110-113` state the property explicitly: the surcharge "is ZERO at the defaults (foldEvery=1 + 'immediate' ⇒ 0 latency) **regardless of this value**, so it never disturbs the ablation ordering". `[SCE]` The arithmetic supports it: `staleAccum += withhold + (foldK - 1)` is 0 when `foldK === 1` and posting is immediate (`:642-650`). **Read from source; I did not run the simulator and have not confirmed the ordering claim empirically.** |
+| **Provenance** | **Declared** for the staleness *phenomenon* — `arXiv:2502.14321`, cited as "async coordination's signature FAILURE MODE" (`sim.ts:104`). **None declared** for the zero-point calibration discipline itself. |
+
+### H1.c — Corroboration for C-4, recorded as corroboration, not a new row
+
+`[SC]` `packages/radio/src/sim.ts:168-173`: the cheap-but-lossy `'mentions'` digest "is **blocked by exactly
+the failure it models**" — the evaluation suite contains a holdout seed the degenerate policy must fail, and
+an unresolved holdout is a hard stop under the frozen gate.
+
+This is the **same threat as C-4** (an optimiser selecting a change that improves the headline number while
+degrading the thing the number is a proxy for), defended by a different mechanism: C-4 adds a second
+observable; this plants a case in the suite the degenerate answer cannot pass. **I am deliberately not
+filing it as an eighth concept** — it is ordinary adversarial test design, and the register's value is
+damaged more by an inflated row than by a missing one. What it does establish is that the anti-proxy-gaming
+concern is **explicit and deliberate in this package family**, which raises my confidence that C-4 is a
+real design intent rather than my reading of an accident.
+
+### H1.d — What reading `sim.ts` did **not** produce
+
+No new custody catch. No ecosystem coupling (A3 already returned zero for `radio`, and the full read
+confirms it: `sim.ts` imports only `./bus.js` and `./watcher.js`). No change to the C2 ruling. The
+`blackboard` lever-subsumption fact was already recorded at §4.3 and is unchanged.
+
+---
+
+## H2. Inbound from W1 — `radio/scripts/flywheel-radio.mjs:184`, the vacuous-pass path
+
+**W1's report is correct at my call site, and I confirm it from my side.** `[SCE]`
+
+```
+184:  const verdict = verifyReplayBundle(result.replayBundle);
+```
+
+One argument. **No pinned fingerprint, no rule.** `[SCE]` It sits 2 lines after `runFlywheelGenerations(…)`
+returned that very bundle (`:168-182`), in the same process, in the same file, with the signer constructed
+inline at `:176` (`signer: makeSigner()`). `[SCE]` And `verdict.pass` is then written **into the published
+artifact as a field about that artifact** — `packages/radio/.radio-flywheel/tuned-policy.json:38` reads
+`"replayVerified": true`.
+
+**I do not re-derive the mechanism.** That three of six replay checks pass by construction absent a pin and
+a rule is **W1's finding (C-W1-2 / C-W1-3)** and I cite it rather than restating it; I have not opened
+`@metaharness/flywheel`. My ruling is on the **call site and the artifact**, which are mine.
+
+### Ruling — yes, it is a fourth custody catch, and it is the sharpest one in my set
+
+**Verdict: fails on input AND on custody.** The parameters that would make the verification capable of
+failing are supplied by the producer (here: not supplied at all); the verification runs inside the producing
+process; and its boolean result is published *inside the artifact* as evidence *about* that artifact.
+
+**This is self-attestation wearing verification's vocabulary** — the `#200` "NAME COLLISION — DO NOT
+LAUNDER" pattern in a new instance. `#200` warns that ruvnet's witness "embeds the verifying key inside the
+signed document — no external trust root, so anyone can re-sign a tampered manifest and it verifies." Here
+there is not even a document-embedded key: there is a call that **cannot fail** in the process that made the
+thing it checks. **A verification that cannot fail is not a weak control; it is a label**, and the custody
+predicate rules on it exactly as it rules on `bypassesSandbox`.
+
+**Novelty: no new concept.** This is an *instance* of ground already held at `#200` (the witness
+name-collision warning) and `#318` (gates that establish no independent authority boundary). Filing it as a
+concept would be the over-grading C4 names. **It is recorded as evidence, and it changes two things:**
+
+1. **It upgrades C-1's custody verdict from inference to demonstration.** C-1 originally read *"as
+   implemented: fails on custody"* on the general observation that the fingerprint is produced in the
+   evaluating process. **It now has a specific mechanism:** the same file that computes the fingerprint also
+   calls the verifier with no pin against it. **C-1's "why it matters" is not a hypothetical — the exact
+   failure C-1 exists to prevent is occurring, in the one file where the concept is instantiated.** A gate
+   fingerprint is only worth anything when something *outside* the producer checks it against a pin it holds
+   independently; a producer-side verify with no pin converts the fingerprint from a control into decoration.
+2. **It weakens one piece of my own evidence, and I am saying so.** C-1's evidence cites the committed
+   `replay-bundle.json`. Its sibling `tuned-policy.json:38` carries `"replayVerified": true` — **a
+   self-produced boolean, not an independent attestation, and it must not be read as one by the curator or
+   by anyone distilling this file.**
+
+### Change to the `radio` coverage row
+
+**Verdict unchanged: `concept found`.** C-6 and C-7 live in `bus.ts` / `watcher.ts` / `protocol.ts` and are
+untouched by this — the flywheel script is a dev harness that imports the package, not part of it, and it is
+not packed (§4.5). **The row now additionally carries: one custody catch at
+`scripts/flywheel-radio.mjs:184`, and the caution that `tuned-policy.json:38`'s `replayVerified` is
+self-produced.**
+
+### Custody tally, amended
+
+**§3's tally moves from 3 catches / 2 passes / 2 not-control-shaped to *4 catches* / 2 passes / 2
+not-control-shaped**, adding:
+
+| mechanism | verdict | reason |
+|---|---|---|
+| `verifyReplayBundle(result.replayBundle)` (`radio` flywheel script, `:184`) | **fails on input + custody** | Called with no pin and no rule, in the process that produced the bundle; the result is then published inside the artifact as a claim about it. Mechanism per W1's C-W1-2/C-W1-3, not re-derived. |
+
+**On the instrument itself (C5's own question):** the predicate has now caught **four** independent
+mechanisms in five packages, none of which is any of `#318`'s original seven. That is a result about the
+instrument and not about MetaHarness: **it keeps catching, in packages chosen by a partition rule that had
+nothing to do with authority**, which is weak evidence that the defect class is ambient in agent-harness
+code rather than local to the subsystems wfh-008 happened to inspect. `[UI]` — four instances is a
+suggestion, not a base rate, and I am not asserting a rate.
+
+---
+
+## H3. Inbound from W2 — the `oo-agents` → `radio` consumer edge, confirmed from my side
+
+**Confirmed.** `[SCE]` `packages/oo-agents/src/pod.ts:51-52` imports `runProtocol` and five types from
+`@metaharness/radio`; `packages/oo-agents/package.json:38` declares the dependency as `"@metaharness/radio":
+"*"` — an **unpinned** workspace wildcard; and `scripts/build-ordered.mjs:31` orders radio into an earlier
+build phase because of it.
+
+**It changes nothing about `radio`'s portability or its C2 ruling, and the direction is why.** A consumer
+edge points *downward into* radio; C2 asks what radio needs *upward*, which is still nothing (A3: zero
+hits; `sim.ts`'s full read confirms only `./bus.js` and `./watcher.js` as imports). **A package cannot be
+coupled to the ecosystem by something that depends on it.** The one thing the edge does add is mildly
+positive for the concepts: `runProtocol`'s contract has a real in-repo consumer, so C-6's step-accounting
+boundary is an interface something actually programs against rather than a shape I inferred from one call
+site. **I did not open `oo-agents` beyond these three lines**, and I make no claim about what it does with
+the protocol — that is W2's.
+
+---
+
+## H4. Outbound handoff to W1 — `aws-finops`, the by-exception mitigation, executed
+
+**Integrate this block without opening the package.** The coordinator's **Q1** ruling kept `aws-finops` in
+W4 `by-exception` on the express condition that W4 flag and hand the concept to W1 if the mechanism turned
+out to be promotion-gate-shaped, rather than W1 re-deriving it. **It is, and this is the handoff.** W1's
+note that "as of writing, W4 has handed W1 no concept" is discharged here.
+
+> ### HANDOFF W4 → W1 — `@metaharness/aws-finops` (Tier 2, W4 `by-exception`, promotion-gate family)
+>
+> **Mechanism (the concept, stated so W1 can build on it without reading the package).**
+> A **multi-tier proposal cascade with a deterministic acceptance oracle and a shrinking residual.**
+> Hotspots are ranked by cost, highest first. A cheap tier triages each for "worth a proposal at all"; a
+> cheap proposer attempts a patch; **escalation to the expensive proposer happens only on oracle-fail, never
+> on triage confidence.** Acceptance is a fixed-order, short-circuiting conjunction of four gates —
+> **build · compliance-non-regression · evidence · benefit** — where each gate's verdict names the clause
+> that failed, so a rejection is auditable rather than a bare boolean. The loop terminates when no remaining
+> hotspot yields an oracle-passing proposal (`residualConverged`), and the reported metric is
+> **cost-per-verified-unit-of-benefit**, not raw benefit.
+>
+> **The two structural properties worth W1's attention, stated separately from the domain:**
+> 1. **Compliance is graded on non-regression, not on absolute state.** Only *new* failures reject; fixing
+>    pre-existing ones is a bonus. This makes the gate adoptable on a corpus that does not already pass —
+>    the property that decides whether a gate can be switched on at all.
+> 2. **The expensive tier is reachable only through a cheap tier's failure.** The escalation trigger is the
+>    oracle's verdict (an independent judgement), not the proposer's own confidence. That is a
+>    gate-input-independence property in the escalation path, and it is the half of the cascade I would
+>    expect to survive into our own substrate.
+>
+> **Custody-predicate verdict (mine, W4 §3): FAILS ON INPUT.**
+> The "deterministic execution oracle" **executes nothing.** `verifyProposal()` is a pure function over
+> `buildOk`, `delta`, `policyBefore`, `policyAfter` and `utilization` — **every one of them handed in by the
+> caller** (`src/oracle.ts:32-81`; the module header states outright "no binaries or network here"). The
+> README's *"The model is never trusted; only the tools"* is a `[SC]` claim about a **pipeline the package
+> does not contain**: the tools run in `bench/real-oracle.mjs`, outside the shipped core.
+> Compounding it: the binary that answers the gate is chosen by `INFRACOST_BIN` / `CHECKOV_BIN` /
+> `TERRAFORM_BIN` (`src/binaries.ts:19-27`) — **the governed process selects which tool judges it.**
+> This is the `#318` / `#319` §4 defect exactly: a gate whose inputs are authored by the guarded party.
+>
+> **Novelty grade I would assign: `sharpens #200`.** `#200` holds the envelope algebra, deny precedence and
+> pre-authorised spend. The cascade's contribution over that is the **conjunctive, short-circuiting,
+> clause-naming acceptance rule with an escalation path gated on an independent verdict**. I would not grade
+> it `new`, and **W1 should re-grade it against `flywheel`, `bench` and the six `evals-*` adapters, which I
+> have not seen** — if W1 finds the same cascade shape there, this is one concept with several instances and
+> the register must carry it once.
+>
+> **Corroborating instance W4 keeps (do not duplicate):** the **evidence gate** (`src/oracle.ts:53-69`) —
+> *rightsizing requires utilisation data; absent evidence rejects, never estimates* — is W4's concept
+> **C-2** (absence of observation is a denial clause, `sharpens #318`), and it is C-2's **second independent
+> appearance**, in a package with no code relationship to the first. **W1 should not file it separately**;
+> cite W4 C-2.
+>
+> **Declared provenance (`[SC]`, verbatim from the package):** internal **ADR-168** ("Darwin FinOps
+> harness"), explicitly derived from the **Darwin Shield** primitives of **ADR-155 / ADR-167**, with
+> **ADR-166** cited for the human review gate. **No external/third-party origin is claimed** — unlike three
+> of my other four packages, this one presents the method as MetaHarness's own, re-pointed from security to
+> cost. **I did not read any of the four ADRs** (`docs/` is outside this run's alphabet).
+>
+> **What W1 inherits unexamined, and must not assume I checked:** the cascade orchestration beyond the
+> escalation rule, `computeResidual()`, the cost-per-verified-dollar metric, the tier-escalation economics,
+> the trap corpus (`bench/corpus/`, 10 Terraform fixtures), the two adapters, and `bench/real-oracle.mjs`
+> (214 lines — the only place the real tools are driven, and **I read it only for its exec sites under
+> alphabet A2b**). **Nothing in this package was executed by me.**
+
+**Coverage row 5 amended** to read: `concept found — mechanism handed to W1 in full (§H4); W4 retains the
+custody verdict and one corroborating instance of C-2.` The by-exception mitigation has now **operated**, not
+merely been promised — which is the thing the auditor was told to look for.
+
+---
+
+## H5. Amended tallies and what remains open
+
+**Concepts: 8 — 4 `new` (C-1, C-3, C-4, **C-8**) · 4 `sharpens` (C-2 → #318; C-5 → #200; **C-6 (amended)**
+→ #200; C-7 → #277) · 0 `already held`.** C-8 is new this round and is flagged as my weakest `new`. C-6 is
+amended in substance, not re-graded. **No concept was added for either inbound item** — both are instances
+of ground already held, and are filed as evidence.
+
+**Custody tally: 4 catches · 2 passes · 2 not-control-shaped** (was 3 / 2 / 2).
+
+**Coverage rows: verdicts unchanged for all five.** `radio` gains a custody catch and an evidence caution;
+`aws-finops` gains the executed handoff.
+
+**Still open, and not closed by this round:**
+
+1. **`docs/adrs/` remains unread** — eight ADRs are now cited across my findings (150, 155, 166, 167, 168,
+   202, 238, 239, 241) and I have read none. It is outside the alphabet by scope, not by finding. **This is
+   now my largest declared gap**, inheriting the position `sim.ts` vacated.
+2. **`@metaharness/flywheel` is W1's**, and C-1's grade is provisional on W1's ruling: if the gate
+   fingerprint turns out to cover only a config blob rather than the rule, C-1 weakens materially.
+3. **The npm registry is still unchecked** — publication status of all five packages unresolved (§4.6).
+4. **No literature read**, no ADR read, nothing executed, no peer installed. §8 stands in full, minus item 8,
+   which H1 discharges.
+5. **C-8 should be reviewed adversarially at the synthesis gate.** If the register needs trimming to protect
+   its grading discipline, C-8 is the row to cut, and I would not argue.
