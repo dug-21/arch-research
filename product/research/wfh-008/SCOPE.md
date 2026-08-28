@@ -1,6 +1,6 @@
 # wfh-008 — MetaHarness architecture and ecosystem dependency analysis
 
-**Status:** SCOPE
+**Status:** researching
 **Goal(s):** workflow-harness — inform the smallest defensible personal-OS/Jurati substrate (primary)
 **Capability target(s):** proposed `jurati-arch-002` — technology findings for its architecture proposal; no Unimatrix capability id or grade is advanced by this scope
 **Confidence-required:** directional
