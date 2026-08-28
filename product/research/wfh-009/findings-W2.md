@@ -701,3 +701,264 @@ either well-known or too small to justify a register row):
 Every material statement above carries a label. Nothing in this file is demonstrated-by-us evidence. The
 packages' own tests, benchmark bundles, CI, `bench/results/*.json` and ADR references are **source claims**.
 No status is advanced, no capability is touched, no Unimatrix node was written by this researcher.
+
+---
+
+## 11. Handoff round (post-first-pass)
+
+*Section number set by the research-leader's handoff instruction so cross-references resolve; it follows
+§6 in this file. Same envelope: static reading only, nothing built or run, no Unimatrix writes.*
+
+### 11.1 — Inbound from W3: `arc-agi-3-chatgpt` projection targets and external honouring
+
+**(a) Where the artifacts land, and who owns that location — no exception to W3's result.**
+Everything durable this package writes lands on the **local filesystem of the process running the MCP
+server**, under paths that process supplies to itself:
+- `ARC_MCP_STATE_ROOT` — **required**, no default (`cli.ts:49-50` throws without it); validated as
+  non-filesystem-root and created `0700` (`server.ts:202-212`); episodes at
+  `resolve(stateRoot, principalDirectory, episodeId)` (`store.ts:290`), written `0600` via
+  `writeFile(..., {flag:'wx'})` + `rename` (`store.ts:314-336, 397-437, 663-682`).
+- `ARC_MCP_AUDIT_LOG`, defaulting to `.harness/arc-mcp-audit.jsonl` (`audit.ts:13`), `0600` in a `0700`
+  directory.
+
+**W3's C7 holds here, and this package is not the exception.** The hygiene is better than most (explicit
+modes, atomic temp+rename, a required root rather than a silent default, a write probe at startup), but
+**hygiene is not custody**: every one of these paths is chosen by, and writable by, the process the harness
+runs in.
+
+**One topological fact W3 should have, because it inverts the framing rather than the result.** This is a
+*remote* MCP harness: the **model** (ChatGPT Developer Mode) executes at a vendor, off-process, while the
+harness and all its state execute locally. For W3's twelve local adapters the model and the artifacts share
+one process. Here they do not — but the split runs the *other way* from what would help. The artifacts stay
+inside the governed tree and the **model** moves outside it, so the vendor gains no custody of the evidence
+and the harness gains no independent witness. **Remote host ≠ external custody.**
+
+**(b) Is any control honoured by a party other than the process running the agent? — Structurally yes,
+in code no. This closes the question rather than weakening it.**
+
+The only candidate is the **OAuth-2.1 scope check**, and the package ships the *contract* for it, not an
+implementation:
+- `auth.ts:98-102` requires a non-empty `authorizationServers` list **and** a
+  `verifyAccessToken` callback — *"OAuth `verifyAccessToken` callback is required"* — and **no
+  implementation of it exists anywhere in the package.** It is injected by the operator via
+  `ARC_MCP_OAUTH_MODULE` (`cli.ts:46`).
+- `auth.ts:221-232` advertises RFC-9728-shaped protected-resource metadata (`resource`,
+  `authorization_servers`, `scopes_supported`) in the `WWW-Authenticate` challenge, so an external
+  authorization server is the declared issuer of the lane scope.
+- `auth.ts:239-275` then only checks *membership*: `resolved.scopes.includes(requiredScope)`.
+
+So the design **delegates the decision to an external AS** — and the package contains no line of code that
+performs that delegation. Worse for the claim: `validateAuthConfig` (`auth.ts:191`) defaults to
+`anonymousPrincipalId: 'local-anonymous'`, and `authenticate` (`auth.ts:277-285`) grants that principal
+`lanes: ['actor','boss']`. **In the shipped default there is no external party at all and both lanes are
+granted to an unauthenticated caller.** The remaining vendor-honoured artifacts are the MCP tool
+`annotations` (`READ_ONLY` / `MUTATING` / `idempotentHint`, `tools.ts:183-189`) — display and consent hints
+the client may render, never enforcement the server depends on.
+
+**Answer to W3, plainly: no. Not one control in this package is honoured by a party other than the process
+running the agent.** The single vendor-hosted host in the repository does not break the pattern, and
+`host-github-actions` remains W3's only partial exception. **This is a negative that closes W3's C7 across
+all fourteen projections rather than leaving it open at the one W3 could not read.**
+
+### 11.2 — Inbound from W1: `avo/src/flywheelGate.ts`. The drift is real; its consequence is not what it looks like; and the file changes my `avo` row for a different reason
+
+**The drift is real as a mechanism, and W1's diagnosis is correct.** `canon` (L29-34) and
+`meetsPromotionRule` (L64-75) are re-implementations in a second package, and the file says so — L18
+*"EXACT mirrors of the gate's"*, L60-61 *"EXACT mirror of the gate's `meetsPromotionRule`, including the
+fixed reason ORDER."* The reconciliation instrument is stated at L20-22: *"They are pinned to the gateway
+definitions by `__tests__/flywheelGate.test.ts`; if the gate changes either, that test must be updated in
+lockstep."* **A hand-maintained test in the producer's repository is the only thing holding a cross-repository
+contract closed.** Combined with W1's fact that `flywheel`'s freshness proof is `sha256(rule.toString())`,
+the one automated instrument that could detect divergence is structurally blind across the copy — a source
+fingerprint cannot span two sources. **Corroborates W1's C-W1-2; cited, not re-derived.** I did not open
+`flywheel`.
+
+**One precision that changes the severity, and it cuts in the design's favour.** Per this file's own
+account (L11-13), the gate **re-derives** the decision from the holdout evidence and cross-checks the replay
+receipt (`canon(claimed.reasons) === canon(reDecision.reasons)`). If that holds, a drifted producer mirror
+**cannot promote a candidate the gate would refuse** — it produces a mismatch and the submission fails.
+Drift here is a **liveness/honesty failure (spurious refusal, and a producer that believes a stale rule),
+not a soundness failure.** That is fail-closed, and it should be recorded as such rather than as a
+promotion hole. **Evidence label — source claim, not static code evidence:** meta-llm's
+`src/evolve/gate.ts` is in a different repository that neither W1 nor I opened, so every statement about
+what the gate verifies is avo's comment, not traced code. The only static code evidence is that `avo`
+builds five signed receipts and POSTs them.
+
+**Does it change my `avo` row? Yes — for something W1 did not flag.** This file contains **the only external
+enforcement point in my six packages**, and it is the architecture `#200` says ruvnet's `witness` lacks:
+
+- `submitToFlywheelGate` (L263-281) POSTs to `{baseUrl}/v1/flywheel/gate` — the decision is made
+  **off-process, by a different service, under a different operator**, with an `X-API-Key` bearing a
+  `flywheel:gate` scope.
+- L13-17 and L117-131: the gate authorizes a receipt **only when its signer is on the gateway's own
+  allowlist** (`FLYWHEEL_TRUSTED_PUBLIC_KEYS_JSON`), which an operator must populate with
+  `gateTrustedKey(signer)`, and the run must sign with a **stable** key, not a per-submission one —
+  *"a self-signed receipt under a throwaway key is a CLAIM with a signature."*
+- The public key **is** embedded in each receipt (L139) *"so `receiptValid` can verify without any
+  out-of-band key exchange"* — but it is explicitly demoted to a verification convenience; the **allowlist
+  in the verifier's environment is the authority.**
+
+That last pairing is exactly the distinction `#200` draws when it warns against laundering ruvnet's
+`witness` (verifying key inside the signed document, no external trust root) into an in-toto-style
+attestation. **The same author's other package gets it right, and the fix is one line of architecture:
+embed the key for convenience, hold the trust root at the verifier.**
+
+**Coverage row amended:** `avo` — **concept found**, basis now K6, K7, **K11**.
+
+---
+
+#### K11 (new) — Embed the key for verification; hold the trust root at the verifier
+
+**Concept.** Split producer from verifier across a process and an operator boundary. The producer signs its
+evidence and **embeds its public key** so the verifier needs no out-of-band key exchange; the verifier
+authorizes **only** signers on an allowlist held in its own environment, and **re-derives the decision from
+the evidence** rather than accepting the producer's claimed one. The embedded key answers *"is this receipt
+internally consistent?"*; the allowlist answers *"is this signer allowed to assert anything here?"* Those
+are different questions and only the second is authority.
+
+**Why it matters.** It is the missing half of every self-signed manifest scheme, `#200`'s `witness` finding
+included: an embedded verifying key makes tampering detectable only if the tamperer cannot also re-sign.
+An allowlist the producer cannot write closes that, and re-derivation closes the residual — a signature
+over a *false* score is still a valid signature over a false score.
+
+**How it would be used.** Jurati's evidence producers sign locally with a stable key. The enforcement plane
+keeps the trusted-key set in its own configuration, refuses unknown signers outright, and recomputes every
+gate rule from the attached evidence rather than reading the producer's verdict field.
+
+**Custody verdict — PASSES all three clauses, conditional on the operator actually registering a stable key
+and on the gate behaving as described.** Input: the evidence, re-derived by the verifier. Custody: the
+allowlist lives in the verifier's environment. Call-site enumeration: there is one endpoint. *The condition
+is load-bearing and unverified by us* (see the evidence label below); an operator who allowlists a key the
+producer can rotate at will has reintroduced the defect.
+
+**Evidence — mixed, labelled separately.** *Static code evidence:* `avo/src/flywheelGate.ts:121-142`
+(`generateGateSigner`, `gateTrustedKey`, `signGateReceipt` with the embedded SPKI-DER key), `:209-238`
+(five receipts, scope-agreeing payloads, replay receipt carrying manifest hashes + decision), `:263-281`
+(the remote POST). *Source claim:* everything about what the gate verifies — the allowlist, the
+re-derivation, the five VERIFY checks, meta-llm #118, ADR-249 F-P4, ADR-271 — is asserted in this file's
+comments about **a repository outside this run's target, which was not opened.**
+
+**Novelty — `sharpens #200`.** #200 holds both halves of the surrounding ground: external custody of policy
+state (an HMAC keyed outside the workspace) and the explicit `witness` warning that an embedded verifying
+key with no external trust root is not an attestation. K11 states the resolution as a positive
+producer/verifier contract and adds the re-derivation clause, in a new setting.
+
+**Provenance — declared.** `ADR-271` (*"AVO → meta-llm flywheel-gate contract"*), `meta-llm #118`,
+`ADR-249 F-P4`, `ADR-239`. All internal to the ruvnet estate; no external published origin declared.
+
+### 11.3 — My own largest declared gap: K4's bound is SHARPENED, and the sharpening is a downgrade
+
+I read enough of `store.ts` and `tools.ts` to settle this, and the result goes against my first-pass verdict.
+
+**What I found.** The evidence-hash check lives in `src/tools.ts` — inside the
+`arc_supervisor_directive_commit` MCP tool wrapper — and **not** in the store or the controller. The commit
+capability itself is `record.controller.commitSupervisorDirective`, `.bind`-ed onto a frozen
+`ArcSupervisorAuthority` object by `store.ts:695-705`. Enumerating every reference in the package:
+`tools.ts:499`, `tools.ts:521`, `tools.ts:534` (the two boss tools), plus **`__tests__/security.test.ts:324`,
+which calls `created.record.controller.commitSupervisorDirective({...})` directly.** `src/index.ts`
+`export *`s `store.ts`, so `ArcEpisodeStore.supervisorAuthority(record).commitSupervisorDirective(...)` and
+`record.controller.commitSupervisorDirective(...)` are both on the package's public surface.
+
+**Amended K4 custody verdict — replaces the first-pass ruling:**
+> **Passes on input and custody; FAILS on call-site enumeration.** The comparand is server-held and
+> unforgeable, so the mechanism is sound *where it runs*. But the protected operation runs **beside** the
+> check, not **through** it: the binding is enforced at the MCP tool wrapper while the commit capability is
+> exported one layer below it, and the package's own test suite exercises the unchecked path. Moving the
+> `caseHash`/`observationHash` comparison into `commitSupervisorDirective` would close it; as written, any
+> consumer holding the store or the record bypasses it by construction.
+
+**This is K7 recurring inside the one mechanism I had graded as passing**, and it is the second time in this
+workstream that a correct rule sits at a wrapper rather than at the enforcement point (K7 was `horizon`'s
+executor accepting a decision; this is the check living above the capability). I am recording it against my
+own finding rather than softening it.
+
+**What remains open, precisely.** I read `store.ts` selectively (the directive, authority and persistence
+paths) and **did not read `official-factory.ts` (1013 lines) at all**, nor `store.ts`'s episode-lifecycle,
+idempotency-ledger or checkpoint-verification sections. A further commit path inside `official-factory.ts`,
+or a controller implementation that re-checks the hashes internally, would change the verdict again. **The
+enumeration is now closed over the package's own `src/*.ts` references to `commitSupervisorDirective` and
+`supervisorAuthority` — a grep-complete fact — and open over what an injected `ArcController`
+implementation does, since the controller is supplied through `ARC_CONTROLLER_FACTORY_MODULE`
+(`cli.ts:45`) and is not in this repository.**
+
+### 11.4 — Two one-line settlements
+
+**`radio` edge — confirmed, not analysed.** `oo-agents/src/pod.ts:51` — `import { runProtocol } from
+'@metaharness/radio'`; `:52` imports the `PodAgent`, `ProtocolConfig`, `ProtocolResult` and `FoldedMention`
+types from the same package. The edge is a first-party runtime import, declared in the manifest as
+`"@metaharness/radio": "*"`. **I opened no `radio` source; W4 owns it.**
+
+**The fail-closed pattern — I agree with the narrow claim and dissent from the word "inconsistency."**
+Between us the count is now at least seven independent fail-closed defaults across five packages: mine are
+`horizon` (unknown command ⇒ *gate*, `lib.rs:553-557`; absent approver ⇒ deny, `driver.ts:151-155`; absent
+executor ⇒ observed exit-127 with an unauthorized receipt, `executor.ts:166-176`), `redblue`
+(unreadable bounty scope or missing key ⇒ refuse, `h1-submit.ts:140, 205-210`), `arc-agi-3-chatgpt`
+(unwritable audit sink ⇒ the tool body never runs, `policy.ts:110-117`; unknown tool ⇒ default-deny,
+`:101-104`), and `turn-credit` (out-of-range config ⇒ throw, `processor.ts:64-66`); W1 adds
+`ruvllmClient.ts:38-44` and `weight-eft/src/train.ts:209-217`. **So the narrow claim is right and I
+endorse it: MetaHarness has no architectural fail-open posture, and `#318`'s `sandbox.ts` must not be
+generalised to the codebase.**
+
+**But "inconsistency" is the wrong word, and the right word is more useful.** `#318` records that the
+fail-open default is **contractual, not incidental** — `verifiers.ts` *specifies* the unsandboxed vector in
+the shared registry, and ten sites execute beside the wrapper. Nobody forgot. Lay the eight instances side
+by side and the rule is visible: **every fail-closed default sits where refusing costs the product nothing**
+(an unrecognised shell token, an absent approver, an unreadable third-party scope, an unavailable log sink,
+a malformed config). **The one fail-open default sits at the only place where refusing would have halted the
+loop the package exists to run** — a discovery/verifier pipeline that must execute generated code on hosts
+where `unshare -rn` is unavailable. That is a **predictable inversion, not a random one**, and it is the
+more transferable finding: *in any codebase, the defaults invert exactly where the guard would block the
+main loop, so that is where to look first and it is the one place a code-wide audit of "do we fail closed?"
+will return a reassuring majority while missing the instance that matters.* An honest majority is precisely
+the evidence that hides it.
+
+---
+
+#### K12 (new) — Audit defaults where refusal is expensive, not where it is cheap
+
+**Concept.** A codebase's fail-closed/fail-open posture is not uniform and is not random. Refusal is chosen
+where it costs nothing and abandoned where it would stop the product's primary loop. Therefore: never
+sample defaults, and never accept an aggregate. Enumerate the **capabilities whose absence would block the
+main loop**, and audit the default of each of those — that set is small, nameable in advance, and is where
+every consequential fail-open lives.
+
+**Why it matters.** `#318`'s counter-lesson is that a correct concept with an unsafe default is worse than
+no gate. K12 is the search procedure for finding those defaults before shipping, and it explains why a
+broad audit is actively misleading here: eight instances, seven reassuring, and the seven are reassuring
+*because* they are cheap.
+
+**How it would be used.** Before any Jurati enforcement plane ships, list the operations the loop cannot
+proceed without — sandbox, signer, egress block, credential separation, audit sink — and require each to
+name its behaviour on capability-absent as a declared, tested property. Defaults outside that list are not
+evidence about the ones inside it.
+
+**Custody verdict — not control-shaped.** It is an audit procedure, and it is offered as one.
+
+**Evidence — static code evidence** for the eight defaults enumerated in §11.4 (six read by me at the cited
+lines; two cited from W1, not re-derived), and **prior demonstrated evidence** for none of it —
+`#318`'s fail-open branch is itself recorded as read-from-source and never witnessed.
+
+**Novelty — `sharpens #318`.** #318 and #319 §3 hold the counter-lesson (an unsafe default is net negative)
+and the prescription (refuse rather than pass through). Neither holds the **search rule** for locating such
+defaults, nor the observation that a codebase-wide sample will systematically exonerate the codebase. This
+is a method sharpening of ground the graph already holds, offered to the leader to accept or drop —
+**I am not adding it to the register unilaterally.**
+
+### 11.5 — Addendum tally
+
+- **Coverage rows changed:** `avo` — basis amended from *(K6, K7)* to *(K6, K7, K11)*. All six rows remain
+  `concept found`; no verdict flipped.
+- **Concepts added:** **K11** (`sharpens #200`) and **K12** (`sharpens #318`, offered as a candidate).
+  Register total if both are accepted: **12 — 2 `new`, 10 `sharpens`, 0 `already held`.**
+- **Concept amended:** **K4** — custody verdict downgraded from *passes (bounded)* to *passes on input and
+  custody, **fails on call-site enumeration***. Novelty grade (`sharpens #200`) unchanged.
+- **W3's question answered negatively and closed**: no control in `arc-agi-3-chatgpt` is honoured by any
+  party other than the process running the agent; artifacts land in the governed tree; the vendor-hosted
+  host is not an exception.
+- **W1 corroborated with one precision:** the mirror drift is real and reconciled only by a hand-maintained
+  test, but its consequence is spurious refusal rather than spurious promotion — **and the whole account of
+  the gate's behaviour is a source claim about an unopened repository.**
+- **Still open:** `official-factory.ts` (1013 lines) unread; `store.ts` read selectively; the injected
+  `ArcController` implementation is out of this repository, so K4's enumeration is grep-complete over
+  `src/*.ts` and open over the injected controller. Nothing was built, run, or witnessed in this round
+  either.
