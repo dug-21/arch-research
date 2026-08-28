@@ -18,7 +18,7 @@ from package manifests alone? Which parts are credible extraction or reuse seams
 `jurati-arch-002`, what upgrade, drift, security, and authority liabilities accompany them, and what does
 this repository-level evidence change relative to wfh-005 and wfh-007?
 
-> Which MetaHarness mechanisms are independently reusable for Jurati, and which are inseparable from its ruflo/ruvnet runtime, generation pipeline, or same-authority security model?
+> Which MetaHarness mechanisms are independently reusable for Jurati, and which are inseparable from its ruflo/ruvnet runtime, generation pipeline, or same-authority security model?  Also look for good concepts (for some reason the direct CODE may not be reusable, but the concept is solid and should be replicated)
 
 ## Why it matters
 
