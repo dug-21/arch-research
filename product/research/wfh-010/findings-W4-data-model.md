@@ -523,3 +523,182 @@ re-adjudicated under the binding owner rule; all required relations/cardinalitie
 X01–X16 residues are accounted for; both proof/admission domains and both interruption lineages remain
 distinct. Every behavioral clause names an honest current/future enforcement point. Output remains
 claimed/directional and ready only for the supplemental independent audit required by the Scope Extension.
+
+---
+
+## Rework round 1 — 2026-08-28 (D1–D3 only)
+
+**Authority:** targeted correction requested after `reports/gate-coverage-r2.md` ruled `REWORKABLE`.
+This append-only section supersedes only the inconsistent D1–D3 clauses identified below. All other W4
+claims, residues, exclusions, provenance and enforcement caveats remain unchanged.
+
+### RW1-D1 — Capability is always required by at least one Goal
+
+**Corrected ruling:** Capability remains **retain** and has exactly one meaning:
+
+> A Capability is an observable behavior required by at least one Goal and delivered by Features and/or
+> enabled by Technologies. Scope and recursive composition may vary across collective, program, mission
+> and team without changing that meaning. Actor competence remains Qualification/Skill.
+
+“Required” is broader than “claim-floor.” A Goal may require threshold Capabilities for its claim-floor
+and may also require curve/north-star Capabilities whose bars remain open. `requires` establishes that the
+behavior is a Capability for that Goal; claim-floor/north-star is an orthogonal Goal-policy classification.
+`is-advanced-by` records a contributory relation only and can never, alone, qualify an object as a
+Capability.
+
+**RW-CAP-1 (A, owner rule and canonical `uni-capability`; supersedes CAP-1):** every Capability has one or
+more incoming Goal `requires` relations and states observable behavior plus `done_when` at its declared
+scope. **Future checker:** capability-schema/goal-map validator. **Today:** the existing capability
+procedure partially checks goal association and behavioral proof; no common cross-level checker exists.
+
+**RW-CAP-4 (A, owner rule; supersedes the qualification sentence of CAP-4):** Feature `delivers`
+Capability and Technology `enables` Capability remain structural relations and never prove it. Goal
+`requires` Capability is mandatory for Capability identity. Goal `is-advanced-by` Capability is optional
+and non-qualifying; it may express additional contribution to other Goals. Claim-floor membership is a
+separate Goal policy over required Capabilities. **Future checker:** relation/cardinality validator plus
+capability firewall. **Today:** no common checker.
+
+Corrected cardinalities:
+
+| Relation | Corrected cardinality | Constraint |
+|---|---:|---|
+| Goal `requires` Capability | Goal 0..* ↔ Capability **1..*** Goals | every Capability is required by at least one Goal; a Goal may be undecomposed temporarily, but is not deliverable/claimable until required Capabilities exist |
+| Goal `is-advanced-by` Capability | Goal 0..* ↔ Capability 0..* | optional contribution only; never establishes Capability identity or claim-floor membership |
+
+**Register reconciliation:** the §8 Capability ruling is narrowed to “one observable behavior required by
+at least one Goal.” Its exact residues remain W1's absent instance and unexecuted recursive composition;
+there is no surviving semantic conflict and no kind/rename recommendation.
+
+**Owner-question reconciliation:** §12 question 1 is answered for this specification, not left open:
+`requires` is the mandatory semantic relation; `is-advanced-by` is optional and non-qualifying. Whether an
+implementation reuses storage-level `Advances` with separately validated requirement policy is an
+out-of-scope representation choice, but it may not weaken this semantic cardinality.
+
+**Conforming:** Capability C is required by Goal G as a north-star curve behavior and is additionally
+`is-advanced-by` Goal H; C is a Capability even though it is not in G's claim-floor.
+**Non-conforming:** Technology T helps Goal H and is labelled Capability C solely because H
+`is-advanced-by` C; no Goal requires C. C does not satisfy the definition.
+
+### RW1-D2 — one Unit scope-container set; Goal is orthogonal intent
+
+**Authored ruling:** the common organizational `ScopeContainer` set is exactly
+`Collective | Program | Mission | Team`. Goal is not a scope container. Goal expresses intent and relates
+to Units through `pursued-by`/`advances`, while the Unit's organizational boundary is carried separately by
+one primary ScopeContainer. The four container types may nest according to organizational policy; nesting
+does not create four Unit meanings.
+
+**RW-UNIT-SCOPE (O; supersedes inconsistent Unit scope rows/phrases in §§3.1, 4.2, 5 and 7):** every Unit
+has exactly one primary `scope_container_ref` whose target type is Collective, Program, Mission or Team.
+It may reference zero or more Goals as intent. The Unit type, intended-outcome semantics, Attempt model
+and workflow lifecycle are identical at every scope level. **Future checker:** referential-integrity and
+container-type validator. **Today:** repository protocols imply mission/program boundaries but no common
+checker exists.
+
+Corrected Unit fields replace generic `scope` with:
+
+- `scope_container_ref` — exactly one Collective, Program, Mission or Team;
+- `goal_refs` — zero or more Goal intent references (at least one when the workflow requires Goal-driven
+  attribution);
+- all previously specified Unit fields (`unit_id`, `unit_kind`, `intended_outcome`, workflow,
+  dependencies, inputs/outputs, state, baseline, Attempt and Admission Contract references) unchanged.
+
+Corrected relationships/cardinalities:
+
+| Relation | Cardinality | Constraint |
+|---|---:|---|
+| ScopeContainer `(Collective|Program|Mission|Team)` — scopes → Unit | container 0..* Units; Unit exactly 1 primary container | organizational boundary only; no level-specific Unit type or meaning |
+| Goal — pursued-by/advanced-by → Unit | Goal 0..* ↔ Unit 0..* | orthogonal intent attribution; does not replace Unit scope |
+| ScopeContainer — contains → ScopeContainer | 0..* children; child 0..1 parent within a baseline | permitted nesting is organizational policy; cycles prohibited |
+
+**Table reconciliation:** Capability continues to use the same four organizational scope levels. Record,
+Signal and Admission Contract retain their own subject/organizational scope fields. The §7 Unit row now
+reads “Collective/Program/Mission/Team boundary; decomposition” and not only program/mission/team. The §5
+`Goal/Mission/Team — scopes → Unit` row is superseded by the two corrected rows above.
+
+**Conforming:** a team-scoped code-review Unit has Team T as its sole primary ScopeContainer and advances
+Goal G; its retry is another Attempt of the same Unit.
+**Non-conforming:** the same Unit is independently typed `team-unit` and `program-unit`, or uses Goal G as
+its scope while omitting an organizational ScopeContainer.
+
+### RW1-D3 — Decision is a consequential event, not a Signal facet
+
+**Authored bounded ruling:** a **Decision** is an immutable consequential event in which authorized Actor(s)
+select a disposition for identified subject(s) within a declared authority basis. It has durable identity
+because both histories require replay of direction changes and authoritative consequences. A Decision may
+be conveyed by one or more Signals and documented by one or more Records; it is neither the Signal nor the
+Record. An Admission Outcome/verdict may inform a Decision, while a workflow may map a verdict directly to
+a transition without creating a discretionary Decision. A Decision may authorize a transition or Effect
+Request, but it is not the resulting consequence or effect.
+
+Minimum Decision fields: `decision_id`, `occurred_at`, `maker_refs` (1..* Actors), `authority_basis_ref`
+(exactly 1), `scope_container_ref` (exactly 1), `subject_refs` (1..*), `selected_disposition`,
+`rationale/evidence_refs` (0..*), `admission_outcome_refs` (0..*), `supersedes_decision_ref` (0..1), and
+`provenance`.
+
+**RW-DEC-1 (O):** Decision identity is immutable; reversal/correction creates a new Decision linked by
+`supersedes`, never mutation of the old event. **Future checker:** decision-log schema and append-only
+store outside ordinary governed-Actor mutation. **Today:** Issue comments/git history preserve fragments;
+mutable Issue bodies do not uniformly enforce it.
+
+**RW-DEC-2 (D, W1/W2 authority replays):** every Decision has one or more makers and exactly one explicit
+authority basis valid for its organizational scope. Account attribution or autonomy tier alone is not
+authority. **Future checker:** authority-policy evaluator. **Today:** human/protocol authority is
+procedural; no common evaluator exists.
+
+**RW-DEC-3 (D, X09/X11/X14):** verdict, Decision, Signal, Record, consequence, Unit transition, Effect
+Request and Effect Receipt remain distinct. A deterministic workflow consequence may follow an Admission
+Outcome without discretionary Decision; a human scope change is a Decision even before any effect occurs.
+**Future checker:** typed relationship/cardinality validator plus workflow/effect plane. **Today:** native
+workflow and forge enforce portions only.
+
+Minimum Decision relations/cardinalities:
+
+| Relation | Cardinality | Constraint |
+|---|---:|---|
+| Decision — made-by → Actor | Decision 1..* Actors; Actor 0..* Decisions | maker identity does not itself prove authority |
+| Decision — authorized-by → AuthorityBasis | Decision exactly 1; basis 0..* Decisions | basis is version/baseline pinned |
+| Decision — concerns → subject (Goal/Mission/Unit/Record/Claim/Effect Request) | Decision 1..* subjects | identified subject, never implicit prose |
+| Admission Outcome — informs → Decision | Outcome 0..* ↔ Decision 0..* | verdict is not Decision; relation optional |
+| Signal — conveys → Decision | Signal 0..1 Decision; Decision 0..* Signals | removes `action_kind=decision`; action facet may instead be `decision-notice` if needed |
+| Record — documents → Decision | Record 0..* ↔ Decision 0..* | durability/carrier does not define Decision identity |
+| Decision — authorizes → Unit Transition | Decision 0..* transitions; transition 0..1 Decision | some transitions follow contracts directly rather than Decisions |
+| Decision — authorizes → Effect Request | Decision 0..* requests; request 0..1 Decision | authorization is not performance or receipt |
+| Decision — supersedes → Decision | Decision 0..1 predecessor; predecessor 0..* successors | competing successors remain explicit rather than overwritten |
+
+**Signal reconciliation:** §4.4's `action_kind = request|decision|directive` is superseded by
+`action_kind = request|directive|decision-notice`; a Decision Signal conveys a `decision_ref`. The
+epistemic/significance/route/carrier dimensions remain unchanged. §9's “Signal/Decision authority
+reference” now means a Signal carries a Decision reference, and authority belongs to the Decision's
+`authority_basis_ref`; a Signal may separately carry sender authority for non-Decision directives.
+
+**Admission/consequence reconciliation:** the §5 row “Admission Outcome — causes → Unit
+transition/Decision/Effect request” is superseded by three distinctions:
+
+- Admission Outcome `informs` Decision (0..*), when judgment is escalated to an authority holder;
+- Admission Outcome `triggers` Unit Transition (0..*) only where its pinned Contract defines that direct
+  consequence;
+- Decision `authorizes` Unit Transition or Effect Request (0..*) where discretionary authority is used.
+
+**Cross-case discrimination:** `wfh-008` auditor `REWORKABLE` is an Admission Outcome whose contract
+directly triggers a hold/rework transition; it need not be relabelled a Decision. The owner's final
+accept/reject/redirect is a Decision conveyed in Issue Signals and documented by Records. In `vnc-045`,
+gate 3a `REWORKABLE` is likewise an Outcome with workflow consequence; the human mechanism-only scope
+reduction is a Decision that authorizes Unit cancellations/reformations; forge merge is an Effect caused
+through a separately authorized request, not the Decision itself.
+
+**Conforming:** independent audit Outcome O triggers `hold` under Contract K. Human H later makes Decision
+D under owner authority, concerning Mission M and authorizing replacement Units; Signal S conveys D and
+Record R documents it. O, D, S, R and the transitions retain separate identities.
+**Non-conforming:** a PASS report is stored, so its author is inferred to have decided and performed a
+merge. This collapses verdict, Record, authority, Decision and effect.
+
+### Rework residual gaps
+
+- D1 is internally closed at the conceptual level, but recursive Capability composition, parent
+  `done_when`, scope expiry and enforcement remain unexecuted and unproven.
+- D2 is internally closed by one four-type ScopeContainer set; actual nesting/validity policy and common
+  scope enforcement remain program-owned and untested.
+- D3 is internally closed as an identity/relationship model; authority-basis semantics, joint-decision
+  policy, competing superseding Decisions and durable enforcement remain unimplemented and untested.
+- These corrections do not change the W4 conclusion: semantic compression is plausible, not proven, and
+  Admission Contract remains claimed rather than enforced.
