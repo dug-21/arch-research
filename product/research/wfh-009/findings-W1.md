@@ -315,3 +315,403 @@ What I checked is above. What I did **not** check:
 - I did **not** run, install, build, test, spawn, fetch or probe anything, and did **not** query npm. Every publication statement in §5 is manifest-and-script derived; **none establishes registry state.**
 - **Class-level negative claims in this file hold only against a TypeScript-source instrument at one commit.** A decision point reached by dynamic import, expressed in `.mjs` or `.json`, or supplied by an out-of-repo consumer is structurally outside my alphabet — including, specifically, whether some out-of-repo driver *does* pass `PromotionEvidence.anchor` and thereby activates clause 5. I claim only that no in-repository site does.
 - No dynamic behaviour is asserted anywhere in this file. The re-execution weakness, the seal gap, and the unreachable anchor clause are **read from source, not witnessed**.
+
+---
+
+## 11. Handoff round (post-first-pass)
+
+*Addendum to `findings-W1.md`. Same envelope: static reading only, nothing run, no Unimatrix writes,
+`agent_id: "factory-researcher"` on every `context_*` call. Four of this section's items **correct** the
+first pass — §11.1 narrows a concept, §11.3 reclassifies four custody rows, §11.4 withdraws a speculation I
+raised, §11.5 retracts a conclusion. They are corrections, not additions, and are marked as such.*
+
+## 11.1 Closing my own largest declared gap — `bench`
+
+§10 recorded `bench` as my largest unread surface and flagged that C-W1-4 rested on one file. Read since:
+`src/draco/scorer.ts` (135 lines), `cost-efficiency.ts` (79), `ablation.ts` (headers, the three thesis
+blocks, the report contracts), `routing.ts` (header, cell contract, oracle/policy surface), `augment.ts`
+(header, guard, independence assertion), `judge.ts` (independence assertion). Still unread, stated more
+precisely than in the first pass: `fusion.ts` (324), `live-citation.ts` (165), `self-consistency.ts` (137),
+`optimized.ts` (114), `runner.ts` (137), `embed.ts` (60), `draco-bin.ts` (289), `bin.ts`, `host-bench.ts`,
+`host-bin.ts`, and every `draco/runs/*.json` artefact.
+
+### C-W1-4 firmed — the invariant is not confined to one file
+
+The structural-anti-gaming invariant appears in **three** places, and the metric-algebra ceiling argument is
+**in code**, not only in the README [static code evidence]:
+
+- `cost-efficiency.ts` L5–7 states it directly: *"vanilla is at the DRACO ceiling: no transform/select/union
+  arm beats a strong direct call, because grounding is a fraction of resolving URLs."*
+- `scorer.ts` L84–91 supplies the algebra the argument runs on: `grounding = (URLs resolving 'ok') / (URLs
+  cited)`, a fraction over an author-controlled denominator; `mean = (grounding + coverage + balance +
+  cleanliness) / 4` (L105).
+- `augment.ts` L110–117: a prune that returned a collapsed dossier is **not adopted** — the arm falls back
+  to the base text and records which happened in `prunedAdopted` (L34–35). The degenerate "prune everything
+  to raise the ratio" move is made non-adoptable, and the fallback is reported rather than hidden.
+- `ablation.ts` L412–417 (self-consistency arm): *"Never transforms a candidate → grounding cannot be
+  lost"* — the arm is designed so the loss channel does not exist, and it *requires* a judge transport
+  because *"without one it degenerates to vanilla and is meaningless."*
+
+### C-W1-4 narrowed — the repository ranks its own three instances, and only one is structural
+
+`grounding-gate.ts` L11–14 calls the `augment.ts` approach *"blunt"* and *"wrong"* by name. That is the
+target's own ranking and it is correct:
+
+| instance | strength | what it actually does |
+|---|---|---|
+| `grounding-gate.ts` per-claim coupling | **structural** | removing the support removes the claim. The gaming move is inexpressible. |
+| `augment.ts` length guard | **bound** | a size heuristic that rejects an over-aggressive prune. A subtle prune passes. |
+| `self-consistency.ts` select-don't-transform | **avoidance** | the loss channel is absent by construction, but only for that one arm. |
+
+The concept holds and its grade stands at **`new`** — but the honest scope is narrower than the first pass
+implied. **The invariant is applied to exactly one of the scorer's four dimensions.** `coverage` is
+substring matching over `must_contain` terms (`scorer.ts` L49–53); nothing couples keyword-stuffing to a
+cost. `cleanliness` is a `must_not` substring count (L77–80). `balance` is a marker-count heuristic
+(L97–103). And the fabrication hard-zero (L92) fires only if the model literally writes a `must_not` string
+matching `/(fabricat|no citation|unverified)/i` into its own answer — a detector of the most evadable kind.
+**One dimension of four is protected structurally; the other three are unprotected or detector-protected.**
+
+### A `#324`-shaped observation about the benchmark's own framing
+
+`ablation.ts` L212–215 states *"The claim the benchmark proves: a HARNESS beats vanilla"*, and L226–227
+defines `thesisHolds` as `vanilla <= harness <= fusion && fusion > vanilla`; the two-arm report exposes
+`fusionWins`, the augment report `augmentWins`, the self-consistency report `selfConsistencyWins`. **The
+instrument is written to confirm a named thesis**; the negative the README celebrates is that predicate
+returning `false`.
+
+This does not weaken the negative — a confirm-shaped test returning false is *stronger* evidence than a
+neutral one, not weaker. It does mean the README's *"the benchmark falsified the thesis"* slightly
+overstates the instrument's neutrality: the benchmark did not set out to test the thesis symmetrically, it
+set out to demonstrate it and failed to. [source claim for the framing; static code evidence for the
+predicate.] Worth carrying because the same shape will appear in our own rigs.
+
+### Two findings that strengthen C-W1-5 — and one showing the repository knows the fix
+
+**New site family, and the sharpest instance yet.** In `scorer.ts`, three of the four quality dimensions
+return the **maximum** when their rubric field is absent, while the fourth returns the **minimum**:
+
+- `fractionPresent` → `1` when `must_contain` is absent or empty (L50) — *"nothing required → full marks"*.
+- `cleanliness` → `1` when `must_not` is absent or empty (L78–80).
+- `balance` → `1` when the prompt does not match the balance regex (L102).
+- `grounding` → `0` when the answer cites no URLs (L86–87).
+
+Consequence, read directly off L105: **an empty answer scored against an empty rubric returns
+`mean = 0.75`.** The floor of the benchmark's quality metric is set by how much the rubric declines to
+require. This is the placeholder-direction defect in its purest form, in the scorer every DRACO arm — and
+every claim in §8's provenance table — is measured by.
+
+**The counter-example, on the same axis, in the same package.** `cost-efficiency.ts` L34–37: `costOf`
+**throws** on a model absent from the price table rather than defaulting to zero — *"Unknown model →
+throws."* And `BLENDED_USD_PER_MTOK` L18–22 declares its own precision honestly (*"the ORDER OF MAGNITUDE
+... is the robust signal, not the cents"*).
+
+That is the exact discipline `evals-servedmodel/src/ruvllmClient.ts` L89 declines to apply when it writes
+`costUsd = 0` for an unmetered local endpoint. **The repository contains both the defect and its correct
+treatment, on the same axis, two packages apart.** C-W1-5's grade stays `sharpens #316`; its evidence base
+moves from "43 placeholder sites" to "43 sites, one four-dimension scorer whose absent-requirement default
+is full marks, and one in-repository refutation of the practice." (§11.2 revisits what that last item does
+and does not license — W2 corrected my reading of it.)
+
+---
+
+## 11.2 New concept — C-W1-8
+
+### C-W1-8 — Materialise the measurement, then separate the information sets: a decision may read only what existed before it
+
+1. **Concept.** Two moves, and the pairing is the point. **First**, materialise the expensive measurement
+   once as a dense artefact — every option scored on every case, with cost — so that every candidate policy,
+   including the post-hoc optimum, becomes a *pure function over that one artefact*, evaluable offline for
+   free. One expensive run buys unlimited policy search and a computable upper bound. **Second**, and this
+   is what makes the first honest: partition the artefact's columns by **when they became knowable**. A real
+   decision policy may read only the pre-decision observables. The post-hoc outcome belongs exclusively to
+   the *bound* against which policies are scored, and is forbidden to any policy claiming to be deployable.
+   State the partition in the type, not in a convention.
+2. **Why it matters.** Every evaluation of a gate is itself a decision made with hindsight, and hindsight
+   leaks. A policy that reads the outcome scores brilliantly and cannot be deployed; worse, it scores
+   brilliantly *and looks deployable* unless the information partition is explicit. For a substrate whose
+   enforcement must sit outside the governed party's reach, this is the temporal half of the same
+   requirement: it is not enough that the governed party did not author the input — the input must have
+   **existed at decision time**. And the materialised-matrix half makes the honest version cheap, which is
+   the only reason anyone does the honest version.
+3. **How.** Score every option on every case once, recording outcome, cost, and separately the pre-decision
+   signal a live policy could actually observe. Evaluate `always_X`, the oracle, the constrained oracle and
+   every real router as pure functions over that matrix. Report each policy as a fraction of the oracle, so
+   "how much of the achievable gap did we capture" is computable rather than argued. For Jurati: any gate we
+   evaluate against recorded history must declare which recorded fields the deployed gate would have had.
+4. **Novelty grade — `sharpens #316`.** `#316`/`#319` hold *"pre-operation decision separated from
+   post-operation receipt."* That is artefact separation. The sharpening is that the separation must bind
+   the **inputs of the decision function**, not merely the artefacts it produces — and that the post-hoc
+   quantity is not merely excluded but *repurposed* as the upper bound the policy is measured against.
+   Checked against `#200`, `#277`, `#317`, `#318`, `#323`, `#324`, `#325`, `#326`, `#259` — none holds it.
+   Deliberately graded `sharpens` rather than `new`: the family is already ours.
+5. **Custody verdict — the first pass-shaped mechanism in my nine, on its own axis.** The decision input is
+   a *measured* cell, not a declaration; the partition of readable-vs-forbidden fields is fixed in the
+   design, not by the policy; and the forbidden field is structurally identified rather than merely
+   discouraged. Within its own scope all three questions of the recorded predicate point outward. It is
+   **not** a full pass — the whole matrix, the partition and the policies live in one process one party
+   owns, so custody in the `#318` sense is not established. But it is the correct *shape*, and it is the
+   only one I found.
+6. **Evidence — static code evidence.** `bench/src/draco/routing.ts` L9–13 (the matrix as the reusable
+   artefact; *"one live run, every policy evaluated offline for free"*), L24–27 (`SIGNAL_PROMPT`, defined
+   with *"NO URL re-fetch, so a real router can use it"*), L33–41 (`RoutingCell.signal`: *"exactly what a
+   real router can observe before committing. router_v2 may read this; the oracle may not (the oracle uses
+   the post-hoc `quality`)"*), L158–169 (`oracleQuality`, `oracleCostOptimal`), L194 (*"HONEST router: it
+   never reads the post-hoc `quality` the oracle uses"*), L394–406 (`analyse`: every policy reported as
+   `pctOfOracle` and `pctOfOracleQuality`). **Source claim** for the README's measured routing results
+   (85% → 92% of oracle, learning curve still climbing at n=19) — the owner's numbers, not ours.
+7. **Provenance — internal.** `ADR-040`, `ADR-038` (the Phase 1 → Phase 2 framing). No external origin
+   declared. Resolves to `docs/adrs/`, outside this alphabet; not read.
+
+---
+
+## 11.3 W3's third question, applied to my ten-row tally
+
+W3's rule — name **who supplies the input**, **who holds the artifact**, and **who sets the strength
+parameter** — separately. I had been asking only the first two. Re-run:
+
+| mechanism | strength parameter | who sets it | change |
+|---|---|---|---|
+| flywheel frozen promotion rule | **the entire predicate** (`promotionRule` is injected) | governed party | **worse than recorded.** Not a parameter — the governed party supplies the whole decision function. The limiting case of W3's third question. |
+| `gateFingerprint` / gate-unchanged | whether a pin is supplied at all | verifying caller | **newly named.** No pin → the claim is compared to the bundle's own value. |
+| Ed25519 receipt | the key itself | producer | no change |
+| `verifyReplayBundle` re-execution | which of `{pin, rule}` is passed | verifying caller | **newly named.** Passing neither silently reduces six checks to three. |
+| `withSequentialEvidence` | **`alpha`, `lambda`** (defaults 0.05 / 0.5) | governed party | **reclassified — the leader's read is right.** Was "fails on input"; is now *fails on input **and** on strength*, and the strength failure is the graver one: `alpha → 1` drives the threshold to 1, so a single discordant win crosses it. No value is forged, no flag is disabled, nothing looks wrong. A silent strength knob defeats a control more cleanly than a falsified input. |
+| `evals-*` leakage detectors | **`ngramThreshold = 0.5`**, and `publicExamples` defaulting to `[]` | governed party | **reclassified, materially.** With the default empty corpus the exact-match and n-gram branches are vacuous — only the two regexes fire. The detector's default configuration is its weakest. Upgrade from "a detector, not a control" to "a detector whose sensitivity the detected party sets, defaulting to minimum." |
+| `evals-servedmodel` drift guard | `EWC_SAFETY_FLOOR` 0.05, `AGGRESSIVE_EWC_FLOOR` 0.15, `MAX_ROUTING_DEPTH` 8 | **the guard's author** — exported module constants, not caller parameters | **improves.** The one row where the third question makes the verdict better. Still fails custody (same process, same owner), but on W3's third axis specifically it **passes**. |
+| `weight-eft` contamination guard | none separate from the input | — | no change |
+| `weight-eft` reward-hack filter | pattern arrays + tool-name sets (author-held) **behind** `dropRewardHacked` (governed-party-held) | split | **sharpened.** An author-held strength parameter is worth nothing behind a governed-party-held on/off switch. |
+| DRACO grounding gate | — | — | not control-shaped; no change |
+| **C-W1-8 routing information-set separation** *(new row)* | which column a policy may read | **the design** | new row; the only one where all three questions point outward within its scope. |
+
+**Net effect of the third question:** it reclassified four rows, materially changed two verdicts
+(`withSequentialEvidence`, the leakage detectors), and *improved* one (`driftguard`). It is a real
+instrument and my first pass was running with two thirds of it. §11.6 records my position on the axis
+question without proposing a canonical set.
+
+---
+
+## 11.4 W4 inbound — `aws-finops` integrated, and a speculation of mine withdrawn
+
+**Origin: W4 handoff, `findings-W4.md` §H4, executed under the coordinator's Q1 `by-exception` ruling.**
+I read the block myself; I did **not** open `packages/aws-finops`. The empty slot in my previous addendum is
+closed.
+
+**Correction, stated rather than quietly filed.** In that previous addendum I speculated: *"if the human
+review gate is genuinely outside the governed party, it is the first custody pass in the promotion-gate
+family across this whole run."* **That was wrong, and W4's finding is the opposite of it.** I withdraw it.
+`ADR-166`'s human review gate is a **declared** gate, and what the package actually contains inverts the
+optimistic reading:
+
+- **The "deterministic execution oracle" executes nothing.** `verifyProposal()` is a pure function over
+  `buildOk`, `delta`, `policyBefore`, `policyAfter` and `utilization` — five values **handed in by the
+  caller** (`src/oracle.ts:32-81`); the module header says outright *"no binaries or network here."*
+- The README's *"The model is never trusted; only the tools"* is a **source claim about a pipeline the
+  shipped package does not contain** — the real tools are driven in `bench/real-oracle.mjs`, outside the
+  core.
+- **The governed process chooses its own judge.** `INFRACOST_BIN` / `CHECKOV_BIN` / `TERRAFORM_BIN`
+  (`src/binaries.ts:19-27`) select which binary answers the oracle.
+
+So the marketing name was the whole of my optimism: I read "deterministic execution oracle" and "human
+review gate" as structure, and both are labels. That is the `#318` / `#319` §4 defect exactly, and it is
+also a small instance of the trap this run was briefed on — *a `description` field is a source claim even
+when it is the only thing that made the package interesting.* I made that mistake at one remove, on a
+package I had not read, which is the honest reason to record the withdrawal rather than the corrected
+answer alone.
+
+**Custody verdict (W4's, adopted unchanged): fails on input.** Added to the §9 tally as a row sourced from
+W4, not derived by me. On W3's third axis it also **fails on strength**: the `*_BIN` variables do not
+falsify a value, they select the instrument — which is the strength-parameter failure in its purest form and
+independently corroborates §11.3.
+
+**Filed under C-W1-6, not as a new row.** The mechanism — a fixed-order, short-circuiting conjunction whose
+verdict names the failing clause, with escalation to the expensive tier gated on the *oracle's* verdict
+rather than the proposer's confidence — is the same family as C-W1-6's evidence-admissibility guards, and
+the escalation property is a gate-input-independence instance. **W4's `sharpens #200` grade is correct and I
+adopt it**; C-W1-6 already carries `sharpens #200`, so this is a second instance of one concept, not a
+second concept. Per W4's explicit instruction I do **not** file its evidence gate separately — cite **W4
+C-2**.
+
+Two of W4's structural properties are worth carrying verbatim into the theme, because neither appears in my
+nine:
+
+1. **Compliance graded on non-regression, not absolute state** — only *new* failures reject. This is the
+   property that decides whether a gate can be switched on at all against a corpus that does not already
+   pass. Nothing in `flywheel` or the `evals-*` family has an analogue; their anchor is an absolute bar.
+2. **The expensive tier is reachable only through a cheap tier's failure**, and the escalation trigger is an
+   independent verdict rather than self-assessed confidence. Compare `evals-hle`'s `shouldEscalate`, which
+   escalates on *the model's own confidence* (`evaluator.ts` L82–87) — the same architectural choice made
+   the other way, in my set, in the direction that fails the predicate. **This is a genuine
+   cross-workstream contrast and it is the most useful thing the handoff produced.**
+
+**Provenance — and it cuts against my §8 pattern, so I say so.** W4 reports `aws-finops` declares
+**`ADR-168`**, derived from **`ADR-155` / `ADR-167`** ("Darwin Shield"), plus **`ADR-166`** for the human
+review gate, and **no external or third-party origin at all** — it presents the method as MetaHarness's own,
+re-pointed from security to cost. My §8 concluded that 8 of my 9 packages declare an external origin and
+that the sole exception, `flywheel`, is *"the engine, the thin part, and the only genuinely novel-looking
+machinery in the set."* `aws-finops` is a **second** no-external-origin package, and it is **not** thin
+machinery — it is an applied vertical. So the §8 pattern survives as a tendency but its neat form does not:
+the correct statement is *"most packages implement declared upstreams; the ones claiming the method as
+MetaHarness's own are the promotion-machinery core **and at least one applied vertical**."* W4's five
+packages give the same split (three of five declare external origins). **§8's inference — that
+no-declared-origin tracks thin-engine code — is withdrawn; the count stands, the explanation does not.**
+
+---
+
+## 11.5 Reconciliation with W2 on fail-closed — W2 is right, I move
+
+I framed `#318`'s fail-open sandbox as an **inconsistency** in the codebase, on the strength of three
+fail-closed defaults I found in my own packages. **W2's K12 says it is a predictable inversion: every
+fail-closed default sits where refusing costs the product nothing, and the single fail-open default sits at
+the one place where refusing would halt the loop the package exists to run.** I read K12 and I am moving.
+**I moved; W2 did not.**
+
+My three instances confirm K12 rather than contradicting it, and I should have tested them before
+generalising:
+
+| my fail-closed instance | what refusal blocks | cost of refusing |
+|---|---|---|
+| `ruvllmClient.ts` L38–44 refuses unless LIVE | a mode the package's own description calls *"a separate, explicitly labelled LIVE mode"* — the primary path is the `$0` synthetic proof | **none** |
+| `train.ts` L209–217 refuses without flag + GPU | a training run whose `spawn(command)` is *"intentionally NOT wired here"* (L219–221) | **none — it refuses to do a thing it cannot do anyway** |
+| `costOf` throws on an unknown model | pricing a model outside the benchmark's own table | **none** |
+
+And the inverse holds with equal force, which is the part that makes this corroboration rather than
+concession. **Every one of my 43 permissive defaults sits where refusal would stop the loop.** An evaluator
+that refused to score when no real verifier, judge, executor or symbolic checker was injected could not run
+the `$0` replay path — and the `$0` replay path is the entire operating mode of the six `evals-*` packages.
+The scorer's full-marks defaults for absent rubric fields are at exactly the same kind of point: refusing to
+score an under-specified rubric would empty the corpus.
+
+So my nine packages give an independent second dataset for K12, in a different package set, and the
+separation is clean: **3 refusals, all cheap; 43 permissive defaults, all at points where refusal would
+halt the loop. Not one crossover.** I have not found a single instance in my set of a costly refusal being
+chosen, or of a cheap permission being chosen.
+
+**The consequence, which is the part that matters to us and is an indictment of a method we could adopt.**
+A codebase-wide "do we fail closed?" audit over my nine would return 3 of 3 named fail-closed defaults —
+a clean sheet — while the 43 permissive defaults never enter the sample, because they do not *look* like
+capability gates. They look like scoring conveniences. **The reassuring majority is reassuring precisely
+because it is cheap, and the sampling frame that produces it is the same alphabet defect `#323` names**: an
+audit that enumerates "things shaped like a guard" cannot see a default that is shaped like an average. K12
+is the correct search rule — enumerate the operations the loop cannot proceed without, and audit *those*
+defaults — and I endorse it with my own data. **I support K12 being carried into the register; the
+attribution is W2's, and my contribution is a second independent dataset, not a co-discovery.**
+
+---
+
+## 11.6 Two questions the leader asked, answered
+
+### 11.6.1 Does the scorer's absent-requirement defect generalise to a `done_when` with unstated clauses?
+
+**Yes. It generalises, the mechanism is the same, and our form of it is worse in one specific respect.**
+Answered analytically from the mechanism, as instructed — **I did not search this repository for instances
+and I changed nothing.**
+
+The mechanism in `scorer.ts` is: the score is `hits / required`, and when `required = 0` the code *chooses*
+`1` (L50, *"nothing required → full marks"*) rather than leaving the dimension undefined or excluding it
+from the mean. An unstated requirement therefore contributes the maximum.
+
+A `done_when` is a **conjunction over stated clauses**: a validator rules clause by clause and the capability
+passes if all pass. Set-theoretically that is the identical failure. `∀c ∈ C : pass(c)` over a `C` missing a
+member is strictly easier to satisfy than over the complete set, and over `C = ∅` it is **vacuously true**.
+DRACO scores an unstated requirement as satisfied; we do not score it at all — and an unscored requirement
+and a satisfied one are indistinguishable in the verdict. Both make *omission the cheapest path to a pass*.
+
+**Where ours is worse.** DRACO's rubric is **data**: `must_contain: []` is a value you can read, grep and
+count, so the omission is visible in the artefact and the denominator is inspectable. A `done_when` clause
+set has **no denominator anywhere** — there is no record of "clauses that should exist" against which
+"clauses stated" can be compared. A validator instructed to rule clause by clause on the stated clauses is
+*structurally incapable* of noticing a missing one; nothing in the procedure looks at the shape of the set.
+
+**And it lands on this run's own instrument.** The question the custody predicate asks is *who authors the
+thing the control decides on.* If a capability's `done_when` is authored by the party that will later be
+graded against it, that is the **strength-parameter failure of §11.3**, not the input failure: no clause is
+falsified, the bar is simply narrower. It is the same shape as `evalHoldout: []` and `alpha → 1` — no lie,
+just a weaker requirement, invisible to any check that reads only what is stated. That is a garage-method
+instance of precisely the defect this run has spent nine packages cataloguing in someone else's code.
+
+**The honest bound, because the defect is real but not unbounded.** Our firewall is not only `done_when`.
+`proven` additionally requires an attached real artifact, demonstrated by us, ruled on by a validator that
+did not build it. An omitted clause does not weaken those legs. So the defect **degrades the meaning of
+`proven`, not the existence of the evidence**: a capability can be honestly `proven` against a thin
+`done_when` with a genuine artifact, and every individual statement in that record is true while the claim a
+reader takes from it is wider than what was demonstrated. That is `#324`'s family exactly — packed versus
+published — relocated into our own grading.
+
+**For the retro, as an analytic point and not a fix:** the cheap countermeasures are (a) record who authored
+each `done_when` and whether it was authored before or after the work it grades, and (b) require the
+validator to record what it did **not** check — `#324` item 3 applied to our own gate rather than only to
+research prose. I am not proposing either; I am answering the question that was asked.
+
+### 11.6.2 Position on the axis question — a proposed sharpening, not a standard
+
+**I am not redefining `#320` and not declaring a canonical set.** Recorded for the curator and goal-owner to
+rule on at synthesis.
+
+At least five axes are distinguishable, and I can evidence each from my own nine — which is the only reason
+I am willing to say "distinguishable" rather than "proposed":
+
+| axis | source | my evidence |
+|---|---|---|
+| **input** — who supplies the value decided on | `#320` | `evalHoldout` caller-supplied and legally `[]`; `verifyProposal`'s five caller-handed values (W4) |
+| **artifact custody** — who holds the protected thing and the control's own state | `#320` | the ephemeral signer minting its own key and embedding the public half |
+| **call-site enumeration** — routed *through* the control or running *beside* it | `#320`; W2's K4 demonstrates independence | the reward-hack monitor's six read / five write tool-name sets — a tool outside them skips two of three branches |
+| **strength parameter** — who sets the threshold, sensitivity, or the predicate itself | W3 | `alpha`/`lambda`; `ngramThreshold`; `publicExamples: []`; the injected `promotionRule` (the whole predicate); `*_BIN` selecting the judge (W4) |
+| **denominator** — who controls the base the measure is computed over | W4 | **three instances in one file**: `grounding = ok/total` where the governed party writes the citations (cite one live URL → 1.0); `fractionPresent` over a `must_contain` whose length the rubric author sets; `cleanliness = 1 − bad/must_not.length` |
+
+**My position, offered as a sharpening:**
+
+1. **The three-leg form is under-powered.** It missed four of my eleven rows outright, and the two it missed
+   most consequentially (`withSequentialEvidence`, the leakage detectors) failed on an axis it does not ask
+   about. That is not a defect in `#320`'s statement, which is correct as far as it goes; it is a gap in its
+   *coverage as a checklist*.
+2. **Five may itself be a decomposition artefact, and I would not ratify it as a set.** The five appear to
+   fall into two families: **value-side** — input, artifact custody, call-site enumeration: *the governed
+   party touches the thing* — and **measure-side** — strength parameter, denominator: *the governed party
+   shapes the measure rather than the value*. The measure-side failures share a signature the value-side
+   ones do not: **nothing is falsified, no flag is flipped, and no audit reading the recorded values sees
+   anything wrong.** That is why I missed them, and I suspect it is why the two-family split is more useful
+   than the five-item list. **Offered as an observation, not a proposal.**
+3. **W4's denominator axis has independent evidence in my set**, which I did not have when I wrote §9 and
+   which I take as the strongest argument that the axes are real rather than a naming exercise: three
+   distinct denominator instances in `scorer.ts` alone, none of which any of the other four axes catches.
+
+**The corollary, which I would keep whatever set is ratified, because it survives every decomposition:**
+
+> **The weakest of the custodies governs.** An author-held strength parameter behind a governed-party-held
+> on/off switch is worth nothing. `weight-eft`'s reward-hack patterns are author-held and its
+> `dropRewardHacked` switch is not, and the switch decides. A control is scored by its most-reachable leg,
+> never by its best one — which is also why a control with four good legs and one bad one reads as strong to
+> every reviewer who checks the four.
+
+---
+
+## 11.7 Amended tallies and what remains open
+
+**Coverage rows.** No verdict changed; all nine remain `concept found`. The `bench` row's basis expands from
+one file to five and now carries C-W1-4, C-W1-5 and C-W1-8.
+
+**Register.** 8 entries — **2 `new`** (C-W1-3, C-W1-4), **5 `sharpens`** (C-W1-1 `#259`, C-W1-2 `#318`,
+C-W1-5 `#316`, C-W1-6 `#200`, C-W1-8 `#316`), **1 `already held`** (C-W1-7 `#200`). C-W1-8 added; no concept
+withdrawn; C-W1-4's scope narrowed within an unchanged grade. The `aws-finops` mechanism is filed as a
+second instance under C-W1-6 rather than as a ninth row, per W4's own instruction and grade.
+
+**Custody tally.** Eleven rows (§11.3), plus `verifyProposal` sourced from W4 = twelve. Four reclassified by
+W3's third question, one (`driftguard`) improved by it, one new pass-shaped row (C-W1-8), one withdrawal
+(§11.4). §9's concluding paragraph is retracted and restated in the previous addendum's §11.5, which stands.
+
+**What remains open:**
+
+- **`bench` is still not fully read** — `fusion.ts`, `live-citation.ts`, `self-consistency.ts`,
+  `optimized.ts`, `runner.ts`, `embed.ts`, `draco-bin.ts`, `bin.ts`, `host-bench.ts`, `host-bin.ts` and
+  every `draco/runs/*.json`. **C-W1-8 rests on `routing.ts` alone — it is now in the position C-W1-4 was in
+  before this round**, and I am naming that rather than repeating the mistake silently.
+- **The ADR corpus** — 22 numbers, 128 references in my nine, plus `ADR-155`/`166`/`167`/`168` inherited
+  from W4. `docs/adrs/` is confirmed to exist and is a declared hole; none read. It now carries more weight
+  than in the first pass, since the ceiling argument, the routing design, the cost-Pareto claim and the
+  entire `aws-finops` provenance all cite it. Still the cheapest available follow-on.
+- **`aws-finops` internals** — I inherit W4's unexamined list unexamined: the cascade orchestration beyond
+  the escalation rule, `computeResidual()`, the cost-per-verified-dollar metric, the tier economics, the
+  trap corpus, the two adapters, and `bench/real-oracle.mjs`. I did not open the package.
+- **Unchanged:** nothing run, no registry query, no upstream read, no Unimatrix write, no dynamic behaviour
+  asserted anywhere. Every statement above is read from source, not witnessed.
+
