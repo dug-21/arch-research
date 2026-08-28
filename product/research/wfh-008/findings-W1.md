@@ -26,7 +26,7 @@ Repository control/config
 ├── non-workspace products: web UI; deprecated API service
 ├── nested standalone product: kimi-k3-harness (+ its own 2 Rust crates)
 ├── distribution/config projections: Claude plugin; Codex skills
-├── generated/published exemplars: examples-packages/* (40 manifests)
+├── generated/published exemplars: examples-packages/* (37 manifests)
 └── examples, experiments, benchmark submissions, docs/ADRs, CI and release scripts
 ```
 
@@ -44,6 +44,7 @@ Repository control/config
 | N29–N36 | `jujutsu`; `kernel`; `oo-agents`; `projects`; `radio`; `redblue`; `router`; `sdk` | integration/bridge; JS kernel loader; hybrid TS/Rust agents; project/research runtime; signalling/security/routing/API | SCE [C3] |
 | N37–N42 | `turn-credit`; `vertical-base`; `vertical-trading`; `weight-eft`; `workspace-lens`; `workspace-probe` | feedback; vertical composition; tuning; workspace analysis/probe (probe also has a direct `.mjs` bin) | SCE [C3] |
 | R01–R05 | `ruflo-kernel`; `ruflo-kernel-wasm`; `ruflo-kernel-napi`; `template-catalog`; `poker-darwin` | root Cargo libraries/bindings/catalogue/poker evolution; all five are declared workspace members | SCE: root and crate `Cargo.toml` [C1][C5] |
+| R03-P | `crates/kernel-napi/package.json` (`@metaharness/kernel-native`, private) | npm/N-API packaging and target-build metadata owned by the R03 binding crate; a declared artifact boundary separate from its `Cargo.toml`, outside the root npm `packages/*` workspace; cross-reference to W2 required | SCE [C5] |
 
 All N01–N42 are selected by the literal root npm workspace glob `packages/*`; `apps`, `services`, `kimi-k3-harness`, and `examples-packages` are not. All N packages contain a manifest; all except the private benchmark package declare a package license, predominantly MIT, with `horizon` and `oo-agents` Apache-2.0. **SCE:** package-level license declarations are metadata, not a completed dependency/license closure. [C1][C3]
 
@@ -56,7 +57,7 @@ All N01–N42 are selected by the literal root npm workspace glob `packages/*`; 
 | X03 | `kimi-k3-harness` | standalone publishable CLI (`bin/cli.js`) with its own package, tests, TS config, harness/plugin state, and two Rust crates (`k3rs`, `k3-kernel-bench`) not in the root Cargo workspace | SCE [C8] |
 | X04 | `.claude-plugin` | Claude marketplace/plugin manifest plus 13 skill definitions; distribution/configuration projection, not an npm package | SCE [C9] |
 | X05 | `.codex` | Codex config example plus 13 skill projections; distribution/configuration projection, not an npm package | SCE [C9] |
-| X06 | `examples-packages/*` | 40 individually manifested example/publishable package trees; excluded from root npm workspace and root lockfile ownership | SCE [C10] |
+| X06 | `examples-packages/*` | 37 individually manifested example/publishable package trees; excluded from root npm workspace and root lockfile ownership | SCE [C10] |
 | X07 | `examples/*` | six authored runnable example/tour surfaces (`education`, `federation`, `host-tour`, `multi-host`, `quickstart`, `vertical-tour`) plus index documentation | SCE [C11] |
 | X08 | `experiments/*` | five authored experiment batteries: credit feedback, router calibration, signal flywheel, turn-credit acceptance, user awareness | SCE [C12] |
 | X09 | `submissions/*` | two checked-in SWE-bench submission/result bundles (`lite`, `verified`), evidence/data artifacts rather than packages | SCE [C13] |
@@ -73,7 +74,7 @@ All N01–N42 are selected by the literal root npm workspace glob `packages/*`; 
 | `apps/web-ui/src/generated/catalog.ts` | checked-in generated source | SCE: path/name; generator/freshness belongs to W4 [C17] |
 | `packages/agntcy/src/oasf/taxonomy.generated.json` | checked-in generated copy derived from AGNTCY OASF | SCE: generator and comments name upstream; provenance/license closure requires W3/W5 [C18] |
 | `packages/create-agent-harness/templates/**` and catalogue/genomes | authored generator inputs plus catalogue JSON/generated candidates | SCE: generator scripts and template extensions; producer/consumer chain belongs to W4 [C19] |
-| `examples-packages/**` | generated/published exemplar outputs according to repository docs; checked in as first-party trees | SC + SCE: docs and 40 manifests; exact regeneration/freshness unverified [C10] |
+| `examples-packages/**` | generated/published exemplar outputs according to repository docs; checked in as first-party trees | SC + SCE: docs and 37 manifests; exact regeneration/freshness unverified [C10] |
 | `kimi-k3-harness/upstream/**` | vendor-derived/upstream evidence: README, four patch files and `swarm-outcomes.json`; not a source checkout | SCE: tracked contents; source revision/license closure unresolved [C20] |
 | golden fixtures, proof bundles, replay bundles, submissions | checked-in generated/evidence fixtures consumed by tests/tools | SCE: tracked paths; do not treat as authored runtime code or PDE from this run [C13][C17] |
 
@@ -114,22 +115,28 @@ No Git submodule declaration was found. **I/U:** absence of a submodule does not
 
 ## Completeness ledger and residue sweeps
 
+**Reproducible enumeration rule (2026-08-28 rework):** counts use tracked/static files in the pinned checkout, with `.git` excluded and paths sorted under `LC_ALL=C`. Package manifests are enumerated by `find /tmp/wfh-008-metaharness -type f -name package.json -not -path '*/.git/*' -printf '%P\n' | LC_ALL=C sort`; Cargo manifests use the same command with `-name Cargo.toml`. Classification is path-exact: root npm members match `^packages/[^/]+/package.json$`; example manifests match `^examples-packages/[^/]+/package.json$`; root is exactly `package.json`; every remaining package manifest is “other non-workspace.” Root Cargo members match `^crates/[^/]+/Cargo.toml$`; other non-root Cargo manifests are every remaining `Cargo.toml` except root. This rule counts manifests, not directories, package names, or documentation claims. **SCE**.
+
 | Ledger class | Expected | Accounted | Result |
 |---|---:|---:|---|
 | root npm workspace members (`packages/*`) | 42 | 42 (N01–N42) | closed |
 | root Cargo members | 5 | 5 (R01–R05) | closed |
-| other detected package manifests | 43 | 43: web UI 1, service 1, nested harness 1, examples 40 | closed |
+| root npm manifest | 1 | 1 (`package.json`) | closed; workspace orchestrator, not a member |
+| example package manifests | 37 | 37 (X06) | closed |
+| other non-workspace, non-root package manifests | 4 | 4: web UI X01, service X02, nested harness X03, kernel N-API packaging R03-P | closed |
+| all `package.json` files | 84 | 42 workspace + 37 examples + 1 root + 4 other | closed |
 | nested Cargo manifests outside root workspace | 4 | 4: horizon, oo-agents, k3rs, k3-kernel-bench | closed; first two are package-owned hybrid crates, last two nested-harness-owned |
+| all `Cargo.toml` files | 10 | 1 root + 5 root members + 4 nested/non-members | closed |
 | first-party app/service/CLI/plugin/host/generator/registry surfaces | enumerated above | X01–X13 plus package rows and entrypoint table | closed for W1 ownership; edges/behavior deferred |
 | top-level tracked directory families | 16 (`.claude-plugin`, `.codex`, `.github`, `.ruvnet-brain`, `__tests__`, `apps`, `crates`, `docs`, `examples`, `examples-packages`, `experiments`, `kimi-k3-harness`, `packages`, `scripts`, `services`, `submissions`) | 16 | closed |
 
-**Manifest/build residue sweep (independent sweep 1):** inspected every `package.json` and `Cargo.toml`, both non-root lockfiles, root configs, Docker/Compose/Terraform, TS/Vite/Vitest/Playwright/Tailwind/PostCSS, Rust toolchain/deny, Renovate, plugin manifests, and workflow inventory. It added the nested hybrid crates, web UI, deprecated service, nested Kimi project, and 40 examples that the root workspace declarations omit. No unowned manifest component remains. **SCE**.
+**Manifest/build residue sweep (independent sweep 1, repeated after coverage rework):** the deterministic rule above returned 84 `package.json` files and 10 `Cargo.toml` files. Reconciliation found and assigned the formerly unowned `crates/kernel-napi/package.json` as R03-P and corrected the examples count from 40 to 37. It also rechecked the three npm lockfiles (root, web UI, service), root configs, Docker/Compose/Terraform, TS/Vite/Vitest/Playwright/Tailwind/PostCSS, Rust toolchain/deny, Renovate, plugin manifests, and workflow inventory. The repeated W1 sweep is now dry: no unowned manifest or build-surface component remains. Absent Kimi/example/Cargo lockfiles remain explicit dependency-resolution unknowns for W2, not inferred closure. **SCE**.
 
-**Source/config/docs/runtime-reference residue sweep (independent sweep 2):** enumerated tracked top-level families, executable/bin declarations, `src/main`, `src/server`, root scripts, examples/experiments, plugin/skill projections, `generated`/`dist`/`upstream` paths, submissions, and architecture/README claims. It added `.ruvnet-brain`, generated taxonomy/catalogue/build output, vendor-derived Kimi inputs, and evidence bundles. No new unowned W1 component class remained. **SCE**.
+**Source/config/docs/runtime-reference residue sweep (independent sweep 2, repeated after coverage rework):** re-enumerated tracked top-level families, executable/bin declarations, `src/main`, `src/server`, root scripts, examples/experiments, plugin/skill projections, `generated`/`dist`/`upstream` paths, submissions, and architecture/README claims. It produced no additional unowned W1 component class after R03-P reconciliation. The repeated W1 sweep is dry. Open consumers, dynamic edges, generated freshness, copied-source revisions, and runtime liveness remain named W2–W5 questions rather than component-accounting closure. **SCE**.
 
 ### Flags handed to other workstreams
 
-- **W2:** resolve package/crate edges, actual root-workspace reachability, nested lockfiles, hybrid Rust crates, `dist` entrypoints, and whether the documented layer constraint holds.
+- **W2:** explicitly own the R03-P `@metaharness/kernel-native` npm packaging/build manifest alongside the `ruflo-kernel-napi` crate; resolve its build metadata/edges, all 42 root workspace package-to-lock links, actual root-workspace reachability, nested lockfiles, hybrid Rust crates, `dist` entrypoints, and whether the documented layer constraint holds.
 - **W3:** classify `ruflo-kernel*`, `@ruvnet/agent-harness-generator`, host-RVM, `.ruvnet-brain`, AGNTCY copy provenance, and Kimi upstream identities.
 - **W4:** trace template/catalogue/plugin/example generation, generated web catalogue, Darwin `dist`, OASF taxonomy, release scripts, and all producer→artifact→consumer chains.
 - **W5:** establish dependency and license closure before any direct-code reuse; resolve root-license applicability to missing-license/private surfaces and copied/generated assets.
