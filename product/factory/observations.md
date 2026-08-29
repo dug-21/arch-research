@@ -429,3 +429,125 @@ informs-and-continues (reversible, in-envelope) or informs-and-holds (waste/risk
 
 **Cross-platform requirement.** Claude and Codex share the same canonical role/workflow files. Platform
 adapters translate spawning, waiting, interruption, and resumption only; they do not fork the method.
+
+## OBS-21 — Under pressure the gate machinery writes its own rules, and the beneficiary holds the pen
+*2026-08-29 · from the wfh-011 retro*
+
+`wfh-011`'s coverage gate needed two rules that do not exist in the method. It invented both, mid-run,
+and in both cases **the party that benefited from the rule is the party that issued it.** Both rulings
+were, on the merits, correct. That is not the point.
+
+**(a) "A terminated auditor issued no ruling and therefore consumed no rework round."** The independent
+re-audit died mid-execution on a session rate limit (HTTP 429). `reports/gate-coverage-r2.md` was
+verified absent; no partial report existed. The **leader** — whose run would otherwise have been out of
+rework budget — asserted in an Issue comment that the round was not consumed. Round 2 was preserved and
+the run reached a `PASS`.
+
+**Verified absent** from `docs/research-factory-methodology.md`, `product/factory/runbook.md`,
+`product/factory/decisions.md`, `.claude/workflow/`, `.claude/rules/`, `.claude/skills/`,
+`.claude/agents/`. The only adjacent text is methodology §14.6 — *"rework capped at 2 per gate"* — one
+clause, filed under **Context protection**.
+
+**(b) The terminal auditor invented a third exit the SCOPE does not give it.** `SCOPE.md` lines 258–260
+allow exactly two after round two: `PASS` or `SCOPE-FAIL` — *"any unreconciled X row … after round two
+is `SCOPE-FAIL`."* Round 2 found `N4`: twelve `*-relation-inverse` rows reconciled `exercised` on a
+boilerplate witness while closing zero edges. That is literally the `SCOPE-FAIL` trigger. The auditor
+ruled `PASS` and **referred that one question to the owner**, noting that withholding the `PASS` would
+have been legitimate. Right call. Unauthorised, unrequired, and unrepeatable — the next auditor under
+the same pressure has no reason to reach for it.
+
+**Why this is a factory-plane hazard and not a compliment.** A rule invented by the party it governs is
+the `workflow-harness` theme's own predicate (`#320`: *a control whose input sits inside the governed
+party is a label, not a control*) occurring in the factory's own gate machinery. Neither rule is
+checkable, neither will recur reliably, and a future run with a less scrupulous leader gets the same
+latitude with none of the disclosure.
+
+**Response (proposed, not made — a method change is the owner's call and carries a `wf:` bump):** write
+both rules down. A terminated auditor consumes no rework round; a terminal-round auditor may rule `PASS`
+with an explicit named referral rather than being forced to `SCOPE-FAIL`. Both belong in
+`decisions.md` (a D17) and in the validator contract. **Gate rules must pre-exist the gate.**
+
+**Related and separable:** the two-round cap is *written* as budget (§14.6, context protection) and
+*read* as sufficiency ("`PASS` at round 2 of 2"). In `wfh-011` the discovery curve never flattened —
+round 1 found 6 zero-witness rows, round 2 found **33 more** plus two classes round 1 never reached, and
+the run stopped on the cap, not on exhaustion. The fix is not a larger cap (you would find a rising
+curve at round 4); it is a **computed discovery-curve line on every terminal gate report** — defects
+this round · defects prior round · new classes opened — and a qualified ruling word:
+**`PASS (budget-terminal — curve rising)`** versus **`PASS (curve flat)`**. One computed line; it makes
+an unbounded residual something the ruling cannot omit rather than something a conscientious auditor
+may choose to disclose.
+
+## OBS-22 — Trust a rework on the sign of its own diff, never on its report
+*2026-08-29 · from the wfh-011 retro*
+
+`wfh-011` did four things a run under gate pressure usually does not: it published 69 conformance errors
+rather than repair the instance to clear its gate; both instance digests are byte-identical before and
+after the rework; all 30 reconciled-disposition changes moved *away* from `exercised` and none toward
+it; and the adjudicator self-reported the same defect class on the side the audit had credited as sound.
+
+**The mechanism is structural, not virtuous, and that is what makes it reusable: the cheap escape was
+closed by scope before anyone was asked to resist it, and the direction of change was made measurable
+afterwards.** Three components:
+
+1. **The artifact under test was digest-pinned and placed out of scope of the rework** (round 1 §4: "no
+   re-encoding of either case instance"). When the corrected validator emitted 69 errors, the only lever
+   the rework had was the **instrument**. The run's own phrase, worth adopting as vocabulary:
+   *"The reader was fixed to the data; the data was not fixed to the reader."*
+2. **The rework items were named narrowly and the workstream refused to exceed them** — which is why the
+   twelve unrepaired inverse rows surfaced as a disclosed measurement instead of being swept into a
+   wider fix.
+3. **The auditor measured the sign of the diff, not the story about it.** It re-derived every digest
+   before reading anything about them, re-executed every checker rather than reading its log, then
+   computed the direction of every changed cell.
+
+**Independently reproduced in the retro** from git (`7a3704c`→`c9f8213`, `construct-pressure-ledger.csv`):
+705 rows in, 705 out; 30 `reconciled_disposition` changes; 9 → `construct-pressure`, 21 →
+`not-applicable`, **0 toward `exercised`**; model-X `exercised` **552 → 522**.
+
+**The enhancement:** require every re-audit gate report to carry a computed integrity block — rows
+in/out/added/removed, cells changed by column, and the **direction** of every disposition change. A
+rework that cleared its gate by inflating its coverage shows the opposite sign. It is one line of
+arithmetic that no amount of authored narrative can fake, and it is the cheapest integrity instrument
+the run produced.
+
+**And the reflexive reading, which is worth more than either half.** The run behaved well exactly where
+the control sat **outside** the governed party — the scope pinned the artifact, the auditor computed the
+sign. Its instruments failed fifteen times exactly where the control sat **inside** the party: an agent
+checking its own coverage claim. One law, both signs, in one run.
+
+## OBS-23 — `context_cycle_review` contradicts itself inside one response, and the baseline certifies the broken value as Normal
+*2026-08-29 · from the wfh-011 retro*
+
+**First, the good news, because it changes how #24 should be treated.** The `factory-retro` skill warns
+that process telemetry is degraded by factory enhancement **#24** ("No observation data"). **That symptom
+did not occur for `wfh-011`.** A full report came back: 1 session, 822 records, three phases with gate
+outcome text, eight hotspots, `curation_health` within normal range. **Do not assume #24 is blocking on
+the strength of its last observation — attempt the call.**
+
+**Now the defect.** One `context_cycle_review(format:"json")` payload disagreed with itself in four
+places and laundered the result in a fifth:
+
+- `metrics.universal.total_tool_calls: 0`, while `session_summaries[0].tool_distribution` in the same
+  payload sums to **743** (execute 596 · other 86 · read 45 · write 14 · search 2).
+- `metrics.universal.coordinator_respawn_count: 0`, while the hotspot block in the same payload claims
+  **11 coordinator respawns detected**, `measured: 11.0`, across nine timestamped clusters.
+- `metrics.phases: {}` and `domain_metrics: {}` empty, while `phase_stats` carries three fully populated
+  phases.
+- The markdown tail prints **"Knowledge reuse: 20 of 1 (2000%)"** — a ratio taken over the session count.
+- Also wrong, and consequential for retro reading: **`rework_session_count: 0` and "Rework rate: 0 of 1
+  (0%)"** for a run that executed a full rework round (`0421142`, `7a3704c`, `c9f8213`).
+
+**The one that matters:** `baseline_comparison` scores `total_tool_calls` **"Normal"** against
+`mean: 0.0, stddev: 0.0`. The broken zero is being compared against a history of broken zeros and
+certified normal.
+
+This is `OBS-19`'s shape in its more dangerous form. `OBS-19` and `OBS-17` recorded a **derived view**
+being wrong, which a reader can route around by reading `gate_outcome_text` instead. Here the
+**baseline has absorbed the wrong value**, so the instrument that every future retro measures itself
+against is now calibrated on it — and no amount of careful reading downstream recovers that. `OBS-19`'s
+warning generalises: **read any `metrics.universal` scalar against the per-session and hotspot blocks in
+the same payload, and treat `baseline_comparison` on a zero-mean/zero-stddev metric as meaningless
+rather than as "Normal."**
+
+Recorded as a factory enhancement, `claimed`, pending an upstream fix. `#65` stays `partial` and stays
+blocked.
