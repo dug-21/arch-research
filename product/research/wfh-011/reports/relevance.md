@@ -309,6 +309,50 @@ at two **by the SCOPE**, not by exhaustion, and the `PASS` says the four named i
 that the class is closed. There is no mechanism in the run that bounds the residual. So: **treat every
 coverage number in this packet as a floor on defects and a ceiling on coverage, never the reverse.**
 
+> **CORRECTION — 2026-08-29 (post-close; appended, nothing above edited — this is an advisory
+> stance and it is the owner's, not the corrector's).**
+>
+> **Old → new.** The bullet above reads the software case's declared-inverse coverage as **22 of
+> 34** and the overstatement as **up to 12**. The correct figures are **25 of 34** and **9**. The
+> run's **28 of 34** is **unchanged** — it was already right. Underlying split: **21 close in both
+> cases, 3 in W1 only, 4 in W2 only, 6 in neither** (published as 18 / 6 / 4 / 6).
+>
+> **Mechanical cause.** `artifacts/w4-witness.py`'s `entry_id()` searched the keys
+> `('id','ref','target','to')`, **omitted `actor`**, and returned `None` **silently** when no key
+> matched. `vnc-045-instance.yaml` keys its attributed relation entries on `actor:`, so all **21**
+> such entries — 16 on `Role.assigned_to`, 5 on `Skill.held_by` — were scored as non-closing edges.
+> Three rows were undercounted to zero: `core.Actor.relations.has_skill.inverse` (0 → 5),
+> `supporting.Skill.relations.held_by.inverse` (0 → 5),
+> `supporting.Role.relations.assigned_to.inverse` (0 → 16). The same run's
+> `artifacts/vnc-045-validate.py` read the same file correctly with `('actor','target','ref','id')`,
+> disclosed the accommodation, and **errored** rather than returning `None` — two readers of one file,
+> one of which failed silently. **The `55 of 210` broken-inverse figure is unaffected**: it comes from
+> that second, correct reader.
+>
+> **`wfh-008` unaffected** (zero dict-form relation entries; all 268 witnessed paths identical).
+> **Downstream blast radius empty:** `reports/construct-pressure-ledger.csv` regenerated from the
+> corrected witness map is **byte-identical** to the committed file and was left untouched, because the
+> RW-3 guard fires only where **both** cases measure zero and all three corrected rows already carried
+> a non-zero `wfh-008` witness.
+>
+> **Direction.** The error ran **against** the run's interest — it understated coverage and overstated
+> the defect count — so the correction moves both figures in the direction that **flatters the run**
+> (22 → 25, 12 → 9).
+>
+> **First raised:** Issue #70 comment
+> <https://github.com/dug-21/arch-research/issues/70#issuecomment-5462364469>. Corrected in commit
+> `0405a14`, which also appended notes to `REPORT.md` §5.1(i) and `reports/gate-coverage-r2.md` §4.1.
+> Nothing above is edited or withdrawn; no verdict, disposition or ruling is moved or re-ruled.
+>
+> **What this does and does not do to the stance above.** This stance was written against the
+> then-published figure. The correction moves the number in the direction that **flatters the
+> run**, so §3.2's *"discount the coverage claims and not the findings"* reasoning is **not
+> weakened** by it — the discount it names is one row-count smaller (9 rows rather than 12), and
+> every other limb of the discount is untouched: the 69 conformance errors, the unregenerated
+> 468-row W1 matrix, the 205 single-case rows, and the un-flattened discovery curve all stand
+> exactly as written. Whether that changes the stance is the owner's ruling, not the corrector's;
+> nothing here reinterprets it further.
+
 ### 3.3 Why the discount does not reach the verdict — and this is the load-bearing part
 
 The failure was in the **coverage instruments** — the things that count *what was tested* — and not in
@@ -398,6 +442,15 @@ Per the run's own standard, I did not take counts on trust:
 6. **Not authority to author V6**, and not a build recommendation at any depth.
 7. **No claim that the coverage defect class is closed.** The `PASS` says four named items discharged.
    The discovery curve did not flatten (§3.2).
+
+> **CORRECTION — 2026-08-29 (post-close; appended, item 4 above not edited).** Item 4's **22 of
+> 34** is superseded by **25 of 34**; the run's **28 of 34** is unchanged. Cause: `w4-witness.py`'s
+> `entry_id()` omitted the `actor` key and returned `None` silently, so 21 attributed relation
+> entries in `vnc-045-instance.yaml` were scored as non-closing. **Item 4's instruction is
+> unaffected** — the corrected number still comes from the reconciled ledger and not from a case
+> matrix, and W1's 468-row matrix is still produced by an uncorrected generator. Full note at the
+> end of §3.2; commit `0405a14`;
+> <https://github.com/dug-21/arch-research/issues/70#issuecomment-5462364469>.
 
 ---
 
@@ -519,6 +572,19 @@ warranted;** the decision is not mine, and nothing in this review authorises a w
 > next run on a foreign case with real refusals. And decide separately whether this track's durable
 > findings should be allowed into the graph — two runs of substantial evidence currently live only in
 > files, and nothing in this review authorises that write.**
+
+**CORRECTION — 2026-08-29 (post-close; appended OUTSIDE the verbatim stance above, which is
+unedited).** The relayed stance reads the software instance's *"inverse coverage is 22 of 34"*.
+The correct figure is **25 of 34**, and the overstatement is **9** rows, not 12; the run's **28 of
+34** is unchanged. Cause: `artifacts/w4-witness.py`'s `entry_id()` omitted the `actor` key and
+returned `None` silently, so 21 attributed relation entries in `vnc-045-instance.yaml` were scored
+as non-closing edges. The error ran against the run's interest, so the correction moves the number
+in the direction that **flatters the run** — the stance's *"discount the coverage claims and not
+the findings"* reasoning is therefore not weakened by it, only one row-count smaller. The other
+three limbs it names (69 conformance errors, the unregenerated 468-row matrix, 205 single-case
+rows) and its `Net: accept` are untouched. Whether the corrected figure changes the stance is the
+owner's call. Full note at the end of §3.2; commit `0405a14`; first raised at
+<https://github.com/dug-21/arch-research/issues/70#issuecomment-5462364469>.
 
 ---
 

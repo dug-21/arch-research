@@ -715,6 +715,8 @@ independently killable and each is scoped so that failing it is cheap.
 
 **Stage A — resolve the one referred question (owner decision, no run).** The round-2 auditor
 explicitly referred clause 3's strict per-case reading on the 12 inverse rows to the owner (§5.1 i).
+That referral now concerns **9** rows, not 12 — see the 2026-08-29 correction note at the end of
+§5.1 (i); the referral itself is unchanged in kind and is not re-ruled.
 That is a ruling on what the case matrices are allowed to stand for, not a research question. It
 costs one decision, and the auditor states the remedy is one line of the same join.
 

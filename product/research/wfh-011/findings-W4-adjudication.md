@@ -798,6 +798,58 @@ distinction the guard exists to draw. W2 was right to flag it and right not to r
 and the software case closes none. That is one more instance of the run's standing limit — a
 construct carried by one history and not the other — and it caps how much either case can say alone.
 
+> **CORRECTION — 2026-08-29 (post-close; appended, nothing above edited and no W4 ruling moved).**
+>
+> **Old → new.** The table above splits the 34 declared inverses **18 both / 6 W1-only / 4 W2-only
+> / 6 neither**. Corrected: **21 both / 3 W1-only / 4 W2-only / 6 neither**. The software case
+> closes **25 of 34**, not 22.
+>
+> **§13.5's conclusion is unchanged, and that is the point.** *"The guard's own text answers W2's
+> question: 6 of the 34, not 34"* stands — the six guard-caught rows are the **same six rows**
+> (`Goal.is_advanced_by`, `Capability.advances`, `Capability.delivered_by`, `Unit.delivers`,
+> `Delegation.enforced_by`, `EffectBoundary.enforces`), and *"the other 28 have a real witness in
+> at least one case"* is unchanged, because all three corrected rows already closed on the W1 side.
+> Only the internal both/W1-only boundary moves. **The one substantive change is the asymmetry
+> paragraph:** the set on which the research case closes every edge and the software case closes
+> none is **3** rows, not 6 — `Unit.assigned_through`, `Workflow.requires`, `Delegation.unit`.
+> `Actor.has_skill`, `Skill.held_by` and `Role.assigned_to` leave that set; the standing limit the
+> paragraph names is real but **smaller than recorded**.
+>
+> **Mechanical cause.** `artifacts/w4-witness.py`'s `entry_id()` searched the keys
+> `('id','ref','target','to')`, **omitted `actor`**, and returned `None` **silently** when no key
+> matched. `vnc-045-instance.yaml` keys its attributed relation entries on `actor:`, so all **21**
+> such entries — 16 on `Role.assigned_to`, 5 on `Skill.held_by` — were scored as non-closing edges.
+> Three rows were undercounted to zero: `core.Actor.relations.has_skill.inverse` (0 → 5),
+> `supporting.Skill.relations.held_by.inverse` (0 → 5),
+> `supporting.Role.relations.assigned_to.inverse` (0 → 16). The same run's
+> `artifacts/vnc-045-validate.py` read the same file correctly with `('actor','target','ref','id')`,
+> disclosed the accommodation, and **errored** rather than returning `None` — two readers of one file,
+> one of which failed silently. **The `55 of 210` broken-inverse figure is unaffected**: it comes from
+> that second, correct reader.
+>
+> **`wfh-008` unaffected** (zero dict-form relation entries; all 268 witnessed paths identical).
+> **Downstream blast radius empty:** `reports/construct-pressure-ledger.csv` regenerated from the
+> corrected witness map is **byte-identical** to the committed file and was left untouched, because the
+> RW-3 guard fires only where **both** cases measure zero and all three corrected rows already carried
+> a non-zero `wfh-008` witness.
+>
+> **Direction.** The error ran **against** the run's interest — it understated coverage and overstated
+> the defect count — so the correction moves both figures in the direction that **flatters the run**
+> (22 → 25, 12 → 9).
+>
+> **First raised:** Issue #70 comment
+> <https://github.com/dug-21/arch-research/issues/70#issuecomment-5462364469>. Corrected in commit
+> `0405a14`, which also appended notes to `REPORT.md` §5.1(i) and `reports/gate-coverage-r2.md` §4.1.
+> Nothing above is edited or withdrawn; no verdict, disposition or ruling is moved or re-ruled.
+>
+> **The corrected reader is `w4-witness.py` — W4's own instrument (§13.1).** The ledger regenerated
+> from it is byte-identical to the committed `reports/construct-pressure-ledger.csv`, so **no W4
+> disposition, cause, adjudication, evolution-challenge result or verdict moves** — §8's verdict
+> block, the per-construct rulings and the guard's 6-row catch all stand exactly as adjudicated.
+> §13.1's *"the ledger rebuilds byte-identically"* claim is re-verified true after the correction.
+> (Unrelated: §13.6's *"CF-05, CF-06 and CF-07 now appear on 12 rows"* counts evolution-candidate
+> ledger rows and has nothing to do with this correction's 12; it is unaffected.)
+
 ### 13.6 RW-4 — my own rulings carried into the ledger
 
 `W1/unlabelled` and `not-challenged` are gone (0 occurrences each). `CF-05`, `CF-06` and `CF-07` now

@@ -149,6 +149,14 @@ neither** — and all 6 of the "neither" rows are off `exercised` in the ledger.
 "34 rows" concern is true of W2's own matrix and not of the reconciled ledger is correct, and I verified
 it rather than accepted it.
 
+> **CORRECTION — 2026-08-29 (post-close; appended, the paragraph above not edited).** The split
+> **18 / 6 / 4 / 6** is superseded by **21 / 3 / 4 / 6**: `w4-witness.py`'s `entry_id()` omitted the
+> `actor` key and returned `None` silently, undercounting three rows to zero. **The paragraph's
+> conclusion is unaffected** — the six "neither" rows are the same six and are still off `exercised`
+> in the ledger, and the reconciled-versus-matrix distinction it verifies stands. Full note in §4.1;
+> commit `0405a14`;
+> <https://github.com/dug-21/arch-research/issues/70#issuecomment-5462364469>.
+
 ### RW-4 — carry W4's evolution rulings into the ledger · **DISCHARGED**
 
 All five named rows now carry the identifier and the ruling:
