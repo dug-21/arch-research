@@ -40,12 +40,15 @@ candidates:
       the commit id, and add one line to the factory-git skill: once a gate has ruled against a
       commit, that commit's branch is not rebased. Nothing else changes.
     independent_reason: >
-      Independent of any data model. wfh-008's coverage gate ruled against specific commits, and
-      the run's own durable records cite ten commit ids that `git merge-base --is-ancestor` now
-      reports as NOT ancestors of main. A reader cannot reproduce the audited tree from the
-      audit. That is a reproducibility defect in a research method whose entire product is
-      reproducible evidence, and it would be a defect if V5 did not exist. Tree oids survive a
-      rebase; commit oids do not — measured, not asserted.
+      RESTATED 2026-08-29 at its true weight; the original rationale is withdrawn. It claimed "a
+      reader cannot reproduce the audited tree from the audit." That is FALSE: wfh-010's R08 ledger
+      pins the post-rebase oids, all of which are ancestors of main, and the ten pre-rebase short ids
+      quoted in Issue #66 prose still resolve as objects via the published branch
+      workflow/agentic-organization-reframe. The surviving, smaller, still-independent reason: those
+      ten gate citations in the run's governance record depend for resolvability on a side branch that
+      no policy protects, and git records no supersession link from the new id to the old. Delete the
+      branch and ten citations become unresolvable. Tree oids are invariant under rebase; commit oids
+      are not — measured, not asserted. True with or without V5.
     semantic_proof_authority_custody_preservation: >
       Preserves everything. It adds an identifier that is stable under the operation that broke
       the existing one. No authority moves, no proof bar changes, no custody relocates, and the
@@ -73,9 +76,9 @@ candidates:
       the finding — V5 cannot tell a resolvable baseline from an unresolvable one, and no V5
       rule was violated by the rewrite.
     post_evolution_fit: >
-      REPRESENTABLE AND VERIFIABLE. Identical V5 shape, but `baseline_ref` becomes checkable
-      against the store. V5 gains nothing structurally; the project gains a baseline that means
-      what the model assumes it means.
+      REPRESENTABLE. Identical V5 shape, but the pin survives the operation that reissued the commit
+      id. V5 gains nothing structurally; the project gains a baseline whose resolvability does not
+      depend on an unprotected branch.
     unresolved_discriminator: not-applicable
     v5_delta: "none — no field, type, relation or invariant changes; only the value's referent changes"
 
@@ -326,7 +329,9 @@ instances:
       relations: {follows: [WF-RESEARCH-SCOPE], depends_on: [], attempts: [], assigned_through: [], gated_by: [], consumes: [], produces: [], delivers: [], directed_by: [], replaces: []}
       note: >
         Identical V5 shape to UN-W1. Only the referent of baseline_ref changes: the tree oid is
-        invariant under the rebase that invalidated the commit id, and both ids are retained.
+        invariant under the rebase that REISSUED the commit id, and both ids are retained. Note the
+        historical UN-W1 value is already correct and on main — this counterfactual buys durability
+        against a future rewrite, not a repair of a present break.
 
   Attempt:
     - id: CF03-AT-RUN-1

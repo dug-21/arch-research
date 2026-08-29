@@ -2542,9 +2542,7 @@ instances:
       - RC-ISSUE-66
     provenance:
     - R05
-    evidence_note: 'resume_requirements is populated in full and maps the handover comment field-for-field — the strongest positive witness for the field in this case. It was authored by the RESUMING actor, not the interrupted one; the model places the field on Attempt without saying which attempt owns it. The recorded baseline `17ebf2e` no longer resolves on main (see PR-BASELINE-REWRITE); the value above is the surviving equivalent commit.
-
-      '
+    evidence_note: 'resume_requirements is populated in full and maps the handover comment field-for-field — the strongest positive witness for the field in this case. It was authored by the RESUMING actor, not the interrupted one; the model places the field on Attempt without saying which attempt owns it. The baseline the handover comment quoted, `17ebf2e`, is a pre-rebase id: it is not an ancestor of main but still resolves as an object on the published branch workflow/agentic-organization-reframe, and its tree is identical to 9158a11''s. The value recorded above is the post-rebase equivalent, which is on main. See PR-BASELINE-REWRITE.'
   - id: AT-W1-1
     construct: Attempt
     fields:
@@ -5348,8 +5346,8 @@ instances:
         affected_refs:
         - RC-COV-R2
         - RC-ISSUE-66
-        prior_baseline: '6acc952 0c01522 17ebf2e 7d28294 3cd296d 215942d 962a6c1 017f4fc c29a08f cd03ad0 — the commit ids cited in the run''s own durable records and in Issue #66'
-        new_baseline: 7cf95b2 36e35e1 9158a11 cfbedaa 2929599 d9036ae 61b9b1d a595ac7 600471c b847cee — same trees, new commit ids, reachable from main
+        prior_baseline: '6acc952 0c01522 17ebf2e 7d28294 3cd296d 215942d 962a6c1 017f4fc c29a08f cd03ad0 — the short ids quoted in Issue #66 prose. Not ancestors of main; still resolvable as objects via the published branch workflow/agentic-organization-reframe'
+        new_baseline: 7cf95b2 36e35e1 9158a11 cfbedaa 2929599 d9036ae 61b9b1d a595ac7 600471c b847cee — same trees, new commit ids, all ancestors of main. These are the ids wfh-010's R08 ledger pins and the ids this instance uses for every baseline_ref
         authorization_status: authorized-by-role but unrecorded; no decision Event exists
     relations:
       documented_by: []
@@ -5358,9 +5356,7 @@ instances:
       supersedes: []
     provenance:
     - R06
-    evidence_note: 'MEASURED, not inferred. `git rev-parse <old>^{tree}` equals `git rev-parse <new>^{tree}` for all five pairs tested; author and authored-date are identical and only the committer differs (dug-21 <angryweed@gmail.com>, 2026-08-28 18:20 UTC), matching a reflog `rebase (finish)` entry. `git merge-base --is-ancestor <old> main` is FALSE for every cited id. Every baseline_ref recorded by wfh-008 therefore no longer resolves on main. See PR-BASELINE-REWRITE.
-
-      '
+    evidence_note: 'MEASURED, not inferred. Twelve spread author timestamps against ONE uniform committer timestamp (2026-08-28 14:20:37 -0400) with the author identity preserved and the committer identity dug-21 <angryweed@gmail.com> applied uniformly — the rebase signature — matching a reflog `rebase (finish)` at 2026-08-28 18:20 UTC. `git rev-parse <old>^{tree}` equals `git rev-parse <new>^{tree}` for every pair tested. CORRECTION 2026-08-29: an earlier version of this note asserted that every baseline_ref recorded by wfh-008 therefore no longer resolves on main. THAT IS RETRACTED AND WRONG. The twelve post-rebase full oids are all ancestors of main; the ten pre-rebase short ids quoted in Issue #66 prose are not ancestors but all still resolve as objects. This extension is a RECORD OF THE REWRITE, not a substitution table: no consumer needs to apply it. What survives is that the rewrite carries no adaptation Event and git holds no supersession link from the new id to the old. See PR-BASELINE-REWRITE.'
 pressure_index:
 - PR-SCOPE-AUTHORITY-ROOT
 - PR-SCOPE-EFFECTIVE-AT

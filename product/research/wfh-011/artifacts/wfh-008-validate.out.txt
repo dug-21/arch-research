@@ -3,7 +3,7 @@ MODEL   product/factory/proposals/organizational-data-model-v5.yaml
         core=7 supporting=8 registries=6 catalogs=3 values=8 invariants=19 event_types=9 excluded=11 open=11
 
 INSTANCE product/research/wfh-011/artifacts/wfh-008-instance.yaml
-         sha256 f249aa6fb16c3acf9de5cf1bfdd0c0fa138fca34e2766567ac9aaabad2ea2262
+         sha256 011de28058817c7f750c7450b8ca31d4d8aeb890659f3f69845ebf6e914361c9
          counterfactual=False  provenance_class=observed-history
          model pin MATCHES parsed model digest
          191 instance objects across 14 constructs
@@ -48,7 +48,7 @@ INSTANCE product/research/wfh-011/artifacts/wfh-008-instance.yaml
            Actor AC-GOALOWNER -> participated Attempts: ['AT-REL-1']
 
 INSTANCE product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml
-         sha256 2bfef1de559a487c1c7cd5b7033598470c16978c4b2518a2ac2ddf7d82328818
+         sha256 33887044db11028bb546ddb119a2e9c8714b23584089b0ad66119797e333f669
          counterfactual=True  provenance_class=counterfactual
          model pin MATCHES parsed model digest
          4 instance objects across 3 constructs

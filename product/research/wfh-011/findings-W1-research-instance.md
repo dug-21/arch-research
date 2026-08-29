@@ -37,11 +37,12 @@ The three results that matter most are not about whether the model fits. They ar
    Delegations. The single refusal receipt in the entire history is a *schema* refusal, not an
    authority refusal. I12's second clause — *only an EffectBoundary disposition demonstrates enforced
    authority* — has no witness. **[MEASURED]**
-2. **The run's own durable records cite ten commit ids that no longer exist on `main`.** A rebase on
-   2026-08-28 18:20 UTC reissued every `wfh-008` commit id. Every `baseline_ref` the run recorded —
-   in its coverage audit and in the GitHub Issue that is the record of its gates — now dangles.
-   `wfh-010` W1 read this as "differing displayed abbreviations"; **that reading is wrong**, and I
-   have the trees to prove it. **[MEASURED]**
+2. **A rebase reissued every `wfh-008` commit id, and `M04` explains the resulting mismatch
+   incorrectly.** `wfh-010` W1 §1 attributes it to "differing displayed abbreviations"; `6acc952` and
+   `7cf95b2` are distinct objects with the same tree, not two renderings of one. **That reading is
+   wrong and I have the trees to prove it.** This is a documentation defect in a source document, not
+   a break in the fixed alphabet — see the correction in §5.3, which retracts a stronger claim this
+   line previously carried. **[MEASURED]**
 3. **V5 could not represent the run's stated capability target, and refused to let its authored
    summaries pass as measurements.** The first is a gap; the second is the model working.
 
@@ -56,12 +57,12 @@ untestable here. Compression is plausible on one domain and unproven generally �
 
 | Artifact | Lines | SHA-256 |
 |---|---:|---|
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-instance.yaml` | 5392 | `f249aa6fb16c3acf9de5cf1bfdd0c0fa138fca34e2766567ac9aaabad2ea2262` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml` | 410 | `2bfef1de559a487c1c7cd5b7033598470c16978c4b2518a2ac2ddf7d82328818` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage.csv` | 469 (468 rows) | `1fb23382e812f7e8e8e9dd5707f18e9dd41ad339b03829e75e196e2b1a4b0981` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-instance.yaml` | 5388 | `011de28058817c7f750c7450b8ca31d4d8aeb890659f3f69845ebf6e914361c9` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml` | 415 | `33887044db11028bb546ddb119a2e9c8714b23584089b0ad66119797e333f669` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage.csv` | 469 (468 rows) | `e1977062fc3cfdc1cf0841760150f5ef9bc61af9c60aecc76b30b5ca7d86f645` |
 | `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-validate.py` | 408 | `eed0485f42f32ec07661db26137811b6650552a4b078b3b97f2e332b1f8e621e` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage-gen.py` | 462 | `aa2df396928dcbc86116483edc559855f9702a8ac5fc9f42bfb1a25a2faedce4` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-validate.out.txt` | 115 | `c3d62c046c5951095a2dfa9ddf0ba2f3e015b6b9b4f5b9c6bee33842938527da` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage-gen.py` | 462 | `174f0fbeba9fabc598572ed009b295449c7e3af139c55e080cf9ba3db8631b2f` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-validate.out.txt` | 115 | `5042d234ad31830f02955c02c96d465531a60b267c220b7e3bea69df157c9094` |
 | `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage-gen.out.txt` | 14 | `6576e352576a9684a3d99d7e44ea1653d1a4e13c153be69b42d642eab82ecf1a` |
 
 ```bash
@@ -289,48 +290,95 @@ model failure.** No evolution proposed: making the curator rule enforced needs a
 that does not exist and cannot be costed from the fixed alphabet, and proposing it would be the build
 recommendation this scope forbids.
 
-### 5.3 The baselines were rewritten — `PR-BASELINE-REWRITE`
+### 5.3 A rebase reissued the commit ids, and `M04` explains it wrongly — `PR-BASELINE-REWRITE`
 
 **Classification: `enforcement-gap` + `project-evolution-candidate` (CF-01).**
 
-**[MEASURED], and this contradicts a reading in the M alphabet.** The commit ids cited in
-`reports/coverage-r2.md` and throughout Issue #66 — `6acc952`, `0c01522`, `17ebf2e`, `7d28294`,
-`3cd296d`, `215942d`, `962a6c1`, `017f4fc`, `c29a08f`, `cd03ad0` — all return **false** from
-`git merge-base --is-ancestor <id> main`. They survive only on branch
-`workflow/agentic-organization-reframe`.
+> **CORRECTION, 2026-08-29 — this section previously overclaimed and is retracted in part.**
+> An earlier version of this finding said the run's durable records "cite ten commit ids that no
+> longer exist on `main`", that "every `baseline_ref` the run recorded now dangles", and that a W3/W4
+> row pinning a `wfh-008` commit id "will not resolve". **All three are retracted as wrong.** The
+> measured position is below. The flag was also raised as contradicting a load-bearing premise of the
+> scope; **it does not**, and it is downgraded to a documentation defect in `M04`. The retraction was
+> prompted by an independent re-run whose result I reproduced before conceding.
+>
+> **Downstream effect, measured rather than asserted:** re-running the generator after the correction
+> changes **2 of 468** CSV rows (`invariant:I1`, `notation:identity`), both text-only. **No row changed
+> `disposition` and no row changed `cause_classification`** — because the cause was always the rebase
+> itself, which is measured and unretracted, not the resolvability claim built on top of it. The
+> `enforcement-gap` classification stands on the absence of any supersession link or adaptation Event
+> for the rewrite; the `project-evolution-candidate` stands on a restated and smaller rationale.
+
+**What is measured and stands.** A rebase reissued every `wfh-008` commit id after the run closed:
 
 ```
-17ebf2e tree=e20f8102c5132d8f1c27c49c787487e7d84b42ac
-9158a11 tree=e20f8102c5132d8f1c27c49c787487e7d84b42ac   -> SAME TREE
-17ebf2e  author=Claude Opus 4.8 <noreply@anthropic.com> 2026-08-28 13:24:34 +0000
-         committer=Claude Opus 4.8 <noreply@anthropic.com> 2026-08-28 13:24:34 +0000
-9158a11  author=Claude Opus 4.8 <noreply@anthropic.com> 2026-08-28 13:24:34 +0000
-         committer=dug-21 <angryweed@gmail.com>          2026-08-28 14:20:37 -0400
+$ git log --format='%h  author=%ad  committer=%cd' --date=iso --reverse -- product/research/wfh-008
+7cf95b2  author=2026-08-28 11:49:58 +0000  committer=2026-08-28 14:20:37 -0400
+36e35e1  author=2026-08-28 12:27:02 +0000  committer=2026-08-28 14:20:37 -0400
+...
+b847cee  author=2026-08-28 15:12:31 +0000  committer=2026-08-28 14:20:37 -0400
 ```
 
-Same tree, same author and authored-date, different committer — with a reflog `rebase (finish)` at
-2026-08-28 18:20 UTC. Five pairs tested, five identical trees. **A rebase reissued every `wfh-008`
-commit id, after the run closed.**
+Twelve spread author timestamps against **one uniform committer timestamp** — the rebase signature —
+with the author identity `Claude Opus 4.8 <noreply@anthropic.com>` preserved and the committer
+identity `dug-21 <angryweed@gmail.com>` applied uniformly, matching a reflog `rebase (finish)` at
+2026-08-28 18:20 UTC. Trees are identical across pairs (`6acc952 == 7cf95b20`, `0c01522 == 36e35e1e`,
+`17ebf2e == 9158a119`, `962a6c1 == 61b9b1de`).
 
-`M04` (`wfh-010/findings-W1.md` §1) recorded this as "the short hashes written contemporaneously in
-Issue/report prose differ from the current repository's displayed abbreviations". **That is not what
-happened.** They are different objects, not different renderings of the same object. I flag it here
-because `M04` is in this run's fixed alphabet and W3/W4 will read it.
+**Therefore `M04` (`wfh-010/findings-W1.md` §1) is wrong where it says the difference is one of
+"displayed abbreviations".** `6acc952` and `7cf95b2` are distinct objects. That is a real defect in a
+document inside this run's fixed alphabet, and it is what W3/W4 need to know.
 
-**Why it is load-bearing for V5:** `Unit.baseline_ref` and `Attempt.baseline_ref` are `text`. V5
-cannot distinguish a resolvable baseline from a dangling one, and **no V5 rule was violated by the
-rewrite**. Meanwhile I1 says history is superseded, never overwritten — and it *holds* in Unimatrix
-(`#312` is deprecated, `#316` is active, the chain is queryable; re-read live 2026-08-29) and *fails*
-in git. **The same invariant holds in one custody store and fails in the other, and V5 has no way to
-say which store an identity lives in.** That is S4's atomicity argument made concrete.
+**What is retracted.** I claimed the mismatch left `wfh-008`'s recorded baselines unresolvable. It
+does not:
 
-- **`current-project fit`: REPRESENTABLE BUT UNVERIFIABLE.**
-- **`post-bounded-evolution fit` (CF-01): REPRESENTABLE AND VERIFIABLE** — identical V5 shape;
-  `baseline_ref` becomes checkable. V5 gains nothing structurally; the project gains a baseline that
-  means what the model assumes.
-- **Independent reason:** a coverage gate whose audited tree cannot be reproduced from the audit is a
-  reproducibility defect in a method whose entire product is reproducible evidence. True with or
-  without V5.
+```
+$ for c in <the twelve full oids in M04's R08 ledger>; do git merge-base --is-ancestor $c main; done
+  -> ANCESTOR-OF-MAIN for all twelve, zero exceptions
+
+$ for c in 6acc952 0c01522 17ebf2e 7d28294 3cd296d 215942d 962a6c1 017f4fc c29a08f cd03ad0; do
+    git merge-base --is-ancestor $c main; git cat-file -e $c; done
+  -> ancestor=NO, object-present=YES  for all ten
+```
+
+`M04`'s R08 ledger pins the **post-rebase full oids, and all twelve are on `main`**. Nothing in the
+fixed alphabet's commit ledger dangles. The ten *short* ids quoted in Issue #66 prose are not
+ancestors of `main`, but every one still resolves as an object, because the pre-rebase branch
+`workflow/agentic-organization-reframe` retains them — and that branch is **published on `origin`**,
+not merely local, so a fresh clone that fetches all refs resolves them too.
+
+**Epistemics, stated in both directions.** Those ten ids are *unreachable from `main`* and *reachable
+from a published side branch*. That is not durability: nothing protects that branch, and deleting it
+would make ten gate citations in the run's governance record unresolvable. It is also not breakage:
+today they resolve, and their trees are identical to their `main` counterparts. I overclaimed in one
+direction and will not now overclaim in the other.
+
+**My instance was already correct and needs no change.** Every `baseline_ref` in
+`wfh-008-instance.yaml` is a post-rebase full oid; all twelve verify as `ANCESTOR-OF-MAIN`. I never
+routed a value through `EV-032`'s mapping. The mapping in `EV-032.extension` is a *record of the
+rewrite*, not a substitution table anyone needs to apply.
+
+**What survives as pressure on V5, at its correct and reduced weight.** `Unit.baseline_ref` and
+`Attempt.baseline_ref` are `text`. The identity of a pinned baseline was reissued with **no adaptation
+Event and no supersession link** — git carries no pointer from `9158a11` back to `17ebf2e`; the old
+object survives only because a branch ref happens to retain it. Contrast Unimatrix, where the same
+operation (`context_correct`) reissues an id **and** leaves a queryable chain: `#312` is deprecated,
+`#316` is active, and `context_graph(mode:"chain")` walks between them (re-read live 2026-08-29).
+
+So I1 — *history is superseded, never overwritten* — is **carried by one custody store and not by the
+other**, and V5 has no way to say which store an identity lives in or whether that store preserves a
+supersession link. That is S4's atomicity argument made concrete, and it is the finding. It is a
+smaller finding than the one I first filed.
+
+- **`current-project fit`: REPRESENTABLE, and unverifiable only in the narrow sense that `text`
+  carries no integrity binding and no supersession link.**
+- **`post-bounded-evolution fit` (CF-01): REPRESENTABLE** — identical V5 shape; a tree oid is
+  invariant under rebase, so the pin survives the operation that reissued the commit id.
+- **Independent reason (restated at its true weight):** ten gate citations in the run's governance
+  record depend for resolvability on a side branch that no policy protects. That is a modest
+  reproducibility exposure in a method whose product is reproducible evidence, and it is true with or
+  without V5. It is **not** the "a reader cannot reproduce the audited tree" claim CF-01 originally
+  carried, which is withdrawn.
 
 ### 5.4 An interrupted Attempt has no admissible disposition — `PR-ATTEMPT-DISPOSITION`
 
@@ -554,7 +602,7 @@ Every M and R item closes. Two transitive sources were added before use, per the
 | `M01` | `product/factory/proposals/organizational-data-model-v5.yaml` | **used** | the model under test; digest re-verified independently; parsed as-is |
 | `M02` | `.../codex-organizational-data-model-v4-review.md` | **used** | S1–S8 dispositioned as X rows; R2's abandoned-assessment argument reused against `Attempt`; A3's withdrawal tested by the two traversals. **No intended prose was imported into the model.** |
 | `M03` | `product/research/wfh-010/SCOPE.md` | **inspected-no-material-instance** | boundary context; supplies no `wfh-008` instance value |
-| `M04` | `wfh-010/findings-W1..W4-data-model.md` | **used** | W1's `wfh-008` reconstruction cross-checked throughout; its commit ledger and its A1/A2 tier readings reused; **its "displayed abbreviations" reading of the SHA mismatch is contradicted here on measured evidence** (§5.3) |
+| `M04` | `wfh-010/findings-W1..W4-data-model.md` | **used** | W1's `wfh-008` reconstruction cross-checked throughout; its A1/A2 tier readings reused. **Its R08 commit ledger is CORRECT — all twelve full oids verify as ancestors of `main` — and was relied on as such. Its *explanation* of the id mismatch ("displayed abbreviations") is contradicted here on measured evidence** (§5.3). Defect recorded, file untouched: it is fixed input. |
 | `M05` | `wfh-010/reports/gate-coverage.md`, `gate-coverage-r2.md` | **used** | establishes that `wfh-010`'s equivalent gate was ruled by a `factory-validator` — the comparison behind `PR-ROLE-UNDEFINED-ASSESSOR` |
 | `M06` | `product/factory/themes.md`, `theme:workflow-harness` | **used** | `SC-PROG`, `GO-WFH`, and the `coordinator:` block that becomes `DL-COORD-STANDING` field-for-field |
 | `R01` | `wfh-008/SCOPE.md` | **used** | `UN-SCOPE`, `RC-SCOPE`, the six coverage predicates, the proof bar, the capability-target statement |
@@ -596,13 +644,16 @@ Every M and R item closes. Two transitive sources were added before use, per the
 
 ## 11. Flags for the leader, W3, W4 and the coverage auditor
 
-1. **`M04`'s SHA reading is wrong and is in this run's fixed alphabet** (§5.3). `wfh-010`
-   `findings-W1.md` §1 attributes the commit-id mismatch to "displayed abbreviations". Measured: same
-   trees, different objects, not ancestors of `main`. Anything W3/W4 builds on that sentence needs
-   re-reading.
-2. **`wfh-008`'s recorded baselines are unresolvable on `main`.** Any W3 fixture or W4 reconciliation
-   that pins a `wfh-008` commit id from the Issue or the audit will not resolve. Use the mapping in
-   `EV-032.extension`.
+1. **`M04`'s explanation of the SHA mismatch is wrong — but its ledger is right** (§5.3). `wfh-010`
+   `findings-W1.md` §1 attributes the mismatch to "displayed abbreviations"; measured, they are
+   distinct objects produced by a rebase. **`M04`'s R08 ledger itself is correct and usable** — all
+   twelve full oids are ancestors of `main`. Re-read the sentence, keep the table.
+2. **RETRACTED — `wfh-008`'s recorded baselines resolve normally.** An earlier version of this flag
+   said a W3 fixture or W4 row pinning a `wfh-008` commit id "will not resolve" and directed readers
+   to `EV-032.extension` as a substitution table. Both are withdrawn. Pin ids from `M04`'s R08 ledger
+   or from my instance's `baseline_ref` values — all are on `main`. `EV-032.extension` is a record of
+   the rewrite, not a mapping anyone needs to apply. **This is not a premise break and no scope change
+   follows from it.**
 3. **Zero enforced authority in the research case** (§5.2). If W2 finds the same in `vnc-045` — where
    a forge merge *is* an externally custodied effect — that is the sharper comparison, and the two
    cases together decide whether I12's second clause has any witness in this garage at all.
