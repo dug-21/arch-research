@@ -1,0 +1,2230 @@
+# wfh-011 · W2 · vnc-045 software-delivery case encoded as Organizational Data Model V5 instances
+# HISTORICAL / OBSERVED FORM ONLY. Counterfactuals live in vnc-045-counterfactual-instance.yaml.
+#
+# Model under test (M01): product/factory/proposals/organizational-data-model-v5.yaml
+#   sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060  (re-verified 2026-08-29)
+# Case source: dug-21/unimatrix @ 37c7b09aa0db6ba16f5f95dadd24c58adb4e6e2b (squash-merge of PR #929)
+#
+# Reading rules for this file:
+#   provenance: forge         = mechanically observable from the GitHub API dump or git object store
+#   provenance: repo-artifact = read from a committed file at the pinned commit
+#   provenance: doc-claim     = an actor-authored assertion inside a committed record
+#   provenance: inference     = derived by W2 from the above; never treated as observation
+#   value `missing-history`   = the fixed alphabet does not establish this; NEVER invented
+#   value `unestablished`     = the field's declared type cannot be honestly satisfied from the alphabet
+
+meta:
+  workstream: W2
+  run: wfh-011
+  case: vnc-045
+  model_version: 5.0.0
+  model_digest: bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+  case_commit: 37c7b09aa0db6ba16f5f95dadd24c58adb4e6e2b
+  case_parent: 9927de027184c6fa03f21b3f31abeb6967e1793f     # single parent -> squash merge
+  pr_head_ref: 08a45c533389a8b1b4d9c622c18473c85bebf101
+  form: historical-observed
+  encodes_counterfactual: false
+  note: >
+    Ordering, authorship and per-commit custody statements below cite the PR-head ref
+    (refs/remotes/origin/pr-929), never main's history: the eleven delivery commits are
+    not ancestors of main.
+
+# ---------------------------------------------------------------------------
+# Program-owned registry extensions (registered, not new common constructs)
+# ---------------------------------------------------------------------------
+registry_extensions:
+
+  unit_kind:            # M01 registries.unit_kind.seeded == {} ; program must register
+    feature:
+      definition: One tracked product change with an issue, a branch and a PR.
+      workflow_ref: WF-02
+      required_fields: [intended_outcome, baseline_ref]
+      status: registered-by-instance
+      provenance: inference   # from T01 uni-delivery-protocol + observed vnc-045 shape
+    stage:
+      definition: One protocol-defined phase of a feature terminated by a Gate.
+      workflow_ref: WF-02
+      required_fields: [intended_outcome, baseline_ref]
+      status: registered-by-instance
+      provenance: repo-artifact   # T01 "Stage 3a / 3b / 3c", each with a gate
+    implementation-wave:
+      definition: >
+        A dependency-ordered group of components implemented in parallel inside Stage 3b
+        and committed before the next wave begins.
+      workflow_ref: WF-02
+      required_fields: [intended_outcome, depends_on]
+      status: registered-by-instance
+      provenance: repo-artifact   # T01 "Wave Planning (MANDATORY)"; S03 Component Map waves 1/2/3
+
+  record_category:      # M01 registries.record_category.seeded == {} ; category owns behaviour
+    scope-definition:
+      definition: The human-locked statement of what a feature will and will not do.
+      admission_rule: Admitted by explicit human approval at the Session-1 human gate.
+      lifecycle: Revised only by an authorized human scope decision; derived records regenerate.
+      correction: In-place revision by the synthesizer under a human decision (observed).
+      retrieval: product/features/{id}/SCOPE.md
+      custodian: AC-01
+      status: registered-by-instance
+    design-source:
+      definition: Architecture, Specification, Risk-Test Strategy, ADRs, pseudocode, test plans.
+      admission_rule: Admitted by the Gate 3a assessment.
+      lifecycle: Regenerated from SCOPE on an authorized scope change.
+      correction: Overwrite-in-place by the authoring role (observed).
+      retrieval: product/features/{id}/{architecture,specification,pseudocode,test-plan}/**
+      status: registered-by-instance
+    agent-report:
+      definition: An actor's own account of what it did, produced at the end of its Attempt.
+      admission_rule: NONE OBSERVED - written and committed without any admission event.
+      lifecycle: NONE OBSERVED - never superseded, never marked stale, never regenerated.
+      correction: NONE OBSERVED.
+      retrieval: product/features/{id}/agents/**
+      status: registered-by-instance
+      distinct_behaviour_evidence: >
+        Earns a Category under M01 registries.record_category.admission_rule by behaviour,
+        not label: three reports in the merged tree describe a superseded scope and carry no
+        currentness marker (see RC-11, RC-12, RC-13).
+    gate-assessment:
+      definition: An independent validator's assessment of a pinned subject under a Gate.
+      admission_rule: Produced by the assessor named in Gate.requires_assessor.
+      lifecycle: Terminal for the gate iteration; a rework produces a new iteration.
+      correction: Not corrected; a re-check is a new assessment.
+      retrieval: product/features/{id}/reports/gate-*-report.md
+      status: registered-by-instance
+    test-observation-report:
+      definition: An actor-authored account of a deterministic test run.
+      admission_rule: Consumed by Gate 3c (T01) - not observed to have been consumed here.
+      lifecycle: One per Stage-3c execution.
+      correction: Not observed.
+      retrieval: product/features/{id}/testing/RISK-COVERAGE-REPORT.md
+      status: registered-by-instance
+      distinct_behaviour_evidence: >
+        Distinct because its epistemic_kind is fixed at reported-observation: the raw runner
+        output is not retained anywhere in the alphabet, so it can never be a
+        mechanical-observation under M01 I4.
+    advisory-review:
+      definition: A fresh-context product review that is explicitly non-binding.
+      admission_rule: None; posted as a forge comment and relayed verbatim.
+      lifecycle: Never superseded; supersession by later reviews is not marked.
+      correction: Not observed.
+      retrieval: GitHub issue/PR comments
+      status: registered-by-instance
+      distinct_behaviour_evidence: >
+        T01 Product Review Rules: "Advisory - does not block delivery" and the leader
+        "NEVER parses, acts on, or gates on it."
+    forge-record:
+      definition: Issue, PR, review, commit and merge metadata held by the forge.
+      admission_rule: Written by the forge on the event; not authorable by the program.
+      lifecycle: Append-only from the program's side.
+      correction: Not available to the program.
+      retrieval: GitHub REST API
+      custodian: EB-01
+      status: registered-by-instance
+
+  effect_class:         # M01 registries.effect_class.seeded == {} ; program must register
+    forge-merge:
+      definition: Integrating a pull request's changes into a protected default branch.
+      target_schema: {repository: text, pr_number: integer, base_ref: text, head_ref: text}
+      receipt_requirements: {merge_commit_sha: digest, merged_at: timestamp, merged_by: text}
+      status: registered-by-instance
+    forge-issue-state:
+      definition: Closing or reopening a tracked issue.
+      target_schema: {repository: text, issue_number: integer}
+      receipt_requirements: {state: text, state_reason: text, closed_at: timestamp, closed_by: text}
+      status: registered-by-instance
+    repository-write:
+      definition: Creating a commit on a branch of the repository.
+      target_schema: {repository: text, ref: text}
+      receipt_requirements: {commit_sha: digest, author: text, committer: text, committed_at: timestamp}
+      status: registered-by-instance
+    knowledge-store-write:
+      definition: Storing or correcting an entry in the Unimatrix knowledge store.
+      target_schema: {entry_id: integer, operation: text}
+      receipt_requirements: {audit_event: map}
+      status: registered-by-instance
+      note: >
+        Registered because S05 reports claim entries #5599-#5613 were stored, but no receipt
+        for any of those writes exists inside the fixed alphabet. See EV-30.
+
+  scope_type:
+    # M01 seeds collective/program/mission/team are used as seeded; none added.
+    used_seeds: [collective, program, mission]
+    unused_seeds:
+      team: >
+        not-applicable in this case. The delivery "swarm" is a set of per-Attempt agent
+        spawns with no durable membership, no boundary of its own and no authority root;
+        nothing in the alphabet evidences a Scope whose lifecycle differs from the mission.
+
+  capability_classification:
+    used_seeds: [functional, nonfunctional, threshold, curve]
+
+# ---------------------------------------------------------------------------
+# core.Scope
+# ---------------------------------------------------------------------------
+scopes:
+  - id: SC-01
+    scope_type: collective
+    name: dug-21 (owner-operated collective)
+    objective: missing-history
+    authority_root_ref: AC-01
+    effective_at: missing-history
+    expires_at: null
+    parent: null
+    contains: [SC-02]
+    provenance: forge
+    evidence: >
+      GitHub author_association "OWNER" on issue #928 and PR #929; merged_by dug-21;
+      every commit on the PR-head ref authored by Doug <doug@sunstoneconsultingllc.com>.
+    open_exercised: [authority-root succession, termination and transfer]   # neither observed
+
+  - id: SC-02
+    scope_type: program
+    name: Unimatrix product program
+    objective: >
+      Deliver a domain-agnostic knowledge platform; goals #5517 domain-agnostic,
+      #5518 self-learning, #5474 integrity.
+    authority_root_ref: AC-01
+    effective_at: missing-history
+    parent: SC-01
+    contains: [SC-03]
+    provenance: doc-claim      # goal ids and framing quoted in S01 comments and S03 ALIGNMENT-REPORT
+    evidence: 'S01 comment 4898695344; S03 ALIGNMENT-REPORT "Goals consulted: #5518, #5517, #5474"'
+
+  - id: SC-03
+    scope_type: mission
+    name: vnc-045 - context_tag in-place tag mutation
+    objective: >
+      Ship the context_tag MECHANISM only; protected_tags value-hygiene policy deferred in full.
+    authority_root_ref: AC-01
+    effective_at: 2026-07-06T23:44:12Z     # issue #928 created
+    expires_at: 2026-07-07T11:29:09Z       # issue #928 closed, state_reason completed
+    parent: SC-02
+    contains: []
+    provenance: forge
+    evidence: unimatrix-issue-928.json created_at/closed_at/state_reason/closed_by
+
+# ---------------------------------------------------------------------------
+# core.Goal
+# ---------------------------------------------------------------------------
+goals:
+  - id: GO-01
+    statement: Knowledge integrity - every mutation is attributed and append-only audit-logged.
+    scope_ref: SC-02
+    success_criteria: missing-history
+    claim_floor: missing-history
+    north_star: missing-history
+    lifecycle_state: active
+    requires: [CP-01]
+    is_advanced_by: []
+    directs: [UN-02]
+    provenance: doc-claim
+    evidence: >
+      Issue #928 label "goal:knowledge-integrity"; S01 comment 4899256125 names KI-AUDIT #5546
+      as the closest governed node and quotes two of its done_when clauses.
+    gap_note: >
+      Goal.success_criteria and Goal.claim_floor are REQUIRED by M01 but are held in
+      Unimatrix graph nodes outside the fixed S alphabet. Not invented. See coverage rows
+      core.Goal.fields.success_criteria / .claim_floor.
+
+  - id: GO-02
+    statement: Self-learning - the entry's accumulated usage signal survives a volatile status change.
+    scope_ref: SC-02
+    success_criteria: missing-history
+    claim_floor: missing-history
+    lifecycle_state: active
+    requires: missing-history
+    is_advanced_by: []
+    directs: []
+    provenance: doc-claim
+    evidence: S03 ALIGNMENT-REPORT "#5518 self-learning"; S01 comment 4898695344.
+    invariant_pressure: >
+      M01 I13 requires every Capability to be required by at least one Goal; the converse is
+      not required, so a Goal with no resolvable Capability list is representable but its
+      required claim_floor is not. See findings F-07.
+
+  - id: GO-03
+    statement: Domain-agnostic - the engine writes a tag it never interprets.
+    scope_ref: SC-02
+    success_criteria: missing-history
+    claim_floor: missing-history
+    lifecycle_state: active
+    requires: missing-history
+    is_advanced_by: []
+    directs: []
+    provenance: doc-claim
+    evidence: S03 ALIGNMENT-REPORT "#5517 domain-agnostic"; S03 SPECIFICATION section 1.
+
+# ---------------------------------------------------------------------------
+# core.Capability
+# ---------------------------------------------------------------------------
+capabilities:
+  - id: CP-01
+    name: KI-AUDIT
+    external_ref: Unimatrix entry #5546
+    observable_behavior: Every mutation writes an attributed audit row; audit_log is append-only.
+    scope_ref: SC-02
+    classification_refs: [functional, threshold]
+    done_when: >
+      (a) DELETE/UPDATE on audit_log fail (append-only, DDL trigger);
+      (b) each mutation writes an attributed row.
+    grade: proven
+    grade_provenance: doc-claim
+    grade_note: >
+      "threshold (proven)" is asserted by AC-02 (uni-zero) in S01 comment 4898695344 and
+      restated in 4899256125. NOT demonstrated to this run: the Unimatrix node and its
+      proven_by set are outside the alphabet. Under M01 I9 this instance therefore records
+      a CLAIMED grade of proven, not a demonstrated one.
+    evidence_record_refs: missing-history
+    required_by: [GO-01]
+    advances: []
+    composed_of: []
+    prerequisite_of: []
+    delivered_by: []          # deliberate: see UN-02.delivers
+    enabled_by: [TE-01]
+    provenance: doc-claim
+
+  - id: CP-02
+    name: SLN1 (poison resistance)
+    external_ref: Unimatrix entry #5528
+    observable_behavior: An abuse scenario provably cannot move the learned signal past a bound.
+    scope_ref: SC-02
+    classification_refs: [nonfunctional, curve]
+    done_when: missing-history
+    grade: UNREPRESENTABLE
+    grade_observed_value: asserted
+    grade_provenance: doc-claim
+    grade_note: >
+      The observed program's grade vocabulary is {proven, partial, missing, asserted}
+      (S03 SCOPE-RISK-ASSESSMENT SR-10, quoting uni-capability SKILL.md) and the program
+      explicitly ruled that "claimed" is a SLIP and "asserted" is authoritative
+      (S01 comment 4898695344, OQ-1). M01 values.evidence_grade is RESOLVED and closed at
+      [missing, claimed, partial, proven] with no registry and no extension_owner.
+      The observed value therefore has no conforming home. Recording it as "claimed" would
+      be silent normalisation of the exact term the program rejected. See findings F-01.
+    evidence_record_refs: missing-history
+    required_by: [GO-01]
+    advances: []
+    enabled_by: []
+    provenance: doc-claim
+
+# ---------------------------------------------------------------------------
+# core.Actor    (versioned: false)
+# ---------------------------------------------------------------------------
+actors:
+  - id: AC-01
+    name: dug-21 / Doug
+    actor_type: human
+    declared_identity: "dug-21 <angryweed@gmail.com> | Doug <doug@sunstoneconsultingllc.com>"
+    lifecycle_state: active
+    has_skill: missing-history
+    holds_role: [RO-01]
+    receives: []              # authority root; holds undelegated authority for SC-01
+    provenance: forge
+    evidence: >
+      author_association OWNER on #928/#929; merged_by; merge-commit author
+      "dug-21 <angryweed@gmail.com>"; all eleven PR-head commits authored and committed by
+      "Doug <doug@sunstoneconsultingllc.com>".
+    attestation_note: >
+      This is the ONLY forge-attested actor identity in the entire case. Every agent below
+      is distinguishable from AC-01 only by self-declared strings inside file content.
+
+  - id: AC-02
+    name: vnc-045-agent-1-architect
+    actor_type: agent
+    declared_identity: vnc-045-agent-1-architect
+    lifecycle_state: missing-history
+    has_skill: [SK-01]
+    holds_role: [RO-02]
+    receives: [DL-02]
+    provenance: doc-claim
+    attestation: none
+    evidence: S05 agents/vnc-045-agent-1-architect-report.md header
+  - id: AC-03
+    name: vnc-045-agent-2-spec
+    actor_type: agent
+    declared_identity: vnc-045-agent-2-spec
+    lifecycle_state: missing-history
+    holds_role: [RO-03]
+    receives: [DL-02]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-04
+    name: vnc-045-agent-3-risk
+    actor_type: agent
+    declared_identity: vnc-045-agent-3-risk
+    lifecycle_state: missing-history
+    holds_role: [RO-04]
+    receives: [DL-02]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-05
+    name: vnc-045-agent-1-pseudocode
+    actor_type: agent
+    declared_identity: vnc-045-agent-1-pseudocode
+    lifecycle_state: missing-history
+    holds_role: [RO-05]
+    receives: [DL-03]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-06
+    name: vnc-045-agent-2-testplan
+    actor_type: agent
+    declared_identity: vnc-045-agent-2-testplan
+    lifecycle_state: missing-history
+    holds_role: [RO-06]
+    receives: [DL-03]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-07
+    name: vnc-045-agent-3-store
+    actor_type: agent
+    declared_identity: vnc-045-agent-3-store
+    lifecycle_state: missing-history
+    has_skill: [SK-02]
+    holds_role: [RO-07]
+    receives: [DL-04]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-08
+    name: vnc-045-agent-4-service
+    actor_type: agent
+    declared_identity: vnc-045-agent-4-service
+    lifecycle_state: missing-history
+    has_skill: [SK-02]
+    holds_role: [RO-07]
+    receives: [DL-05]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-09
+    name: vnc-045-agent-5-handler
+    actor_type: agent
+    declared_identity: vnc-045-agent-5-handler
+    lifecycle_state: missing-history
+    has_skill: [SK-02]
+    holds_role: [RO-07]
+    receives: [DL-06]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-10
+    name: vnc-045-agent-6-tester
+    actor_type: agent
+    declared_identity: vnc-045-agent-6-tester
+    lifecycle_state: missing-history
+    has_skill: [SK-03]
+    holds_role: [RO-08]
+    receives: [DL-07]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-11
+    name: vnc-045-gate-3a
+    actor_type: agent
+    declared_identity: vnc-045-gate-3a
+    lifecycle_state: missing-history
+    holds_role: [RO-09]
+    receives: [DL-08]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-12
+    name: vnc-045-gate-3b
+    actor_type: agent
+    declared_identity: vnc-045-gate-3b
+    lifecycle_state: missing-history
+    holds_role: [RO-09]
+    receives: [DL-09]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-13
+    name: vnc-045-security-reviewer
+    actor_type: agent
+    declared_identity: vnc-045-security-reviewer
+    lifecycle_state: missing-history
+    holds_role: [RO-10]
+    receives: [DL-10]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-14
+    name: vnc-045-vision-guardian
+    actor_type: agent
+    declared_identity: vnc-045-vision-guardian
+    lifecycle_state: missing-history
+    holds_role: [RO-11]
+    receives: [DL-11]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-15
+    name: vnc-045-synthesizer
+    actor_type: agent
+    declared_identity: vnc-045-synthesizer
+    lifecycle_state: missing-history
+    holds_role: [RO-12]
+    receives: [DL-12]
+    provenance: doc-claim
+    attestation: none
+  - id: AC-16
+    name: uni-zero-reviewer (vnc-045-zero-scope / -design / -pr)
+    actor_type: agent
+    declared_identity: uni-zero-reviewer
+    lifecycle_state: missing-history
+    holds_role: [RO-13]
+    receives: [DL-13]
+    provenance: doc-claim
+    attestation: none
+    evidence: >
+      Three advisory comments (S01 4898695344 gate=scope-review, 4899256125 gate=design-review;
+      S02 issue-comment 4900099734 gate=pr-review). The forge attributes all three to dug-21.
+  - id: AC-17
+    name: cargo test / pytest runner
+    actor_type: deterministic-component
+    declared_identity: "cargo test --workspace ; pytest suites/"
+    lifecycle_state: active
+    provenance: doc-claim
+    evidence: S05 RISK-COVERAGE-REPORT test-run counts; S03 IMPLEMENTATION-BRIEF constraints.
+    note: >
+      The runner is the instrument of the only mechanical observations claimed in this case,
+      but no raw capture from it survives in the alphabet. See RC-14 and finding F-03.
+  - id: AC-18
+    name: GitHub (forge)
+    actor_type: service
+    declared_identity: "GitHub <noreply@github.com>"
+    lifecycle_state: active
+    provenance: forge
+    evidence: >
+      Committer of merge commit 37c7b09a is "GitHub <noreply@github.com>" while its author is
+      "dug-21 <angryweed@gmail.com>" - an externally-custodied actor performing the effect.
+  - id: AC-19
+    name: "Claude Opus 4.8 (declared co-author)"
+    actor_type: agent
+    declared_identity: "Claude Opus 4.8 <noreply@anthropic.com>"
+    lifecycle_state: active
+    provenance: forge
+    evidence: >
+      Co-Authored-By trailer on PR-head commits (verified on 843d0049). This is the only
+      agent identity that appears in a forge-held object rather than in file content -
+      and it is still a self-declared trailer, not an attestation.
+
+# ---------------------------------------------------------------------------
+# core.Unit
+# ---------------------------------------------------------------------------
+units:
+  - id: UN-01
+    unit_kind: feature
+    intended_outcome: >
+      Ship context_tag in-place tag mutation AND the per-slug protected_tags value-hygiene
+      policy (config type, five-site threading, allow-list validator, single_value config,
+      min_trust_level, cadence guard).
+    scope_ref: SC-03
+    current_state: superseded-by-scope-reduction
+    baseline_ref: missing-history
+    directed_by: [GO-01]
+    follows: WF-01
+    depends_on: []
+    attempts: [AT-01]
+    assigned_through: missing-history
+    gated_by: []
+    consumes: []
+    produces: [RC-20, RC-21, RC-22, RC-23]      # the pre-reduction agent reports + ADR-003/005/006/007
+    delivers: []
+    replaces: null
+    provenance: inference
+    evidence: >
+      Reconstructed from the pre-reduction artefacts that survive in the merged tree:
+      S05 agents/vnc-045-agent-1-architect-report.md ("with per-slug protected_tags
+      value-hygiene policy", ADR-001..008 all active, SR-06 five-site threading resolved);
+      S05 agents/vnc-045-agent-2-spec-report.md ("14 SDs binding", "AC-01..AC-09",
+      "min_trust_level retained as inert enterprise seam"); S05 vision-guardian report
+      ("PASS 6", "min_trust_level ... R-10, AC-09b"); S03 SCOPE-RISK-ASSESSMENT (SR-03..SR-10
+      all live); architecture/ADR-003/005/006/007.
+
+  - id: UN-02
+    unit_kind: feature
+    intended_outcome: >
+      Ship the context_tag MECHANISM only; protected_tags value-hygiene policy deferred in full.
+    scope_ref: SC-03
+    current_state: delivered-and-merged
+    baseline_ref: "feature/vnc-045 @ 08a45c53 (PR-head); merged as 37c7b09a"
+    directed_by: [GO-01]
+    follows: WF-02
+    depends_on: []
+    attempts: [AT-02]
+    assigned_through: missing-history
+    gated_by: [GT-04, GT-05, GT-06]
+    consumes: [RC-01]
+    produces: [RC-02, RC-03, RC-04, RC-05, RC-06, RC-07, RC-14, RC-15, RC-16]
+    delivers: []
+    replaces: UN-01
+    provenance: forge + repo-artifact
+    i16_witness: >
+      CONFORMING. M01 I16 ("changing a Unit's intended outcome creates a new Unit") and
+      core.Unit.relations.replaces ("used when intended outcome changes") represent the human
+      scope reduction exactly. The project itself did NOT mint a new identifier: issue #928,
+      branch feature/vnc-045 and the feature-id vnc-045 were reused and SCOPE.md /
+      IMPLEMENTATION-BRIEF.md / ACCEPTANCE-MAP.md were overwritten in place
+      (S05 synthesizer report: "OVERWRITTEN"), per T02 uni-design-protocol
+      "Handling human-requested changes". V5 represents the history correctly; the project
+      does not distinguish the two Units.
+    delivers_note: >
+      DELIBERATE EMPTY SET, and a positive M01 I11 witness. Both uni-zero reviews rule that
+      vnc-045 delivers no functional capability: "Do NOT mark any capability proven off
+      vnc-045" (S01 4899256125) and "Advances nothing toward completion under
+      goal:knowledge-integrity - and that is the correct read" (S02 4900099734).
+
+  - id: UN-03
+    unit_kind: stage
+    intended_outcome: Stage 3a - component pseudocode and test plans that a validator will pass.
+    scope_ref: SC-03
+    current_state: gate-3a-PASS
+    baseline_ref: "pre-commit working tree; committed as 3afc2c49"
+    directed_by: [GO-01]
+    follows: WF-02
+    depends_on: []
+    attempts: [AT-03, AT-04]
+    gated_by: [GT-04]
+    produces: [RC-04, RC-05, RC-06]
+    delivers: []
+    provenance: repo-artifact
+
+  - id: UN-04
+    unit_kind: stage
+    intended_outcome: Stage 3b - code implementing the validated pseudocode.
+    scope_ref: SC-03
+    current_state: gate-3b-PASS
+    baseline_ref: "feature/vnc-045 @ 843d0049 (see GT-05 baseline note)"
+    follows: WF-02
+    depends_on: [UN-03]
+    attempts: [AT-05]
+    gated_by: [GT-05]
+    produces: [RC-15]
+    delivers: []
+    provenance: repo-artifact
+
+  - id: UN-05
+    unit_kind: stage
+    intended_outcome: Stage 3c - risk coverage demonstrated by executed tests.
+    scope_ref: SC-03
+    current_state: claimed-PASS-without-gate-record
+    baseline_ref: "feature/vnc-045 @ bf7c4812"
+    follows: WF-02
+    depends_on: [UN-04]
+    attempts: [AT-09]
+    gated_by: [GT-06]
+    produces: [RC-14]
+    delivers: []
+    provenance: repo-artifact
+    critical_note: >
+      GT-06 has NO assessment record in the alphabet. See GT-06 and finding F-02.
+
+  - id: UN-06
+    unit_kind: implementation-wave
+    intended_outcome: Wave 1 - direct entry_tags write primitives + audit op-list entry.
+    scope_ref: SC-03
+    current_state: committed
+    baseline_ref: a63d45f0
+    follows: WF-02
+    depends_on: []
+    attempts: [AT-06]
+    produces: [RC-16]
+    delivers: []
+    provenance: forge
+  - id: UN-07
+    unit_kind: implementation-wave
+    intended_outcome: Wave 2 - StoreTagService orchestration seam.
+    scope_ref: SC-03
+    current_state: committed
+    baseline_ref: 74bc1fd4
+    follows: WF-02
+    depends_on: [UN-06]
+    attempts: [AT-07]
+    produces: [RC-17]
+    delivers: []
+    provenance: forge
+  - id: UN-08
+    unit_kind: implementation-wave
+    intended_outcome: Wave 3 - context_tag #[tool] handler and extracted seam fns.
+    scope_ref: SC-03
+    current_state: committed
+    baseline_ref: b68c2c43
+    follows: WF-02
+    depends_on: [UN-07]
+    attempts: [AT-08]
+    produces: [RC-18]
+    delivers: []
+    provenance: forge
+    dag_witness: >
+      UN-06 -> UN-07 -> UN-08 is a DAG per the WF-02 baseline and is mechanically ordered on
+      the PR-head ref (a63d45f0 03:17 -> 74bc1fd4 03:30 -> b68c2c43 03:39). It is NOT
+      recoverable from main, whose history contains only the squashed 37c7b09a.
+
+# ---------------------------------------------------------------------------
+# supporting.Workflow    (owner: Program)
+# ---------------------------------------------------------------------------
+workflows:
+  - id: WF-01
+    name: uni design session (Session 1)
+    method_statement: >
+      Phase 1 scope -> Phase 1b scope risk -> Phase 2a architect+spec (parallel) ->
+      Phase 2a+ risk strategy -> Phase 2b vision alignment -> Phase 2c synthesis ->
+      Phase 2c+ advisory product review -> Phase 2d return to human. No git operations;
+      artefacts remain untracked until the delivery session commits them.
+    owner_scope_ref: SC-02
+    unit_kinds: [feature]
+    dependency_rules:
+      - Phase 2a requires human approval of SCOPE.md.
+      - Synthesis regenerates IMPLEMENTATION-BRIEF and ACCEPTANCE-MAP from source documents.
+      - A human technical change updates the source document first, then re-runs the synthesizer.
+    state_vocabulary: [scope, scope-review, design, design-review, spec]
+    definition_custodian_ref: AC-01
+    applies_to: [GO-01]
+    requires: missing-history
+    binds: [GT-01, GT-02, GT-03]
+    governs: [UN-01]
+    supersedes: null
+    provenance: repo-artifact (T02)
+    custody_witness: >
+      CONFORMING to M01 I18. PR #929 changed 57 files; none is under .claude/. The governed
+      activity did not edit its governing definition. Mechanically verified from the PR files
+      dump. This is the strongest demonstrated I18 witness in the case.
+
+  - id: WF-02
+    name: uni delivery session (Session 2)
+    method_statement: >
+      Stage 3a component design -> Gate 3a (MANDATORY BLOCK) -> Stage 3b wave-based
+      implementation -> Gate 3b -> Stage 3c testing -> Gate 3c -> Phase 4 delivery
+      (branch, commit, PR, security review, advisory product review, human merge).
+    owner_scope_ref: SC-02
+    unit_kinds: [feature, stage, implementation-wave]
+    dependency_rules:
+      - Gate 3a must PASS before Stage 3b begins.
+      - Waves execute sequentially; components inside a wave are independent and parallel.
+      - Max 2 rework iterations per gate; exceeding it escalates to SCOPE FAIL and stops.
+      - Gates check committed HEAD; working-tree changes are invisible to them.
+      - Merge -> close cycle -> retro, in that strict order.
+    state_vocabulary: [spec, spec-review, develop, test, pr-review]
+    definition_custodian_ref: AC-01
+    applies_to: [GO-01]
+    requires: missing-history
+    binds: [GT-04, GT-05, GT-06, GT-07, GT-08]
+    governs: [UN-02, UN-03, UN-04, UN-05, UN-06, UN-07, UN-08]
+    supersedes: null
+    provenance: repo-artifact (T01)
+    traversal_note: >
+      Goal -> applicable Workflows (M02 required traversal) resolves here WITHOUT a new inverse
+      relation: Workflow.applies_to is a declared one-way relation, so the traversal is an index
+      over workflows filtered on applies_to. Demonstrated in traversal-check below.
+
+# ---------------------------------------------------------------------------
+# supporting.Skill / Role
+# ---------------------------------------------------------------------------
+skills:
+  - id: SK-01
+    name: system architecture and ADR authoring
+    work_class: design of a feature's component boundaries and recorded decisions
+    definition_record_ref: null
+    required_tool_classes: [repository-read, knowledge-search]
+    local_binding: null
+    required_by: [RO-02, WF-01]
+    held_by:
+      - actor: AC-02
+        evidence_refs: missing-history
+        grade: missing-history
+        currentness: unknown
+        expires_at: null
+    provenance: inference
+  - id: SK-02
+    name: Rust workspace implementation (sqlx, rmcp tool layer)
+    work_class: implementing a component against validated pseudocode in this workspace
+    required_tool_classes: [repository-write, cargo]
+    required_by: [RO-07, WF-02]
+    held_by:
+      - {actor: AC-07, evidence_refs: missing-history, grade: missing-history, currentness: unknown}
+      - {actor: AC-08, evidence_refs: missing-history, grade: missing-history, currentness: unknown}
+      - {actor: AC-09, evidence_refs: missing-history, grade: missing-history, currentness: unknown}
+    provenance: inference
+  - id: SK-03
+    name: risk-based test execution (cargo + pytest integration harness)
+    work_class: executing and reporting the risk-coverage suite
+    required_by: [RO-08, WF-02]
+    held_by:
+      - {actor: AC-10, evidence_refs: missing-history, grade: missing-history, currentness: unknown}
+    provenance: inference
+skill_catalog_note: >
+  M01 catalogs.skill (scope collective|program) is NOT exercised: no shared skill catalogue
+  exists in the alphabet, and nothing records competence evidence, grade, currentness or
+  expiry for any actor. M01 open.skill_catalog remains still-open on this case.
+  Every held_by attribute above is missing-history; none is invented.
+
+roles:
+  - id: RO-01
+    name: owner / authority root
+    responsibility: Approve scope, approve design, decide scope reductions, merge.
+    independence_constraints: []
+    requires: []
+    assigned_to: [{actor: AC-01, scope_ref: SC-01, effective_at: missing-history, expires_at: null}]
+    receives: [DL-01]
+    provenance: forge
+  - id: RO-02
+    name: architect
+    responsibility: Produce ARCHITECTURE.md and ADRs from the approved scope.
+    requires: [SK-01]
+    assigned_to: [{actor: AC-02, scope_ref: SC-03, effective_at: missing-history}]
+    receives: []
+    provenance: repo-artifact (T02 Phase 2a)
+  - id: RO-03
+    name: specification writer
+    responsibility: Translate SCOPE into testable FR/NFR/AC.
+    assigned_to: [{actor: AC-03, scope_ref: SC-03}]
+    provenance: repo-artifact (T02 Phase 2a)
+  - id: RO-04
+    name: risk strategist
+    responsibility: Produce the scope risk assessment and the risk-based test strategy.
+    assigned_to: [{actor: AC-04, scope_ref: SC-03}]
+    provenance: repo-artifact (T02 Phase 1b / 2a+)
+  - id: RO-05
+    name: pseudocode specialist
+    responsibility: Per-component pseudocode implementing the specification.
+    assigned_to: [{actor: AC-05, scope_ref: SC-03}]
+    provenance: repo-artifact (T01 Stage 3a)
+  - id: RO-06
+    name: test-plan designer
+    responsibility: Per-component test plans addressing the risk strategy.
+    assigned_to: [{actor: AC-06, scope_ref: SC-03}]
+    provenance: repo-artifact (T01 Stage 3a)
+  - id: RO-07
+    name: implementer (uni-rust-dev)
+    responsibility: Implement one component per wave against its validated pseudocode.
+    independence_constraints: []
+    requires: [SK-02]
+    assigned_to: [{actor: AC-07, scope_ref: SC-03}, {actor: AC-08, scope_ref: SC-03}, {actor: AC-09, scope_ref: SC-03}]
+    provenance: repo-artifact (T01 Dev-Agent Selection)
+  - id: RO-08
+    name: tester
+    responsibility: Execute the risk suite and produce RISK-COVERAGE-REPORT.md.
+    requires: [SK-03]
+    assigned_to: [{actor: AC-10, scope_ref: SC-03}]
+    provenance: repo-artifact (T01 Stage 3c)
+  - id: RO-09
+    name: validator (uni-validator, gate mode)
+    responsibility: Assess a pinned subject against the three source documents and issue a gate outcome.
+    independence_constraints:
+      - "Distinct agent id per gate (vnc-045-gate-3a / -3b / -3c) - DECLARED by T01 spawn templates."
+      - "NOT attested: the forge records one identity for assessor and assessee alike."
+    requires: []
+    assigned_to: [{actor: AC-11, scope_ref: SC-03}, {actor: AC-12, scope_ref: SC-03}]
+    provenance: repo-artifact (T01 Gate 3a/3b/3c spawn templates)
+  - id: RO-10
+    name: security reviewer
+    responsibility: Fresh-context review of the full main...HEAD diff.
+    independence_constraints:
+      - "fresh-context (DECLARED in S05 security-reviewer report and T01 PR Review)."
+    assigned_to: [{actor: AC-13, scope_ref: SC-03}]
+    provenance: repo-artifact
+  - id: RO-11
+    name: vision guardian
+    responsibility: Check design artefacts against product vision and strategic goals.
+    assigned_to: [{actor: AC-14, scope_ref: SC-03}]
+    provenance: repo-artifact (T02 Phase 2b)
+  - id: RO-12
+    name: synthesizer
+    responsibility: Compile IMPLEMENTATION-BRIEF and ACCEPTANCE-MAP from source documents; update the issue.
+    independence_constraints: ["fresh context window (T02 Phase 2c)"]
+    assigned_to: [{actor: AC-15, scope_ref: SC-03}]
+    provenance: repo-artifact
+  - id: RO-13
+    name: product reviewer (uni-zero-reviewer)
+    responsibility: Advisory product-lens review at scope-review, design-review and pr-review.
+    independence_constraints:
+      - "Spawn prompt carries ONLY agent id, gate, ids and artifact paths - never summaries,
+         conclusions or framing (T01/T02 Product Review Rules)."
+    assigned_to: [{actor: AC-16, scope_ref: SC-03}]
+    receives: [DL-13]
+    provenance: repo-artifact
+    note: >
+      RO-13's output is explicitly non-binding; it is modelled as an advisory-review Record
+      documenting a communication Event, NOT as a Gate assessment. See GT-01/02/03.
+
+# ---------------------------------------------------------------------------
+# supporting.Delegation
+# ---------------------------------------------------------------------------
+delegations:
+  - id: DL-01
+    kind: standing
+    grantor: AC-01                     # or the SC-01 authority root acting
+    grantee: RO-01
+    scope: SC-01
+    unit: null
+    autonomy_tier: A5
+    effect_grants: [forge-merge, forge-issue-state, repository-write, knowledge-store-write]
+    resource_ceiling: unestablished
+    escalation_conditions: []
+    effective_at: missing-history
+    expires_at: null
+    definition_custodian_ref: AC-01
+    derived_from: null
+    governs: []
+    enforced_by: [EB-01]
+    provenance: inference
+    note: >
+      A5 ("change Collective policy, authority structures or strategic objectives",
+      held_by: human) is the only tier consistent with the observed acts: reducing the
+      mission's scope, approving the design and merging.
+
+  - id: DL-02
+    kind: dynamic
+    grantor: AC-01
+    grantee: AC-02
+    scope: SC-03
+    unit: UN-01
+    autonomy_tier: A1
+    effect_grants: [repository-write, knowledge-store-write]
+    resource_ceiling: unestablished
+    escalation_conditions: ["Open questions returned to the leader, non-blocking (observed)."]
+    effective_at: missing-history
+    definition_custodian_ref: AC-01
+    derived_from: DL-01
+    governs: [AT-03]
+    enforced_by: []                    # NO EffectBoundary enforces this grant
+    provenance: inference
+    attenuation_note: >
+      A1 < A5 on the initiative axis, so I17 is satisfiable at the tier axis. It is NOT
+      satisfiable at the effect axis: DL-02's effect_grants are unbounded relative to DL-01
+      because both run under the same OS/git/gh credentials. Attenuation is DECLARED by the
+      protocol's per-agent scope rules ("NO file edits outside product/features/") and
+      enforced by nothing.
+
+  # DL-03 .. DL-13 share DL-02's shape; only the differing keys are recorded.
+  - {id: DL-03, kind: dynamic, grantor: AC-01, grantee: RO-05, scope: SC-03, unit: UN-03, autonomy_tier: A1,
+     effect_grants: [repository-write], resource_ceiling: unestablished, escalation_conditions: ["gate REWORKABLE FAIL -> re-spawn with failure details"],
+     derived_from: DL-01, governs: [AT-03, AT-04], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-04, kind: dynamic, grantor: AC-01, grantee: AC-07, scope: SC-03, unit: UN-06, autonomy_tier: A1,
+     effect_grants: [repository-write, knowledge-store-write], resource_ceiling: unestablished, escalation_conditions: ["Issues / blockers returned to leader"],
+     derived_from: DL-01, governs: [AT-06], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-05, kind: dynamic, grantor: AC-01, grantee: AC-08, scope: SC-03, unit: UN-07, autonomy_tier: A1,
+     effect_grants: [repository-write, knowledge-store-write], resource_ceiling: unestablished, escalation_conditions: [],
+     derived_from: DL-01, governs: [AT-07], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-06, kind: dynamic, grantor: AC-01, grantee: AC-09, scope: SC-03, unit: UN-08, autonomy_tier: A1,
+     effect_grants: [repository-write, knowledge-store-write], resource_ceiling: unestablished, escalation_conditions: [],
+     derived_from: DL-01, governs: [AT-08], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-07, kind: dynamic, grantor: AC-01, grantee: AC-10, scope: SC-03, unit: UN-05, autonomy_tier: A1,
+     effect_grants: [repository-write], resource_ceiling: unestablished, escalation_conditions: ["xfail requires a filed GH issue (T01)"],
+     derived_from: DL-01, governs: [AT-09], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-08, kind: dynamic, grantor: AC-01, grantee: AC-11, scope: SC-03, unit: UN-03, autonomy_tier: A0,
+     effect_grants: [repository-write], resource_ceiling: unestablished, escalation_conditions: ["SCOPE FAIL -> stop, return to human"],
+     derived_from: DL-01, governs: [AT-10], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference,
+     note: "A0 - assess and issue an outcome without discretionary work initiation."}
+  - {id: DL-09, kind: dynamic, grantor: AC-01, grantee: AC-12, scope: SC-03, unit: UN-04, autonomy_tier: A0,
+     effect_grants: [repository-write], resource_ceiling: unestablished, escalation_conditions: ["SCOPE FAIL -> stop"],
+     derived_from: DL-01, governs: [AT-11], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-10, kind: dynamic, grantor: AC-01, grantee: AC-13, scope: SC-03, unit: UN-02, autonomy_tier: A0,
+     effect_grants: [repository-write, forge-issue-state], resource_ceiling: unestablished, escalation_conditions: ["BLOCKED -> included in combined return"],
+     derived_from: DL-01, governs: [AT-12], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-11, kind: dynamic, grantor: AC-01, grantee: AC-14, scope: SC-03, unit: UN-01, autonomy_tier: A0,
+     effect_grants: [repository-write, knowledge-store-write], resource_ceiling: unestablished, escalation_conditions: ["VARIANCE -> human approval required"],
+     derived_from: DL-01, governs: [AT-13], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-12, kind: dynamic, grantor: AC-01, grantee: AC-15, scope: SC-03, unit: UN-02, autonomy_tier: A1,
+     effect_grants: [repository-write, forge-issue-state], resource_ceiling: unestablished, escalation_conditions: [],
+     derived_from: DL-01, governs: [AT-14], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference}
+  - {id: DL-13, kind: standing, grantor: AC-01, grantee: RO-13, scope: SC-02, unit: null, autonomy_tier: A0,
+     effect_grants: [forge-issue-state], resource_ceiling: unestablished, escalation_conditions: [],
+     derived_from: DL-01, governs: [AT-15, AT-16, AT-17], enforced_by: [], definition_custodian_ref: AC-01, provenance: inference,
+     note: "Standing (names a Role, no Unit) - satisfies M01 supporting.Delegation.relations.unit rule and S5's grantee=Role <=> unit absent reading."}
+
+delegation_gap_note: >
+  Every Delegation above is an INFERENCE. The fixed alphabet contains no artefact that
+  states a grant. autonomy_tier, effect_grants, escalation_conditions and
+  definition_custodian_ref are reconstructed from T01/T02 spawn templates and role
+  boundaries; resource_ceiling (REQUIRED, type map) has no source at all and is recorded
+  as unestablished on every row. See findings F-05.
+
+# ---------------------------------------------------------------------------
+# supporting.Gate
+# ---------------------------------------------------------------------------
+gates:
+  # GT-01..GT-03 are NOT modelled as Gates. See advisory_reviews below.
+  - id: GT-04
+    name: Gate 3a - design review
+    subject_rule: "product/features/{id}/pseudocode/** and test-plan/** at committed HEAD."
+    baseline_rule: "Gates check committed HEAD; working-tree changes are invisible to them (T01)."
+    eligible_evidence: [ARCHITECTURE.md, SPECIFICATION.md, RISK-TEST-STRATEGY.md, pseudocode/**, test-plan/**]
+    missingness_policy: missing-history
+    independence_predicate: "assessor is a uni-validator spawn distinct from the Stage-3a agents"
+    procedure: judgment
+    bar: "Five checks: architecture alignment, spec coverage, risk coverage, interface consistency, knowledge stewardship."
+    allowed_outcomes: [PASS, REWORKABLE FAIL, SCOPE FAIL]
+    outcome_consequences:
+      PASS: "phase-end spec-review->develop; commit; proceed to Stage 3b"
+      REWORKABLE FAIL: "loop back to Stage 3a agents, max 2 iterations"
+      SCOPE FAIL: "session stops; return to human"
+    required_record_category: gate-assessment
+    definition_custodian_ref: AC-01
+    requires_assessor: RO-09
+    bound_by: WF-02
+    evaluates: [UN-03]
+    observed_outcomes:
+      - {iteration: 0, outcome: REWORKABLE FAIL, failing_check: "4 interface consistency", record: missing-history}
+      - {iteration: 1, outcome: PASS, record: RC-08}
+    provenance: repo-artifact
+    baseline_gap: >
+      RC-08 pins no commit. Both iterations occurred before any commit existed (design
+      artefacts are untracked until Session 2 commits them - T02), and both collapse into
+      3afc2c49. Gate.baseline_rule is therefore stated but unsatisfiable at iteration 0,
+      and the iteration-0 assessment Record does not survive.
+
+  - id: GT-05
+    name: Gate 3b - code review
+    subject_rule: "committed HEAD of feature/vnc-045"
+    baseline_rule: "committed HEAD; leader commits modified production files pre-gate (T01)"
+    eligible_evidence: [pseudocode/**, test-plan/**, ARCHITECTURE.md, SPECIFICATION.md, RISK-TEST-STRATEGY.md, source diff, cargo build/clippy/audit output]
+    missingness_policy: missing-history
+    independence_predicate: "assessor is vnc-045-gate-3b, distinct from the wave implementers"
+    procedure: judgment
+    bar: "Seven checks; WARNs are non-blocking."
+    allowed_outcomes: [PASS, REWORKABLE FAIL, SCOPE FAIL]
+    outcome_consequences:
+      PASS: "phase-end develop->test; commit; proceed to Stage 3c"
+      REWORKABLE FAIL: "loop back, max 2 iterations"
+      SCOPE FAIL: "stop"
+    required_record_category: gate-assessment
+    definition_custodian_ref: AC-01
+    requires_assessor: RO-09
+    bound_by: WF-02
+    evaluates: [UN-04]
+    observed_outcomes:
+      - {iteration: 0, outcome: PASS, record: RC-09, warns: 3}
+    provenance: repo-artifact
+    stale_baseline_finding: >
+      DEMONSTRATED. RC-09 records as an open WARN a stale `#[allow(dead_code)]` on
+      ServiceLayer.store_tag and recommends "Drop the attribute + comment in a cleanup edit."
+      Commit 843d0049 (2026-07-07 03:50:17 +0000, PR-head ref) had already removed exactly
+      that attribute; RC-09 was committed at bf7c4812 (04:14:05), 24 minutes later. The
+      assessment pins no baseline, so the alphabet cannot say whether the review ran against
+      a pre-843d0049 tree (correct then, stale at commit) or a post-843d0049 tree
+      (wrong when written). Either way the record is not re-verifiable.
+
+  - id: GT-06
+    name: Gate 3c - final risk-based validation
+    subject_rule: "testing/RISK-COVERAGE-REPORT.md and all implemented code (T01)"
+    baseline_rule: "committed HEAD"
+    eligible_evidence: [ARCHITECTURE.md, SPECIFICATION.md, RISK-TEST-STRATEGY.md, ACCEPTANCE-MAP.md, RISK-COVERAGE-REPORT.md, integration suite results]
+    missingness_policy: missing-history
+    independence_predicate: "assessor is vnc-045-gate-3c, a uni-validator spawn distinct from the tester (T01)"
+    procedure: judgment
+    bar: "Risk mitigation proven by results; mandatory integration-test validation block."
+    allowed_outcomes: [PASS, REWORKABLE FAIL, SCOPE FAIL]
+    outcome_consequences:
+      PASS: "phase-end test->pr-review; proceed to Phase 4"
+      REWORKABLE FAIL: "loop back, max 2 iterations"
+      SCOPE FAIL: "stop"
+    required_record_category: gate-assessment
+    definition_custodian_ref: AC-01
+    requires_assessor: RO-09
+    bound_by: WF-02
+    evaluates: [UN-05]
+    observed_outcomes:
+      - iteration: 0
+        outcome: CLAIMED-PASS
+        assessment_record: ABSENT
+        gate_outcome_record: ABSENT
+    provenance: forge + repo-artifact
+    critical_finding: >
+      product/features/vnc-045/reports/gate-3c-report.md DOES NOT EXIST at 37c7b09a, and no
+      vnc-045-gate-3c agent report exists. of the 226 feature directories at that commit, 154 carry
+      reports/gate-3a-report.md, 157 carry gate-3b-report.md and 153 carry gate-3c-report.md,
+      and vnc-045 is the ONLY feature carrying 3a and 3b but not 3c. The artefact is the
+      established norm and its absence is an observation, not an inference. The claim "Gate 3c PASS" appears in the
+      PR #929 body ("Gate 3a PASS - Gate 3b PASS - Gate 3c PASS") and the security review's
+      merge-readiness line. The only Stage-3c record is RC-14, authored by AC-10 - the same
+      actor that wrote and ran the tests. Under M01 the required assessment Event cannot be
+      written (no independent assessor_refs, no independence_check), so no conforming
+      gate_outcome Event exists for GT-06, and I8 ("missing evidence is explicit and never
+      inferred as success") is exactly what the merged record violates.
+      W2 does NOT claim the gate did not run - only that the alphabet does not evidence it.
+
+  - id: GT-07
+    name: Security review (PR)
+    subject_rule: "the full main...HEAD diff of PR #929"
+    baseline_rule: "PR head 08a45c53 vs base 9927de02"
+    eligible_evidence: [source diff, ARCHITECTURE.md, RISK-TEST-STRATEGY.md, cargo audit]
+    missingness_policy: missing-history
+    independence_predicate: "fresh-context security reviewer (T01)"
+    procedure: judgment
+    bar: "Risk level + blocking findings; merge readiness READY | BLOCKED."
+    allowed_outcomes: [READY, BLOCKED]
+    outcome_consequences: {READY: "human merge gate opens", BLOCKED: "blocking items returned to human"}
+    required_record_category: gate-assessment
+    definition_custodian_ref: AC-01
+    requires_assessor: RO-10
+    bound_by: WF-02
+    evaluates: [UN-02]
+    observed_outcomes:
+      - {iteration: 0, outcome: READY, risk_level: low, blocking: 0, record: RC-10}
+    provenance: forge + repo-artifact
+    forge_state_note: >
+      The GitHub review object (id 4641592318) has state COMMENTED, not APPROVED, and there
+      were zero inline review comments (unimatrix-pr-929-review-comments.json is literally
+      the two bytes `[]`). The forge therefore records no approval; the READY outcome exists
+      only as prose inside the comment body and RC-10.
+
+  - id: GT-08
+    name: Vision alignment check
+    subject_rule: "ARCHITECTURE, SPECIFICATION, RISK-TEST-STRATEGY, SCOPE"
+    baseline_rule: "the reduced source documents, 2026-07-07"
+    eligible_evidence: ["product/PRODUCT-VISION.md", "goals #5517/#5518/#5474", "prior guardian patterns"]
+    missingness_policy: missing-history
+    independence_predicate: missing-history
+    procedure: judgment
+    bar: "Seven checks; variances requiring human approval enumerated."
+    allowed_outcomes: [PASS, WARN, VARIANCE, FAIL]
+    outcome_consequences:
+      PASS: "proceed"
+      VARIANCE: "human approval required before delivery"
+    required_record_category: design-source
+    definition_custodian_ref: AC-01
+    requires_assessor: RO-11
+    bound_by: WF-01
+    evaluates: [UN-01, UN-02]
+    observed_outcomes:
+      - {iteration: 0, outcome: "PASS 6 / WARN 0 / VARIANCE 0 / FAIL 0", subject: UN-01, record: RC-13}
+      - {iteration: 1, outcome: "PASS 7 / WARN 0 / VARIANCE 0 / FAIL 0", subject: UN-02, record: RC-03}
+    provenance: repo-artifact
+    supersession_note: >
+      RC-03 (ALIGNMENT-REPORT.md, re-run against the reduced sources, PASS 7) supersedes
+      RC-13 (the guardian's own agent report, PASS 6, describing min_trust_level as shipped
+      and tested for inertness under R-10/AC-09b). Both are committed in the SAME commit
+      afaa8385 with no supersession marker and no currentness field.
+
+advisory_reviews:
+  # Deliberately NOT Gates. M01 Gate.definition governs "before a boundary may be crossed";
+  # T01/T02 state the product review is advisory and the leader "NEVER ... gates on it".
+  # Under M01 these are communication Events documented by advisory-review Records, which
+  # keeps the blocking/advisory distinction typed rather than hidden in outcome_consequences.
+  - {id: AR-01, gate_label_in_source: scope-review, actor: AC-16, record: RC-11, event: EV-02}
+  - {id: AR-02, gate_label_in_source: design-review, actor: AC-16, record: RC-12, event: EV-03}
+  - {id: AR-03, gate_label_in_source: pr-review, actor: AC-16, record: RC-19, event: EV-04}
+non_adoption_evidence: >
+  AR-01 recommended six actions; at least two are observably not adopted at 37c7b09a:
+  (6) "Add goal:integrity + goal:self-learning labels to #928" - issue #928 carries
+  exactly [enhancement, vinculum, goal:knowledge-integrity]; and AR-02 recommended (1)
+  resolving the "audit is the PRIMARY control vs fire-and-forget discarded write"
+  contradiction - ADR-008 point 5 still reads "Audit is the PRIMARY control" and ADR-009
+  still specifies "fire-and-forget after commit", with RISK-TEST-STRATEGY Residual Risk 2
+  accepting that the event can drop. Non-adoption of an advisory review is CONFORMING
+  behaviour, not a defect; it is recorded here because it is the case's clearest
+  demonstration that assessment, outcome and consequence are separable (M01 I6).
+
+# ---------------------------------------------------------------------------
+# supporting.EffectBoundary    (owner: Collective, versioned: false)
+# ---------------------------------------------------------------------------
+effect_boundaries:
+  - id: EB-01
+    name: GitHub (dug-21/unimatrix)
+    effect_classes: [forge-merge, forge-issue-state, repository-write]
+    custody: "GitHub, Inc. - external to the program and to every governed actor."
+    can_refuse: unestablished
+    can_refuse_note: >
+      REQUIRED bool that the alphabet cannot honestly supply. No refusal receipt exists:
+      every requested effect in the case was performed. Branch-protection configuration for
+      dug-21/unimatrix is not in the alphabet. Recording `true` would be a claim; recording
+      `false` would be false. M01's own field definition ("a boundary that cannot refuse
+      enforces nothing") makes this load-bearing. See findings F-04.
+    enforces: []
+    enforces_note: >
+      EMPTY, and this is the case's central custody result. No Delegation in this instance is
+      enforced by EB-01: GitHub authenticates ONE principal (dug-21) and enforces nothing
+      about which agent, under which grant, produced a change.
+    provenance: forge
+
+  - id: EB-02
+    name: Unimatrix Capability::Write gate (require_cap -> infra/registry.rs)
+    effect_classes: [knowledge-store-write]
+    custody: "in-process, inside the system the governed activity was building."
+    can_refuse: true
+    can_refuse_provenance: doc-claim
+    enforces: []
+    provenance: doc-claim
+    disqualification_note: >
+      Fails M01's "independently controlled system or authority boundary" test for THIS unit
+      of work: the boundary is code that AC-07/AC-08/AC-09 wrote during the same Attempts it
+      would be governing. Integration test `test_context_tag_requires_write_capability` is
+      reported to pass, but only through RC-14 (an authored account), so no refusal receipt
+      is in the alphabet.
+
+  - id: EB-03
+    name: SQLite transaction manager
+    effect_classes: [knowledge-store-write]
+    custody: "external library, in-process."
+    can_refuse: true
+    can_refuse_provenance: doc-claim
+    enforces: []
+    provenance: doc-claim
+    note: >
+      The only refusal-shaped event described anywhere in the case is the trigger-injected
+      INSERT abort in `test_replace_tag_rollback_on_insert_failure`, reported by RC-14/RC-09.
+      It is a TEST FIXTURE inside the delivery, not a boundary refusing a delegated effect,
+      and it is evidenced only by an authored test report. NOT counted as an
+      effect_disposition witness.
+
+# ---------------------------------------------------------------------------
+# supporting.Attempt    (versioned: false, owner: Workflow)
+# ---------------------------------------------------------------------------
+attempts:
+  - id: AT-01
+    unit: UN-01
+    baseline_ref: missing-history
+    started_at: 2026-07-06T23:44:12Z      # earliest bound: issue #928 creation
+    ended_at: missing-history
+    disposition: cancel
+    resume_requirements: not-applicable
+    actors: [AC-02, AC-03, AC-04, AC-14, AC-15, AC-16]
+    governed_by: [DL-02, DL-11, DL-12, DL-13]
+    produces: [RC-11, RC-12, RC-13, RC-20, RC-21, RC-22, RC-23]
+    provenance: inference
+    note: >
+      Terminated by the human scope reduction (EV-05). `cancel` rather than `rework` because
+      the intended outcome changed (I16), which creates a new Unit rather than a new Attempt.
+
+  - id: AT-02
+    unit: UN-02
+    baseline_ref: "9927de02 (branch point) .. 08a45c53"
+    started_at: missing-history           # bounded: after EV-05, before 2026-07-07T02:50:37Z
+    ended_at: 2026-07-07T11:29:07Z
+    disposition: complete
+    resume_requirements: not-applicable
+    actors: [AC-01, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11, AC-12, AC-13, AC-15, AC-16]
+    governed_by: [DL-01, DL-03, DL-04, DL-05, DL-06, DL-07, DL-08, DL-09, DL-10, DL-12, DL-13]
+    produces: [RC-01, RC-02, RC-04, RC-05, RC-06, RC-07, RC-08, RC-09, RC-10, RC-14]
+    provenance: forge
+
+  - id: AT-03
+    unit: UN-03
+    baseline_ref: missing-history         # pre-commit working tree
+    started_at: missing-history
+    ended_at: missing-history
+    disposition: rework
+    resume_requirements:
+      baseline: "the Stage-3a pseudocode and test-plan working tree at the time of GT-04 iteration 0"
+      preconditions: ["read reports/gate-3a-report.md first (T01 rework protocol)"]
+      unresolved_residue: >
+        Check 4 interface consistency: derive_namespace and the lifecycle-guard decision were
+        designed inline in a #[tool] handler that is not unit-constructible, so the R-06
+        boundary table and R-05 guard tests were unrunnable.
+      next_admissible_transition: "re-spawn Stage-3a agents; re-run GT-04 (max 2 iterations)"
+    actors: [AC-05, AC-06]
+    governed_by: [DL-03]
+    produces: []
+    provenance: doc-claim
+    evidence: >
+      RC-08 ("REWORK RE-CHECK (iteration 1)", "Prior gate returned REWORKABLE FAIL on Check 4
+      only") and RC-04's own "Gate 3a rework (2026-07-07)" section naming the two edited files.
+    i15_note: >
+      CONFORMING at the document altitude: Unit identity (UN-03) survives the rework and each
+      execution is a distinct Attempt. NOT verifiable at the forge altitude: both Attempts,
+      the failing artefacts and the passing artefacts all collapse into commit 3afc2c49, and
+      AT-03's required baseline_ref does not survive.
+
+  - id: AT-04
+    unit: UN-03
+    baseline_ref: "post-rework working tree; committed as 3afc2c49"
+    started_at: missing-history
+    ended_at: 2026-07-07T03:08:34Z
+    disposition: complete
+    resume_requirements: not-applicable
+    actors: [AC-05, AC-06]
+    governed_by: [DL-03]
+    produces: [RC-04, RC-05, RC-06]
+    provenance: forge + doc-claim
+
+  - id: AT-05
+    unit: UN-04
+    baseline_ref: "3afc2c49 .. 843d0049"
+    started_at: 2026-07-07T03:17:20Z
+    ended_at: 2026-07-07T03:50:17Z
+    disposition: complete
+    actors: [AC-07, AC-08, AC-09]
+    governed_by: [DL-04, DL-05, DL-06]
+    produces: [RC-16, RC-17, RC-18]
+    provenance: forge
+
+  - id: AT-06
+    unit: UN-06
+    baseline_ref: "3afc2c49"
+    started_at: missing-history
+    ended_at: 2026-07-07T03:17:20Z
+    disposition: complete
+    actors: [AC-07]
+    governed_by: [DL-04]
+    produces: [RC-16]
+    provenance: forge
+  - id: AT-07
+    unit: UN-07
+    baseline_ref: "a63d45f0"
+    started_at: missing-history
+    ended_at: 2026-07-07T03:30:59Z
+    disposition: complete
+    actors: [AC-08]
+    governed_by: [DL-05]
+    produces: [RC-17]
+    provenance: forge
+    intra_attempt_retry_note: >
+      RC-17 records "One first-run test failure was self-corrected" (fire-and-forget audit
+      events race on event_id, so read-back must match by content). Under M01 this is a retry
+      WITHIN one Attempt, not a new Attempt: the baseline did not change, and Attempt is
+      defined as "one execution of a Unit against an identified baseline." The baseline is
+      the discriminator and it works here.
+  - id: AT-08
+    unit: UN-08
+    baseline_ref: "74bc1fd4"
+    started_at: missing-history
+    ended_at: 2026-07-07T03:39:23Z
+    disposition: complete
+    actors: [AC-09]
+    governed_by: [DL-06]
+    produces: [RC-18]
+    provenance: forge
+  - id: AT-09
+    unit: UN-05
+    baseline_ref: "843d0049"
+    started_at: missing-history
+    ended_at: 2026-07-07T04:14:05Z
+    disposition: complete
+    actors: [AC-10]
+    governed_by: [DL-07]
+    produces: [RC-14]
+    provenance: forge
+  - {id: AT-10, unit: UN-03, baseline_ref: missing-history, started_at: missing-history, ended_at: missing-history,
+     disposition: complete, actors: [AC-11], governed_by: [DL-08], produces: [RC-08], provenance: doc-claim}
+  - {id: AT-11, unit: UN-04, baseline_ref: missing-history, started_at: missing-history, ended_at: missing-history,
+     disposition: complete, actors: [AC-12], governed_by: [DL-09], produces: [RC-09, RC-24], provenance: doc-claim}
+  - {id: AT-12, unit: UN-02, baseline_ref: "08a45c53 vs 9927de02", started_at: missing-history,
+     ended_at: 2026-07-07T04:21:21Z, disposition: complete, actors: [AC-13], governed_by: [DL-10],
+     produces: [RC-10], provenance: forge}
+  - {id: AT-13, unit: UN-01, baseline_ref: missing-history, started_at: missing-history, ended_at: missing-history,
+     disposition: complete, actors: [AC-14], governed_by: [DL-11], produces: [RC-13], provenance: doc-claim}
+  - {id: AT-14, unit: UN-02, baseline_ref: missing-history, started_at: missing-history, ended_at: missing-history,
+     disposition: complete, actors: [AC-15], governed_by: [DL-12], produces: [RC-02, RC-07], provenance: doc-claim}
+  - {id: AT-15, unit: UN-01, baseline_ref: missing-history, started_at: missing-history,
+     ended_at: 2026-07-06T23:56:12Z, disposition: complete, actors: [AC-16], governed_by: [DL-13],
+     produces: [RC-11], provenance: forge}
+  - {id: AT-16, unit: UN-01, baseline_ref: missing-history, started_at: missing-history,
+     ended_at: 2026-07-07T01:33:14Z, disposition: complete, actors: [AC-16], governed_by: [DL-13],
+     produces: [RC-12], provenance: forge}
+  - {id: AT-17, unit: UN-02, baseline_ref: "PR #929", started_at: missing-history,
+     ended_at: 2026-07-07T04:24:54Z, disposition: complete, actors: [AC-16], governed_by: [DL-13],
+     produces: [RC-19], provenance: forge}
+
+attempt_governed_by_rule_note: >
+  M01 supporting.Attempt.relations.governed_by carries "rule: pins immutable versions".
+  NOTHING in the alphabet pins a Delegation version to any Attempt. Specified-not-enforced.
+
+# ---------------------------------------------------------------------------
+# supporting.Technology    (owner: Program)
+# ---------------------------------------------------------------------------
+technologies:
+  - id: TE-01
+    name: context_tag - in-place tag mutation on the non-hashed entry_tags lane
+    grade: unestablished
+    grade_note: >
+      REQUIRED ref<value.evidence_grade>. No grade is asserted for the mechanism anywhere in
+      the alphabet, and the case's own reviews forbid inferring one from delivery
+      ("Do NOT mark any capability proven off vnc-045"). Not invented.
+    constraints: >
+      Value-opaque; Capability::Write only; agent_id audit-only; audit emission is
+      fire-and-forget and may drop; no evidence-binding at the platform layer.
+    evidence_record_refs: [RC-14]
+    enables: [CP-01]
+    provenance: repo-artifact
+    i11_witness: >
+      STRONGEST CONFORMING WITNESS IN THE CASE. M01 I11 ("Technology represents a mechanism
+      and neither becomes nor proves Capability") and the enables rule "no grade transfer"
+      are exactly the project's own explicit ruling, made twice, in advance, by an
+      independent reviewer, and honoured at delivery.
+  - id: TE-02
+    name: "BEFORE INSERT RAISE(ABORT) trigger as a mid-transaction failure injector"
+    external_ref: Unimatrix entry #5612 (claimed stored by AC-07)
+    grade: unestablished
+    constraints: missing-history
+    evidence_record_refs: missing-history
+    enables: []
+    provenance: doc-claim
+  - id: TE-03
+    name: "Fire-and-forget audit read-back matched by content, not event_id order"
+    external_ref: Unimatrix entry #5613 (claimed stored by AC-08)
+    grade: unestablished
+    enables: []
+    provenance: doc-claim
+
+# ---------------------------------------------------------------------------
+# core.Event
+# ---------------------------------------------------------------------------
+events:
+  - id: EV-01
+    event_type: communication
+    occurred_at: 2026-07-06T23:44:12Z
+    recorded_at: 2026-07-06T23:44:12Z
+    scope_ref: SC-03
+    actor_refs: [AC-01]
+    subject_refs: [UN-01]
+    authority_ref: SC-03
+    epistemic_kind: claim
+    significance: routine
+    carrier: record-ref
+    custody: "GitHub (EB-01)"
+    extension: {sender: AC-01, route_or_topic: "issue dug-21/unimatrix#928", recipients: [], acknowledgement_requirement: none}
+    documented_by: [RC-25]
+    provenance: forge
+
+  - id: EV-02
+    event_type: communication
+    occurred_at: 2026-07-06T23:56:12Z
+    recorded_at: 2026-07-06T23:56:12Z
+    scope_ref: SC-03
+    actor_refs: [AC-16]
+    subject_refs: [UN-01, RC-01]
+    authority_ref: null
+    epistemic_kind: inference
+    significance: exception
+    carrier: record-ref
+    custody: "GitHub (EB-01); comment id 4898695344"
+    extension: {sender: AC-16, route_or_topic: "issue #928", recipients: [AC-01], acknowledgement_requirement: none}
+    documented_by: [RC-11]
+    provenance: forge
+    note: >
+      Advisory. Modelled as communication, NOT assessment: no Gate governs it and its
+      outcome carries no consequence.
+
+  - id: EV-03
+    event_type: communication
+    occurred_at: 2026-07-07T01:33:14Z
+    recorded_at: 2026-07-07T01:33:14Z
+    scope_ref: SC-03
+    actor_refs: [AC-16]
+    subject_refs: [UN-01]
+    epistemic_kind: inference
+    significance: exception
+    carrier: record-ref
+    custody: "GitHub (EB-01); comment id 4899256125"
+    extension: {sender: AC-16, route_or_topic: "issue #928", recipients: [AC-01], acknowledgement_requirement: none}
+    documented_by: [RC-12]
+    provenance: forge
+
+  - id: EV-04
+    event_type: communication
+    occurred_at: 2026-07-07T04:24:54Z
+    recorded_at: 2026-07-07T04:24:54Z
+    scope_ref: SC-03
+    actor_refs: [AC-16]
+    subject_refs: [UN-02]
+    epistemic_kind: inference
+    significance: routine
+    carrier: record-ref
+    custody: "GitHub (EB-01); comment id 4900099734"
+    extension: {sender: AC-16, route_or_topic: "PR #929", recipients: [AC-01], acknowledgement_requirement: none}
+    documented_by: [RC-19]
+    provenance: forge
+
+  - id: EV-05
+    event_type: decision
+    occurred_at: missing-history
+    occurred_at_bound: "after 2026-07-07T01:33:14Z (EV-03) and before 2026-07-07T02:50:37Z (commit afaa8385)"
+    occurred_at_bound_epistemic_kind: inference
+    recorded_at: missing-history
+    scope_ref: SC-03
+    actor_refs: [AC-01]
+    subject_refs: [UN-01, UN-02, RC-01]
+    authority_ref: SC-03
+    epistemic_kind: claim
+    significance: surprise
+    carrier: inline
+    custody: "none - no independent record"
+    extension:
+      authority_ref: SC-03
+      disposition: >
+        Reduce vnc-045 to the context_tag MECHANISM only; defer the protected_tags
+        value-hygiene policy in full (config type, five-site per-slug threading, allow-list
+        validator, single_value config, min_trust_level, cadence guard).
+      authorized_refs: [UN-02, RC-01, RC-02, RC-03, RC-07]
+    documented_by: []
+    provenance: doc-claim
+    CRITICAL_NOTE: >
+      THE MOST CONSEQUENTIAL EVENT IN THE CASE HAS NO PRIMARY RECORD. It voided the feature's
+      only Critical risk, removed six of ten scope risks from test obligation, deprecated four
+      ADRs and changed the deliverable - and it survives only as a dated phrase ("scope reduced
+      by human 2026-07-07") repeated inside documents written by the actors it governed. There
+      is no issue comment, no commit, no forge object. Its required occurred_at cannot be
+      supplied at the declared `timestamp` type; only a two-hour window is inferable. The
+      project audits a single tag mutation to the millisecond (ADR-009) and does not audit
+      this. See findings F-06 and counterfactual CF-03.
+
+  - id: EV-06
+    event_type: adaptation
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T02:50:37Z     # commit afaa8385 first records the reduced artefacts
+    scope_ref: SC-03
+    actor_refs: [AC-15]
+    subject_refs: [RC-01, RC-02, RC-07, RC-20, RC-21, RC-22, RC-23]
+    authority_ref: SC-03
+    epistemic_kind: reported-observation
+    significance: exception
+    carrier: record-ref
+    custody: "git (EB-01)"
+    extension:
+      decision_ref: EV-05
+      affected_refs: [RC-01, RC-02, RC-03, RC-07, RC-20, RC-21, RC-22, RC-23, GT-04, GT-05, GT-06]
+      prior_baseline: "pre-reduction SCOPE (SD-1..SD-14), AC-01..AC-09, ADR-001..008 all active"
+      new_baseline: "reduced SCOPE (SD-1..SD-12), AC-01..AC-07, ADR-003/005/006/007 DEFERRED"
+      resume_conditions: "Session 2 may begin from the regenerated IMPLEMENTATION-BRIEF."
+    documented_by: [RC-07]
+    provenance: repo-artifact
+    note: >
+      M01's adaptation event type fits this exactly, including prior_baseline/new_baseline.
+      What the project supplies is the two baselines; what it does not supply is decision_ref
+      as anything other than a paraphrase of EV-05.
+
+  - id: EV-07
+    event_type: assessment
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T03:08:34Z
+    scope_ref: SC-03
+    actor_refs: [AC-11]
+    subject_refs: [UN-03]
+    authority_ref: DL-08
+    epistemic_kind: reviewed-finding
+    significance: exception
+    carrier: record-ref
+    custody: "git (EB-01)"
+    extension:
+      gate_version_ref: "GT-04 @ unversioned"
+      subject_baseline: missing-history
+      evidence_set: [RC-04, RC-05, RC-06, RC-02, RC-03]
+      assessor_refs: [AC-11]
+      independence_check: missing-history
+    documented_by: [RC-08]
+    supersedes: null
+    provenance: doc-claim
+    note: >
+      GT-04 is unversioned in the project: T01 is a living protocol file with no version
+      identifier, so gate_version_ref cannot pin a Gate version. Affects every assessment
+      below identically.
+
+  - id: EV-08
+    event_type: gate_outcome
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T03:08:34Z
+    scope_ref: SC-03
+    actor_refs: [AC-11]
+    subject_refs: [UN-03]
+    authority_ref: DL-08
+    epistemic_kind: reviewed-finding
+    significance: routine
+    carrier: record-ref
+    custody: "git (EB-01)"
+    extension:
+      assessment_ref: EV-07
+      outcome: PASS
+      missingness: missing-history
+      consequence_disposition: "proceed to Stage 3b"
+    documented_by: [RC-08]
+    provenance: doc-claim
+
+  - id: EV-09
+    event_type: assessment
+    occurred_at: missing-history
+    recorded_at: missing-history
+    scope_ref: SC-03
+    actor_refs: [AC-11]
+    subject_refs: [UN-03]
+    authority_ref: DL-08
+    epistemic_kind: reviewed-finding
+    significance: exception
+    carrier: record-ref
+    custody: none
+    extension:
+      gate_version_ref: "GT-04 @ unversioned"
+      subject_baseline: missing-history
+      evidence_set: missing-history
+      assessor_refs: [AC-11]
+      independence_check: missing-history
+    documented_by: []
+    provenance: doc-claim
+    note: "GT-04 iteration 0. Its Record does not survive; only RC-08's summary of it does."
+  - id: EV-10
+    event_type: gate_outcome
+    occurred_at: missing-history
+    recorded_at: missing-history
+    scope_ref: SC-03
+    actor_refs: [AC-11]
+    subject_refs: [UN-03]
+    epistemic_kind: reviewed-finding
+    significance: surprise
+    carrier: inline
+    custody: none
+    extension: {assessment_ref: EV-09, outcome: "REWORKABLE FAIL", missingness: missing-history, consequence_disposition: "loop back to Stage 3a agents"}
+    documented_by: []
+    provenance: doc-claim
+    r2_witness: >
+      This is precisely the case M02 R2 argued for when it insisted assessment and
+      gate_outcome stay separate: an iteration whose outcome is recorded only as a
+      later record's recollection. V5's split lets EV-09 exist without EV-10's payload.
+
+  - id: EV-11
+    event_type: assessment
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T04:14:05Z
+    scope_ref: SC-03
+    actor_refs: [AC-12]
+    subject_refs: [UN-04]
+    authority_ref: DL-09
+    epistemic_kind: reviewed-finding
+    significance: exception
+    carrier: record-ref
+    custody: "git (EB-01)"
+    extension:
+      gate_version_ref: "GT-05 @ unversioned"
+      subject_baseline: missing-history        # see GT-05.stale_baseline_finding
+      evidence_set: [RC-04, RC-05, RC-06, "source diff", "cargo build/clippy/audit output"]
+      assessor_refs: [AC-12]
+      independence_check: missing-history
+    documented_by: [RC-09]
+    provenance: doc-claim
+  - id: EV-12
+    event_type: gate_outcome
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T04:14:05Z
+    scope_ref: SC-03
+    actor_refs: [AC-12]
+    subject_refs: [UN-04]
+    epistemic_kind: reviewed-finding
+    significance: routine
+    carrier: record-ref
+    custody: "git (EB-01)"
+    extension:
+      assessment_ref: EV-11
+      outcome: PASS
+      missingness: "3 non-blocking WARNs; cargo audit 2 pre-existing transitive CVEs"
+      consequence_disposition: "proceed to Stage 3c"
+    documented_by: [RC-09]
+    provenance: doc-claim
+
+  - id: EV-13
+    event_type: assessment
+    STATUS: NOT-WRITABLE
+    intended_scope_ref: SC-03
+    intended_subject_refs: [UN-05]
+    blocking_reason: >
+      GT-06's assessment cannot be written: required extension fields assessor_refs and
+      independence_check have no admissible value. The only Stage-3c account (RC-14) is
+      authored by AC-10, the actor that produced the artefact under assessment, so naming
+      AC-10 as assessor would record a self-assessment as an independent gate assessment.
+      No gate-3c-report.md exists. M01 I7 says gates fail closed when independence cannot be
+      established; the project instead proceeded to Phase 4.
+    provenance: forge (absence of product/features/vnc-045/reports/gate-3c-report.md at 37c7b09a)
+  - id: EV-14
+    event_type: gate_outcome
+    STATUS: NOT-WRITABLE
+    blocking_reason: "requires assessment_ref = EV-13, which is not writable."
+    claimed_in: ["PR #929 body 'Gate 3c PASS'", "RC-10 merge-readiness line"]
+
+  - id: EV-15
+    event_type: assessment
+    occurred_at: 2026-07-07T04:21:21Z
+    recorded_at: 2026-07-07T04:21:21Z
+    scope_ref: SC-03
+    actor_refs: [AC-13]
+    subject_refs: [UN-02]
+    authority_ref: DL-10
+    epistemic_kind: reviewed-finding
+    significance: exception
+    carrier: record-ref
+    custody: "GitHub (EB-01); review id 4641592318, state COMMENTED"
+    extension:
+      gate_version_ref: "GT-07 @ unversioned"
+      subject_baseline: "main...HEAD = 9927de02...08a45c53"
+      evidence_set: ["full PR diff", RC-02, "RISK-TEST-STRATEGY"]
+      assessor_refs: [AC-13]
+      independence_check: "fresh-context (declared, not attested)"
+    documented_by: [RC-10]
+    provenance: forge
+  - id: EV-16
+    event_type: gate_outcome
+    occurred_at: 2026-07-07T04:21:21Z
+    recorded_at: 2026-07-07T04:21:21Z
+    scope_ref: SC-03
+    actor_refs: [AC-13]
+    subject_refs: [UN-02]
+    epistemic_kind: reviewed-finding
+    significance: routine
+    carrier: record-ref
+    custody: "GitHub (EB-01)"
+    extension: {assessment_ref: EV-15, outcome: "READY (risk low, 0 blocking)", missingness: "2 pre-existing transitive CVEs, tracked outside", consequence_disposition: "human merge gate opens"}
+    documented_by: [RC-10]
+    provenance: forge
+
+  - id: EV-17
+    event_type: assessment
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T02:50:37Z
+    scope_ref: SC-03
+    actor_refs: [AC-14]
+    subject_refs: [UN-02]
+    authority_ref: DL-11
+    epistemic_kind: reviewed-finding
+    significance: routine
+    carrier: record-ref
+    custody: "git (EB-01)"
+    extension:
+      gate_version_ref: "GT-08 @ unversioned"
+      subject_baseline: "the reduced source documents, 2026-07-07"
+      evidence_set: [RC-02, "ARCHITECTURE.md", "SPECIFICATION.md", "RISK-TEST-STRATEGY.md", RC-01]
+      assessor_refs: [AC-14]
+      independence_check: missing-history
+    documented_by: [RC-03]
+    provenance: repo-artifact
+  - id: EV-18
+    event_type: gate_outcome
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T02:50:37Z
+    scope_ref: SC-03
+    actor_refs: [AC-14]
+    subject_refs: [UN-02]
+    epistemic_kind: reviewed-finding
+    significance: routine
+    carrier: record-ref
+    custody: "git (EB-01)"
+    extension: {assessment_ref: EV-17, outcome: "PASS 7 / WARN 0 / VARIANCE 0 / FAIL 0", missingness: "none asserted", consequence_disposition: "no variance requires human approval"}
+    documented_by: [RC-03]
+    provenance: repo-artifact
+
+  # --- transitions (Workflow-owned state moves; recorded by context_cycle per T01/T02) ---
+  - id: EV-19
+    event_type: transition
+    occurred_at: missing-history
+    recorded_at: missing-history
+    scope_ref: SC-03
+    actor_refs: [AC-01]
+    subject_refs: [UN-02]
+    authority_ref: DL-01
+    epistemic_kind: claim
+    significance: routine
+    carrier: inline
+    custody: "Unimatrix cycle store - NOT in the fixed alphabet"
+    extension: {unit_ref: UN-02, prior_state: "spec-review", next_state: "develop", authorization_ref: DL-08}
+    documented_by: []
+    provenance: inference
+    note: >
+      T01 mandates a context_cycle(phase-end) call at every gate PASS. Those cycle rows live
+      in the Unimatrix store and are OUTSIDE the S alphabet, so every transition Event in this
+      instance is an inference from the protocol, not an observation. Four such transitions
+      are implied (spec->spec-review->develop->test->pr-review); only EV-19 is written out.
+
+  # --- effect request / disposition (merge as a bounded forge effect) ---
+  - id: EV-20
+    event_type: effect_request
+    occurred_at: 2026-07-07T11:29:07Z
+    recorded_at: 2026-07-07T11:29:07Z
+    scope_ref: SC-03
+    actor_refs: [AC-01]
+    subject_refs: [UN-02]
+    authority_ref: SC-03            # authority root acting; no Delegation interposed
+    epistemic_kind: mechanical-observation
+    significance: exception
+    carrier: artifact-ref
+    custody: "GitHub (EB-01)"
+    extension:
+      requested_effect: "squash-merge PR dug-21/unimatrix#929 into main"
+      delegation_ref: null
+      target_boundary_ref: EB-01
+    documented_by: [RC-26]
+    provenance: forge
+    note: >
+      authority_ref points at SC-03, not at an Actor - the M02 R4 correction
+      (ref<Delegation|Scope>) is what makes this row expressible without bypassing the root.
+
+  - id: EV-21
+    event_type: effect_disposition
+    occurred_at: 2026-07-07T11:29:07Z
+    recorded_at: 2026-07-07T11:29:07Z
+    scope_ref: SC-03
+    actor_refs: [AC-18]
+    subject_refs: [UN-02]
+    authority_ref: SC-03
+    epistemic_kind: mechanical-observation
+    significance: exception
+    carrier: artifact-ref
+    custody: "GitHub (EB-01) - external to every governed actor"
+    extension:
+      request_ref: EV-20
+      boundary_ref: EB-01
+      disposition: performed
+      coupling: atomic
+    documented_by: [RC-26]
+    caused_by: [EV-20]
+    provenance: forge
+    receipt: >
+      merge_commit_sha 37c7b09aa0db6ba16f5f95dadd24c58adb4e6e2b; merged_at 2026-07-07T11:29:07Z;
+      merged_by dug-21; committer of the merge object is "GitHub <noreply@github.com>", author
+      "dug-21 <angryweed@gmail.com>". Single parent 9927de02 confirms the squash.
+    significance_note: >
+      THE ONLY EXTERNALLY-CUSTODIED EFFECT RECEIPT IN THE WHOLE CASE.
+
+  - id: EV-22
+    event_type: effect_request
+    occurred_at: 2026-07-07T11:29:07Z
+    recorded_at: 2026-07-07T11:29:07Z
+    scope_ref: SC-03
+    actor_refs: [AC-01]
+    subject_refs: [SC-03]
+    authority_ref: SC-03
+    epistemic_kind: inference
+    significance: routine
+    carrier: artifact-ref
+    custody: "GitHub (EB-01)"
+    extension: {requested_effect: "close issue #928 via the PR body's 'Closes #928'", delegation_ref: null, target_boundary_ref: EB-01}
+    documented_by: [RC-25]
+    provenance: inference
+  - id: EV-23
+    event_type: effect_disposition
+    occurred_at: 2026-07-07T11:29:09Z
+    recorded_at: 2026-07-07T11:29:09Z
+    scope_ref: SC-03
+    actor_refs: [AC-18]
+    subject_refs: [SC-03]
+    authority_ref: SC-03
+    epistemic_kind: mechanical-observation
+    significance: routine
+    carrier: artifact-ref
+    custody: "GitHub (EB-01)"
+    extension:
+      request_ref: EV-22
+      boundary_ref: EB-01
+      disposition: performed
+      coupling: ordered-best-effort
+    caused_by: [EV-21]
+    documented_by: [RC-25]
+    provenance: forge
+    coupling_evidence: >
+      DEMONSTRATED, not asserted: merged_at is 2026-07-07T11:29:07Z and issue #928 closed_at
+      is 2026-07-07T11:29:09Z - a two-second lag between two effects the forge performs for
+      one request. The pair is ordered and best-effort, not atomic. This is the case's
+      conforming witness for value.coupling = ordered-best-effort.
+
+  - id: EV-24
+    event_type: effect_request
+    occurred_at: 2026-07-07T03:17:20Z
+    recorded_at: 2026-07-07T03:17:20Z
+    scope_ref: SC-03
+    actor_refs: [AC-07]
+    subject_refs: [UN-06]
+    authority_ref: DL-04
+    epistemic_kind: mechanical-observation
+    significance: routine
+    carrier: artifact-ref
+    custody: "git (EB-01)"
+    extension: {requested_effect: "commit a63d45f0 on refs/heads/feature/vnc-045", delegation_ref: DL-04, target_boundary_ref: EB-01}
+    provenance: forge
+  - id: EV-25
+    event_type: effect_disposition
+    occurred_at: 2026-07-07T03:17:20Z
+    recorded_at: 2026-07-07T03:17:20Z
+    scope_ref: SC-03
+    actor_refs: [AC-18]
+    subject_refs: [UN-06]
+    epistemic_kind: mechanical-observation
+    significance: routine
+    carrier: artifact-ref
+    custody: "git (EB-01)"
+    extension: {request_ref: EV-24, boundary_ref: EB-01, disposition: performed, coupling: atomic}
+    caused_by: [EV-24]
+    provenance: forge
+    attribution_warning: >
+      The receipt names "Doug <doug@sunstoneconsultingllc.com>" as author AND committer, with
+      a Co-Authored-By trailer for "Claude Opus 4.8". It does NOT name AC-07. The link from
+      this effect to DL-04 is an inference from RC-16's prose, not from the receipt.
+
+  - id: EV-26
+    event_type: observation
+    occurred_at: missing-history
+    recorded_at: 2026-07-07T04:14:05Z
+    scope_ref: SC-03
+    actor_refs: [AC-10]
+    subject_refs: [UN-05]
+    epistemic_kind: reported-observation
+    significance: routine
+    carrier: record-ref
+    custody: "none - the runner's output is not retained"
+    extension:
+      instrument: AC-17
+      subject: "cargo test --workspace ; pytest suites/ -m smoke"
+      capture_custody: ABSENT
+      raw_evidence_ref: ABSENT
+    documented_by: [RC-14]
+    provenance: doc-claim
+    i4_finding: >
+      M01 I4 requires capture provenance for a mechanical observation and rules that an
+      actor-authored account is a claim or inference. The observation event type's
+      required_extension demands capture_custody and raw_evidence_ref; NEITHER EXISTS. The
+      test results (6961 passed / 0 failed; smoke 32/32) are therefore reported-observation,
+      not mechanical-observation, and the epistemic_kind field carries that honestly.
+      Corroborating evidence that this distinction bites: RC-14 states the tool-count guard
+      moved "12 -> 15" and PR #929's body calls context_tag "the 13th tool", while the
+      committed diff of test_protocol.py shows fourteen -> fifteen. Three authored numbers,
+      one observable fact, and the authored records are wrong.
+
+  - id: EV-27
+    event_type: observation
+    occurred_at: 2026-07-07T11:29:07Z
+    recorded_at: 2026-07-07T11:29:07Z
+    scope_ref: SC-03
+    actor_refs: [AC-18]
+    subject_refs: [UN-02]
+    epistemic_kind: mechanical-observation
+    significance: routine
+    carrier: artifact-ref
+    custody: "GitHub (EB-01)"
+    extension:
+      instrument: "GitHub REST API v3 /repos/dug-21/unimatrix/pulls/929"
+      subject: "PR #929 merge state"
+      capture_custody: "GitHub"
+      raw_evidence_ref: "wfh-011-sources/github/unimatrix-pr-929.json"
+    provenance: forge
+    note: "The case's only observation event whose required extension is fully satisfiable."
+
+  - id: EV-28
+    event_type: adaptation
+    occurred_at: 2026-07-07T03:50:17Z
+    recorded_at: 2026-07-07T03:50:17Z
+    scope_ref: SC-03
+    actor_refs: [AC-09]
+    subject_refs: [UN-04]
+    epistemic_kind: mechanical-observation
+    significance: routine
+    carrier: artifact-ref
+    custody: "git (EB-01)"
+    extension:
+      decision_ref: missing-history
+      affected_refs: ["crates/unimatrix-server/src/services/mod.rs"]
+      prior_baseline: b68c2c43
+      new_baseline: 843d0049
+      resume_conditions: not-applicable
+    provenance: forge
+    note: "The cleanup that GT-05's report later still lists as an open WARN."
+
+  - id: EV-29
+    event_type: decision
+    occurred_at: 2026-07-07T11:29:07Z
+    recorded_at: 2026-07-07T11:29:07Z
+    scope_ref: SC-03
+    actor_refs: [AC-01]
+    subject_refs: [UN-02]
+    authority_ref: SC-03
+    epistemic_kind: mechanical-observation
+    significance: exception
+    carrier: artifact-ref
+    custody: "GitHub (EB-01)"
+    extension:
+      authority_ref: SC-03
+      disposition: "approve and merge PR #929"
+      authorized_refs: [EV-20]
+    documented_by: [RC-26]
+    provenance: forge
+    contrast_note: >
+      Compare EV-05. The merge decision - the second most consequential human act in the
+      case - IS forge-recorded to the second, by an external custodian. The scope-reduction
+      decision is not recorded at all. The difference is not the model's; it is the project's.
+
+  - id: EV-30
+    event_type: effect_request
+    occurred_at: missing-history
+    recorded_at: missing-history
+    scope_ref: SC-03
+    actor_refs: [AC-02]
+    subject_refs: [TE-02]
+    authority_ref: DL-02
+    epistemic_kind: claim
+    significance: routine
+    carrier: inline
+    custody: none
+    extension: {requested_effect: "context_store ADR-001..008 as entries #5599-#5606", delegation_ref: DL-02, target_boundary_ref: EB-02}
+    provenance: doc-claim
+    disposition_note: >
+      NO effect_disposition Event can be written for EV-30 or for the #5612/#5613 stores
+      claimed by AC-07/AC-08. The knowledge-store writes are asserted by the actors that
+      made them and produce no receipt inside the alphabet. This is the cleanest instance
+      of M01 I2 in the case: the Record's existence, its admission, and the effect's
+      occurrence are three separate facts, and here only the first is evidenced.
+
+# ---------------------------------------------------------------------------
+# core.Record
+# ---------------------------------------------------------------------------
+records:
+  - id: RC-01
+    category: scope-definition
+    category_schema_version: missing-history
+    scope_ref: SC-03
+    author_or_source_ref: "AC-01 (locked) / researcher-authored, reduced by AC-01"
+    created_at: 2026-07-07T02:50:37Z        # first commit; authorship time not recorded
+    content_digest: "git blob at 37c7b09a:product/features/vnc-045/SCOPE.md"
+    epistemic_kind: claim
+    evidence_altitude: directional
+    lifecycle_state: current
+    currentness: current
+    provenance_refs: [EV-05, "ass-093 #926", "ass-094 #927"]
+    missing_or_unavailable_refs: ["product/research/ass-093/FINDINGS.md", "product/research/ass-094/FINDINGS.md"]
+    documents: [EV-05]
+    admitted_by: []
+    supersedes: []
+    supersedes_note: >
+      SCOPE.md was OVERWRITTEN in place at the reduction; the pre-reduction text does not
+      exist at any commit (design artefacts are untracked until Session 2 - T02). The
+      supersedes relation therefore has no target to point at, which is a history gap, not
+      a model gap.
+
+  - {id: RC-02, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-02, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blob 37c7b09a:.../architecture/ARCHITECTURE.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-01, "ass-093", "ass-094"], documents: [], admitted_by: [EV-08], supersedes: []}
+  - {id: RC-03, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-14, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blob 37c7b09a:.../ALIGNMENT-REPORT.md", epistemic_kind: reviewed-finding,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-01, RC-02], documents: [EV-17, EV-18], admitted_by: [], supersedes: [RC-13]}
+  - {id: RC-04, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-05, created_at: 2026-07-07T03:08:34Z,
+     content_digest: "git tree 37c7b09a:.../pseudocode/", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-02], documents: [], admitted_by: [EV-08], supersedes: []}
+  - {id: RC-05, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-06, created_at: 2026-07-07T03:08:34Z,
+     content_digest: "git tree 37c7b09a:.../test-plan/", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-06], documents: [], admitted_by: [EV-08], supersedes: []}
+  - {id: RC-06, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-04, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blob 37c7b09a:.../RISK-TEST-STRATEGY.md", epistemic_kind: inference,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-01, RC-02, RC-27], documents: [], admitted_by: [], supersedes: []}
+  - {id: RC-07, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-15, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blob 37c7b09a:.../IMPLEMENTATION-BRIEF.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-01, RC-02, RC-06], documents: [EV-06], admitted_by: [], supersedes: []}
+  - {id: RC-08, category: gate-assessment, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-11, created_at: 2026-07-07T03:08:34Z,
+     content_digest: "git blob 37c7b09a:.../reports/gate-3a-report.md", epistemic_kind: reviewed-finding,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-04, RC-05, RC-02, RC-06], documents: [EV-07, EV-08, EV-09, EV-10],
+     admitted_by: [], supersedes: []}
+  - id: RC-09
+    category: gate-assessment
+    category_schema_version: missing-history
+    scope_ref: SC-03
+    author_or_source_ref: AC-12
+    created_at: 2026-07-07T04:14:05Z
+    content_digest: "git blob 37c7b09a:.../reports/gate-3b-report.md"
+    epistemic_kind: reviewed-finding
+    evidence_altitude: directional
+    lifecycle_state: current
+    currentness: stale
+    currentness_evidence: >
+      Its WARN "stale #[allow(dead_code)] on ServiceLayer.store_tag ... Drop the attribute in
+      a cleanup edit" describes state removed by 843d0049, 24 minutes before RC-09 was
+      committed. The project records no currentness; V5 makes the value expressible.
+    provenance_refs: [RC-04, RC-05, RC-06, "cargo build/clippy/audit output (not retained)"]
+    missing_or_unavailable_refs: ["raw cargo output", "cargo audit report"]
+    documents: [EV-11, EV-12]
+    admitted_by: []
+    supersedes: []
+  - {id: RC-10, category: gate-assessment, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-13, created_at: 2026-07-07T04:21:21Z,
+     content_digest: "GitHub review 4641592318 + git blob .../agents/vnc-045-security-reviewer-report.md",
+     epistemic_kind: reviewed-finding, evidence_altitude: directional, lifecycle_state: current,
+     currentness: current, provenance_refs: ["PR #929 diff 9927de02...08a45c53"],
+     documents: [EV-15, EV-16], admitted_by: [], supersedes: []}
+  - {id: RC-11, category: advisory-review, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: "AC-16 (declared) / dug-21 (forge-attributed)", created_at: 2026-07-06T23:56:12Z,
+     content_digest: "GitHub comment 4898695344", epistemic_kind: inference,
+     evidence_altitude: directional, lifecycle_state: current, currentness: superseded,
+     currentness_evidence: "Pre-reduction: recommends pulling evidence-binding IN and trimming the config surface; EV-05 deferred the whole policy instead.",
+     provenance_refs: [RC-01], documents: [EV-02], admitted_by: [], supersedes: []}
+  - {id: RC-12, category: advisory-review, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: "AC-16 (declared) / dug-21 (forge-attributed)", created_at: 2026-07-07T01:33:14Z,
+     content_digest: "GitHub comment 4899256125", epistemic_kind: inference,
+     evidence_altitude: directional, lifecycle_state: current, currentness: superseded,
+     currentness_evidence: "Pre-reduction: reviews per-slug threading, cadence guard, allowed_values and min_trust_level, all deferred by EV-05 within the next 77 minutes.",
+     provenance_refs: [RC-01, RC-02], documents: [EV-03], admitted_by: [], supersedes: []}
+  - id: RC-13
+    category: agent-report
+    category_schema_version: missing-history
+    scope_ref: SC-03
+    author_or_source_ref: AC-14
+    created_at: 2026-07-07T02:50:37Z
+    content_digest: "git blob 37c7b09a:.../agents/vnc-045-vision-guardian-report.md"
+    epistemic_kind: claim
+    evidence_altitude: directional
+    lifecycle_state: current
+    currentness: superseded
+    currentness_evidence: >
+      Reports "PASS 6 / WARN 0" and describes min_trust_level as a "field shipped + tested
+      for INERTNESS (R-10, AC-09b)" - the pre-reduction state. RC-03, in the SAME COMMIT,
+      reports PASS 7 against the reduced sources and says R-10/AC-09b no longer exist.
+      Neither file carries a marker distinguishing them.
+    provenance_refs: [RC-02]
+    documents: []
+    admitted_by: []
+    supersedes: []
+  - id: RC-14
+    category: test-observation-report
+    category_schema_version: missing-history
+    scope_ref: SC-03
+    author_or_source_ref: AC-10
+    created_at: 2026-07-07T04:14:05Z
+    content_digest: "git blob 37c7b09a:.../testing/RISK-COVERAGE-REPORT.md"
+    epistemic_kind: reported-observation
+    evidence_altitude: behavioral
+    lifecycle_state: current
+    currentness: current
+    provenance_refs: [EV-26, RC-06, RC-05]
+    missing_or_unavailable_refs:
+      - "raw cargo test --workspace output (6961 passed / 0 failed) - NOT RETAINED"
+      - "raw pytest output (smoke 32/32, protocol 14, security 23) - NOT RETAINED"
+      - "check-workspace-link-smoke.sh output - NOT RETAINED"
+    documents: [EV-26]
+    admitted_by: []
+    supersedes: []
+    accuracy_note: >
+      This Record contains a demonstrable factual error: "test_list_tools_returns_fifteen
+      (12->15 tools)". The committed diff renames test_list_tools_returns_fourteen to
+      _fifteen: the guard moved 14 -> 15. The error is invisible without the raw artefact.
+  - {id: RC-15, category: agent-report, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-12, created_at: 2026-07-07T04:14:05Z,
+     content_digest: "git blob 37c7b09a:.../agents/vnc-045-gate-3b-report.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: stale,
+     provenance_refs: [RC-09], documents: [], admitted_by: [], supersedes: []}
+  - {id: RC-16, category: agent-report, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-07, created_at: 2026-07-07T03:18:03Z,
+     content_digest: "git blob 37c7b09a:.../agents/vnc-045-agent-3-store-report.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-04], documents: [], admitted_by: [], supersedes: []}
+  - {id: RC-17, category: agent-report, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-08, created_at: 2026-07-07T03:40:23Z,
+     content_digest: "git blob 37c7b09a:.../agents/vnc-045-agent-4-service-report.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-04], documents: [], admitted_by: [], supersedes: []}
+  - {id: RC-18, category: agent-report, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-09, created_at: 2026-07-07T03:40:23Z,
+     content_digest: "git blob 37c7b09a:.../agents/vnc-045-agent-5-handler-report.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-04], documents: [], admitted_by: [], supersedes: []}
+  - {id: RC-19, category: advisory-review, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: "AC-16 (declared) / dug-21 (forge-attributed)", created_at: 2026-07-07T04:24:54Z,
+     content_digest: "GitHub comment 4900099734", epistemic_kind: inference,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-10, RC-08, RC-09, RC-14], documents: [EV-04], admitted_by: [], supersedes: []}
+  - id: RC-20
+    category: agent-report
+    category_schema_version: missing-history
+    scope_ref: SC-03
+    author_or_source_ref: AC-02
+    created_at: 2026-07-07T02:50:37Z
+    content_digest: "git blob 37c7b09a:.../agents/vnc-045-agent-1-architect-report.md"
+    epistemic_kind: claim
+    evidence_altitude: directional
+    lifecycle_state: current
+    currentness: superseded
+    currentness_evidence: >
+      Describes UN-01, not UN-02: "with per-slug protected_tags value-hygiene policy",
+      ADR-001..008 all delivered, SR-06 five-site threading "Decision (ADR-005): honor
+      protected_tags on ALL THREE construction paths", ADR-008 "min_trust_level inert seam".
+      Every one of those is DEFERRED at 37c7b09a. Committed unchanged alongside the reduced
+      ARCHITECTURE.md in the same commit.
+    provenance_refs: []
+    documents: []
+    admitted_by: []
+    supersedes: []
+  - id: RC-21
+    category: agent-report
+    category_schema_version: missing-history
+    scope_ref: SC-03
+    author_or_source_ref: AC-03
+    created_at: 2026-07-07T02:50:37Z
+    content_digest: "git blob 37c7b09a:.../agents/vnc-045-agent-2-spec-report.md"
+    epistemic_kind: claim
+    evidence_altitude: directional
+    lifecycle_state: current
+    currentness: superseded
+    currentness_evidence: >
+      "SCOPE.md (14 SDs binding)", "All 9 acceptance criteria (AC-01..AC-09)", "protected_tags
+      config domain model", "min_trust_level retained as inert enterprise seam only". The
+      committed SPECIFICATION.md it reports on has 12 SDs, AC-01..AC-07 and no config model.
+    provenance_refs: []
+    documents: []
+    admitted_by: []
+    supersedes: []
+  - {id: RC-22, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-02, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blobs .../architecture/ADR-003,005,006,007", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: deferred, currentness: superseded,
+     currentness_evidence: "Each carries an explicit DEFERRED banner naming the scope reduction and its Unimatrix deprecation - the ONE place the project does mark supersession in-band.",
+     provenance_refs: [RC-01], documents: [], admitted_by: [], supersedes: []}
+  - {id: RC-23, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-04, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blob .../SCOPE-RISK-ASSESSMENT.md", epistemic_kind: inference,
+     evidence_altitude: directional, lifecycle_state: current, currentness: superseded,
+     currentness_evidence: "Header still reads 'context_tag - domain-agnostic in-place tag mutation + per-slug protected-tag value-hygiene'; SR-03/04/06/08/09/10 are all VOIDED-BY-DEFERRAL in RC-06 but live here.",
+     provenance_refs: [RC-01], documents: [], admitted_by: [], supersedes: []}
+  - {id: RC-24, category: agent-report, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-15, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blob .../agents/vnc-045-synthesizer-report.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-01], documents: [EV-06], admitted_by: [], supersedes: []}
+  - {id: RC-25, category: forge-record, category_schema_version: "GitHub REST v3", scope_ref: SC-03,
+     author_or_source_ref: EB-01, created_at: 2026-07-06T23:44:12Z,
+     content_digest: "wfh-011-sources/github/unimatrix-issue-928.json", epistemic_kind: mechanical-observation,
+     evidence_altitude: behavioral, lifecycle_state: closed, currentness: current,
+     provenance_refs: ["GitHub API"], documents: [EV-01, EV-22, EV-23], admitted_by: [], supersedes: []}
+  - {id: RC-26, category: forge-record, category_schema_version: "GitHub REST v3", scope_ref: SC-03,
+     author_or_source_ref: EB-01, created_at: 2026-07-07T04:17:08Z,
+     content_digest: "wfh-011-sources/github/unimatrix-pr-929.json", epistemic_kind: mechanical-observation,
+     evidence_altitude: behavioral, lifecycle_state: merged, currentness: current,
+     provenance_refs: ["GitHub API"], documents: [EV-20, EV-21, EV-27, EV-29], admitted_by: [], supersedes: []}
+  - {id: RC-27, category: design-source, category_schema_version: missing-history, scope_ref: SC-03,
+     author_or_source_ref: AC-03, created_at: 2026-07-07T02:50:37Z,
+     content_digest: "git blob .../specification/SPECIFICATION.md", epistemic_kind: claim,
+     evidence_altitude: directional, lifecycle_state: current, currentness: current,
+     provenance_refs: [RC-01], documents: [], admitted_by: [EV-08], supersedes: []}
+
+# ---------------------------------------------------------------------------
+# Required one-way traversals (M02 section 7 consequence). No new relation added.
+# ---------------------------------------------------------------------------
+traversal_checks:
+  - name: Goal -> applicable Workflows
+    method: "index scan over workflows where GO-01 in workflow.applies_to"
+    result: [WF-01, WF-02]
+    added_relation: none
+    verdict: demonstrated
+    note: >
+      Works because Workflow.applies_to exists as a declared one-way relation. It is an
+      index, not a graph walk - exactly the disposition M02 section 7 adopted when A3 was
+      withdrawn.
+  - name: Actor -> participated Attempts
+    method: "index scan over attempts where AC-09 in attempt.actors"
+    result: [AT-08]
+    added_relation: none
+    verdict: demonstrated
+  - name: Delegation -> Scope root
+    method: "walk DL-06.derived_from -> DL-01; DL-01.scope = SC-01; SC-01.parent = null"
+    result: "SC-01 reached in 2 hops"
+    verdict: demonstrated
+    caveat: "The chain is inferred, not evidenced - see delegation_gap_note."
+  - name: Delegation -> independent EffectBoundary disposition
+    method: "DL-06.enforced_by"
+    result: []
+    verdict: EMPTY-BY-OBSERVATION
+    note: >
+      M01 supporting.Delegation.relations.enforced_by rule: "without a boundary authority is
+      declared only". That is the correct and honest reading of this case.
+  - name: Gate -> assessment -> gate_outcome -> Record
+    method: "GT-05 -> EV-11 -> EV-12 -> RC-09"
+    result: distinct-and-traversable
+    verdict: demonstrated
+  - name: Unit -> Attempt -> Delegation -> Actor
+    method: "UN-08 -> AT-08 -> DL-06 -> AC-09"
+    result: distinct-and-traversable
+    verdict: demonstrated

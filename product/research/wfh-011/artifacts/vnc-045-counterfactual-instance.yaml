@@ -1,0 +1,388 @@
+# wfh-011 · W2 · vnc-045 BOUNDED-EVOLUTION COUNTERFACTUALS
+#
+# THIS FILE CONTAINS NO OBSERVED HISTORY. Every entity here has `counterfactual` provenance,
+# its own CF- identifier, and a source_link back to the historical instance it would replace.
+# Per the SCOPE amendment of 2026-08-29:
+#   - nothing here is counted as observed case coverage;
+#   - nothing here is merged into vnc-045-instance.yaml;
+#   - nothing here is a recommendation, an implementation plan, or authority to act;
+#   - "V5 would then conform" is NEVER the independent reason (circular force-fitting).
+#
+# Historical instance: product/research/wfh-011/artifacts/vnc-045-instance.yaml
+# Model under test:    organizational-data-model-v5.yaml @ bf8e5536...9841060
+
+meta:
+  workstream: W2
+  run: wfh-011
+  case: vnc-045
+  form: counterfactual
+  provenance: counterfactual
+  encodes_observed_history: false
+  candidate_count: 5
+  rejected_candidate_count: 2
+
+# ===========================================================================
+rejected_candidates:
+  - id: CF-R01
+    tempting_change: >
+      Rename the program's capability grade value `asserted` to `claimed` so it lands inside
+      M01 values.evidence_grade [missing, claimed, partial, proven].
+    why_rejected: >
+      CIRCULAR. The only reason to make this change is that V5's closed vocabulary prefers
+      it. The program considered and explicitly rejected `claimed`: uni-zero's OQ-1 ruling
+      (S01 comment 4898695344) is "`asserted` is authoritative ... `claimed` in #928 is a
+      slip." A change whose sole justification is conformity to the model under test is
+      prohibited by the anti-force-fitting amendment, and it would also erase an evidenced
+      domain decision. The mismatch is therefore carried as a MODEL pressure row
+      (F-01 / cause: model-defect), not as a project evolution.
+  - id: CF-R02
+    tempting_change: >
+      Introduce credentialed per-agent identity so that Actor.declared_identity becomes an
+      attestation and I12/I17 acquire an enforcement point.
+    why_rejected: >
+      RELITIGATES A SETTLED, HUMAN-LOCKED DECISION. ADR-008 records that the security posture
+      is human-LOCKED and that in OSS "the enforceable controls are audit + rate + lifecycle,
+      NOT identity, because there is no client token and no per-agent trust resolution
+      locally"; the declarative-attribution bound is documented as an accepted risk in
+      RISK-TEST-STRATEGY Residual Risk 1. Existing authority and custody semantics are
+      CONSTRAINTS on a counterfactual, not friction to remove. The gap is therefore carried
+      as an enforcement-gap row (F-05), not as a project evolution.
+
+# ===========================================================================
+counterfactuals:
+
+# ---------------------------------------------------------------------------
+- id: CF-01
+  title: Stamp every agent and gate report with the scope revision it was written against
+  source_link:
+    historical_records: [RC-13, RC-20, RC-21, RC-23, RC-15]
+    historical_events: [EV-06]
+    x_rows: ["core.Record.fields.currentness", "core.Record.relations.supersedes", "core.Record.fields.lifecycle_state"]
+  cause_classification: [project-evolution-candidate]
+  classification_evidence: >
+    RC-20 (architect report), RC-21 (spec report) and RC-13 (vision-guardian report) describe
+    UN-01 - the pre-reduction feature with an active protected_tags policy, ADR-003/005/006/007
+    live, AC-01..AC-09 and a shipped min_trust_level - and are committed unchanged, in commit
+    afaa8385, alongside the reduced SCOPE/ARCHITECTURE/SPECIFICATION that contradict them.
+    Nothing in any file distinguishes them from the current ones.
+  smallest_change: >
+    Add two header lines to the agent-report and gate-report templates:
+    `scope_revision:` (the SCOPE.md content digest the report was written against) and
+    `superseded_by:` (empty at write time). When the synthesizer regenerates derived artefacts
+    after a human scope change - the step T02 already mandates - it also stamps `superseded_by`
+    on any report whose `scope_revision` no longer matches.
+  independent_reason: >
+    NOT V5. The harm is demonstrated inside the case by the project's own actors: the
+    vision-guardian's ALIGNMENT-REPORT (RC-03) records that Unimatrix pattern #5607 "cites a
+    now-stale clean instance (vnc-045 min_trust_level R-10/AC-09b)" and hands the retro a
+    manual reconciliation task - a task created purely because a superseded report was
+    indistinguishable from a current one. The project already pays this cost by hand.
+  semantic_proof_authority_custody_preservation: >
+    PRESERVED. Additive metadata only. No proof bar changes; no gate outcome changes; no
+    authority moves - the stamp is written by the synthesizer under the same human decision
+    that triggered the regeneration, and the custodian of the scope revision remains AC-01.
+    Nothing is deleted: the superseded report stays on disk with its reasoning intact,
+    which is the same treatment ADR-003/005/006/007 already receive (RC-22 shows the project
+    ALREADY does this for ADRs and only for ADRs).
+  migration_cost: >
+    Low. Two template lines; one synthesizer step; no code, no schema, no forge configuration.
+    Historical reports are not retro-stamped (that would manufacture history) - the stamp is
+    absent on pre-change reports and its absence is itself informative.
+  affected_artifacts:
+    - ".claude/protocols/uni/uni-design-protocol.md (Phase 2c synthesizer step)"
+    - ".claude/protocols/uni/uni-delivery-protocol.md (agent report conventions)"
+    - "product/features/{id}/agents/*.md (template header)"
+    - "product/features/{id}/reports/gate-*-report.md (template header)"
+  current_form_representable: true
+  current_form_note: >
+    YES - and this is a V5 win, not a V5 need. core.Record.fields.currentness
+    [current|superseded|stale|unknown] and core.Record.relations.supersedes already express
+    the observed mess exactly; RC-13/RC-20/RC-21/RC-23 carry currentness: superseded in the
+    historical instance with cited evidence.
+  evolved_form_representable: true
+  evolved_form_note: >
+    YES - RC-03 would carry supersedes: [RC-13] as a project-written fact rather than a W2
+    reconstruction, and Record.provenance_refs would carry the scope digest.
+  post_evolution_fit: retain
+  unresolved_discriminator: not-applicable
+  cf_entities:
+    - cf_record_id: CF-RC-13
+      replaces: RC-13
+      currentness: superseded
+      supersedes: []
+      superseded_by: RC-03
+      provenance: counterfactual
+      note: "Identical content to RC-13 plus scope_revision + superseded_by headers."
+
+# ---------------------------------------------------------------------------
+- id: CF-02
+  title: Pin the reviewed commit in every gate assessment record
+  source_link:
+    historical_records: [RC-08, RC-09]
+    historical_events: [EV-07, EV-09, EV-11]
+    x_rows: ["supporting.Gate.fields.baseline_rule", "registries.event_type.seeded.assessment (subject_baseline)", "supporting.Attempt.fields.baseline_ref"]
+  cause_classification: [project-evolution-candidate]
+  classification_evidence: >
+    RC-09 (gate-3b report) lists as an open WARN a stale `#[allow(dead_code)]` on
+    ServiceLayer.store_tag and recommends removing it. Commit 843d0049 (03:50:17) had already
+    removed exactly that attribute; RC-09 was committed at bf7c4812 (04:14:05). RC-09 pins no
+    commit, so the alphabet cannot determine whether the review ran before or after 843d0049,
+    and the finding cannot be re-verified. Separately, GT-04 ran two iterations whose failing
+    and passing artefacts both collapse into commit 3afc2c49, so AT-03's baseline_ref does not
+    survive at all.
+  smallest_change: >
+    One line in the gate-report template - `reviewed_commit: <sha>` - written by the validator
+    from `git rev-parse HEAD` at the moment it reads the tree. Nothing else.
+  independent_reason: >
+    NOT V5. T01 already states the rule this change would make checkable: "Gates check
+    committed HEAD - working tree changes are invisible to them," and instructs the leader to
+    commit modified production files before spawning the validator. The protocol already
+    treats the reviewed baseline as load-bearing; it simply does not record which one it was.
+    A code review that cannot name what it reviewed cannot be re-run, and the case supplies a
+    concrete instance of that failing.
+  semantic_proof_authority_custody_preservation: >
+    PRESERVED. Purely additive provenance. The gate's bar, outcomes, consequences, assessor
+    and independence predicate are untouched; nothing is relaxed and no authority moves.
+  migration_cost: >
+    Low. One template line and one command per gate. It does NOT retroactively recover AT-03's
+    lost baseline - design-session artefacts are untracked until Session 2 commits them (T02),
+    so a rework iteration that happens before the first commit still leaves no reviewable
+    baseline. Closing that would require committing design artefacts during Session 1, a
+    larger change with its own trade-offs, and is NOT proposed here.
+  affected_artifacts:
+    - ".claude/protocols/uni/uni-delivery-protocol.md (Gate 3a/3b/3c spawn templates)"
+    - "product/features/{id}/reports/gate-*-report.md (template header)"
+  current_form_representable: partial
+  current_form_note: >
+    Gate.baseline_rule is expressible ("committed HEAD"), but the assessment Event's
+    required subject_baseline is missing-history on EV-07/EV-09/EV-11, and Attempt.baseline_ref
+    (REQUIRED) is missing-history on AT-03. V5 exposes the hole; it does not create it.
+  evolved_form_representable: true
+  post_evolution_fit: retain
+  unresolved_discriminator: not-applicable
+  cf_entities:
+    - cf_event_id: CF-EV-11
+      replaces: EV-11
+      extension: {gate_version_ref: "GT-05 @ <protocol digest>", subject_baseline: "843d0049", evidence_set: [RC-04, RC-05, RC-06], assessor_refs: [AC-12], independence_check: "declared"}
+      provenance: counterfactual
+
+# ---------------------------------------------------------------------------
+- id: CF-03
+  title: Record a scope-reduction decision on the tracking issue at the moment it is made
+  source_link:
+    historical_events: [EV-05, EV-06]
+    historical_units: [UN-01, UN-02]
+    x_rows: ["registries.event_type.seeded.decision", "core.Event.fields.occurred_at", "core.Event.fields.authority_ref", "core.Event.fields.custody"]
+  cause_classification: [project-evolution-candidate, historical-evidence-gap]
+  classification_evidence: >
+    EV-05 - the decision that voided the feature's only Critical risk, moved six of ten scope
+    risks out of test obligation, deprecated four ADRs and changed the deliverable - exists in
+    the alphabet only as the dated phrase "scope reduced by human 2026-07-07", repeated inside
+    seven documents written by the actors the decision governed. There is no issue comment, no
+    commit, no forge object. Its required occurred_at cannot be given at the declared timestamp
+    type; only a two-hour window (after EV-03 at 01:33:14Z, before commit afaa8385 at 02:50:37Z)
+    is inferable, and that window is an inference, not an observation. The historical-evidence-gap
+    classification is retained because no project change can recover what was not recorded.
+  smallest_change: >
+    When the human makes a scope decision at either of the two protocol human gates, post one
+    comment on the tracking issue stating the decision, its rationale and its time, before the
+    synthesizer regenerates anything. One comment. No new artefact type.
+  independent_reason: >
+    NOT V5, and the case argues it against itself. vnc-045's own thesis (ADR-009, SD-7) is that
+    the append-only audit record is "the PRIMARY control" and that accountability, not
+    prevention, is the security model - for a single tag mutation, recorded to the millisecond
+    with prior and new value. The same organisation left its own most consequential decision
+    with no record at all. The asymmetry is the argument: the project already believes what
+    this change asks for, and applies it only to machine writes.
+  semantic_proof_authority_custody_preservation: >
+    PRESERVED, and custody strictly improves. The decision stays with AC-01; the record moves
+    from actor-authored paraphrase to forge-custodied primary source with an attested author
+    and timestamp. No authority moves toward the governed activity - the opposite: the
+    governed agents stop being the sole narrators of the decision that governs them.
+  migration_cost: >
+    Very low - one comment per scope decision. Affected surfaces are two protocol human-gate
+    sections. It does NOT retroactively supply EV-05: history stays absent.
+  affected_artifacts:
+    - ".claude/protocols/uni/uni-design-protocol.md (Phase 1 human approval; Phase 2d handling human-requested changes)"
+    - ".claude/protocols/uni/uni-delivery-protocol.md (human merge gate)"
+  current_form_representable: partial
+  current_form_note: >
+    The decision Event is writable in V5 with the correct authority_ref (SC-03, via the M02 R4
+    correction to ref<Delegation|Scope>) and the correct disposition, but occurred_at, recorded_at
+    and custody are missing-history and are recorded as such. V5 makes the hole visible and
+    typed; it does not fill it.
+  evolved_form_representable: true
+  post_evolution_fit: retain
+  unresolved_discriminator: not-applicable
+  cf_entities:
+    - cf_event_id: CF-EV-05
+      replaces: EV-05
+      event_type: decision
+      occurred_at: "<forge comment created_at>"
+      recorded_at: "<forge comment created_at>"
+      scope_ref: SC-03
+      actor_refs: [AC-01]
+      authority_ref: SC-03
+      epistemic_kind: mechanical-observation
+      significance: surprise
+      carrier: record-ref
+      custody: "GitHub (EB-01)"
+      extension: {authority_ref: SC-03, disposition: "<the human's own words>", authorized_refs: [UN-02]}
+      documented_by: [CF-RC-28]
+      provenance: counterfactual
+    - cf_record_id: CF-RC-28
+      category: forge-record
+      author_or_source_ref: EB-01
+      epistemic_kind: mechanical-observation
+      evidence_altitude: behavioral
+      currentness: current
+      provenance: counterfactual
+
+# ---------------------------------------------------------------------------
+- id: CF-04
+  title: Retain the raw test-runner output alongside the authored risk-coverage report
+  source_link:
+    historical_records: [RC-14]
+    historical_events: [EV-26]
+    x_rows: ["invariants.I4", "registries.event_type.seeded.observation", "values.epistemic_kind.values.mechanical-observation", "core.Record.fields.missing_or_unavailable_refs"]
+  cause_classification: [project-evolution-candidate, historical-evidence-gap]
+  classification_evidence: >
+    RC-14 asserts 6961 unit tests passed / 0 failed, smoke 32/32, protocol 14, security 23,
+    and per-risk PASS for R-01..R-08. None of that output survives anywhere in the alphabet,
+    so under M01 I4 every one of those numbers is a reported-observation, not a
+    mechanical-observation. The cost is demonstrated, not hypothetical: RC-14 states the tool
+    guard moved "12 -> 15" and the PR body calls context_tag "the 13th tool", while the
+    committed diff of test_protocol.py renames test_list_tools_returns_fourteen to _fifteen.
+    Three authored numbers, one observable fact, and both authored records are wrong. Nobody
+    caught it because there was nothing to check against.
+  smallest_change: >
+    The tester already redirects cargo output to a file (T01 mandates file-not-pipe with a hard
+    ceiling, precisely so rc=$? captures cargo). Keep that file: commit the runner output, or
+    its SHA-256 plus the first/last N lines, next to RISK-COVERAGE-REPORT.md, and cite it from
+    the report's provenance line.
+  independent_reason: >
+    NOT V5. The project's own R-03 discipline for vnc-045 is that an audit record must be
+    "sufficient to reconstruct what changed, when, and by whom" and must never be the "{}"
+    sentinel - it treats a summary standing in for a record as a security defect for machine
+    writes. The same standard applied to its own gate evidence would have caught a factual
+    error that shipped in the merged tree. Independent of any model.
+  semantic_proof_authority_custody_preservation: >
+    PRESERVED and strengthened. Nothing is removed and no bar is lowered; an authored claim
+    gains a capture artefact behind it. It does not by itself make the observation
+    mechanical - the capture custody is still the same actor's shell - so the change is
+    honest about what it buys: reproducibility and cross-checkability, not attestation.
+  migration_cost: >
+    Low-to-moderate. Repository size grows per feature (mitigable by storing a digest plus a
+    truncated head/tail rather than full output); one tester step; one line in the
+    RISK-COVERAGE-REPORT template. It does NOT retroactively supply the vnc-045 output.
+  affected_artifacts:
+    - ".claude/protocols/uni/uni-delivery-protocol.md (Stage 3c, Cargo Output Truncation section)"
+    - "product/features/{id}/testing/ (new retained artefact)"
+    - "product/features/{id}/testing/RISK-COVERAGE-REPORT.md (provenance line)"
+  current_form_representable: true
+  current_form_note: >
+    YES, and correctly: EV-26 carries capture_custody: ABSENT and raw_evidence_ref: ABSENT,
+    epistemic_kind reported-observation, and RC-14 lists the three unretained artefacts under
+    missing_or_unavailable_refs. V5's I4 and the observation extension are what force the
+    distinction to be visible instead of collapsing into "tests passed".
+  evolved_form_representable: true
+  evolved_form_note: >
+    EV-26 would carry raw_evidence_ref and a capture_custody value; epistemic_kind would remain
+    reported-observation unless the capture is custodied outside the reporting actor.
+  post_evolution_fit: retain
+  unresolved_discriminator: not-applicable
+  cf_entities:
+    - cf_event_id: CF-EV-26
+      replaces: EV-26
+      extension: {instrument: AC-17, subject: "cargo test --workspace ; pytest suites/", capture_custody: "repository blob, tester-produced", raw_evidence_ref: "product/features/vnc-045/testing/raw/*.log"}
+      epistemic_kind: reported-observation
+      provenance: counterfactual
+
+# ---------------------------------------------------------------------------
+- id: CF-05
+  title: Make the Gate 3c assessment record a precondition the merge cannot bypass
+  source_link:
+    historical_gates: [GT-06]
+    historical_events: [EV-13, EV-14, EV-20, EV-21]
+    historical_units: [UN-05]
+    x_rows: ["invariants.I7", "invariants.I8", "supporting.Gate.fields.independence_predicate", "registries.event_type.seeded.assessment", "registries.event_type.seeded.gate_outcome"]
+  cause_classification: [enforcement-gap, project-evolution-candidate, historical-evidence-gap]
+  classification_evidence: >
+    ENFORCEMENT-GAP: T01 defines Gate 3c as a mandatory validator-assessed gate writing
+    reports/gate-3c-report.md, and nothing enforces it - the leader can state "Gate 3c PASS"
+    in the PR body and the merge proceeds. HISTORICAL-EVIDENCE-GAP: the alphabet cannot
+    determine whether the gate ran and went unrecorded or did not run. OBSERVATION:
+    product/features/vnc-045/reports/gate-3c-report.md does not exist at 37c7b09a. Of the 226
+    feature directories in the tree at that commit, 154 carry gate-3a-report.md, 157 carry
+    gate-3b-report.md and 153 carry gate-3c-report.md - and vnc-045 is the ONLY feature that
+    carries 3a and 3b but not 3c. Its absence is an observation against an established norm,
+    not an inference. The only Stage-3c record is
+    RC-14, authored by AC-10 - the actor that wrote and ran the tests under assessment.
+  smallest_change: >
+    Require the file. Either (a) a GitHub branch-protection required status check on the
+    default branch that fails when product/features/{id}/reports/gate-3c-report.md is absent
+    or does not name the feature's head commit, or (b) if forge configuration is out of reach,
+    a pre-merge checklist item the human ticks against the file's presence. (a) is preferred
+    because it puts the check outside every governed actor.
+  independent_reason: >
+    NOT V5, and not even novel to the project: the protocol already declares Gate 3c mandatory,
+    already specifies its independent assessor, already prescribes its output path, and 153 of 226
+    feature directories in the same repository produce it. The change makes an already-desired,
+    already-documented, already-normal behaviour non-bypassable. The counter-evidence is that
+    vnc-045 merged without it and nothing noticed for the life of the branch.
+  semantic_proof_authority_custody_preservation: >
+    PRESERVED, and authority moves in the SAFE direction. The check is a forge-side condition
+    on an externally custodied boundary (EB-01) - away from the agents and away from the
+    delivery leader, not toward them. It changes no gate bar, no outcome vocabulary, no
+    consequence, and grants no new privilege. Critically, it does not manufacture a passing
+    gate: an absent report blocks, it does not auto-pass. That is I7's fail-closed behaviour
+    given an enforcement point for the first time.
+    Risk to watch (recorded, not resolved): a required check whose predicate is "a file
+    exists" is satisfiable by writing a file. It raises the cost of an unrecorded gate; it does
+    not attest that the assessment happened. Claiming otherwise would be exactly the
+    "overstating defensive structure" the project's own standing lesson warns against.
+  migration_cost: >
+    Moderate. Option (a) needs repository-admin configuration and a small check script, and it
+    changes the merge path for every feature in the repository, not just vnc-045; any feature
+    legitimately without a Stage 3c (a docs-only change) needs an explicit exemption path or
+    the check becomes a nuisance that gets disabled. Option (b) is nearly free and
+    correspondingly weaker. Both leave the 226 historical feature directories untouched.
+  affected_artifacts:
+    - "GitHub branch protection on dug-21/unimatrix:main (option a)"
+    - "a CI check script (option a)"
+    - ".claude/protocols/uni/uni-delivery-protocol.md (Gate 3c, Phase 4 human merge gate)"
+    - "an exemption convention for features with no Stage 3c"
+  current_form_representable: partial
+  current_form_note: >
+    The historical instance CANNOT write a conforming assessment or gate_outcome Event for
+    GT-06 - EV-13/EV-14 are marked NOT-WRITABLE with the blocking reason - and that is V5
+    behaving correctly. I8 ("missing evidence is explicit and never inferred as success") is
+    precisely the rule the merged record breaks, and V5 surfaces it as a missing required
+    Record rather than letting "Gate 3c PASS" pass as a fact.
+  evolved_form_representable: true
+  evolved_form_note: >
+    EV-13/EV-14 become writable with an independent assessor_refs and a pinned
+    subject_baseline; UN-05.current_state becomes gate-3c-PASS rather than
+    claimed-PASS-without-gate-record.
+  post_evolution_fit: retain
+  unresolved_discriminator: >
+    Whether the gate assessment actually occurred in vnc-045 and was simply not committed
+    remains unresolvable from the fixed alphabet, and no project change can settle it
+    retrospectively. The post-evolution fit therefore applies to future units only; the
+    current-project verdict for GT-06 stands unchanged.
+  cf_entities:
+    - cf_event_id: CF-EV-13
+      replaces: EV-13
+      event_type: assessment
+      scope_ref: SC-03
+      actor_refs: ["<uni-validator gate-3c spawn>"]
+      subject_refs: [UN-05]
+      authority_ref: "<DL for the gate-3c assessor>"
+      epistemic_kind: reviewed-finding
+      extension: {gate_version_ref: "GT-06 @ <protocol digest>", subject_baseline: "bf7c4812", evidence_set: [RC-14, RC-06, "ACCEPTANCE-MAP"], assessor_refs: ["<gate-3c actor>"], independence_check: "assessor != RC-14 author"}
+      provenance: counterfactual
+    - cf_event_id: CF-EV-14
+      replaces: EV-14
+      event_type: gate_outcome
+      extension: {assessment_ref: CF-EV-13, outcome: PASS, missingness: "R-03 audit completeness is unit-seam only, by design", consequence_disposition: "phase-end test->pr-review"}
+      provenance: counterfactual
