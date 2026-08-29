@@ -313,3 +313,143 @@ The run is now **scoped · pending-human-resume**, not `researching`. Tech-disco
 blocked until the owner explicitly approves/resumes Issue #70 and the leader records the corresponding
 cycle transition. This extension supplies no authority to begin research, no model/schema change, no
 graph write, no grade movement, and no runtime-enforcement claim.
+
+## Amendment — 2026-08-29: Project evolution and anti-force-fitting
+
+**Authority:** owner amendment at the pending `wfh-011` advisory scope gate.
+
+**Purpose:** A mismatch between a historical project and V5 is not automatically a model defect, but V5
+conformity is also not a legitimate reason by itself to change a working project. The run must distinguish
+incidental project/process complexity from material domain semantics without improving either history in
+place. This amendment supersedes the affected W1/W2/W4 output contracts, matrix fields, proof-bar clauses,
+review concerns, coverage clauses, and synthesis requirements only as stated below; every earlier boundary
+and the full source/model alphabets remain in force.
+
+### Required pressure classification
+
+Every instance failure or construct-pressure row must classify at least one of these non-exclusive causes:
+
+- `model-defect` — V5 lacks or distorts identity, lifecycle, relation, behavior, or a load-bearing domain
+  distinction that cannot fit a conforming extension.
+- `project-evolution-candidate` — a bounded project/process/configuration change may remove accidental
+  complexity or make an already-desired behavior explicit without weakening domain meaning.
+- `historical-evidence-gap` — the fixed alphabet cannot establish what happened or supply the required
+  instance value; absence remains absence.
+- `enforcement-gap` — V5 specifies a constraint or refusal whose operative enforcement/receipt does not
+  exist or is not evidenced in the historical project.
+- `unresolved` — available evidence cannot yet distinguish the preceding causes or a material ambiguity
+  remains after analysis.
+
+Multiple classifications are required when causes coexist. A row may not use `project-evolution-candidate`
+as a residual bucket for model pressure.
+
+For every `project-evolution-candidate`, the row must additionally state:
+
+1. the smallest concrete project, process, or configuration change;
+2. why that change is reasonable independently of making V5 pass;
+3. whether and how domain semantics, proof, authority, and custody are preserved;
+4. migration cost and every affected artifact/workflow/configuration surface; and
+5. whether both the current form and the bounded evolved form remain representable in V5.
+
+These are directional counterfactuals, not implementation recommendations or authority to perform the
+change. **Circular force-fitting is prohibited:** conformity to V5 is never itself evidence that a project
+should evolve. No proposed evolution may erase a material domain behavior, weaken a proof bar, relocate
+authority or custody into the governed activity, manufacture missing history, or relabel absent
+enforcement as conformity.
+
+### Workstream contract supersession
+
+- **W1 amendment — research case.** In addition to its existing outputs, every failed/strained `wfh-008`
+  mapping must receive the required pressure classification and, when applicable, the five-part bounded
+  evolution analysis. W1 must preserve the historical research method and separately encode any evolved
+  counterfactual; it may not rewrite the case instance. The findings must give distinct `current-project
+  fit` and `post-bounded-evolution fit` columns wherever an evolution candidate is asserted.
+- **W2 amendment — software case.** Apply the same classification and five-part analysis to `vnc-045`.
+  Existing software proof, review, authority, merge-effect, and custody semantics are constraints on any
+  counterfactual, not friction to remove. Current and evolved instance forms must be separately represented
+  and source-linked.
+- **W4 amendment — independent adjudication.** Reconcile classifications across W1–W3 and challenge every
+  project-evolution candidate for circularity, independent reasonableness, semantic preservation, migration
+  cost completeness, and dual representability. Where applicable, W4 must issue two explicit verdicts:
+  `current-project fit: retain | revise | reject | insufficient` and `post-bounded-evolution fit: retain |
+  revise | reject | insufficient`. A better post-evolution result does not supersede or conceal the current
+  fit result.
+
+W3's adversarial suite remains a model/rejection test and must not encode counterfactual project evolution
+as if it were observed history. It may challenge proposed evolved forms after W1/W2 make them explicit.
+
+### Matrix and pressure-ledger supersession
+
+The existing conforming-instance and invalid-instance fields remain required. Every instance matrix and
+`reports/construct-pressure-ledger.csv` row that records failure or pressure adds:
+
+`cause_classification`; `classification_evidence`; `current_project_fit`; `evolution_change`;
+`independent_reason`; `semantic_proof_authority_custody_preservation`; `migration_cost`;
+`affected_artifacts`; `current_form_representable`; `evolved_form_representable`;
+`post_evolution_fit`; and `unresolved_discriminator`.
+
+Fields not applicable to a non-evolution row must contain `not-applicable`, not be silently blank. Any
+counterfactual evolved instance receives its own identifier and explicit `counterfactual` provenance; it
+must never be merged into the historical instance or counted as observed case coverage.
+
+### Proof-bar supersession
+
+The original retain/revise/reject bar applies first to the projects as they actually existed. A model
+cannot pass the current-project test by assuming project changes. A bounded evolution may produce a second
+directional fit result only when its independent rationale and preservation case survive W4 challenge.
+
+- A `model-defect` is adverse to the applicable construct/hypothesis even if changing the project would
+  hide it.
+- A `project-evolution-candidate` is not adverse to V5 merely because the historical form is awkward, but
+  it cannot support V5 unless both forms are honestly represented and the proposed change is independently
+  justified.
+- A `historical-evidence-gap` or `enforcement-gap` prevents a positive claim at that altitude; neither is
+  automatically a model defect.
+- `unresolved` remains unresolved through synthesis and cannot be counted as conforming or rejecting
+  evidence.
+
+No post-evolution verdict proves that the evolution should be implemented, and no part of this scope may
+produce a build recommendation.
+
+### Additional adversarial concerns
+
+The independent audit and synthesis must additionally answer:
+
+13. **Circular conformance:** is any project change justified only because V5 prefers it?
+14. **Behavior erasure:** does an apparently simpler evolved form delete a material domain distinction,
+    exception path, proof obligation, or safe-interruption behavior?
+15. **Authority laundering:** does evolution move method custody, decision authority, credentials, gate
+    inputs, or effect performance toward the governed actor?
+16. **Counterfactual confusion:** are current history and evolved proposal separately identified, with no
+    proposed event represented as observed fact?
+17. **Migration realism:** are cost, affected artifacts, compatibility, and coexistence of current/evolved
+    forms explicit rather than hidden behind a configuration label?
+18. **Cause discrimination:** did the run distinguish model failure, accidental project complexity,
+    insufficient historical evidence, and absent enforcement instead of treating every mismatch alike?
+
+### Coverage and synthesis supersession
+
+In addition to the existing eight coverage clauses:
+
+9. Every failure/pressure row has at least one required cause classification with evidence; all
+   multi-cause rows retain every applicable classification.
+10. Every project-evolution candidate contains all five required analyses, separate current and
+    counterfactual instance identifiers, and both fit verdicts; missing fields are a coverage defect.
+11. W4 independently challenges each evolution candidate and preserves the current-project verdict even
+    when post-evolution fit improves.
+12. The coverage auditor answers concerns 13–18 and treats circular force-fitting, erased material
+    behavior, counterfactual/history conflation, or an unclassified pressure as `REWORKABLE`; any such
+    defect remaining after two targeted rounds is `SCOPE-FAIL`.
+
+Synthesis must separately report: (a) model failure, (b) accidental or independently evolvable project
+complexity, (c) historical evidence insufficiency, (d) enforcement absence, and (e) unresolved ambiguity.
+It must present current-project and post-bounded-evolution verdicts side by side wherever applicable and
+must not convert a counterfactual into a recommendation, implementation plan, or proof.
+
+### Gate and boundary preservation
+
+Status remains **scoped · pending-human-resume**. Tech-discovery remains blocked until explicit owner
+approval/resume and the leader's cycle transition. This amendment authorizes no implementation, project
+or process change, model revision, schema/configuration mutation, Unimatrix graph/category write, grade
+movement, build recommendation, `wfh-009` synthesis, or runtime-enforcement claim. All prior out-of-scope,
+zero-cost, fixed-alphabet, independence, and human-gate constraints remain binding.
