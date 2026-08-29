@@ -1,0 +1,528 @@
+# wfh-011 W3 — CONFORMING SYNTHETIC BASELINE for the pinned Organizational Data Model V5
+#
+# PROVENANCE WARNING — READ BEFORE USE.
+# Every element here is CONSTRUCTED FROM M01 (organizational-data-model-v5.yaml,
+# sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060).
+# NOTHING in this file is observed history. It is NOT wfh-008 and NOT vnc-045.
+# It is the minimal conforming witness set W3 needs so that each invalid fixture can be a
+# ONE-MUTATION delta from a conforming instance. W1 and W2 own the historical instances;
+# this file must never be counted as case coverage for either.
+#
+# All ids are prefixed SYN- for exactly that reason.
+
+instance_meta:
+  id: SYN-BASELINE-1
+  provenance: constructed-from-M01
+  observed_history: false
+  model_sha256: bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+  purpose: >
+    Conforming witness for the field/type/cardinality, inverse, registry, catalog, value,
+    invariant, extension-ownership, custody and exclusion rules that a fixture then mutates.
+
+# ---------------------------------------------------------------------------
+# Extension by registration — the three registries M01 seeds EMPTY must be populated by a
+# program before any conforming Record, Unit or Delegation can exist at all.
+# ---------------------------------------------------------------------------
+registered:
+  record_category:
+    finding:
+      definition: an authored research finding with cited sources
+      schema_extension: {version: "1", fields: [cites, workstream]}
+      admission_rule: admitted only by an assessment Event under the run's coverage Gate
+      retrieval: by scope and run topic
+      lifecycle: draft -> active -> superseded
+      correction: superseding Record, never in-place edit
+      status: OPEN
+    gate-report:
+      definition: an independent coverage/gate assessment report
+      schema_extension: {version: "1", fields: [ruling, rounds]}
+      admission_rule: admitted on issue by the assessor named in the Gate
+      retrieval: by gated subject
+      lifecycle: issued -> superseded
+      correction: superseding Record
+      status: OPEN
+  unit_kind:
+    investigation:
+      definition: a bounded question partition worked to a findings artifact
+      workflow_ref: SYN-WF-A
+      required_fields: [intended_outcome]
+      status: OPEN
+    change:
+      definition: a bounded change to a repository artifact
+      workflow_ref: SYN-WF-A
+      required_fields: [intended_outcome]
+      status: OPEN
+  effect_class:
+    repository-write:
+      definition: a write to a version-controlled repository performed by an external forge
+      target_schema: {repo: text, ref: text}
+      receipt_requirements: {commit_sha: required, forge_response: required}
+      status: OPEN
+
+instances:
+  Scope:
+    - id: SYN-SC-COLL
+      identity: SYN-SC-COLL
+      fields:
+        scope_type: collective
+        name: Synthetic Collective
+        objective: exercise the V5 authority root
+        authority_root_ref: SYN-AC-OWNER
+        effective_at: "2026-01-01T00:00:00Z"
+      relations:
+        contains: [SYN-SC-PROG]
+    - id: SYN-SC-PROG
+      identity: SYN-SC-PROG
+      fields:
+        scope_type: program
+        name: Synthetic Program
+        objective: exercise the V5 program plane
+        authority_root_ref: SYN-AC-OWNER
+        effective_at: "2026-01-01T00:00:00Z"
+      relations:
+        parent: SYN-SC-COLL
+
+  Actor:
+    - id: SYN-AC-OWNER
+      fields: {name: Owner, actor_type: human, declared_identity: "owner@synthetic",
+               lifecycle_state: active}
+    - id: SYN-AC-CUSTODIAN
+      fields: {name: Method Custodian, actor_type: human,
+               declared_identity: "custodian@synthetic", lifecycle_state: active}
+    - id: SYN-AC-AGENT
+      fields: {name: Executing Agent, actor_type: agent,
+               declared_identity: "agent@synthetic", lifecycle_state: active}
+      relations:
+        has_skill: [{ref: SYN-SK-1, evidence_refs: [SYN-RC-1], grade: partial,
+                     currentness: current, expires_at: "2027-01-01T00:00:00Z"}]
+        receives: [SYN-DL-DYN]
+    - id: SYN-AC-REVIEWER
+      # participates in SYN-AT-1 but receives no Delegation: the T-06 traversal hole witness
+      fields: {name: Human Reviewer, actor_type: human,
+               declared_identity: "reviewer@synthetic", lifecycle_state: active}
+    - id: SYN-AC-LEAD
+      fields: {name: Lead Agent, actor_type: agent, declared_identity: "lead@synthetic",
+               lifecycle_state: active}
+      relations:
+        has_skill: [{ref: SYN-SK-1, evidence_refs: [SYN-RC-1], grade: claimed,
+                     currentness: current}]
+        holds_role: [{ref: SYN-RL-EXEC, scope_ref: SYN-SC-PROG,
+                      effective_at: "2026-01-01T00:00:00Z"}]
+    - id: SYN-AC-INSTRUMENT
+      fields: {name: Repository Reader, actor_type: deterministic-component,
+               declared_identity: "git-log-reader", lifecycle_state: active}
+
+  Skill:
+    - id: SYN-SK-1
+      identity: SYN-SK-1
+      fields:
+        name: adversarial model analysis
+        work_class: rejection-suite construction
+        definition_record_ref: SYN-RC-1
+        required_tool_classes: [deterministic-parser]
+        local_binding: {repo: arch-research}
+      relations:
+        required_by: [SYN-RL-EXEC, SYN-WF-A]
+        held_by: [{ref: SYN-AC-AGENT, evidence_refs: [SYN-RC-1], grade: partial,
+                   currentness: current, expires_at: "2027-01-01T00:00:00Z"},
+                  {ref: SYN-AC-LEAD, evidence_refs: [SYN-RC-1], grade: claimed,
+                   currentness: current}]
+
+  Role:
+    - id: SYN-RL-EXEC
+      identity: SYN-RL-EXEC
+      fields:
+        name: executor
+        responsibility: perform assigned Units within a standing grant
+      relations:
+        requires: [SYN-SK-1]
+        assigned_to: [SYN-AC-LEAD]
+        receives: [SYN-DL-STANDING]
+    - id: SYN-RL-ASSESSOR
+      identity: SYN-RL-ASSESSOR
+      fields:
+        name: independent assessor
+        responsibility: assess a pinned subject against a Gate bar
+        independence_constraints: ["must not have authored the subject"]
+
+  Technology:
+    - id: SYN-TE-1
+      identity: SYN-TE-1
+      fields:
+        name: deterministic instance checker
+        grade: partial
+        constraints: read-only; no runtime enforcement point
+        evidence_record_refs: [SYN-RC-1]
+      relations:
+        enables: [SYN-CP-1]
+
+  Goal:
+    - id: SYN-GO-1
+      identity: SYN-GO-1
+      fields:
+        statement: the organization can discriminate conforming from non-conforming work records
+        scope_ref: SYN-SC-PROG
+        success_criteria: every applicable rule has a witness and a counterexample
+        claim_floor: [SYN-CP-1]
+        north_star: [SYN-CP-2]
+        lifecycle_state: active
+      relations:
+        requires: [SYN-CP-1, SYN-CP-2]
+        is_advanced_by: [SYN-CP-1]
+        directs: [SYN-UN-1]
+    - id: SYN-GO-2
+      identity: SYN-GO-2
+      fields:
+        statement: the organization can change a repository artifact under an authorized grant
+        scope_ref: SYN-SC-PROG
+        success_criteria: an effect receipt exists for every consequential write
+        claim_floor: [SYN-CP-2]
+        lifecycle_state: active
+      relations:
+        requires: [SYN-CP-2]
+        directs: [SYN-UN-2]
+
+  Capability:
+    - id: SYN-CP-1
+      identity: SYN-CP-1
+      fields:
+        name: rule discrimination
+        observable_behavior: a non-conforming instance is refused with the violated rule named
+        scope_ref: SYN-SC-PROG
+        classification_refs: [functional, threshold]
+        done_when: every applicable declared rule rejects at least one minimal counterexample
+        grade: partial
+        evidence_record_refs: [SYN-RC-1]
+      relations:
+        required_by: [SYN-GO-1]
+        advances: [SYN-GO-1]
+        composed_of: [SYN-CP-2]
+        delivered_by: [SYN-UN-1]
+        enabled_by: [SYN-TE-1]
+    - id: SYN-CP-2
+      identity: SYN-CP-2
+      fields:
+        name: authorized repository write
+        observable_behavior: a write reaches the repository only with a matching effect receipt
+        scope_ref: SYN-SC-PROG
+        classification_refs: [functional]
+        done_when: a receipt names the commit and the granting Delegation
+        grade: claimed
+      relations:
+        required_by: [SYN-GO-1, SYN-GO-2]
+        delivered_by: [SYN-UN-2]
+
+  Workflow:
+    - id: SYN-WF-A
+      identity: SYN-WF-A
+      fields:
+        name: bounded investigation workflow
+        method_statement: scope, partition, instantiate, adjudicate, audit
+        owner_scope_ref: SYN-SC-PROG
+        unit_kinds: [investigation, change]
+        dependency_rules: [{rule: "a change Unit depends on its investigation Unit"}]
+        state_vocabulary: [scoped, in-progress, gated, closed]
+        definition_custodian_ref: SYN-AC-CUSTODIAN
+      relations:
+        applies_to: [SYN-GO-1]
+        requires: [SYN-SK-1]
+        binds: [SYN-GT-1]
+        governs: [SYN-UN-1, SYN-UN-2]
+    - id: SYN-WF-B
+      # applies_to SYN-GO-1 but governs no Unit: the T-02 incompleteness witness
+      identity: SYN-WF-B
+      fields:
+        name: alternate investigation workflow
+        method_statement: a second methodology declared applicable but not yet exercised
+        owner_scope_ref: SYN-SC-PROG
+        unit_kinds: [investigation]
+        dependency_rules: []
+        state_vocabulary: [scoped, closed]
+        definition_custodian_ref: SYN-AC-CUSTODIAN
+      relations:
+        applies_to: [SYN-GO-1]
+
+  Gate:
+    - id: SYN-GT-1
+      identity: SYN-GT-1
+      fields:
+        subject_rule: the Unit named by the assessment, at its pinned baseline
+        baseline_rule: the baseline_ref recorded on the Attempt under assessment
+        eligible_evidence: [{kind: record, category: finding},
+                            {kind: record, category: gate-report}]
+        missingness_policy: missing evidence is declared and never inferred as success
+        independence_predicate: the assessor authored none of the subject
+        procedure: judgment
+        bar: every applicable rule has a witness or an explicit disposition
+        allowed_outcomes: [pass, reworkable, scope-fail]
+        outcome_consequences: {pass: proceed, reworkable: two rounds, scope-fail: stop}
+        required_record_category: gate-report
+        definition_custodian_ref: SYN-AC-CUSTODIAN
+      relations:
+        requires_assessor: SYN-RL-ASSESSOR
+        bound_by: SYN-WF-A
+        # SYN-RC-1 is a NON-Unit target: the declared inverse must NOT be required for it
+        evaluates: [SYN-UN-1, SYN-RC-1]
+
+  Delegation:
+    - id: SYN-DL-STANDING
+      identity: SYN-DL-STANDING
+      fields:
+        autonomy_tier: A2
+        effect_grants: [repository-write]
+        resource_ceiling: {external_cost: 0, compute: none}
+        escalation_conditions: [material spend, premise change]
+        effective_at: "2026-01-01T00:00:00Z"
+        definition_custodian_ref: SYN-AC-CUSTODIAN
+      relations:
+        grantor: SYN-AC-OWNER
+        grantee: SYN-RL-EXEC
+        scope: SYN-SC-PROG
+        governs: [SYN-AT-2]
+        enforced_by: [SYN-EB-FORGE]
+    - id: SYN-DL-DYN
+      identity: SYN-DL-DYN
+      fields:
+        autonomy_tier: A1
+        effect_grants: [repository-write]
+        resource_ceiling: {external_cost: 0, compute: none}
+        escalation_conditions: [premise change]
+        effective_at: "2026-08-01T00:00:00Z"
+        definition_custodian_ref: SYN-AC-CUSTODIAN
+      relations:
+        grantor: SYN-AC-OWNER
+        grantee: SYN-AC-AGENT
+        scope: SYN-SC-PROG
+        unit: SYN-UN-1
+        derived_from: SYN-DL-STANDING
+        governs: [SYN-AT-1]
+        enforced_by: [SYN-EB-FORGE]
+
+  EffectBoundary:
+    - id: SYN-EB-FORGE
+      fields:
+        name: external forge
+        effect_classes: [repository-write]
+        custody: credentials held outside the governed activity by the collective
+        can_refuse: true
+      relations:
+        enforces: [SYN-DL-STANDING, SYN-DL-DYN]
+
+  Unit:
+    - id: SYN-UN-1
+      identity: SYN-UN-1
+      fields:
+        unit_kind: investigation
+        intended_outcome: a rejection suite covering every applicable declared rule
+        scope_ref: SYN-SC-PROG
+        current_state: gated
+        baseline_ref: "SYN-WF-A@1"
+      relations:
+        directed_by: [SYN-GO-1]
+        follows: SYN-WF-A
+        attempts: [SYN-AT-1]
+        assigned_through: [SYN-DL-DYN]
+        gated_by: [SYN-GT-1]
+        consumes: [SYN-RC-2]
+        produces: [SYN-RC-1]
+        delivers: [SYN-CP-1]
+    - id: SYN-UN-2
+      identity: SYN-UN-2
+      fields:
+        unit_kind: change
+        intended_outcome: the checker artifact is committed to the repository
+        scope_ref: SYN-SC-PROG
+        current_state: in-progress
+        baseline_ref: "SYN-WF-A@1"
+      relations:
+        directed_by: [SYN-GO-2]
+        follows: SYN-WF-A
+        attempts: [SYN-AT-2]
+        depends_on: [SYN-UN-1]
+        delivers: [SYN-CP-2]
+
+  Attempt:
+    - id: SYN-AT-1
+      fields:
+        baseline_ref: "SYN-WF-A@1"
+        started_at: "2026-08-10T09:00:00Z"
+        ended_at: "2026-08-10T17:00:00Z"
+        disposition: complete
+        resume_requirements: {baseline: "SYN-WF-A@1", preconditions: [], residue: [],
+                              next_transition: closed}
+      relations:
+        unit: SYN-UN-1
+        actors: [SYN-AC-AGENT, SYN-AC-REVIEWER]
+        governed_by: [SYN-DL-DYN]
+        produces: [SYN-RC-1]
+    - id: SYN-AT-2
+      fields:
+        baseline_ref: "SYN-WF-A@1"
+        started_at: "2026-08-12T09:00:00Z"
+        disposition: continue
+      relations:
+        unit: SYN-UN-2
+        actors: [SYN-AC-LEAD]
+        governed_by: [SYN-DL-STANDING]
+
+  Record:
+    - id: SYN-RC-1
+      identity: SYN-RC-1
+      fields:
+        category: finding
+        category_schema_version: "1"
+        scope_ref: SYN-SC-PROG
+        author_or_source_ref: SYN-AC-AGENT
+        created_at: "2026-08-10T16:00:00Z"
+        content_digest: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        epistemic_kind: reviewed-finding
+        evidence_altitude: directional
+        lifecycle_state: active
+        currentness: current
+        provenance_refs: [{source: SYN-EV-2, kind: observation-event}]
+      relations:
+        documents: [SYN-EV-2]
+        admitted_by: [SYN-EV-3]
+    - id: SYN-RC-2
+      identity: SYN-RC-2
+      fields:
+        category: gate-report
+        category_schema_version: "1"
+        scope_ref: SYN-SC-PROG
+        author_or_source_ref: SYN-AC-REVIEWER
+        created_at: "2026-08-11T10:00:00Z"
+        content_digest: "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        epistemic_kind: reviewed-finding
+        evidence_altitude: behavioral
+        lifecycle_state: active
+        currentness: current
+        provenance_refs: [{source: SYN-EV-4, kind: gate-outcome-event}]
+        missing_or_unavailable_refs: ["raw execution telemetry: not captured"]
+
+  Event:
+    - id: SYN-EV-1
+      fields:
+        event_type: decision
+        occurred_at: "2026-08-01T09:00:00Z"
+        recorded_at: "2026-08-01T09:00:01Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-OWNER]
+        subject_refs: [SYN-UN-1]
+        authority_ref: SYN-DL-STANDING
+        significance: exception
+        carrier: record-ref
+        custody: owner-held decision log
+        extension: {authority_ref: SYN-DL-STANDING, disposition: approve,
+                    authorized_refs: [SYN-UN-1]}
+    - id: SYN-EV-2
+      fields:
+        event_type: observation
+        occurred_at: "2026-08-10T15:00:00Z"
+        recorded_at: "2026-08-10T15:00:00Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-INSTRUMENT]
+        subject_refs: [SYN-UN-1]
+        epistemic_kind: mechanical-observation
+        significance: routine
+        carrier: artifact-ref
+        custody: repository, external to the governed activity
+        extension: {instrument: git-log-reader, subject: SYN-UN-1,
+                    capture_custody: repository, raw_evidence_ref: "git://log@abc123"}
+      relations:
+        documented_by: [SYN-RC-1]
+    - id: SYN-EV-3
+      fields:
+        event_type: assessment
+        occurred_at: "2026-08-11T09:00:00Z"
+        recorded_at: "2026-08-11T09:00:00Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-REVIEWER]
+        subject_refs: [SYN-UN-1]
+        epistemic_kind: reviewed-finding
+        significance: routine
+        carrier: record-ref
+        custody: assessor-held
+        extension: {gate_version_ref: "SYN-GT-1@1", subject_baseline: "SYN-WF-A@1",
+                    evidence_set: [SYN-RC-1], assessor_refs: [SYN-AC-REVIEWER],
+                    independence_check: true}
+    - id: SYN-EV-4
+      fields:
+        event_type: gate_outcome
+        occurred_at: "2026-08-11T10:00:00Z"
+        recorded_at: "2026-08-11T10:00:00Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-REVIEWER]
+        subject_refs: [SYN-EV-3]
+        significance: exception
+        carrier: record-ref
+        custody: assessor-held
+        extension: {assessment_ref: SYN-EV-3, outcome: pass, missingness: none-declared,
+                    consequence_disposition: proceed}
+    - id: SYN-EV-5
+      fields:
+        event_type: transition
+        occurred_at: "2026-08-11T11:00:00Z"
+        recorded_at: "2026-08-11T11:00:00Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-AGENT]
+        subject_refs: [SYN-UN-1]
+        significance: routine
+        carrier: inline
+        custody: workflow state store
+        extension: {unit_ref: SYN-UN-1, prior_state: in-progress, next_state: gated,
+                    authorization_ref: SYN-DL-DYN}
+    - id: SYN-EV-6
+      fields:
+        event_type: effect_request
+        occurred_at: "2026-08-12T09:00:00Z"
+        recorded_at: "2026-08-12T09:00:00Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-AGENT]
+        subject_refs: [SYN-UN-2]
+        authority_ref: SYN-DL-DYN
+        significance: exception
+        carrier: inline
+        custody: forge client
+        extension: {requested_effect: repository-write, delegation_ref: SYN-DL-DYN,
+                    target_boundary_ref: SYN-EB-FORGE}
+    - id: SYN-EV-7
+      fields:
+        event_type: effect_disposition
+        occurred_at: "2026-08-12T09:00:05Z"
+        recorded_at: "2026-08-12T09:00:06Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-INSTRUMENT]
+        subject_refs: [SYN-EV-6]
+        significance: exception
+        carrier: artifact-ref
+        custody: external forge, receipt held by the boundary
+        extension: {request_ref: SYN-EV-6, boundary_ref: SYN-EB-FORGE,
+                    disposition: performed, coupling: reported}
+    - id: SYN-EV-8
+      fields:
+        event_type: adaptation
+        occurred_at: "2026-08-13T09:00:00Z"
+        recorded_at: "2026-08-13T09:00:00Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-CUSTODIAN]
+        subject_refs: [SYN-WF-A]
+        authority_ref: SYN-DL-STANDING
+        significance: exception
+        carrier: record-ref
+        custody: custodian-held
+        extension: {decision_ref: SYN-EV-1, affected_refs: [SYN-WF-A],
+                    prior_baseline: "SYN-WF-A@1", new_baseline: "SYN-WF-A@2",
+                    resume_conditions: [re-pin open Attempts to the new baseline]}
+    - id: SYN-EV-9
+      fields:
+        event_type: communication
+        occurred_at: "2026-08-13T10:00:00Z"
+        recorded_at: "2026-08-13T10:00:00Z"
+        scope_ref: SYN-SC-PROG
+        actor_refs: [SYN-AC-LEAD]
+        subject_refs: [SYN-UN-2]
+        significance: routine
+        carrier: inline
+        custody: channel log
+        extension: {sender: SYN-AC-LEAD, route_or_topic: run-channel,
+                    recipients: [SYN-AC-OWNER], acknowledgement_requirement: none}

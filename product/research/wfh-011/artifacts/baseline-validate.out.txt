@@ -1,0 +1,2 @@
+# model sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060 (pin match: True)
+# instance product/research/wfh-011/artifacts/w3-baseline-instance.yaml: 0 finding(s)

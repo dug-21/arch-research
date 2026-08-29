@@ -1,0 +1,140 @@
+wfh-011 W3 — V5 model-level structural check
+model      : /workspaces/arch-research/product/factory/proposals/organizational-data-model-v5.yaml
+sha256     : bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+pin match  : YES
+lines      : 561
+
+== MC1 census ==
+  core=7 supporting=8 registries=6 catalogs=3 invariants=19 event_types=9 values=8 excluded=11 open=11
+
+== MC2 scalar integrity (S1) ==
+  prose-fragment keys found: 0 (S1 defect class)
+  S1 site OK-len= 66 :: registries.event_type.seeded.adaptation.definition = 'authorized change to a definition, baseline, composition or method'
+  S1 site OK-len= 62 :: registries.event_type.seeded.effect_disposition.definition = 'EffectBoundary performs, refuses or cannot determine a request'
+  S1 site OK-len= 74 :: supporting.Attempt.fields.resume_requirements.definition = 'baseline, preconditions, unresolved residue and next admissible transition'
+  S1 site OK-len= 68 :: values.autonomy_tier.values.A0.definition = 'analyze, evaluate or recommend without discretionary work initiation'
+  S1 site OK-len= 60 :: values.autonomy_tier.values.A3.definition = 'adapt local tactics, composition or reversible method detail'
+  S1 site OK-len= 70 :: values.autonomy_tier.values.A5.definition = 'change Collective policy, authority structures or strategic objectives'
+
+== MC3 invariant binding ==
+  invariants total=19 cited=19 uncited=none
+  constructs citing >=1 invariant: 15/15; non-citing=none
+  extension_owner present on 6: ['Capability', 'Unit', 'Event', 'Record', 'Workflow', 'Gate']
+  S6 — extension_owner constructs NOT citing I19: ['Capability', 'Unit', 'Event', 'Record', 'Gate']
+
+== MC4 relations + inverses ==
+  relations declared: 57
+  dangling targets: none
+  resolvable declared inverses: 34
+  BROKEN declared inverses: none
+  ASYMMETRIC inverse declarations (3):
+      Actor.holds_role declares NO inverse, but Role.assigned_to declares inverse: holds_role
+      Skill.required_by declares NO inverse, but Workflow.requires, Role.requires declares inverse: required_by
+      Delegation.grantee declares NO inverse, but Role.receives declares inverse: grantee
+  one-way relations (legitimate under principles.inverse_relations) (20):
+      Capability.composed_of -> Capability
+      Capability.prerequisite_of -> Capability
+      Actor.receives -> Delegation
+      Unit.depends_on -> Unit
+      Unit.consumes -> Record
+      Unit.produces -> Record
+      Unit.replaces -> Unit
+      Event.caused_by -> Event
+      Event.correlated_with -> Event
+      Event.supersedes -> Event
+      Record.admitted_by -> Event
+      Record.supersedes -> Record
+      Workflow.applies_to -> Goal
+      Workflow.supersedes -> Workflow
+      Delegation.grantor -> Actor
+      Delegation.scope -> Scope
+      Delegation.derived_from -> Delegation
+      Gate.requires_assessor -> Role
+      Attempt.actors -> Actor
+      Attempt.produces -> Record
+
+== MC5 ref resolution / typing ==
+  unresolved ref<> targets: none
+  bare untyped 'list' fields (4):
+      Event.subject_refs: bare 'list' (no element type)
+      Record.provenance_refs: bare 'list' (no element type)
+      Workflow.dependency_rules: bare 'list' (no element type)
+      Gate.eligible_evidence: bare 'list' (no element type)
+  fields named *_ref/_refs that are NOT ref-typed (6):
+      Unit.baseline_ref: type='text'
+      Event.subject_refs: type='list'
+      Record.author_or_source_ref: type='text'
+      Record.provenance_refs: type='list'
+      Record.missing_or_unavailable_refs: type='list<text>'
+      Attempt.baseline_ref: type='text'
+
+== MC6 registries ==
+  scope_type: shape=['constraints', 'definition', 'required_fields', 'status'] seeds=4
+  capability_classification: shape=['definition', 'dimension', 'status'] seeds=4
+  event_type: shape=['definition', 'durable', 'required_extension', 'status'] seeds=9
+      seed gate_outcome: extra keys ['rule'] (beyond declared shape)
+  record_category: shape=['admission_rule', 'correction', 'definition', 'lifecycle', 'retrieval', 'schema_extension', 'status'] seeds=0
+      EMPTY registry — required refs to it are unsatisfiable until a program registers an entry
+  unit_kind: shape=['definition', 'required_fields', 'status', 'workflow_ref'] seeds=0
+      EMPTY registry — required refs to it are unsatisfiable until a program registers an entry
+  effect_class: shape=['definition', 'receipt_requirements', 'status', 'target_schema'] seeds=0
+      EMPTY registry — required refs to it are unsatisfiable until a program registers an entry
+
+== MC7 extension_owner binding ==
+  extension_owner keys: bound-to-same-named-field=6 unbound=13
+      UNBOUND Capability.extension_owner.behavior_schema (owner=program) -> no field/relation named 'behavior_schema'
+      UNBOUND Capability.extension_owner.evidence_bar (owner=program) -> no field/relation named 'evidence_bar'
+      UNBOUND Capability.extension_owner.classification (owner=registry) -> no field/relation named 'classification'
+      BOUND   Unit.extension_owner.unit_kind (owner=workflow) -> field unit_kind
+      UNBOUND Unit.extension_owner.states (owner=workflow) -> no field/relation named 'states'
+      UNBOUND Unit.extension_owner.transitions (owner=workflow) -> no field/relation named 'transitions'
+      BOUND   Event.extension_owner.event_type (owner=registry) -> field event_type
+      UNBOUND Record.extension_owner.schema (owner=category) -> no field/relation named 'schema'
+      UNBOUND Record.extension_owner.admission (owner=category) -> no field/relation named 'admission'
+      UNBOUND Record.extension_owner.retrieval (owner=category) -> no field/relation named 'retrieval'
+      UNBOUND Record.extension_owner.lifecycle (owner=category) -> no field/relation named 'lifecycle'
+      UNBOUND Record.extension_owner.correction (owner=category) -> no field/relation named 'correction'
+      BOUND   Workflow.extension_owner.unit_kinds (owner=program) -> field unit_kinds
+      UNBOUND Workflow.extension_owner.states (owner=program) -> no field/relation named 'states'
+      BOUND   Workflow.extension_owner.dependency_rules (owner=program) -> field dependency_rules
+      BOUND   Gate.extension_owner.procedure (owner=workflow) -> field procedure
+      BOUND   Gate.extension_owner.bar (owner=workflow) -> field bar
+      UNBOUND Gate.extension_owner.outcomes (owner=workflow) -> no field/relation named 'outcomes'
+      UNBOUND Gate.extension_owner.consequences (owner=workflow) -> no field/relation named 'consequences'
+
+== MC8 notation coverage (S3) ==
+  construct keys used: ['definition', 'extension_owner', 'fields', 'form', 'identity', 'invariants', 'open', 'owner', 'relations', 'status', 'versioned']
+  notation documents : ['fields', 'identity', 'relations', 'status', 'types', 'versioned']
+  UNDOCUMENTED keys  : ['definition', 'extension_owner', 'form', 'invariants', 'open', 'owner']
+  Event.identity is a dict, while notation.identity describes a scalar 'opaque stable id'
+
+== MC9 invariant atomicity (S4, heuristic — judgment) ==
+  invariants with >1 heuristic clause: 13
+  I1: 4 independently-failable clause(s) (heuristic) :: Every durable identity is opaque and distinct from name and version; history is superseded, never overwritten.
+  I2: 2 independently-failable clause(s) (heuristic) :: Record existence, admission, truth, grade, currentness and effect occurrence are independent facts.
+  I3: 2 independently-failable clause(s) (heuristic) :: Categories own schema, admission, retrieval, lifecycle and correction.
+  I4: 2 independently-failable clause(s) (heuristic) :: Mechanical observation requires capture provenance; an actor-authored account is a claim or inference.
+  I5: 3 independently-failable clause(s) (heuristic) :: Events are immutable; correction is a new Event; occurrence does not establish payload truth.
+  I6: 2 independently-failable clause(s) (heuristic) :: Outcome, decision, transition, effect request, effect disposition and Record remain distinct.
+  I8: 2 independently-failable clause(s) (heuristic) :: Missing evidence is explicit and never inferred as success.
+  I10: 2 independently-failable clause(s) (heuristic) :: Skill represents competence and never Capability or authority.
+  I11: 2 independently-failable clause(s) (heuristic) :: Technology represents a mechanism and neither becomes nor proves Capability.
+  I12: 2 independently-failable clause(s) (heuristic) :: Autonomy is not authority; only an EffectBoundary disposition demonstrates enforced authority.
+  I15: 3 independently-failable clause(s) (heuristic) :: Unit identity survives retry and rework; each execution is an Attempt.
+  I17: 2 independently-failable clause(s) (heuristic) :: A derived Delegation may not exceed its parent; authority reaches an Actor through a chain from a Scope root.
+  I18: 3 independently-failable clause(s) (heuristic) :: Workflow, Gate and Delegation custody sits outside the governed activity; changes are adaptation Events.
+
+== MC10 changelog 5.0.0 assertions ==
+  version=5.0.0 date=2026-08-29
+  'bound invariants'          -> uncited=none, non-citing=none
+  'extension ownership bound' -> present on 6/15
+  'restored form'             -> form present on 15/15
+  'split assessment/gate_outcome' -> True
+  'Event authority Scope|Delegation' -> ref<Delegation|Scope>
+  'Role navigable to standing Delegation' -> True
+  'completed semantic inverses' -> asymmetric declarations remaining: 3
+  'Scope seeds conform'       -> see MC6
+  'invariants atomic'         -> non-atomic remaining (heuristic): 13
+  'inverse rule in principles'-> True
+
+-- end of model-level check --

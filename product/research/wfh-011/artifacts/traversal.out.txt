@@ -1,0 +1,69 @@
+# model sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060 (pin match: True)
+# 67 traversal rows -> product/research/wfh-011/artifacts/traversal-results.csv
+  T-01                         demonstrated-by-index        Goal SYN-GO-1 -> applicable Workflows
+  T-02                         partial-proxy                Goal SYN-GO-1 -> applicable Workflows
+  T-01                         demonstrated-by-index        Goal SYN-GO-2 -> applicable Workflows
+  T-02                         partial-proxy                Goal SYN-GO-2 -> applicable Workflows
+  T-03                         demonstrated-by-index        Actor SYN-AC-OWNER -> participated Attempts
+  T-04                         partial-proxy                Actor SYN-AC-OWNER -> participated Attempts
+  T-05                         partial-proxy                Actor SYN-AC-OWNER -> participated Attempts
+  T-06                         equivalent-on-this-instance  Actor SYN-AC-OWNER -> participated Attempts
+  T-03                         demonstrated-by-index        Actor SYN-AC-CUSTODIAN -> participated Attempts
+  T-04                         partial-proxy                Actor SYN-AC-CUSTODIAN -> participated Attempts
+  T-05                         partial-proxy                Actor SYN-AC-CUSTODIAN -> participated Attempts
+  T-06                         equivalent-on-this-instance  Actor SYN-AC-CUSTODIAN -> participated Attempts
+  T-03                         demonstrated-by-index        Actor SYN-AC-AGENT -> participated Attempts
+  T-04                         partial-proxy                Actor SYN-AC-AGENT -> participated Attempts
+  T-05                         partial-proxy                Actor SYN-AC-AGENT -> participated Attempts
+  T-06                         equivalent-on-this-instance  Actor SYN-AC-AGENT -> participated Attempts
+  T-03                         demonstrated-by-index        Actor SYN-AC-REVIEWER -> participated Attempts
+  T-04                         partial-proxy                Actor SYN-AC-REVIEWER -> participated Attempts
+  T-05                         partial-proxy                Actor SYN-AC-REVIEWER -> participated Attempts
+  T-06                         partial-proxy                Actor SYN-AC-REVIEWER -> participated Attempts
+  T-03                         demonstrated-by-index        Actor SYN-AC-LEAD -> participated Attempts
+  T-04                         partial-proxy                Actor SYN-AC-LEAD -> participated Attempts
+  T-05                         partial-proxy                Actor SYN-AC-LEAD -> participated Attempts
+  T-06                         equivalent-on-this-instance  Actor SYN-AC-LEAD -> participated Attempts
+  T-03                         demonstrated-by-index        Actor SYN-AC-INSTRUMENT -> participated Attempts
+  T-04                         partial-proxy                Actor SYN-AC-INSTRUMENT -> participated Attempts
+  T-05                         partial-proxy                Actor SYN-AC-INSTRUMENT -> participated Attempts
+  T-06                         equivalent-on-this-instance  Actor SYN-AC-INSTRUMENT -> participated Attempts
+  T-INV-Scope.parent           demonstrated-both-directions Scope.parent <-> Scope.contains
+  T-INV-Scope.contains         demonstrated-both-directions Scope.contains <-> Scope.parent
+  T-INV-Goal.requires          demonstrated-both-directions Goal.requires <-> Capability.required_by
+  T-INV-Goal.is_advanced_by    demonstrated-both-directions Goal.is_advanced_by <-> Capability.advances
+  T-INV-Goal.directs           demonstrated-both-directions Goal.directs <-> Unit.directed_by
+  T-INV-Capability.required_by demonstrated-both-directions Capability.required_by <-> Goal.requires
+  T-INV-Capability.advances    demonstrated-both-directions Capability.advances <-> Goal.is_advanced_by
+  T-INV-Capability.delivered_by demonstrated-both-directions Capability.delivered_by <-> Unit.delivers
+  T-INV-Capability.enabled_by  demonstrated-both-directions Capability.enabled_by <-> Technology.enables
+  T-INV-Actor.has_skill        demonstrated-both-directions Actor.has_skill <-> Skill.held_by
+  T-INV-Unit.directed_by       demonstrated-both-directions Unit.directed_by <-> Goal.directs
+  T-INV-Unit.follows           demonstrated-both-directions Unit.follows <-> Workflow.governs
+  T-INV-Unit.attempts          demonstrated-both-directions Unit.attempts <-> Attempt.unit
+  T-INV-Unit.assigned_through  demonstrated-both-directions Unit.assigned_through <-> Delegation.unit
+  T-INV-Unit.gated_by          demonstrated-both-directions Unit.gated_by <-> Gate.evaluates
+  T-INV-Unit.delivers          demonstrated-both-directions Unit.delivers <-> Capability.delivered_by
+  T-INV-Event.documented_by    demonstrated-both-directions Event.documented_by <-> Record.documents
+  T-INV-Record.documents       demonstrated-both-directions Record.documents <-> Event.documented_by
+  T-INV-Workflow.requires      demonstrated-both-directions Workflow.requires <-> Skill.required_by
+  T-INV-Workflow.binds         demonstrated-both-directions Workflow.binds <-> Gate.bound_by
+  T-INV-Workflow.governs       demonstrated-both-directions Workflow.governs <-> Unit.follows
+  T-INV-Skill.held_by          demonstrated-both-directions Skill.held_by <-> Actor.has_skill
+  T-INV-Role.requires          demonstrated-both-directions Role.requires <-> Skill.required_by
+  T-INV-Role.assigned_to       demonstrated-both-directions Role.assigned_to <-> Actor.holds_role
+  T-INV-Role.receives          demonstrated-both-directions Role.receives <-> Delegation.grantee
+  T-INV-Delegation.unit        demonstrated-both-directions Delegation.unit <-> Unit.assigned_through
+  T-INV-Delegation.governs     demonstrated-both-directions Delegation.governs <-> Attempt.governed_by
+  T-INV-Delegation.enforced_by demonstrated-both-directions Delegation.enforced_by <-> EffectBoundary.enforces
+  T-INV-Gate.bound_by          demonstrated-both-directions Gate.bound_by <-> Workflow.binds
+  T-INV-Gate.evaluates         demonstrated-both-directions Gate.evaluates <-> Unit.gated_by
+  T-INV-EffectBoundary.enforces demonstrated-both-directions EffectBoundary.enforces <-> Delegation.enforced_by
+  T-INV-Attempt.unit           demonstrated-both-directions Attempt.unit <-> Unit.attempts
+  T-INV-Attempt.governed_by    demonstrated-both-directions Attempt.governed_by <-> Delegation.governs
+  T-INV-Technology.enables     demonstrated-both-directions Technology.enables <-> Capability.enabled_by
+  T-07                         demonstrated                 Delegation SYN-DL-STANDING -> Scope authority root
+  T-07                         demonstrated                 Delegation SYN-DL-DYN -> Scope authority root
+  T-08                         partial-proxy                Delegation SYN-DL-STANDING -> independent EffectBoundary disposition
+  T-08                         partial-proxy                Delegation SYN-DL-DYN -> independent EffectBoundary disposition
+  T-09                         partial-proxy                Gate SYN-GT-1 -> assessments -> gate outcomes

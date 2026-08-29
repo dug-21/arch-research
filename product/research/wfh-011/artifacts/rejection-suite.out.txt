@@ -1,0 +1,8 @@
+# model sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060 (pin match: True)
+# BASELINE conformance: 0 finding(s)
+# 115 fixture rows -> product/research/wfh-011/artifacts/rejection-results.csv
+  accepted-defect                          18
+  negative-test                            1
+  not-falsifiable-from-alphabet            9
+  rejected-mechanically                    82
+  specified-not-enforced                   5

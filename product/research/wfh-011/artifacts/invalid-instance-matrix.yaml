@@ -1,0 +1,1819 @@
+# wfh-011 W3 — INVALID-INSTANCE MATRIX for the pinned Organizational Data Model V5
+#
+# EVERY fixture below is a DELIBERATELY CONSTRUCTED COUNTEREXAMPLE expressed as the smallest
+# mutation of the conforming synthetic baseline (w3-baseline-instance.yaml). NONE of them is
+# observed history. NOTHING here happened in wfh-008 or vnc-045, and no row may be read as a
+# claim about either project. The baseline itself is constructed from M01, not from any case.
+#
+# model  : product/factory/proposals/organizational-data-model-v5.yaml
+# sha256 : bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+# runner : v5_instance_check.py suite
+#
+# `expected_check_kind`  mechanical | judgment  — what KIND of check could reject this at all.
+# `mechanizability`      determined-by-M01 | operationalizable(Ox) | not-mechanizable
+# `actual_result`        one of the five scope values; computed by the runner where a checker
+#                        fires, declared per-row (actual_result_when_accepted) where it does not.
+#
+# A `rejected-mechanically` row means ONLY: a checker W3 generated from M01's own typed
+# declarations refuses this document. It is NOT evidence that any workflow, repository, forge or
+# organization enforces the rule. No enforcement point for this model exists anywhere.
+
+meta:
+  suite: wfh-011-W3
+  baseline: w3-baseline-instance.yaml
+  model_sha256: bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+  provenance: constructed-counterexamples-only
+
+fixtures:
+
+# =========================================================================
+# A — field / type / cardinality / enum / value / registry / reference
+# =========================================================================
+- fixture_id: F-A01
+  x_item: "core.Goal.fields.success_criteria (required: true)"
+  model_path: core.Goal.fields.success_criteria
+  mutation: delete the required field success_criteria from SYN-GO-1
+  violated_rule: "field required: true"
+  expected_rejection_point: CK-FIELD-REQUIRED
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: delete, path: Goal/SYN-GO-1/fields/success_criteria}]
+
+- fixture_id: F-A02
+  x_item: "notation.types.timestamp"
+  model_path: core.Record.fields.created_at
+  mutation: set SYN-RC-1.created_at to the free text "last tuesday"
+  violated_rule: "type: timestamp"
+  expected_rejection_point: CK-TYPE
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O3)
+  operationalization: "O3 — timestamp = ISO-8601; M01 defines no lexical form"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/fields/created_at, value: "last tuesday"}]
+
+- fixture_id: F-A03
+  x_item: "notation.types.bool"
+  model_path: supporting.EffectBoundary.fields.can_refuse
+  mutation: set can_refuse to the string "yes"
+  violated_rule: "type: bool"
+  expected_rejection_point: CK-TYPE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: EffectBoundary/SYN-EB-FORGE/fields/can_refuse, value: "yes"}]
+
+- fixture_id: F-A04
+  x_item: "notation.types.digest"
+  model_path: core.Record.fields.content_digest
+  mutation: set content_digest to "digest-1"
+  violated_rule: "type: digest"
+  expected_rejection_point: CK-TYPE
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O2)
+  operationalization: "O2 — digest lexical form; M01 defines none"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/fields/content_digest, value: "digest-1"}]
+
+- fixture_id: F-A05
+  x_item: "core.Actor.fields.actor_type enum"
+  model_path: core.Actor.fields.actor_type
+  mutation: set actor_type to "team"
+  violated_rule: "enum[human,agent,service,deterministic-component]"
+  expected_rejection_point: CK-ENUM
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Actor/SYN-AC-AGENT/fields/actor_type, value: team}]
+
+- fixture_id: F-A06
+  x_item: "supporting.Attempt.fields.disposition enum"
+  model_path: supporting.Attempt.fields.disposition
+  mutation: set disposition to "failed"
+  violated_rule: "enum[continue,hold,cancel,rework,complete]"
+  expected_rejection_point: CK-ENUM
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Attempt/SYN-AT-1/fields/disposition, value: failed}]
+
+- fixture_id: F-A07
+  x_item: "supporting.Gate.fields.procedure enum"
+  model_path: supporting.Gate.fields.procedure
+  mutation: set procedure to "hybrid"
+  violated_rule: "enum[deterministic,judgment]"
+  expected_rejection_point: CK-ENUM
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Gate/SYN-GT-1/fields/procedure, value: hybrid}]
+
+- fixture_id: F-A08
+  x_item: "core.Record.fields.evidence_altitude enum"
+  model_path: core.Record.fields.evidence_altitude
+  mutation: set evidence_altitude to "mechanical"
+  violated_rule: "enum[directional,behavioral]"
+  expected_rejection_point: CK-ENUM
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/fields/evidence_altitude, value: mechanical}]
+
+- fixture_id: F-A09
+  x_item: "values.evidence_grade"
+  model_path: core.Capability.fields.grade
+  mutation: set Capability grade to "verified"
+  violated_rule: "ref<value.evidence_grade> = [missing, claimed, partial, proven]"
+  expected_rejection_point: CK-VALUE-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Capability/SYN-CP-1/fields/grade, value: verified}]
+
+- fixture_id: F-A10
+  x_item: "values.significance"
+  model_path: core.Event.fields.significance
+  mutation: set significance to "critical"
+  violated_rule: "ref<value.significance> = [routine, exception, surprise]"
+  expected_rejection_point: CK-VALUE-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Event/SYN-EV-1/fields/significance, value: critical}]
+
+- fixture_id: F-A11
+  x_item: "values.currentness"
+  model_path: core.Record.fields.currentness
+  mutation: set currentness to "fresh"
+  violated_rule: "ref<value.currentness> = [current, superseded, stale, unknown]"
+  expected_rejection_point: CK-VALUE-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/fields/currentness, value: fresh}]
+
+- fixture_id: F-A12
+  x_item: "values.autonomy_tier"
+  model_path: supporting.Delegation.fields.autonomy_tier
+  mutation: set autonomy_tier to "A6"
+  violated_rule: "ref<value.autonomy_tier> = A0..A5"
+  expected_rejection_point: CK-VALUE-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/fields/autonomy_tier, value: A6}]
+
+- fixture_id: F-A13
+  x_item: "values.epistemic_kind rule (A8 orthogonality) + excluded 'Decision as construct'"
+  model_path: core.Record.fields.epistemic_kind
+  mutation: set epistemic_kind to "decision"
+  violated_rule: "epistemic_kind.rule — decision is an Event type, never an epistemic kind"
+  expected_rejection_point: CK-VALUE-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "the A8 orthogonality rule survives here only because the vocabulary is a closed
+    enumeration referenced by a typed field; the rest of the rule (independence from Event type,
+    significance, authority, carrier) is prose and untested by this fixture"
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/fields/epistemic_kind, value: decision}]
+
+- fixture_id: F-A14
+  x_item: "values.carrier"
+  model_path: core.Event.fields.carrier
+  mutation: set carrier to "email"
+  violated_rule: "ref<value.carrier> = [inline, record-ref, artifact-ref]"
+  expected_rejection_point: CK-VALUE-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Event/SYN-EV-1/fields/carrier, value: email}]
+
+- fixture_id: F-A15
+  x_item: "values.effect_disposition + its explicit rule"
+  model_path: registries.event_type.seeded.effect_disposition.required_extension.disposition
+  mutation: set the effect_disposition Event's extension.disposition to "maybe"
+  violated_rule: "values.effect_disposition.rule — effect_disposition Events use this common
+    vocabulary [performed, refused, unknown]"
+  expected_rejection_point: "none — the value lives inside Event.extension (type: map), which no
+    declared type constrains"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. The rule is stated explicitly and in full, and the model still provides no
+    typed carrier for the value it governs. Common refusal vocabulary is unreachable by a checker."
+  mutation_ops: [{op: set, path: Event/SYN-EV-7/fields/extension/disposition, value: maybe}]
+
+- fixture_id: F-A16
+  x_item: "values.coupling"
+  model_path: values.coupling
+  mutation: set the effect_disposition Event's extension.coupling to "eventual"
+  violated_rule: "values.coupling = [atomic, ordered-best-effort, reported, unknown]"
+  expected_rejection_point: "none — no field anywhere in M01 is typed ref<value.coupling>"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. `coupling` is a declared value vocabulary that NO field in the model
+    references; it is reachable only as a key inside an opaque extension map."
+  mutation_ops: [{op: set, path: Event/SYN-EV-7/fields/extension/coupling, value: eventual}]
+
+- fixture_id: F-A17
+  x_item: "registries.event_type admission + excluded 'lesson as Event type'"
+  model_path: core.Event.fields.event_type
+  mutation: set event_type to the unregistered key "lesson"
+  violated_rule: "ref<registry.event_type>; excluded — lesson as Event type"
+  expected_rejection_point: CK-REGISTRY-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Event/SYN-EV-9/fields/event_type, value: lesson}]
+
+- fixture_id: F-A18
+  x_item: "registries.unit_kind"
+  model_path: core.Unit.fields.unit_kind
+  mutation: set unit_kind to the unregistered key "feature"
+  violated_rule: "ref<registry.unit_kind>"
+  expected_rejection_point: CK-REGISTRY-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Unit/SYN-UN-2/fields/unit_kind, value: feature}]
+
+- fixture_id: F-A19
+  x_item: "registries.capability_classification + excluded 'organizational-level Capability kinds'"
+  model_path: core.Capability.fields.classification_refs
+  mutation: append the unregistered classification "organizational-level"
+  violated_rule: "list<ref<registry.capability_classification>>; excluded — organizational-level
+    Capability kinds"
+  expected_rejection_point: CK-REGISTRY-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Capability/SYN-CP-1/fields/classification_refs,
+                  value: [functional, organizational-level]}]
+
+- fixture_id: F-A20
+  x_item: "registries.record_category"
+  model_path: core.Record.fields.category
+  mutation: set category to the unregistered key "lesson-learned"
+  violated_rule: "ref<registry.record_category>"
+  expected_rejection_point: CK-REGISTRY-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "record_category is seeded EMPTY in M01; the only reason this rejects is that the
+    baseline program registered `finding` and `gate-report` first"
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/fields/category, value: lesson-learned}]
+
+- fixture_id: F-A21
+  x_item: "registries.effect_class"
+  model_path: supporting.Delegation.fields.effect_grants
+  mutation: grant the unregistered effect class "credential-issue"
+  violated_rule: "list<ref<registry.effect_class>>"
+  expected_rejection_point: CK-REGISTRY-REF
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/fields/effect_grants,
+                  value: [credential-issue]}]
+
+- fixture_id: F-A22
+  x_item: "supporting.Attempt.relations.actors cardinality 1..*"
+  model_path: supporting.Attempt.relations.actors
+  mutation: empty the actors list
+  violated_rule: 'cardinality "1..*"'
+  expected_rejection_point: CK-CARD
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Attempt/SYN-AT-2/relations/actors, value: []}]
+
+- fixture_id: F-A23
+  x_item: "supporting.Attempt.relations.governed_by cardinality 1..*"
+  model_path: supporting.Attempt.relations.governed_by
+  mutation: empty governed_by (an Attempt under no Delegation)
+  violated_rule: 'cardinality "1..*"; I17 authority chain'
+  expected_rejection_point: CK-CARD
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Attempt/SYN-AT-2/relations/governed_by, value: []},
+                 {op: set, path: Delegation/SYN-DL-STANDING/relations/governs, value: []}]
+
+- fixture_id: F-A24
+  x_item: "core.Unit.relations.follows cardinality 1"
+  model_path: core.Unit.relations.follows
+  mutation: make SYN-UN-2 follow two Workflows
+  violated_rule: 'cardinality "1"'
+  expected_rejection_point: CK-CARD
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Unit/SYN-UN-2/relations/follows, value: [SYN-WF-A, SYN-WF-B]}]
+
+- fixture_id: F-A25
+  x_item: "supporting.Delegation.relations.scope cardinality 1"
+  model_path: supporting.Delegation.relations.scope
+  mutation: give a Delegation two Scopes
+  violated_rule: 'cardinality "1"'
+  expected_rejection_point: CK-CARD
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/relations/scope,
+                  value: [SYN-SC-PROG, SYN-SC-COLL]}]
+
+- fixture_id: F-A26
+  x_item: "core.Unit.relations.replaces cardinality 0..1"
+  model_path: core.Unit.relations.replaces
+  mutation: have one Unit replace two Units
+  violated_rule: 'cardinality "0..1"'
+  expected_rejection_point: CK-CARD
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Unit/SYN-UN-2/relations/replaces,
+                  value: [SYN-UN-1, SYN-UN-1]}]
+
+- fixture_id: F-A27
+  x_item: "ref<Scope> target typing"
+  model_path: core.Goal.fields.scope_ref
+  mutation: point Goal.scope_ref at an Actor
+  violated_rule: "ref<Scope>"
+  expected_rejection_point: CK-REF-TARGET
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Goal/SYN-GO-1/fields/scope_ref, value: SYN-AC-OWNER}]
+
+- fixture_id: F-A28
+  x_item: "excluded 'Goal as Scope'; Goal.directs rule 'never makes Goal the Unit Scope'"
+  model_path: core.Unit.fields.scope_ref
+  mutation: point Unit.scope_ref at a Goal
+  violated_rule: "ref<Scope>; excluded — Goal as Scope"
+  expected_rejection_point: CK-REF-TARGET
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "one of only two exclusions carried by a type rather than by the prose exclusion list"
+  mutation_ops: [{op: set, path: Unit/SYN-UN-1/fields/scope_ref, value: SYN-GO-1}]
+
+- fixture_id: F-A29
+  x_item: "list<ref<Record>> resolution"
+  model_path: core.Capability.fields.evidence_record_refs
+  mutation: cite a Record id that does not exist
+  violated_rule: "list<ref<Record>>"
+  expected_rejection_point: CK-REF-TARGET
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Capability/SYN-CP-1/fields/evidence_record_refs,
+                  value: [SYN-RC-99]}]
+
+- fixture_id: F-A30
+  x_item: "core.Event.fields.authority_ref union ref<Delegation|Scope> (R4)"
+  model_path: core.Event.fields.authority_ref
+  mutation: point a decision Event's authority_ref at a Role
+  violated_rule: "ref<Delegation|Scope>; authority_chain principle"
+  expected_rejection_point: CK-REF-TARGET
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "confirms R4's correction has mechanical force in the FIELD; the same reference repeated
+    inside extension.authority_ref is unchecked (see F-A15/F-A16 class)"
+  mutation_ops: [{op: set, path: Event/SYN-EV-1/fields/authority_ref, value: SYN-RL-EXEC}]
+
+- fixture_id: F-A31
+  x_item: "supporting.Delegation.relations.grantee union Role|Actor"
+  model_path: supporting.Delegation.relations.grantee
+  mutation: make a Unit the grantee
+  violated_rule: 'target "Role|Actor"'
+  expected_rejection_point: CK-REF-TARGET
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/relations/grantee, value: SYN-UN-1}]
+
+- fixture_id: F-A32
+  x_item: "required list semantics"
+  model_path: supporting.Delegation.fields.effect_grants
+  mutation: set effect_grants to the empty list
+  violated_rule: "none stated — M01 never says whether a required list may be empty"
+  expected_rejection_point: "none"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "MODEL SILENCE. `required: true` on a list-typed field is undefined between 'key present'
+    and 'non-empty'. Same silence applies to Goal.claim_floor, Workflow.unit_kinds,
+    Workflow.state_vocabulary, Gate.allowed_outcomes and Gate.eligible_evidence."
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/fields/effect_grants, value: []}]
+
+- fixture_id: F-A33
+  x_item: "schema closure (field set)"
+  model_path: core.Goal.fields
+  mutation: add an undeclared field `priority` to a Goal
+  violated_rule: "construct_admission_bar + extend_by_registration, read as closure (O1)"
+  expected_rejection_point: CK-FIELD-UNKNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1 — M01 never states whether instances may carry undeclared fields.
+    An open-world implementer would ACCEPT this."
+  evidence_path: artifacts/rejection-results.csv
+  note: "MODEL SILENCE with consequences: whether program variation must go through a registry
+    is the load-bearing half of `agents cannot change the rules`, and closure is nowhere stated."
+  mutation_ops: [{op: set, path: Goal/SYN-GO-1/fields/priority, value: high}]
+
+- fixture_id: F-A34
+  x_item: "schema closure (relation set)"
+  model_path: core.Goal.relations
+  mutation: add an undeclared relation `owned_by` to a Goal
+  violated_rule: "closure (O1); inverse_relations principle"
+  expected_rejection_point: CK-REL-UNKNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Goal/SYN-GO-1/relations/owned_by, value: [SYN-AC-OWNER]}]
+
+# =========================================================================
+# C — registry shape and admission
+# =========================================================================
+- fixture_id: F-C01
+  x_item: "registries.record_category.shape"
+  model_path: registries.record_category.shape
+  mutation: register a record_category missing admission_rule and correction
+  violated_rule: "registry shape"
+  expected_rejection_point: CK-REGISTRY-SHAPE
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O4)
+  operationalization: "O4 — a registered entry must carry the declared shape keys"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops:
+    - {op: register, registry: record_category, key: telemetry,
+       value: {definition: raw run telemetry, schema_extension: {version: "1"},
+               retrieval: by run, lifecycle: "captured -> expired", status: OPEN}}
+
+- fixture_id: F-C02
+  x_item: "registries.unit_kind.shape.workflow_ref"
+  model_path: registries.unit_kind.shape.workflow_ref
+  mutation: register a unit_kind whose workflow_ref names no Workflow
+  violated_rule: "shape key workflow_ref: ref<Workflow>"
+  expected_rejection_point: CK-REGISTRY-SHAPE
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O4)
+  operationalization: "O4"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops:
+    - {op: register, registry: unit_kind, key: poc,
+       value: {definition: a compute-spending proof artifact, workflow_ref: SYN-WF-Z,
+               required_fields: [], status: OPEN}}
+
+- fixture_id: F-C03
+  x_item: "registries.effect_class.shape.receipt_requirements"
+  model_path: registries.effect_class.shape
+  mutation: register an effect_class with no receipt_requirements
+  violated_rule: "registry shape; EffectBoundary refusal evidence"
+  expected_rejection_point: CK-REGISTRY-SHAPE
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O4)
+  operationalization: "O4"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops:
+    - {op: register, registry: effect_class, key: credential-issue,
+       value: {definition: issue a credential to an actor,
+               target_schema: {actor: text}, status: OPEN}}
+
+- fixture_id: F-C04
+  x_item: "registries.event_type.seeded.assessment.required_extension"
+  model_path: registries.event_type.seeded.assessment.required_extension
+  mutation: delete independence_check from the assessment Event's extension
+  violated_rule: "required_extension [gate_version_ref, subject_baseline, evidence_set,
+    assessor_refs, independence_check]; I7"
+  expected_rejection_point: CK-EVENT-EXT
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "required_extension is the ONLY mechanical foothold the Event layer has — key PRESENCE
+    is checkable, key VALUE is not (see F-A15)."
+  mutation_ops: [{op: delete, path: Event/SYN-EV-3/fields/extension/independence_check}]
+
+- fixture_id: F-C05
+  x_item: "registries.event_type program-registered required_extension"
+  model_path: registries.event_type.admission_rule
+  mutation: register an event_type `note` requiring `author`, then emit one without it
+  violated_rule: "required_extension of a program-registered type"
+  expected_rejection_point: CK-EVENT-EXT
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops:
+    - {op: register, registry: event_type, key: note,
+       value: {definition: an informal note, required_extension: [author],
+               durable: when-consequential, status: OPEN}}
+    - {op: set, path: Event/SYN-EV-9/fields/event_type, value: note}
+    - {op: set, path: Event/SYN-EV-9/fields/extension, value: {body: "hello"}}
+
+- fixture_id: F-C06
+  x_item: "registries.scope_type.admission_rule"
+  model_path: registries.scope_type.admission_rule
+  mutation: register scope_type `squad` that duplicates `team` semantics
+  violated_rule: "admission_rule — add only when boundary, authority or lifecycle behavior differs"
+  expected_rejection_point: "none — the admission rule is prose about semantics"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: specified-not-enforced
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "every one of the six admission_rules is of this kind; registry extension is
+    procedurally unguarded in the model"
+  mutation_ops:
+    - {op: register, registry: scope_type, key: squad,
+       value: {definition: bounded composition of Actors within another Scope,
+               required_fields: [], constraints: [], status: OPEN}}
+
+- fixture_id: F-C07
+  x_item: "registry shape closure"
+  model_path: registries.event_type.shape
+  mutation: register a record_category carrying a key beyond its declared shape
+  violated_rule: "none stated — M01 does not declare registry shapes closed"
+  expected_rejection_point: "CK-REGISTRY-SHAPE-EXTRA (informational only)"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "M01's OWN gate_outcome seed carries `rule`, a key absent from the event_type shape —
+    so shape closure cannot be asserted without rejecting the model's own seed. The key that
+    overflows the shape is precisely the R2-addition rule that binds gate-outcome vocabulary."
+  mutation_ops:
+    - {op: register, registry: record_category, key: memo,
+       value: {definition: a memo, schema_extension: {}, admission_rule: none,
+               retrieval: none, lifecycle: none, correction: none, status: OPEN,
+               owner: SYN-AC-OWNER}}
+
+# =========================================================================
+# D — catalogs
+# =========================================================================
+- fixture_id: F-D01
+  x_item: "catalogs.skill {construct: Skill, scope: collective|program}"
+  model_path: catalogs.skill
+  mutation: "not constructible"
+  violated_rule: "catalogs.skill.scope"
+  expected_rejection_point: "none — Skill carries no field or relation naming a catalog or a scope"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: findings-W3-rejection-suite.md
+  note: "ADVERSE-ADJACENT. The three catalogs are declarations with NO instance-level attachment
+    point. `scope:` is not documented in `notation`. open.skill_catalog is therefore not merely
+    untested — it is unexpressible in instance data."
+  mutation_ops: []
+
+- fixture_id: F-D02
+  x_item: "catalogs.workflow {scope: program}"
+  model_path: catalogs.workflow
+  mutation: "set SYN-WF-A.owner_scope_ref to the collective Scope"
+  violated_rule: "catalogs.workflow.scope: program (if read as a constraint on owner_scope_ref)"
+  expected_rejection_point: "none — the catalog's scope key has no declared binding to
+    Workflow.owner_scope_ref"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "Workflow is the only catalogued construct with any scope-bearing field, and even there
+    the catalog does not say the two are the same thing."
+  mutation_ops: [{op: set, path: Workflow/SYN-WF-A/fields/owner_scope_ref, value: SYN-SC-COLL}]
+
+- fixture_id: F-D03
+  x_item: "catalogs.gate {scope: program|workflow|record-category}"
+  model_path: catalogs.gate
+  mutation: "not constructible"
+  violated_rule: "catalogs.gate.scope"
+  expected_rejection_point: "none — Gate carries no scope field; only Gate.bound_by (0..1) to a
+    Workflow"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: findings-W3-rejection-suite.md
+  note: "a record-category-scoped Gate — one of the three declared catalog scopes — has no
+    representation at all; open.gate_identity is downstream of this"
+  mutation_ops: []
+
+# =========================================================================
+# E — invariants I1..I19
+# =========================================================================
+- fixture_id: F-E01
+  x_item: "I1 clause 1 — identity distinct from name"
+  model_path: invariants.I1
+  mutation: set a Scope's name equal to its own id
+  violated_rule: "I1 — every durable identity is opaque and distinct from name and version"
+  expected_rejection_point: CK-I1-OPAQUE
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O13)
+  operationalization: "O13 — only the 'distinct from name' clause is decidable from a snapshot;
+    'opaque' is not decidable at all, and 'distinct from version' has no version field to compare"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Scope/SYN-SC-PROG/fields/name, value: SYN-SC-PROG}]
+
+- fixture_id: F-E02
+  x_item: "I1 clause 2 — history is superseded, never overwritten"
+  model_path: invariants.I1
+  mutation: "not constructible from a single document"
+  violated_rule: "I1 clause 2"
+  expected_rejection_point: "none — an overwrite is a difference between two states in time"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: findings-W3-rejection-suite.md
+  note: "TEMPORAL INVARIANT CLASS. I1c2, I5c1 (immutability), I15c1 and I18c2 are properties of
+    a history of states, not of any instance. No snapshot-shaped checker can ever falsify them —
+    which is a statement about what an implementation must add, not about V5 being wrong."
+  mutation_ops: []
+
+- fixture_id: F-E03
+  x_item: "I2 — existence, admission, truth, grade, currentness, effect are independent facts"
+  model_path: invariants.I2
+  mutation: "not constructible"
+  violated_rule: I2
+  expected_rejection_point: "none — I2 constrains a MODEL's shape, not an instance's values"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result: specified-not-enforced
+  operationalization: none
+  evidence_path: findings-W3-rejection-suite.md
+  note: "I2 is honoured structurally (six separate carriers exist) and is unfalsifiable by
+    instance; its conforming witness is the baseline Record, not a counterexample."
+  mutation_ops: []
+
+- fixture_id: F-E04
+  x_item: "I3 — Categories own schema, admission, retrieval, lifecycle, correction"
+  model_path: core.Record.fields.category_schema_version
+  mutation: set category_schema_version to "9", a version the registered category never declares
+  violated_rule: "I3; Record.extension_owner.schema: category"
+  expected_rejection_point: "none — schema_extension is type map and its interior is undefined"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: specified-not-enforced
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "the field exists and is required, but nothing it points at is typed, so category
+    schema ownership is asserted and unverifiable"
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/fields/category_schema_version, value: "9"}]
+
+- fixture_id: F-E05
+  x_item: "I4 clause 1 — mechanical observation requires capture provenance"
+  model_path: registries.event_type.seeded.observation.required_extension
+  mutation: delete capture_custody and raw_evidence_ref from the observation Event
+  violated_rule: "I4; observation required_extension"
+  expected_rejection_point: CK-EVENT-EXT
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: delete, path: Event/SYN-EV-2/fields/extension/capture_custody},
+                 {op: delete, path: Event/SYN-EV-2/fields/extension/raw_evidence_ref}]
+
+- fixture_id: F-E06
+  x_item: "I4 clause 2 — an actor-authored account is a claim or inference"
+  model_path: invariants.I4
+  mutation: relabel a human-authored account as epistemic_kind mechanical-observation, with a
+    human named as the instrument
+  violated_rule: "I4 clause 2"
+  expected_rejection_point: "none — `instrument` is an untyped key inside Event.extension, so
+    nothing connects it to Actor.actor_type"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. The claim-versus-observation firewall — review concern 4, and one of the
+    separations `separation_is_the_product` names — has a typed vocabulary (epistemic_kind) and
+    no typed way to contradict a false label. Every ingredient for the check exists
+    (Actor.actor_type is an enum) and the model never joins them."
+  mutation_ops: [{op: set, path: Event/SYN-EV-2/fields/actor_refs, value: [SYN-AC-REVIEWER]},
+                 {op: set, path: Event/SYN-EV-2/fields/extension/instrument,
+                  value: SYN-AC-REVIEWER},
+                 {op: set, path: Event/SYN-EV-2/fields/extension/capture_custody,
+                  value: authored by the reviewer from memory}]
+
+- fixture_id: F-E07
+  x_item: "I5 clause 2 — correction is a new Event; I1 clause 2"
+  model_path: core.Event.relations.supersedes
+  mutation: make an Event supersede itself
+  violated_rule: "I5; I1 — history is superseded, never overwritten"
+  expected_rejection_point: "none — acyclicity is declared for Scope.parent,
+    Capability.composed_of and Unit.depends_on, and for NONE of the three supersedes relations"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE and cheap to fix: Event.supersedes, Record.supersedes and Workflow.supersedes
+    all admit cycles, so a correction chain can close on itself and erase the history I1
+    protects. The model already knows how to say `acyclic` — it says it three times elsewhere."
+  mutation_ops: [{op: set, path: Event/SYN-EV-4/relations/supersedes, value: SYN-EV-4}]
+
+- fixture_id: F-E08
+  x_item: "I6 + excluded 'a merged effect event; request and disposition remain separate'"
+  model_path: registries.event_type.admission_rule
+  mutation: register an event_type `effect_completed` whose required_extension spans both the
+    effect_request and effect_disposition seeds
+  violated_rule: "I6; excluded — a merged effect event"
+  expected_rejection_point: "none — no rule constrains the shape of a program-registered
+    event_type against the exclusion list"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. The `excluded:` block is the model's statement of what may not be reintroduced,
+    and the registry is the door it may be reintroduced through. R2's whole argument — that
+    merging a request with its disposition destroys absence detection — is re-openable by any
+    program with a registry write."
+  mutation_ops:
+    - {op: register, registry: event_type, key: effect_completed,
+       value: {definition: an effect requested and disposed in one occurrence,
+               required_extension: [requested_effect, delegation_ref, target_boundary_ref,
+                                    disposition, coupling],
+               durable: always, status: OPEN}}
+    - {op: set, path: Event/SYN-EV-6/fields/event_type, value: effect_completed}
+    - {op: set, path: Event/SYN-EV-6/fields/extension,
+       value: {requested_effect: repository-write, delegation_ref: SYN-DL-DYN,
+               target_boundary_ref: SYN-EB-FORGE, disposition: performed, coupling: reported}}
+
+- fixture_id: F-E09
+  x_item: "I7 — Gates fail closed when independence or evidence cannot be established"
+  model_path: invariants.I7
+  mutation: an assessment records independence_check false, and a gate_outcome still issues `pass`
+  violated_rule: "I7; Gate.independence_predicate"
+  expected_rejection_point: "none — independence_check is a key inside an opaque map and
+    independence_predicate is free text"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. Fail-closed is the invariant that makes a gate a gate. The vocabulary for the
+    outcome IS checked (F-F02) while the precondition for issuing it is not."
+  mutation_ops: [{op: set, path: Event/SYN-EV-3/fields/extension/independence_check, value: false}]
+
+- fixture_id: F-E10
+  x_item: "I8 clause 1 — missing evidence is explicit"
+  model_path: registries.event_type.seeded.gate_outcome.required_extension
+  mutation: delete `missingness` from the gate_outcome Event
+  violated_rule: "I8; gate_outcome required_extension"
+  expected_rejection_point: CK-EVENT-EXT
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "I8's explicitness clause is the one firewall-adjacent rule with a genuine mechanical
+    foothold, because R2's split put `missingness` in a required_extension"
+  mutation_ops: [{op: delete, path: Event/SYN-EV-4/fields/extension/missingness}]
+
+- fixture_id: F-E11
+  x_item: "I8 clause 2 — missing evidence is never inferred as success"
+  model_path: invariants.I8
+  mutation: declare missingness `none` while the assessment's evidence_set omits an eligible
+    evidence kind the Gate declares
+  violated_rule: "I8 clause 2"
+  expected_rejection_point: "none — Gate.eligible_evidence is a bare untyped `list` and
+    evidence_set is a key inside an opaque map, so the two cannot be compared"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Event/SYN-EV-3/fields/extension/evidence_set, value: []},
+                 {op: set, path: Event/SYN-EV-4/fields/extension/missingness, value: none}]
+
+- fixture_id: F-E12
+  x_item: "I9 — proven requires evidence at the claim's own altitude, demonstrated by the
+    organization (the firewall)"
+  model_path: invariants.I9
+  mutation: set Capability grade to `proven` with NO evidence_record_refs at all
+  violated_rule: "I9; values.evidence_grade.rule"
+  expected_rejection_point: "none — evidence_record_refs is `required: false` and no rule makes
+    it conditional on grade"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE — HEADLINE. The garage's load-bearing rule is stated twice in M01 (I9 and
+    values.evidence_grade.rule), cited by Capability and Gate, and carried by no typed structure.
+    A model-derived checker admits `grade: proven, evidence: none`. This is a missing binding,
+    not a missing enforcement point: making it checkable needs no new construct, only a
+    conditional requirement. The illustrative check XX-PROVEN-NEEDS-EVIDENCE shows the catch."
+  mutation_ops: [{op: set, path: Capability/SYN-CP-1/fields/grade, value: proven},
+                 {op: delete, path: Capability/SYN-CP-1/fields/evidence_record_refs}]
+
+- fixture_id: F-E13
+  x_item: "I9 — altitude comparison"
+  model_path: core.Record.fields.evidence_altitude
+  mutation: set Capability grade to `proven` where the only cited Record is
+    evidence_altitude directional
+  violated_rule: "I9 — evidence at the CLAIM's own altitude"
+  expected_rejection_point: "none — Record declares an evidence_altitude and Capability declares
+    no claim altitude, so the comparison has only one typed side"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE — HEADLINE. Capability carries `done_when` (text) and `grade`, but no altitude.
+    Technology likewise. The altitude half of the firewall cannot be evaluated for any claim."
+  mutation_ops: [{op: set, path: Capability/SYN-CP-1/fields/grade, value: proven}]
+
+- fixture_id: F-E14
+  x_item: "I10 — Skill represents competence and never Capability or authority"
+  model_path: supporting.Skill.relations
+  mutation: give Skill a `proves` relation to a Capability
+  violated_rule: "I10; Skill definition"
+  expected_rejection_point: CK-REL-UNKNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1 — under closure the relation is unrepresentable; under an open-world
+    reading it would be accepted"
+  evidence_path: artifacts/rejection-results.csv
+  note: "I10 holds by ABSENCE: there is no relation from Skill to Capability or to any authority
+    construct. That is genuine structural enforcement — as long as closure holds."
+  mutation_ops: [{op: set, path: Skill/SYN-SK-1/relations/proves, value: [SYN-CP-1]}]
+
+- fixture_id: F-E15
+  x_item: "I11 — Technology neither becomes nor proves Capability; 'no grade transfer'"
+  model_path: core.Capability.relations.enabled_by.rule
+  mutation: grade the Technology `proven` and grade the Capability it enables `proven`, citing
+    only the Record that documents the Technology
+  violated_rule: "I11; Capability.enabled_by rule 'no grade transfer'; Technology.enables rule"
+  expected_rejection_point: "none — nothing distinguishes a Record that evidences the Capability
+    from one that evidences the Technology; Record.provenance_refs is a bare untyped list"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. 'no grade transfer' is stated on BOTH ends of the relation and is unreachable
+    from either."
+  mutation_ops: [{op: set, path: Technology/SYN-TE-1/fields/grade, value: proven},
+                 {op: set, path: Capability/SYN-CP-1/fields/grade, value: proven}]
+
+- fixture_id: F-E16
+  x_item: "supporting.Delegation.relations.enforced_by rule"
+  kind: negative
+  model_path: supporting.Delegation.relations.enforced_by
+  mutation: remove the EffectBoundary from a Delegation that still carries effect_grants
+  violated_rule: "NONE — the rule says 'without a boundary authority is declared only', which
+    makes this a legitimate, weaker instance rather than an invalid one"
+  expected_rejection_point: "none expected"
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  actual_result: negative-test
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "NEGATIVE TEST — the checker must NOT reject this. I12's distinction between declared
+    and enforced authority is preserved by allowing it."
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/relations/enforced_by, value: []},
+                 {op: set, path: EffectBoundary/SYN-EB-FORGE/relations/enforces,
+                  value: [SYN-DL-STANDING]}]
+
+- fixture_id: F-E17
+  x_item: "I12 / authority_chain — an effect request outside its grant"
+  model_path: registries.event_type.seeded.effect_request.required_extension
+  mutation: register a second effect_class, then request it under a Delegation that does not
+    grant it
+  violated_rule: "authority_chain principle; I12; I17 — the request exceeds the grant"
+  expected_rejection_point: "none — M01 declares Delegation.effect_grants and
+    effect_request.requested_effect and states NO rule binding one to the other"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE — HEADLINE. Both sides are registry-typed values, so this is the one authority
+    check that COULD have been fully mechanical, and the rule joining them is simply absent.
+    The illustrative check XX-REQUEST-WITHIN-GRANT demonstrates the catch a stated rule buys."
+  mutation_ops:
+    - {op: register, registry: effect_class, key: credential-issue,
+       value: {definition: issue a credential, target_schema: {actor: text},
+               receipt_requirements: {issuer: required}, status: OPEN}}
+    - {op: set, path: Event/SYN-EV-6/fields/extension/requested_effect, value: credential-issue}
+
+- fixture_id: F-E18
+  x_item: "I12 — EffectBoundary.effect_classes versus the requested effect"
+  model_path: supporting.EffectBoundary.fields.effect_classes
+  mutation: direct a repository-write request at a boundary that carries no such class
+  violated_rule: "I12 — only an EffectBoundary disposition demonstrates enforced authority"
+  expected_rejection_point: "none — no rule binds effect_request.target_boundary_ref to
+    EffectBoundary.effect_classes"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: EffectBoundary/SYN-EB-FORGE/fields/effect_classes,
+                  value: [notification]},
+                 {op: register, registry: effect_class, key: notification,
+                  value: {definition: send a notification, target_schema: {},
+                          receipt_requirements: {}, status: OPEN}}]
+
+- fixture_id: F-E19
+  x_item: "supporting.EffectBoundary.fields.can_refuse"
+  model_path: supporting.EffectBoundary.fields.can_refuse
+  mutation: set can_refuse false on the boundary that two Delegations name as their enforcement
+  violated_rule: "field definition — 'a boundary that cannot refuse enforces nothing'; I12"
+  expected_rejection_point: "none — can_refuse is a required bool that NO rule in M01 reads"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. The field carries the whole meaning of enforcement and is inert: a Delegation
+    may declare itself enforced by a boundary the model itself says enforces nothing."
+  mutation_ops: [{op: set, path: EffectBoundary/SYN-EB-FORGE/fields/can_refuse, value: false}]
+
+- fixture_id: F-E20
+  x_item: "I13 — every Capability is required by at least one Goal"
+  model_path: core.Capability.relations.required_by
+  mutation: remove the requiring Goal from a Capability
+  violated_rule: "I13; cardinality 1..*; rule 'no requiring Goal means no Capability'"
+  expected_rejection_point: "CK-CARD, CK-I13"
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "the cleanest invariant in the model: stated as an invariant, carried by a cardinality,
+    and restated as a relation rule — three consistent expressions of one constraint"
+  mutation_ops: [{op: set, path: Capability/SYN-CP-1/relations/required_by, value: []},
+                 {op: set, path: Goal/SYN-GO-1/relations/requires, value: [SYN-CP-2]},
+                 {op: set, path: Goal/SYN-GO-1/fields/claim_floor, value: [SYN-CP-2]}]
+
+- fixture_id: F-E21
+  x_item: "I14 — Capability meaning does not change with organizational level"
+  model_path: invariants.I14
+  mutation: add a second version of one Capability identity at the collective Scope with a
+    different observable_behavior
+  violated_rule: I14
+  expected_rejection_point: CK-I14-MEANING
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O12)
+  operationalization: "O12 — 'meaning' operationalized as observable_behavior string equality;
+    M01 supplies no comparison and no version field to key the comparison on"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops:
+    - {op: add_instance, construct: Capability,
+       value: {id: SYN-CP-1-v2, identity: SYN-CP-1,
+               fields: {name: rule discrimination, observable_behavior: "a reviewer agrees the
+                 instance looks conforming", scope_ref: SYN-SC-COLL,
+                 done_when: a reviewer signs off, grade: claimed},
+               relations: {required_by: [SYN-GO-1]}}}
+    - {op: set, path: Goal/SYN-GO-1/relations/requires,
+       value: [SYN-CP-1, SYN-CP-2, SYN-CP-1-v2]}
+
+- fixture_id: F-E22
+  x_item: "I15 / I16 — Unit identity survives retry; a new Unit only on outcome change"
+  model_path: core.Unit.relations.replaces.rule
+  mutation: model a retry as a replacing Unit carrying an identical intended_outcome
+  violated_rule: "I15; Unit.replaces rule 'used when intended outcome changes'"
+  expected_rejection_point: CK-REPLACES-OUTCOME
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O7)
+  operationalization: "O7 — intended_outcome string equality"
+  evidence_path: artifacts/rejection-results.csv
+  note: "retry-versus-rework separability (review concern 5) has a real mechanical foothold here"
+  mutation_ops:
+    - {op: add_instance, construct: Unit,
+       value: {id: SYN-UN-1b, identity: SYN-UN-1b,
+               fields: {unit_kind: investigation,
+                        intended_outcome: a rejection suite covering every applicable declared
+                          rule,
+                        scope_ref: SYN-SC-PROG, current_state: scoped,
+                        baseline_ref: "SYN-WF-A@1"},
+               relations: {follows: SYN-WF-A, replaces: [SYN-UN-1]}}}
+    - {op: set, path: Workflow/SYN-WF-A/relations/governs,
+       value: [SYN-UN-1, SYN-UN-2, SYN-UN-1b]}
+
+- fixture_id: F-E23
+  x_item: "I15 clause 2 — each execution is an Attempt"
+  model_path: invariants.I15
+  mutation: "not constructible"
+  violated_rule: "I15 clause 2"
+  expected_rejection_point: "none — Unit.attempts is 0..*, so a Unit with no Attempt is
+    conforming, and an execution that produced no Attempt record leaves nothing to inspect"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: findings-W3-rejection-suite.md
+  mutation_ops: []
+
+- fixture_id: F-E24
+  x_item: "I16 — changing a Unit's intended outcome creates a new Unit"
+  model_path: invariants.I16
+  mutation: give one Unit identity two versions with different intended_outcome
+  violated_rule: I16
+  expected_rejection_point: CK-I16-VERSION
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O8)
+  operationalization: "O8 — the check needs an identity key AND a version key; M01 declares
+    `versioned: true` on Unit and NO version field, so the version axis is supplied by the
+    instance encoding, not by the model"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops:
+    - {op: add_instance, construct: Unit,
+       value: {id: SYN-UN-1-v2, identity: SYN-UN-1,
+               fields: {unit_kind: investigation,
+                        intended_outcome: something else entirely,
+                        scope_ref: SYN-SC-PROG, current_state: scoped,
+                        baseline_ref: "SYN-WF-A@2"},
+               relations: {follows: SYN-WF-A}}}
+    - {op: set, path: Workflow/SYN-WF-A/relations/governs,
+       value: [SYN-UN-1, SYN-UN-2, SYN-UN-1-v2]}
+
+- fixture_id: F-E25
+  x_item: "I17 attenuation — effect_grants axis"
+  model_path: supporting.Delegation.relations.derived_from.rule
+  mutation: give the derived Delegation an effect grant its parent does not hold
+  violated_rule: "I17; derived_from rule 'may not exceed parent on any axis'"
+  expected_rejection_point: CK-ATTENUATION-GRANTS
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O9)
+  operationalization: "O9 — 'not exceeding' on a set-valued axis read as set inclusion. This is
+    the ONLY one of the Delegation's four axes on which the comparison is defined at all."
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops:
+    - {op: register, registry: effect_class, key: credential-issue,
+       value: {definition: issue a credential, target_schema: {actor: text},
+               receipt_requirements: {issuer: required}, status: OPEN}}
+    - {op: set, path: Delegation/SYN-DL-DYN/fields/effect_grants,
+       value: [repository-write, credential-issue]}
+
+- fixture_id: F-E26
+  x_item: "I17 attenuation — autonomy_tier axis"
+  model_path: values.autonomy_tier
+  mutation: derive an A5 Delegation from an A1 parent
+  violated_rule: "I17 — may not exceed its parent on any axis"
+  expected_rejection_point: "none — M01 declares A0..A5 as a MAP of definitions and states no
+    ordering over them, so 'exceeds' is undefined on this axis"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE — HEADLINE. A5 is `held_by: human` and defined as changing collective policy and
+    authority structures; A1 is bounded judgment inside one Unit. The model admits an
+    instance in which the second derives the first. `open.delegation_attenuation` names the
+    comparison problem for non-numeric grants and this is its sharpest instance: the numbering
+    LOOKS ordinal and the model never says it is."
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/fields/autonomy_tier, value: A5}]
+
+- fixture_id: F-E27
+  x_item: "I17 attenuation — resource_ceiling axis"
+  model_path: supporting.Delegation.fields.resource_ceiling
+  mutation: derive a Delegation whose resource_ceiling exceeds its parent's on every key
+  violated_rule: "I17 — may not exceed its parent on any axis"
+  expected_rejection_point: "none — resource_ceiling is type map with no declared interior"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "the parent grants external_cost 0 / compute none; the child grants 500 and unlimited"
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/fields/resource_ceiling,
+                  value: {external_cost: 500, compute: unlimited}}]
+
+- fixture_id: F-E28
+  x_item: "I17 chain — authority reaches an Actor through a chain from a Scope root"
+  model_path: invariants.I17
+  mutation: have an Actor grant a Delegation with no derivation and no root authority
+  violated_rule: "I17 clause 2; Actor.receives rule; Delegation.grantor rule"
+  expected_rejection_point: CK-AUTHORITY-CHAIN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O10)
+  operationalization: "O10 — chain = grantor/derived_from must reach some
+    Scope.authority_root_ref"
+  evidence_path: artifacts/rejection-results.csv
+  note: "the chain clause of I17 IS traversable and checkable; the attenuation clause is not.
+    S4's 'can the clauses fail independently' test is vindicated here by execution."
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/relations/grantor, value: SYN-AC-AGENT},
+                 {op: delete, path: Delegation/SYN-DL-DYN/relations/derived_from}]
+
+- fixture_id: F-E29
+  x_item: "I18 clause 1 — Workflow custody sits outside the governed activity"
+  model_path: supporting.Workflow.fields.definition_custodian_ref
+  mutation: make the executing agent the custodian of the Workflow that governs its own Unit
+  violated_rule: "I18; method_custody principle"
+  expected_rejection_point: CK-CUSTODY-OUTSIDE
+  expected_check_kind: judgment
+  mechanizability: operationalizable(O11)
+  operationalization: "O11 — 'the governed activity' operationalized as the actors of Attempts
+    on governed Units. M01 never defines the phrase, so a different program could operationalize
+    it differently and reach a different verdict on the same instance."
+  evidence_path: artifacts/rejection-results.csv
+  note: "the check is constructible ONLY because definition_custodian_ref is ref<Actor> and
+    Attempt.actors is ref<Actor>; if either were text (as Event.custody and
+    EffectBoundary.custody are) it would be unreachable"
+  mutation_ops: [{op: set, path: Workflow/SYN-WF-A/fields/definition_custodian_ref,
+                  value: SYN-AC-AGENT}]
+
+- fixture_id: F-E30
+  x_item: "I18 clause 1 — Gate custody"
+  model_path: supporting.Gate.fields.definition_custodian_ref
+  mutation: make an Attempt participant the custodian of the Gate that evaluates its Unit
+  violated_rule: "I18"
+  expected_rejection_point: CK-CUSTODY-OUTSIDE
+  expected_check_kind: judgment
+  mechanizability: operationalizable(O11)
+  operationalization: "O11"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Gate/SYN-GT-1/fields/definition_custodian_ref,
+                  value: SYN-AC-REVIEWER}]
+
+- fixture_id: F-E31
+  x_item: "I18 clause 1 — Delegation custody"
+  model_path: supporting.Delegation.fields.definition_custodian_ref
+  mutation: make the governed Attempt's own actor the custodian of the governing Delegation
+  violated_rule: "I18; 'a definition governing work is not writable by the activity it governs'"
+  expected_rejection_point: CK-CUSTODY-OUTSIDE
+  expected_check_kind: judgment
+  mechanizability: operationalizable(O11)
+  operationalization: "O11"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Delegation/SYN-DL-DYN/fields/definition_custodian_ref,
+                  value: SYN-AC-AGENT}]
+
+- fixture_id: F-E32
+  x_item: "I18 clause 2 — changes are adaptation Events"
+  model_path: invariants.I18
+  mutation: "not constructible"
+  violated_rule: "I18 clause 2"
+  expected_rejection_point: "none — twelve constructs declare `versioned: true` and NOT ONE
+    declares a version field, so there is no instance value a change could be detected in"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: findings-W3-rejection-suite.md
+  note: "ADVERSE-ADJACENT and load-bearing beyond I18: Attempt.governed_by's rule 'pins immutable
+    versions' and the assessment extension's `gate_version_ref` both REQUIRE a version
+    identifier the model never declares. Three dependent rules, no carrier."
+  mutation_ops: []
+
+- fixture_id: F-E33
+  x_item: "I19 — program extensions may not weaken common invariants"
+  model_path: invariants.I19
+  mutation: register a record_category whose admission_rule declares that existence is admission
+  violated_rule: "I19; I2 — existence and admission are independent facts"
+  expected_rejection_point: "none — every registry admission_rule and every registered
+    admission_rule is free text"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: specified-not-enforced
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "I19 is the invariant that guards every other invariant against the registries, and it
+    is the least checkable thing in the file. S6 (I19 cited by Workflow alone) is the binding
+    half of the same problem; this fixture is the semantic half."
+  mutation_ops:
+    - {op: register, registry: record_category, key: note,
+       value: {definition: an informal note, schema_extension: {},
+               admission_rule: "existence is admission; no assessment Event is required",
+               retrieval: by scope, lifecycle: "active", correction: overwrite, status: OPEN}}
+
+# =========================================================================
+# F — extension ownership
+# =========================================================================
+- fixture_id: F-F01
+  x_item: "core.Unit.extension_owner.states: workflow"
+  model_path: core.Unit.fields.current_state
+  mutation: set a Unit's current_state to a value outside its Workflow's state_vocabulary
+  violated_rule: "Unit.current_state definition 'Workflow-owned'; extension_owner.states:
+    workflow; I19"
+  expected_rejection_point: CK-UNIT-STATE
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O5)
+  operationalization: "O5 — M01 states the ownership and never states the membership rule"
+  evidence_path: artifacts/rejection-results.csv
+  note: "this is the strongest extension-ownership result in the suite: ownership is asserted on
+    Unit, the vocabulary lives on Workflow, and joining them takes one unstated sentence"
+  mutation_ops: [{op: set, path: Unit/SYN-UN-1/fields/current_state, value: under-review}]
+
+- fixture_id: F-F02
+  x_item: "registries.event_type.seeded.gate_outcome.rule (the R2 addition)"
+  model_path: registries.event_type.seeded.gate_outcome.rule
+  mutation: issue a gate_outcome whose outcome is not in the pinned Gate's allowed_outcomes
+  violated_rule: "gate_outcome rule — outcome vocabulary resolves through the assessment's
+    pinned gate_version_ref to that Gate version's allowed_outcomes"
+  expected_rejection_point: CK-GATE-OUTCOME-VOCAB
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: "resolution of gate_version_ref requires reading inside Event.extension
+    (an opaque map) and tolerating a version suffix the model provides no field for"
+  evidence_path: artifacts/rejection-results.csv
+  note: "the R2 addition is the ONLY rule in M01 that spells out a multi-hop resolution path,
+    and it is the only Event-layer VALUE check that works. It also demonstrates the fix pattern
+    the rest of the Event layer is missing."
+  mutation_ops: [{op: set, path: Event/SYN-EV-4/fields/extension/outcome, value: approved}]
+
+- fixture_id: F-F03
+  x_item: "assessment.gate_version_ref resolution"
+  model_path: registries.event_type.seeded.assessment.required_extension.gate_version_ref
+  mutation: point gate_version_ref at a Gate that does not exist
+  violated_rule: "gate_outcome resolution rule"
+  expected_rejection_point: CK-GATE-OUTCOME-VOCAB
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: set, path: Event/SYN-EV-3/fields/extension/gate_version_ref,
+                  value: "SYN-GT-9@1"}]
+
+- fixture_id: F-F04
+  x_item: "core.Record.relations.admitted_by rule"
+  model_path: core.Record.relations.admitted_by.rule
+  mutation: admit a Record by a decision Event
+  violated_rule: "admitted_by rule — assessment Events only; existence is not admission"
+  expected_rejection_point: CK-ADMIT-ASSESSMENT
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "a relation rule that names a registry key is checkable; a relation rule that names a
+    semantic property is not. This is the discriminator across all 20 relation rules in M01."
+  mutation_ops: [{op: set, path: Record/SYN-RC-1/relations/admitted_by, value: [SYN-EV-1]}]
+
+- fixture_id: F-F05
+  x_item: "core.Event.fields.authority_ref definition (conditional requirement)"
+  model_path: core.Event.fields.authority_ref
+  mutation: delete authority_ref from a decision Event
+  violated_rule: "field definition — required for decisions and effect requests"
+  expected_rejection_point: CK-EVENT-AUTHORITY
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: "the conditional is stated in a `definition:` string rather than in
+    `required:`, so a naive schema generator would miss it entirely"
+  evidence_path: artifacts/rejection-results.csv
+  mutation_ops: [{op: delete, path: Event/SYN-EV-1/fields/authority_ref}]
+
+- fixture_id: F-F06
+  x_item: "core.Capability.extension_owner.behavior_schema: program"
+  model_path: core.Capability.extension_owner
+  mutation: carry the program-owned behavior_schema extension the ownership map names
+  violated_rule: "closure (O1) — Capability declares no field or relation named behavior_schema"
+  expected_rejection_point: CK-FIELD-UNKNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE-ADJACENT. 13 of 19 extension_owner keys name no field or relation on their own
+    construct, so the extension a program is told it owns has nowhere to live. R3's local
+    checkability argument is only half-delivered: the ownership is local, the extension point
+    is absent."
+  mutation_ops: [{op: set, path: Capability/SYN-CP-1/fields/behavior_schema,
+                  value: {observable_behavior_schema: v1}}]
+
+# =========================================================================
+# G — custody surfaces
+# =========================================================================
+- fixture_id: F-G01
+  x_item: "core.Event.fields.custody (type: text)"
+  model_path: core.Event.fields.custody
+  mutation: record custody as the empty string
+  violated_rule: "none stated — custody is unconstrained text"
+  expected_rejection_point: "none"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "three custody surfaces exist — Event.custody (text), EffectBoundary.custody (text) and
+    definition_custodian_ref (ref<Actor>). Only the typed one supports any check (F-E29..31)."
+  mutation_ops: [{op: set, path: Event/SYN-EV-7/fields/custody, value: ""}]
+
+- fixture_id: F-G02
+  x_item: "supporting.EffectBoundary.fields.custody (type: text)"
+  model_path: supporting.EffectBoundary.fields.custody
+  mutation: declare the boundary's credentials to be held by the executing agent itself
+  violated_rule: "method_custody / authority_chain principles; the theme's load-bearing
+    boundary that effect credentials stay outside the governed activity"
+  expected_rejection_point: "none — custody is free text on EffectBoundary, and the boundary
+    has no relation to any Actor"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE. An instance can state in conforming, typed-clean data that the governed agent
+    holds the effect credentials. The one distinction the theme calls load-bearing is written
+    in prose on the one construct whose job is to enforce it."
+  mutation_ops: [{op: set, path: EffectBoundary/SYN-EB-FORGE/fields/custody,
+                  value: credentials held by SYN-AC-AGENT inside the governed activity}]
+
+# =========================================================================
+# H — excluded constructs (negative dependency + reintroduction tests)
+# =========================================================================
+- fixture_id: F-H01
+  x_item: "excluded — Feature as a construct"
+  model_path: excluded[0]
+  mutation: introduce a Feature construct
+  violated_rule: "excluded — Feature is a software unit_kind"
+  expected_rejection_point: CK-CONSTRUCT-KNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "negative dependency shown by the baseline: the change-shaped work is carried by
+    unit_kind `change`, so no instance depends on a Feature construct"
+  mutation_ops: [{op: add_instance, construct: Feature,
+                  value: {id: SYN-FE-1, fields: {name: a feature}}}]
+
+- fixture_id: F-H02
+  x_item: "excluded — Qualification as a construct"
+  model_path: excluded[1]
+  mutation: introduce a Qualification construct
+  violated_rule: "excluded — evidence belongs to Actor-has-Skill"
+  expected_rejection_point: CK-CONSTRUCT-KNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "negative dependency: the baseline carries competence evidence as attributes on
+    Actor.has_skill / Skill.held_by (evidence_refs, grade, currentness, expires_at)"
+  mutation_ops: [{op: add_instance, construct: Qualification,
+                  value: {id: SYN-QU-1, fields: {name: certified}}}]
+
+- fixture_id: F-H03
+  x_item: "excluded — Envelope as a construct"
+  model_path: excluded[2]
+  mutation: introduce an Envelope construct
+  violated_rule: "excluded — limits travel with Delegation"
+  expected_rejection_point: CK-CONSTRUCT-KNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "negative dependency: limits are carried by Delegation.resource_ceiling,
+    escalation_conditions, effect_grants and autonomy_tier"
+  mutation_ops: [{op: add_instance, construct: Envelope,
+                  value: {id: SYN-EN-1, fields: {name: budget envelope}}}]
+
+- fixture_id: F-H04
+  x_item: "excluded — AuthorityBasis as a construct"
+  model_path: excluded[3]
+  mutation: introduce an AuthorityBasis construct
+  violated_rule: "excluded — authority is rooted in Scope or conveyed by Delegation"
+  expected_rejection_point: CK-CONSTRUCT-KNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "negative dependency: T-07 traverses Scope.authority_root_ref and Delegation.derived_from
+    with no basis construct"
+  mutation_ops: [{op: add_instance, construct: AuthorityBasis,
+                  value: {id: SYN-AB-1, fields: {name: charter}}}]
+
+- fixture_id: F-H05
+  x_item: "excluded — EvidenceItem as a construct"
+  model_path: excluded[4]
+  mutation: introduce an EvidenceItem construct
+  violated_rule: "excluded — evidence is a Record role under a Gate"
+  expected_rejection_point: CK-CONSTRUCT-KNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "negative dependency: evidence appears as Records in Gate.eligible_evidence and in the
+    assessment's evidence_set — though both are untyped (F-E11)"
+  mutation_ops: [{op: add_instance, construct: EvidenceItem,
+                  value: {id: SYN-EI-1, fields: {name: a log}}}]
+
+- fixture_id: F-H06
+  x_item: "excluded — RecordVersion as a construct"
+  model_path: excluded[5]
+  mutation: introduce a RecordVersion construct
+  violated_rule: "excluded — versions belong to Record identity"
+  expected_rejection_point: CK-CONSTRUCT-KNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "the exclusion holds, but see F-E32: 'versions belong to Record identity' is asserted by
+    `versioned: true` and carried by no field"
+  mutation_ops: [{op: add_instance, construct: RecordVersion,
+                  value: {id: SYN-RV-1, fields: {name: v2}}}]
+
+- fixture_id: F-H07
+  x_item: "excluded — Signal/Decision/Transition/Assessment/Outcome/EffectRequest/EffectReceipt"
+  model_path: excluded[6]
+  mutation: introduce a Decision construct
+  violated_rule: "excluded — all are Events"
+  expected_rejection_point: CK-CONSTRUCT-KNOWN
+  expected_check_kind: mechanical
+  mechanizability: operationalizable(O1)
+  operationalization: "O1"
+  evidence_path: artifacts/rejection-results.csv
+  note: "negative dependency: all seven are exercised as seeded event types in the baseline
+    (SYN-EV-1..9), which covers 9 of 9 seeded event types"
+  mutation_ops: [{op: add_instance, construct: Decision,
+                  value: {id: SYN-DE-1, fields: {name: approve}}}]
+
+- fixture_id: F-H08
+  x_item: "excluded — Attempt as a Unit subtype"
+  model_path: excluded[8]
+  mutation: register a unit_kind named `attempt`
+  violated_rule: "excluded — Attempt as Unit subtype"
+  expected_rejection_point: "none — registry admission is prose, and nothing compares a
+    registered key against the exclusion list"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: specified-not-enforced
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "pairs with F-A17/F-E08: an exclusion is mechanically enforced when the construct set is
+    closed and unenforced when the registry is the door"
+  mutation_ops:
+    - {op: register, registry: unit_kind, key: attempt,
+       value: {definition: one execution of a Unit, workflow_ref: SYN-WF-A,
+               required_fields: [], status: OPEN}}
+
+- fixture_id: F-H09
+  x_item: "excluded — lesson as an Event type (registered form)"
+  model_path: excluded[8]
+  mutation: REGISTER `lesson` as an event_type, then emit one
+  violated_rule: "excluded — lesson as Event type; open.lesson_vs_pattern"
+  expected_rejection_point: "none — the registry admits it"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result_when_accepted: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "ADVERSE, and the sharpest exclusion pair in the suite: F-A17 (unregistered `lesson`)
+    is rejected mechanically and F-H09 (registered `lesson`) is accepted silently. The
+    difference is one registry write by the program the exclusion is meant to bind."
+  mutation_ops:
+    - {op: register, registry: event_type, key: lesson,
+       value: {definition: a lesson learned from a failure, required_extension: [subject],
+               durable: always, status: OPEN}}
+    - {op: set, path: Event/SYN-EV-9/fields/event_type, value: lesson}
+    - {op: set, path: Event/SYN-EV-9/fields/extension, value: {subject: SYN-UN-1}}
+
+- fixture_id: F-H10
+  x_item: "excluded — a universal lifecycle, state machine, proof bar or closed extension taxonomy"
+  model_path: excluded[9]
+  mutation: "not constructible"
+  violated_rule: "excluded[9]"
+  expected_rejection_point: "none — the exclusion forbids the model from containing something,
+    not an instance from containing something"
+  expected_check_kind: judgment
+  mechanizability: not-mechanizable
+  actual_result: not-falsifiable-from-alphabet
+  operationalization: none
+  evidence_path: findings-W3-rejection-suite.md
+  note: "verified against M01 directly instead: no construct declares a state enumeration
+    (Unit.current_state and Record.lifecycle_state are text, owned by Workflow and Category),
+    and all six registries and three catalogs carry an admission_rule and status OPEN"
+  mutation_ops: []
+
+- fixture_id: F-H11
+  x_item: "excluded — autonomy as effect authority or evidence strength"
+  model_path: excluded[10]
+  mutation: "covered by F-E17 (autonomy carries an ungranted effect) and F-E26 (autonomy
+    escalates without an order)"
+  violated_rule: "excluded[10]; I12"
+  expected_rejection_point: "see F-E17, F-E26"
+  expected_check_kind: mechanical
+  mechanizability: not-mechanizable
+  actual_result: accepted-defect
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: "the exclusion is honoured in the SHAPE (autonomy_tier and effect_grants are separate
+    fields) and unenforced in the VALUES (nothing stops a request outside the grant)"
+  mutation_ops: []
+
+# =========================================================================
+# B — declared inverse symmetry (generated: one fixture per declared inverse pair)
+#     Generated by gen_inverse_fixtures.py against the baseline; each fixture removes exactly
+#     one back-reference. These are the rules M02 s7 kept after A3 was withdrawn: an inverse is
+#     declared only where it expresses domain navigation, so each one is a real model claim.
+# =========================================================================
+
+- fixture_id: F-B01
+  x_item: declared inverse Scope.parent <-> Scope.contains
+  model_path: Scope.relations.parent.inverse
+  mutation: 'break the inverse: remove the back-reference from Scope/SYN-SC-COLL.contains'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Scope.contains
+  mutation_ops:
+  - op: delete
+    path: Scope/SYN-SC-COLL/relations/contains
+- fixture_id: F-B02
+  x_item: declared inverse Goal.requires <-> Capability.required_by
+  model_path: Goal.relations.requires.inverse
+  mutation: 'break the inverse: remove the back-reference from Capability/SYN-CP-1.required_by'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Capability.required_by; CK-CARD also fires because Capability.required_by
+    has minimum cardinality 1
+  mutation_ops:
+  - op: delete
+    path: Capability/SYN-CP-1/relations/required_by
+- fixture_id: F-B03
+  x_item: declared inverse Goal.is_advanced_by <-> Capability.advances
+  model_path: Goal.relations.is_advanced_by.inverse
+  mutation: 'break the inverse: remove the back-reference from Capability/SYN-CP-1.advances'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Capability.advances
+  mutation_ops:
+  - op: delete
+    path: Capability/SYN-CP-1/relations/advances
+- fixture_id: F-B04
+  x_item: declared inverse Goal.directs <-> Unit.directed_by
+  model_path: Goal.relations.directs.inverse
+  mutation: 'break the inverse: remove the back-reference from Unit/SYN-UN-1.directed_by'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Unit.directed_by
+  mutation_ops:
+  - op: delete
+    path: Unit/SYN-UN-1/relations/directed_by
+- fixture_id: F-B05
+  x_item: declared inverse Capability.delivered_by <-> Unit.delivers
+  model_path: Capability.relations.delivered_by.inverse
+  mutation: 'break the inverse: remove the back-reference from Unit/SYN-UN-1.delivers'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Unit.delivers
+  mutation_ops:
+  - op: delete
+    path: Unit/SYN-UN-1/relations/delivers
+- fixture_id: F-B06
+  x_item: declared inverse Capability.enabled_by <-> Technology.enables
+  model_path: Capability.relations.enabled_by.inverse
+  mutation: 'break the inverse: remove the back-reference from Technology/SYN-TE-1.enables'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Technology.enables
+  mutation_ops:
+  - op: delete
+    path: Technology/SYN-TE-1/relations/enables
+- fixture_id: F-B07
+  x_item: declared inverse Actor.has_skill <-> Skill.held_by
+  model_path: Actor.relations.has_skill.inverse
+  mutation: 'break the inverse: remove the back-reference from Skill/SYN-SK-1.held_by'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Skill.held_by
+  mutation_ops:
+  - op: set
+    path: Skill/SYN-SK-1/relations/held_by
+    value:
+    - SYN-AC-LEAD
+- fixture_id: F-B08
+  x_item: declared inverse Unit.follows <-> Workflow.governs
+  model_path: Unit.relations.follows.inverse
+  mutation: 'break the inverse: remove the back-reference from Workflow/SYN-WF-A.governs'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Workflow.governs
+  mutation_ops:
+  - op: set
+    path: Workflow/SYN-WF-A/relations/governs
+    value:
+    - SYN-UN-2
+- fixture_id: F-B09
+  x_item: declared inverse Unit.attempts <-> Attempt.unit
+  model_path: Unit.relations.attempts.inverse
+  mutation: 'break the inverse: remove the back-reference from Attempt/SYN-AT-1.unit'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Attempt.unit; CK-CARD also fires because Attempt.unit has minimum
+    cardinality 1
+  mutation_ops:
+  - op: delete
+    path: Attempt/SYN-AT-1/relations/unit
+- fixture_id: F-B10
+  x_item: declared inverse Unit.assigned_through <-> Delegation.unit
+  model_path: Unit.relations.assigned_through.inverse
+  mutation: 'break the inverse: remove the back-reference from Delegation/SYN-DL-DYN.unit'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Delegation.unit
+  mutation_ops:
+  - op: delete
+    path: Delegation/SYN-DL-DYN/relations/unit
+- fixture_id: F-B11
+  x_item: declared inverse Unit.gated_by <-> Gate.evaluates
+  model_path: Unit.relations.gated_by.inverse
+  mutation: 'break the inverse: remove the back-reference from Gate/SYN-GT-1.evaluates'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Gate.evaluates
+  mutation_ops:
+  - op: set
+    path: Gate/SYN-GT-1/relations/evaluates
+    value:
+    - SYN-RC-1
+- fixture_id: F-B12
+  x_item: declared inverse Event.documented_by <-> Record.documents
+  model_path: Event.relations.documented_by.inverse
+  mutation: 'break the inverse: remove the back-reference from Record/SYN-RC-1.documents'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Record.documents
+  mutation_ops:
+  - op: delete
+    path: Record/SYN-RC-1/relations/documents
+- fixture_id: F-B13
+  x_item: declared inverse Workflow.requires <-> Skill.required_by
+  model_path: Workflow.relations.requires.inverse
+  mutation: 'break the inverse: remove the back-reference from Skill/SYN-SK-1.required_by'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Skill.required_by
+  mutation_ops:
+  - op: set
+    path: Skill/SYN-SK-1/relations/required_by
+    value:
+    - SYN-RL-EXEC
+- fixture_id: F-B14
+  x_item: declared inverse Workflow.binds <-> Gate.bound_by
+  model_path: Workflow.relations.binds.inverse
+  mutation: 'break the inverse: remove the back-reference from Gate/SYN-GT-1.bound_by'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Gate.bound_by
+  mutation_ops:
+  - op: delete
+    path: Gate/SYN-GT-1/relations/bound_by
+- fixture_id: F-B15
+  x_item: declared inverse Role.requires <-> Skill.required_by
+  model_path: Role.relations.requires.inverse
+  mutation: 'break the inverse: remove the back-reference from Skill/SYN-SK-1.required_by'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Skill.required_by
+  mutation_ops:
+  - op: set
+    path: Skill/SYN-SK-1/relations/required_by
+    value:
+    - SYN-WF-A
+- fixture_id: F-B16
+  x_item: declared inverse Role.assigned_to <-> Actor.holds_role
+  model_path: Role.relations.assigned_to.inverse
+  mutation: 'break the inverse: remove the back-reference from Actor/SYN-AC-LEAD.holds_role'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Actor.holds_role
+  mutation_ops:
+  - op: delete
+    path: Actor/SYN-AC-LEAD/relations/holds_role
+- fixture_id: F-B17
+  x_item: declared inverse Role.receives <-> Delegation.grantee
+  model_path: Role.relations.receives.inverse
+  mutation: 'break the inverse: remove the back-reference from Delegation/SYN-DL-STANDING.grantee'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Delegation.grantee; CK-CARD also fires because Delegation.grantee
+    has minimum cardinality 1
+  mutation_ops:
+  - op: delete
+    path: Delegation/SYN-DL-STANDING/relations/grantee
+- fixture_id: F-B18
+  x_item: declared inverse Delegation.governs <-> Attempt.governed_by
+  model_path: Delegation.relations.governs.inverse
+  mutation: 'break the inverse: remove the back-reference from Attempt/SYN-AT-2.governed_by'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on Attempt.governed_by; CK-CARD also fires because Attempt.governed_by
+    has minimum cardinality 1
+  mutation_ops:
+  - op: delete
+    path: Attempt/SYN-AT-2/relations/governed_by
+- fixture_id: F-B19
+  x_item: declared inverse Delegation.enforced_by <-> EffectBoundary.enforces
+  model_path: Delegation.relations.enforced_by.inverse
+  mutation: 'break the inverse: remove the back-reference from EffectBoundary/SYN-EB-FORGE.enforces'
+  violated_rule: declared inverse symmetry (principles.inverse_relations)
+  expected_rejection_point: CK-INVERSE
+  expected_check_kind: mechanical
+  mechanizability: determined-by-M01
+  operationalization: none
+  evidence_path: artifacts/rejection-results.csv
+  note: deleting the back-edge on EffectBoundary.enforces
+  mutation_ops:
+  - op: set
+    path: EffectBoundary/SYN-EB-FORGE/relations/enforces
+    value:
+    - SYN-DL-DYN
