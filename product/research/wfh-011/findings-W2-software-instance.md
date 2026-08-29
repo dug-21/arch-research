@@ -10,6 +10,13 @@
 > into `dug-21/unimatrix`. No network research and no material compute were used: every measurement
 > below is a deterministic parse or a read-only inspection of the pinned local corpus.
 
+> **Rework round 1 (coverage gate `REWORKABLE`, `b755bb5`).** RW-1 and RW-2 executed. The coverage
+> table is now joined to its own instance by an executed pass, and the instance has been mechanically
+> validated for the first time. **Eight dispositions moved and three counts in this file changed** —
+> §5 and §6.15/§6.16 record the movement and the conformance findings the working checker surfaced.
+> `vnc-045-instance.yaml` was **not** re-serialized and **not** repaired; the reader was fixed to the
+> data, and every accommodation it makes is printed in `vnc-045-validate.out.txt`.
+
 ---
 
 ## 1. Model verification (do not take this on trust — the commands are below)
@@ -53,6 +60,8 @@ refusal clause is what makes the absence of any refusal in this case visible rat
 | Historical instance | `/workspaces/arch-research/product/research/wfh-011/artifacts/vnc-045-instance.yaml` |
 | Coverage matrix (679 X rows) | `/workspaces/arch-research/product/research/wfh-011/artifacts/vnc-045-coverage.csv` |
 | Counterfactuals (separate, `counterfactual` provenance) | `/workspaces/arch-research/product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml` |
+| Instance validator (RW-2) + its executed output | `/workspaces/arch-research/product/research/wfh-011/artifacts/vnc-045-validate.py` · `vnc-045-validate.out.txt` |
+| Coverage join log (RW-1) | `/workspaces/arch-research/product/research/wfh-011/artifacts/vnc-045-coverage-build.out.txt` |
 
 The historical instance and the counterfactual file share **no identifiers**: historical entities are
 `SC-/GO-/CP-/AC-/UN-/WF-/SK-/RO-/DL-/GT-/EB-/AT-/TE-/EV-/RC-`, counterfactual entities are `CF-*`, each
@@ -111,6 +120,28 @@ A:dug-21 <angryweed@gmail.com>
 C:GitHub <noreply@github.com>
 ```
 
+```
+# C11 (RW-1) — the coverage table now opens its own instance
+$ python3 product/research/wfh-011/artifacts/vnc-045-coverage-build.py
+objects parsed per construct: Actor=19, Attempt=17, Capability=2, Delegation=13,
+  EffectBoundary=3, Event=30, Gate=5, Goal=3, Record=27, Role=13, Scope=3, Skill=3,
+  Technology=3, Unit=8, Workflow=2
+checked (exercised field/relation rows)     : 119
+  PASS  (>=1 object populates the key)      : 112
+  FAIL  (zero population -> re-dispositioned): 7
+  witness strings replaced as false-as-written: 69
+RULE W2-EXTRA re-dispositioned                : 1
+   (full log: artifacts/vnc-045-coverage-build.out.txt)
+
+# C12 (RW-2) — the instance is parsed for the first time
+$ python3 product/research/wfh-011/artifacts/vnc-045-validate.py <model> <instance> <counterfactual>
+151 instance objects across 15 constructs
+NOT-WRITABLE objects: 2 ['EV-13', 'EV-14']
+declared-inverse edges checked=210 broken=55
+RESULT: 69 error(s), 285 warning(s), 14 note(s)     # exit 1
+   (full log: artifacts/vnc-045-validate.out.txt)
+```
+
 The coverage CSV is regenerated deterministically by
 `scratchpad/w2/enumerate_x.py` (which refuses to run on a digest mismatch) plus
 `scratchpad/w2/build_coverage.py`. Both are reproduced verbatim in §11.
@@ -161,12 +192,18 @@ from a document the alphabet does not name.
 
 679 X items enumerated from `M01`; every one has exactly one disposition; no field is silently blank.
 
-| Disposition | Rows |
-|---|---:|
-| `exercised` | 596 |
-| `construct-pressure` | 47 |
-| `not-applicable` (with reason) | 36 |
-| `blocked-by-OPEN` | 0 |
+**Post-join (rework round 1).** Every `exercised` row in the four mechanically checkable classes
+(`core-field`, `core-relation`, `supporting-field`, `supporting-relation`) is now measured against
+`vnc-045-instance.yaml` by an executed pass rather than asserted. 119 rows checked, 112 pass, 7 fail,
+1 further row re-dispositioned under the separately-counted rule W2-EXTRA, and **69 boilerplate
+witness strings replaced with the measured population**.
+
+| Disposition | Rows (pre-join) | **Rows (post-join)** |
+|---|---:|---:|
+| `exercised` | 596 | **588** |
+| `construct-pressure` | 47 | **48** |
+| `not-applicable` (with reason) | 36 | **43** |
+| `blocked-by-OPEN` | 0 | **0** |
 
 **No X row was `blocked-by-OPEN`.** Every OPEN item in `M01` was either exercised (often adversely) or
 recorded `not-exercised` with a reason; none prevented the instance from being written. That is a
@@ -182,20 +219,44 @@ about being unresolved, not that they are harmless.
 | `resolved-by-instance-at-document-altitude` | 1 (`core.Unit.open[0]` interruption and resume) |
 | `model-pressure` | 1 (`core.Capability.fields.grade`) |
 
-**Pressure classification tally** — 66 rows carry at least one cause; multi-cause rows retain every
-applicable cause:
+**Pressure classification tally** — **67** rows carry at least one cause (was 66); multi-cause rows
+retain every applicable cause:
 
-| Cause | Rows |
-|---|---:|
-| `historical-evidence-gap` | 43 |
-| `project-evolution-candidate` | 20 (→ **5 distinct candidates**, CF-01…CF-05) |
-| `enforcement-gap` | 19 |
-| `model-defect` | 9 (→ **6 distinct defects**, F-01, F-08…F-12) |
-| `unresolved` | 0 |
+| Cause | Rows (pre-join) | **Rows (post-join)** |
+|---|---:|---:|
+| `historical-evidence-gap` | 43 | **43** |
+| `project-evolution-candidate` | 20 | **20** (→ **5 distinct candidates**, CF-01…CF-05) |
+| `enforcement-gap` | 19 | **20** |
+| `model-defect` | 9 | **9** (→ **6 distinct defects**, F-01, F-08…F-12) |
+| `unresolved` | 0 | **0** |
 
-`project-evolution-candidate` is **never** used as a residual bucket: only 20 of the 66 pressure rows
+`project-evolution-candidate` is **never** used as a residual bucket: only 20 of the 67 pressure rows
 carry it, and every one of the 20 names one of five candidates with all five required analyses present
 (verified programmatically — zero rows are missing an analysis field).
+
+### The eight rows that moved
+
+| `model_path` | measured | was | now |
+|---|---|---|---|
+| `core.Goal.relations.is_advanced_by` | 0/3 Goals | `exercised` | `not-applicable` |
+| `core.Capability.relations.advances` | 0/2 Capabilities | `exercised` | `not-applicable` |
+| `core.Capability.relations.delivered_by` | 0/2 Capabilities | `exercised` | `not-applicable` |
+| `core.Unit.relations.delivers` | 0/8 Units | `exercised` | `not-applicable` |
+| `core.Event.relations.supersedes` | 0/30 Events | `exercised` | `not-applicable` |
+| `supporting.Delegation.fields.expires_at` | 0/13 Delegations | `exercised` | `not-applicable` |
+| `supporting.EffectBoundary.relations.enforces` | 0/3 EffectBoundaries | `exercised`, **no cause** | `construct-pressure` · `enforcement-gap` |
+| `core.Goal.fields.north_star` | 1/3, placeholder only | `exercised` | `not-applicable` (rule W2-EXTRA) |
+
+The seven RW-1 failures reproduce the audited populations exactly, and the pass found **no eighth
+zero-population row** the audit had not already named. `supporting.Role.relations.requires` passes the
+assertion at 3/13 (RO-02, RO-07, RO-08); only its false boilerplate witness was replaced.
+
+The last row is mine, not the audit's, and is labelled and counted separately: `north_star` passes
+RW-1's population assertion because `missing-history` is a non-empty string, but the row's own
+committed witness already read *"Optional; absent. Recorded absent, not inferred."* against a
+disposition of `exercised`. That is the same witness-versus-label disagreement the gate ruled on, on a
+row the population assertion does not reach. Rule W2-EXTRA applies only where the row's own pre-join
+witness asserts absence, so the audit's rule and this one stay independently re-executable.
 
 ---
 
@@ -429,6 +490,76 @@ stand unchanged, with the drop accepted in Residual Risk 2). Non-adoption of an 
 
 ---
 
+### F-15 — The instance had never been parsed, and parsing it found 69 conformance errors  ·  W2 encoding defects, surfaced by RW-2
+
+Until this round no executed checker in the run could read `vnc-045-instance.yaml`: both existing
+validators key on a top-level `instances:` map, the W2 file uses flat sections, and both therefore
+printed a green result over **zero objects**. `vnc-045-validate.py` reads the W2 encoding natively and
+parses **151 objects across all 15 constructs**. It reports **69 errors, 285 warnings, 14 notes**.
+
+The errors are mine, not V5's, and they are recorded rather than repaired:
+
+| Class | Count | What it is |
+|---|---:|---|
+| declared inverse not closed | 55 | of **210** declared-inverse edges checked, 55 do not close (73.8 % closure) |
+| missing required field | 11 | `Delegation.effective_at` on DL-03…DL-13 (the flow-mapping rows) |
+| dangling relation target | 3 | `WF-01.binds → GT-01/GT-02/GT-03` — ids that do not exist |
+
+The inverse breakage is concentrated and it is *characteristic*, not random. 19 are
+`Attempt.unit ↔ Unit.attempts` and 18 are `Attempt.governed_by ↔ Delegation.governs`: I wrote each
+many-to-many edge once, from the side I was thinking about, and the back-set is short. Three more are
+`Unit.gated_by ↔ Gate.evaluates` where the whole-feature Unit (`UN-02`) claims gates that in fact bind
+its child stages. The three dangling `WF-01.binds` targets are the residue of the decision in F-14 to
+model the advisory reviews as `communication` Events rather than Gates — the decision was right and the
+reference was left behind.
+
+**None of this is visible to a reader.** The file reads correct and parses wrong, one level up from the
+defect M02 S1 found in the model itself, and it went undetected through a coverage table, a
+reconciliation and an audit before an instrument was pointed at it. That is the run's own subject
+happening to the run.
+
+Two further measurements from the same pass, reported without acting on them:
+
+- **`versioned` is an operationalization, not a check.** M01 marks 11 of 15 constructs
+  `versioned: true`; my instance records a `version` on nothing. M01's `notation` never states that an
+  instance object must carry a version key, so treating this as an error would count a rule the model
+  does not state as model discrimination. It is emitted 82 times as `O-W2-1` at WARN and is not
+  counted as a failure. It is nevertheless a real absence: the instance cannot say which revision of
+  `SCOPE.md` `UN-02` followed.
+- **167 `RECORDED-ABSENCE` warnings** — required fields and required event-extension keys carrying
+  `missing-history` / `unestablished` / `UNREPRESENTABLE` / `ABSENT`. These are the F-05, F-06 and
+  F-08 gaps made machine-visible per object rather than argued in prose. The checker separates them
+  from conformance errors deliberately: a required field carrying a recorded absence is *not* the same
+  defect as a required field silently omitted, and collapsing the two would fill absence in the other
+  direction.
+
+**Scope note for the re-audit.** RW-1's assertion covers field and relation *population*; it does not
+reach the 34 `core-relation-inverse` / `supporting-relation-inverse` X rows, which remain dispositioned
+`exercised` on an authored basis while the newly-executable measurement of them is adverse (55/210
+broken). I did not re-disposition them, because doing so would go beyond what the audit named. I record
+the measurement here so the omission is visible rather than silent.
+
+### F-16 — What the join changed, and what it did not  ·  instrument correction
+
+`vnc-045-coverage-build.py` now loads `vnc-045-instance.yaml` and measures every `exercised`
+field/relation row against it. 119 rows checked; **112 pass, 7 fail, 1 further moved under rule
+W2-EXTRA**, and 69 witness strings that read `instantiated in vnc-045-instance.yaml` were replaced by
+the measured population. The seven failures reproduce the audited populations exactly and the pass
+found no eighth zero-population row — the audit's measurement and mine agree.
+
+Two of those seven had witnesses that were **false as written** (`core.Capability.relations.advances`
+and `supporting.Delegation.fields.expires_at` both claimed instantiation of a key no object carries);
+four said *EMPTY* in their own witness column while carrying `exercised`; and
+`supporting.EffectBoundary.relations.enforces` carried no cause on a row whose `enforcement_reality`
+already read `specified-not-enforced`. All eight now agree with their own measurement.
+
+**What did not change.** No finding in §6 rested on any of the eight rows as a *witness*: F-04 already
+reported `EffectBoundary.enforces` as empty, F-13 already reported `Unit.delivers` as empty by
+observation, and no finding claimed a conforming witness for `Capability.delivered_by`,
+`Capability.advances`, `Goal.is_advanced_by`, `Event.supersedes`, `Delegation.expires_at` or
+`Goal.north_star`. The prose was right where the table's label was wrong — which is the precise shape
+of the defect the gate found, and the reason it was invisible.
+
 ## 7. The five preservation obligations
 
 | Obligation | Where it is preserved | Result |
@@ -584,6 +715,9 @@ three.
   anachronistic; nothing in the alphabet dates the protocol's revisions. **This is the single largest
   soft spot in W2's encoding** and W4 should weigh it.
 - **`refused` and `unknown` effect dispositions have no witness.** No refusal was claimed anywhere.
+- **The 34 inverse X rows are dispositioned on an authored basis while the now-executable measurement
+  of them is adverse** (55 of 210 declared-inverse edges do not close, F-15). RW-1's assertion does not
+  reach them and I did not extend it; the re-audit should rule on whether it should.
 - **W2 did not read the implementation source.** `S06` was consumed as file lists, commit ordering and
   two targeted diffs. W2 encodes organization, not code, and makes no claim about whether `context_tag`
   works.
@@ -592,18 +726,33 @@ three.
 
 ## 11. Reproduction scripts
 
-Both are read-only and deterministic. `enumerate_x.py` **refuses to run on a digest mismatch**.
+All three are read-only and deterministic, and both entry points **refuse to run on a digest
+mismatch**. None writes to `vnc-045-instance.yaml`.
 
 - `vnc-045-coverage-enumerate-x.py` — re-hashes M01, aborts unless the digest is
   `bf8e5536…9841060`, then emits one `<class>\t<model_path>` line per X item (679 lines).
-- `vnc-045-coverage-build.py` — re-runs the enumerator, joins an authored disposition table (prefix defaults
-  plus ~120 explicit overrides), fills every non-applicable field with `not-applicable`, and writes
-  `artifacts/vnc-045-coverage.csv`. It prints the tallies quoted in §5 and asserts zero invalid
-  dispositions and zero silent blanks.
+- `vnc-045-coverage-build.py` — re-runs the enumerator, joins an authored disposition table (prefix
+  defaults plus ~120 explicit overrides), **then executes the RW-1 verification pass against
+  `vnc-045-instance.yaml`**, re-dispositioning any `exercised` field/relation row with zero
+  population, fills every non-applicable field with `not-applicable`, and writes
+  `artifacts/vnc-045-coverage.csv` plus the join log `artifacts/vnc-045-coverage-build.out.txt`. It
+  prints the tallies quoted in §5 and asserts zero invalid dispositions and zero silent blanks.
+- `vnc-045-validate.py` (RW-2) — validates the instance against M01 as parsed: required fields, type
+  and enum conformance, ref resolution and target construct, cardinality, declared-inverse symmetry
+  including the qualified `Unit.gated_by` form, registry and value membership against M01's seeds plus
+  the instance's program-owned extensions, event-extension required keys, and the
+  `gate_outcome → assessment → gate_version_ref → allowed_outcomes` chain. It writes
+  `artifacts/vnc-045-validate.out.txt` and exits non-zero. Every place the reader was bent to the data
+  is printed under `READER ACCOMMODATIONS` — six of them, including PyYAML's implicit resolution of
+  unquoted ISO-8601 timestamps to `datetime`, attributed relation entries written as maps, and
+  cardinality-1 relations written as bare scalars. The instance was not re-serialized: the
+  three-encoding divergence across this run's case instances is a finding about M01 and had to
+  survive the fix.
 
 Both are committed beside the CSV so W3, W4 and the coverage auditor can re-derive it:
 
 ```
+product/research/wfh-011/artifacts/vnc-045-validate.py          # RW-2
 product/research/wfh-011/artifacts/vnc-045-coverage-enumerate-x.py
     # 679 X items from core/supporting/registries/catalogs/values/invariants/
     # excluded/open/changelog + M02 S1-S8 + the 2 required traversals
@@ -613,10 +762,10 @@ product/research/wfh-011/artifacts/vnc-045-coverage-build.py
 
 $ python3 product/research/wfh-011/artifacts/vnc-045-coverage-build.py
 rows: 679
-dispositions: {'exercised': 596, 'construct-pressure': 47, 'not-applicable': 36}
+dispositions: {'exercised': 588, 'construct-pressure': 48, 'not-applicable': 43}
 cause classifications (rows may carry several): {'model-defect': 9, 'historical-evidence-gap': 43,
-                                                 'enforcement-gap': 19, 'project-evolution-candidate': 20}
-rows carrying >=1 cause classification: 66
+                                                 'enforcement-gap': 20, 'project-evolution-candidate': 20}
+rows carrying >=1 cause classification: 67
 project-evolution-candidate rows: 20
 rows with invalid disposition: 0
 rows with a silent blank field: 0
@@ -650,6 +799,6 @@ All sources are structured with provenance. Keys that could not be established a
 
 ---
 
-**Status: W2 complete.** Directional, structure-only. No Unimatrix write, no grade movement, no `proven`,
+**Status: W2 complete, rework round 1 executed (RW-1, RW-2).** Directional, structure-only. No Unimatrix write, no grade movement, no `proven`,
 no model edit, no successor schema, no build recommendation. The seven-entity verdict is W4's to issue,
 not W2's.

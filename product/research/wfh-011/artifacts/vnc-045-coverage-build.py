@@ -3,7 +3,7 @@
 Deterministic: re-enumerates X from the pinned M01, then joins an authored disposition table.
 Every X row gets exactly one disposition. Failure/pressure rows carry the superseding fields.
 """
-import csv, subprocess, sys, os
+import csv, subprocess, sys, os, io, yaml
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 X = [l.split('\t') for l in subprocess.run(
@@ -760,6 +760,213 @@ def default_for(cls, path):
                 value_or_witness="consumed while encoding the case", provenance="derived",
                 enforcement_reality="none")
 
+
+# ===========================================================================
+# RW-1 (wfh-011 coverage gate, round 1) — JOIN THE TABLE TO ITS OWN INSTANCE
+# ---------------------------------------------------------------------------
+# Before this pass the table asserted `exercised` without ever opening
+# vnc-045-instance.yaml. Every row whose x_class is core-field / core-relation /
+# supporting-field / supporting-relation and whose disposition is `exercised` is now
+# measured against the instance: at least one object of the named construct must carry a
+# non-None, non-empty value for the named key. A row that fails is re-dispositioned
+# `not-applicable` with the measured reason, or `construct-pressure` with a cause —
+# never left `exercised`.
+#
+# The instance is READ ONLY. It is not re-serialized and not repaired: the three-encoding
+# divergence across this run's case instances is itself a finding about M01 and must survive.
+# ===========================================================================
+INSTANCE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vnc-045-instance.yaml")
+SECTION_MAP = {
+    'scopes': 'Scope', 'goals': 'Goal', 'capabilities': 'Capability', 'actors': 'Actor',
+    'units': 'Unit', 'events': 'Event', 'records': 'Record', 'workflows': 'Workflow',
+    'skills': 'Skill', 'roles': 'Role', 'delegations': 'Delegation', 'gates': 'Gate',
+    'effect_boundaries': 'EffectBoundary', 'attempts': 'Attempt', 'technologies': 'Technology',
+}
+PLACEHOLDER = {'missing-history', 'unestablished', 'UNREPRESENTABLE', 'ABSENT',
+               'not-applicable', 'NOT-WRITABLE', 'none'}
+
+def _load_instance():
+    raw = open(INSTANCE_PATH, 'rb').read()
+    I = yaml.safe_load(raw.decode())
+    objs = {}
+    for sec, rows in I.items():
+        if sec not in SECTION_MAP: continue
+        objs.setdefault(SECTION_MAP[sec], [])
+        for r in rows or []:
+            if isinstance(r, dict) and 'id' in r:
+                objs[SECTION_MAP[sec]].append(r)
+    return objs
+
+def _populated(v):
+    if v is None: return False
+    if isinstance(v, str):  return v.strip() != ''
+    if isinstance(v, (list, dict, tuple, set)): return len(v) > 0
+    return True
+
+def _is_placeholder(v):
+    return isinstance(v, str) and v.strip() in PLACEHOLDER
+
+CHECKABLE = {'core-field', 'core-relation', 'supporting-field', 'supporting-relation'}
+
+# Rows the measurement will fail that must become construct-pressure with a cause rather than
+# not-applicable. Keyed by model_path.
+PRESSURE_ON_FAIL = {
+ "supporting.EffectBoundary.relations.enforces": dict(
+   disposition="construct-pressure",
+   reason=("The case's central custody result, now measured rather than asserted: no "
+           "EffectBoundary object enforces any Delegation. M01's own rule on this relation is "
+           "\"without a boundary authority is declared only\", and this row's enforcement_reality "
+           "already read specified-not-enforced. EB-01 (GitHub) authenticates one principal and "
+           "enforces nothing about which agent, under which grant, produced a change; EB-02 is "
+           "code the governed actors wrote during the same Attempts it would govern."),
+   cause="enforcement-gap",
+   fit="specified-not-enforced"),
+}
+
+# Measured reasons for the rows whose absence is a case fact rather than a pressure.
+FAIL_REASON = {
+ "core.Goal.relations.is_advanced_by":
+   ("No capability-to-goal contribution exists in this case: both uni-zero reviews rule that "
+    "vnc-045 advances no capability toward completion (S01 comment 4899256125; S02 issue-comment "
+    "4900099734). Absence, recorded as absence."),
+ "core.Capability.relations.advances":
+   ("Same underlying case fact as core.Goal.relations.is_advanced_by. The prior witness text "
+    "(\"instantiated in vnc-045-instance.yaml\") was FALSE AS WRITTEN and is replaced by the "
+    "measurement."),
+ "core.Capability.relations.delivered_by":
+   ("Empty by observation. The project's own pre-registered ruling is \"Do NOT mark any capability "
+    "proven off vnc-045\", and Unit.delivers is empty in every Unit. The M01 rule \"delivery does "
+    "not prove\" therefore has NO conforming witness in this case — only a negative one."),
+ "core.Unit.relations.delivers":
+   ("Empty by observation across every Unit; vnc-045 delivers no functional capability."),
+ "core.Event.relations.supersedes":
+   ("No correction-by-supersession occurred. The Gate-3a rework produced a NEW assessment/outcome "
+    "pair (EV-07/EV-08) beside the abandoned EV-09/EV-10 rather than superseding them, and no Event "
+    "carries the relation. The prior witness described that separation as though it were a witness "
+    "FOR the relation; it is a witness for its absence."),
+ "supporting.Delegation.fields.expires_at":
+   ("DL-01 carries the key explicitly null and DL-02..DL-13 omit it. The prior witness text "
+    "(\"instantiated in vnc-045-instance.yaml\") was FALSE AS WRITTEN. The field is optional and no "
+    "grant in the case has a recorded expiry, consistent with F-05: every Delegation here is an "
+    "inference over an alphabet that contains no grant artefact."),
+}
+# RULE W2-EXTRA: rows that PASS RW-1's population assertion but whose own committed witness already
+# asserted absence. Re-dispositioned so the disposition agrees with the witness. Counted separately
+# from RW-1's failures so the auditor's stated rule and this one remain independently measurable.
+EXTRA_WITNESS_SAYS_ABSENT = {
+ "core.Goal.fields.north_star":
+   ("The field is optional. GO-01 records it explicitly as `missing-history` and GO-02/GO-03 omit "
+    "it; no Goal in the case carries a north-star Capability. The pre-join witness already read "
+    "\"Optional; absent. Recorded absent, not inferred.\" while the disposition read `exercised` — "
+    "the same witness-versus-label disagreement the coverage gate ruled on, on a row its "
+    "population assertion does not reach."),
+}
+
+# Rows that PASS the assertion but whose committed witness string was false as written.
+REPLACE_WITNESS_ON_PASS = {"supporting.Role.relations.requires"}
+
+def verify_join(rows, log):
+    inst = _load_instance()
+    counts = dict(checked=0, passed=0, failed=0, skipped_not_exercised=0, unparseable=0,
+                  placeholder_only=0, witness_replaced=0, extra_redispositioned=0)
+    log.append("=" * 78)
+    log.append("RW-1 JOIN VERIFICATION — vnc-045-coverage.csv against vnc-045-instance.yaml")
+    log.append("=" * 78)
+    log.append(f"instance: {os.path.basename(INSTANCE_PATH)}")
+    log.append("objects parsed per construct: " +
+               ", ".join(f"{k}={len(v)}" for k, v in sorted(inst.items())))
+    log.append("")
+    fails, placeholders, extra = [], [], []
+    for r in rows:
+        if r["x_class"] not in CHECKABLE: continue
+        if r["disposition"] != "exercised":
+            counts["skipped_not_exercised"] += 1; continue
+        parts = r["model_path"].split(".")
+        if len(parts) != 4 or parts[2] not in ("fields", "relations"):
+            counts["unparseable"] += 1
+            log.append(f"UNPARSEABLE  {r['model_path']}")
+            continue
+        construct, key = parts[1], parts[3]
+        objs = inst.get(construct, [])
+        counts["checked"] += 1
+        pop = [o for o in objs if key in o and _populated(o[key])]
+        real = [o for o in pop if not _is_placeholder(o[key])]
+        n, k, kr = len(objs), len(pop), len(real)
+        measured = f"MEASURED {k}/{n} {construct} objects populate `{key}`"
+        if k == 0:
+            counts["failed"] += 1
+            fails.append((r["model_path"], n))
+            ov = PRESSURE_ON_FAIL.get(r["model_path"])
+            reason = (ov or {}).get("reason") or FAIL_REASON.get(
+                r["model_path"], "No object of this construct carries the key.")
+            r["disposition"] = (ov or {}).get("disposition", "not-applicable")
+            r["value_or_witness"] = f"{measured} (zero). {reason}"
+            r["provenance"] = "measured-join (vnc-045-instance.yaml)"
+            if ov:
+                r["cause_classification"] = ov["cause"]
+                r["classification_evidence"] = reason
+                r["current_project_fit"] = ov["fit"]
+            log.append(f"FAIL  {r['model_path']}  0/{n}  -> {r['disposition']}"
+                       + (f" [{ov['cause']}]" if ov else ""))
+        else:
+            counts["passed"] += 1
+            if r["model_path"] in REPLACE_WITNESS_ON_PASS or \
+               r["value_or_witness"].strip() == "instantiated in vnc-045-instance.yaml":
+                counts["witness_replaced"] += 1
+                ids = ", ".join(str(o.get("id")) for o in pop[:5])
+                r["value_or_witness"] = (f"{measured} ({ids}"
+                                         + (", ..." if len(pop) > 5 else "") + "). "
+                                         "Prior boilerplate witness replaced by the measurement.")
+            else:
+                r["value_or_witness"] = f"{r['value_or_witness']} · {measured}."
+            if r["provenance"] in ("see instance", "not-applicable"):
+                r["provenance"] = "measured-join (vnc-045-instance.yaml)"
+            if kr == 0:
+                counts["placeholder_only"] += 1
+                placeholders.append((r["model_path"], k, n))
+                r["value_or_witness"] += (" NOTE: every populated value is a recorded-absence "
+                                          "placeholder (missing-history / unestablished / "
+                                          "UNREPRESENTABLE / ABSENT), not a substantive value.")
+                # RULE W2-EXTRA (separately counted, NOT part of RW-1's stated assertion).
+                # RW-1's rule is population, and this row passes it. But the row's own committed
+                # witness already said the value was absent, and the gate's ruling is that a
+                # disposition must agree with its witness rather than the reverse. Applied only
+                # where the pre-join witness itself asserts absence, so the two rules stay
+                # separable and independently re-executable.
+                if r["model_path"] in EXTRA_WITNESS_SAYS_ABSENT:
+                    counts["extra_redispositioned"] += 1
+                    extra.append((r["model_path"], k, n))
+                    r["disposition"] = "not-applicable"
+                    r["value_or_witness"] = (
+                        f"{measured}, and every populated value is the recorded-absence "
+                        f"placeholder `missing-history`. "
+                        + EXTRA_WITNESS_SAYS_ABSENT[r["model_path"]])
+                    r["provenance"] = "measured-join (vnc-045-instance.yaml)"
+    log.append("")
+    log.append(f"checked (exercised field/relation rows)     : {counts['checked']}")
+    log.append(f"  PASS  (>=1 object populates the key)      : {counts['passed']}")
+    log.append(f"  FAIL  (zero population -> re-dispositioned): {counts['failed']}")
+    log.append(f"  witness strings replaced as false-as-written: {counts['witness_replaced']}")
+    log.append(f"rows skipped (checkable class, not exercised): {counts['skipped_not_exercised']}")
+    log.append(f"unparseable model paths                     : {counts['unparseable']}")
+    log.append("")
+    log.append(f"RULE W2-EXTRA (separately counted, beyond RW-1's stated assertion):")
+    log.append(f"  rows re-dispositioned because the row's own witness already asserted absence: "
+               f"{counts['extra_redispositioned']}")
+    for mp, k, n in extra:
+        log.append(f"  W2-EXTRA  {mp}  {k}/{n} (placeholder only) -> not-applicable")
+    log.append("")
+    log.append("REPORTED, NOT RE-DISPOSITIONED — rows that pass the RW-1 assertion but whose only")
+    log.append("populated values are recorded-absence placeholders. RW-1's assertion is population,")
+    log.append(f"not substance; these are reported so the distinction is visible. count={counts['placeholder_only']}")
+    for mp, k, n in placeholders:
+        log.append(f"  PLACEHOLDER-ONLY  {mp}  {k}/{n}")
+    log.append("")
+    log.append("FAILED ROWS (zero population):")
+    for mp, n in fails:
+        log.append(f"  {mp}  0/{n}")
+    return counts
+
 # ---------------------------------------------------------------- emit
 out = []
 for cls, path in X:
@@ -771,6 +978,9 @@ for cls, path in X:
             r[c] = NA
     out.append(r)
 
+LOG = []
+JOIN = verify_join(out, LOG)
+
 OUT = "/workspaces/arch-research/product/research/wfh-011/artifacts/vnc-045-coverage.csv"
 with open(OUT, "w", newline="") as fh:
     w = csv.DictWriter(fh, fieldnames=COLS)
@@ -778,7 +988,29 @@ with open(OUT, "w", newline="") as fh:
     for r in out:
         w.writerow(r)
 
+OUTLOG = "/workspaces/arch-research/product/research/wfh-011/artifacts/vnc-045-coverage-build.out.txt"
+
 from collections import Counter
+_disp = Counter(r["disposition"] for r in out)
+_cc = Counter()
+for r in out:
+    if r["cause_classification"] != NA:
+        for c in r["cause_classification"].split("|"): _cc[c] += 1
+LOG.append("")
+LOG.append("=" * 78)
+LOG.append("EMITTED TABLE — post-join tallies")
+LOG.append("=" * 78)
+LOG.append(f"rows: {len(out)}")
+LOG.append(f"dispositions: {dict(_disp)}")
+LOG.append(f"cause classifications (rows may carry several): {dict(_cc)}")
+LOG.append(f"rows carrying >=1 cause classification: {sum(1 for r in out if r['cause_classification'] != NA)}")
+LOG.append(f"project-evolution-candidate rows: {sum(1 for r in out if 'project-evolution-candidate' in r['cause_classification'])}")
+LOG.append(f"rows with invalid disposition: {sum(1 for r in out if r['disposition'] not in ('exercised', NA, 'blocked-by-OPEN', 'construct-pressure'))}")
+LOG.append(f"rows with a silent blank field: {sum(1 for r in out for c in COLS if r[c] == '')}")
+with open(OUTLOG, "w") as fh:
+    fh.write("\n".join(LOG) + "\n")
+print("\n".join(LOG))
+print()
 print("rows:", len(out))
 print("dispositions:", dict(Counter(r["disposition"] for r in out)))
 cc = Counter()

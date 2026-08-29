@@ -1,0 +1,399 @@
+MODEL   product/factory/proposals/organizational-data-model-v5.yaml
+        sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+        pin    bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060   MATCH=True
+        version 5.0.0  core=7 supporting=8 registries=6 catalogs=3 values=8 invariants=19 event_types=9
+
+INSTANCE product/research/wfh-011/artifacts/vnc-045-instance.yaml
+         sha256 c65b2ba9d716efe46fafe0ef0622ba3b0a53c24db251f1776aaf035cca6d9eef
+         form=historical-observed  encodes_observed_history=None
+         model pin MATCHES the parsed model digest
+         151 instance objects across 15 constructs: Actor=19, Attempt=17, Capability=2, Delegation=13, EffectBoundary=3, Event=30, Gate=5, Goal=3, Record=27, Role=13, Scope=3, Skill=3, Technology=3, Unit=8, Workflow=2
+         NOT-WRITABLE objects: 2 ['EV-13', 'EV-14']
+         annotation keys (declared neither as a field nor a relation of their construct): 48 distinct, 244 occurrences
+
+INSTANCE product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml
+         sha256 75731daa16cea158b19f09a777bf04dedb29734959b8d0c5ad7dba11191fb876
+         form=counterfactual  encodes_observed_history=False
+         5 counterfactual candidate(s) ['CF-01', 'CF-02', 'CF-03', 'CF-04', 'CF-05'], 2 rejected
+
+--- READER ACCOMMODATIONS (the reader was bent to the data; the data was not touched) ---
+  * section names mapped to constructs (scopes->Scope, ...); the W2 encoding carries no `construct:` key per object
+  * model fields and relations read as SIBLING keys on each object; the W2 encoding has no `fields:`/`relations:` nesting
+  * a relation of cardinality 1 or 0..1 accepted as a bare scalar; M01 `notation` describes the MODEL document and never specifies the shape of an instance relation (W4 §9)
+  * an unquoted ISO-8601 timestamp accepted in PyYAML's implicitly-resolved datetime form; the file holds the ISO string and the reader, not the data, was adjusted
+  * an attributed relation entry accepted as a map; M01 declares `attributes:` on some relations but never specifies how an attributed entry is written in an instance
+  * keys that are neither a declared field nor a declared relation are counted as ANNOTATION rather than erroring; the W2 encoding carries provenance/evidence/witness prose inline, which M01 neither forbids nor describes
+  * counterfactual file validated as a candidate register (its own declared form), not as a V5 object graph
+
+--- FINDINGS ---
+ERROR WF-01(Workflow): relation `binds` -> 'GT-01' does not resolve to any instance id
+ERROR WF-01(Workflow): relation `binds` -> 'GT-02' does not resolve to any instance id
+ERROR WF-01(Workflow): relation `binds` -> 'GT-03' does not resolve to any instance id
+ERROR DL-03(Delegation): MISSING required field `effective_at`
+ERROR DL-04(Delegation): MISSING required field `effective_at`
+ERROR DL-05(Delegation): MISSING required field `effective_at`
+ERROR DL-06(Delegation): MISSING required field `effective_at`
+ERROR DL-07(Delegation): MISSING required field `effective_at`
+ERROR DL-08(Delegation): MISSING required field `effective_at`
+ERROR DL-09(Delegation): MISSING required field `effective_at`
+ERROR DL-10(Delegation): MISSING required field `effective_at`
+ERROR DL-11(Delegation): MISSING required field `effective_at`
+ERROR DL-12(Delegation): MISSING required field `effective_at`
+ERROR DL-13(Delegation): MISSING required field `effective_at`
+ERROR INVERSE CP-02(Capability).required_by -> GO-01, but GO-01.requires does not contain CP-02
+ERROR INVERSE UN-01(Unit).directed_by -> GO-01, but GO-01.directs does not contain UN-01
+ERROR INVERSE UN-02(Unit).gated_by -> GT-04, but GT-04.evaluates does not contain UN-02
+ERROR INVERSE UN-02(Unit).gated_by -> GT-05, but GT-05.evaluates does not contain UN-02
+ERROR INVERSE UN-02(Unit).gated_by -> GT-06, but GT-06.evaluates does not contain UN-02
+ERROR INVERSE UN-03(Unit).directed_by -> GO-01, but GO-01.directs does not contain UN-03
+ERROR INVERSE WF-02(Workflow).binds -> GT-08, but GT-08.bound_by does not contain WF-02
+ERROR INVERSE DL-01(Delegation).enforced_by -> EB-01, but EB-01.enforces does not contain DL-01
+ERROR INVERSE DL-02(Delegation).unit -> UN-01, but UN-01.assigned_through does not contain DL-02
+ERROR INVERSE DL-02(Delegation).governs -> AT-03, but AT-03.governed_by does not contain DL-02
+ERROR INVERSE DL-03(Delegation).unit -> UN-03, but UN-03.assigned_through does not contain DL-03
+ERROR INVERSE DL-04(Delegation).unit -> UN-06, but UN-06.assigned_through does not contain DL-04
+ERROR INVERSE DL-05(Delegation).unit -> UN-07, but UN-07.assigned_through does not contain DL-05
+ERROR INVERSE DL-06(Delegation).unit -> UN-08, but UN-08.assigned_through does not contain DL-06
+ERROR INVERSE DL-07(Delegation).unit -> UN-05, but UN-05.assigned_through does not contain DL-07
+ERROR INVERSE DL-08(Delegation).unit -> UN-03, but UN-03.assigned_through does not contain DL-08
+ERROR INVERSE DL-09(Delegation).unit -> UN-04, but UN-04.assigned_through does not contain DL-09
+ERROR INVERSE DL-10(Delegation).unit -> UN-02, but UN-02.assigned_through does not contain DL-10
+ERROR INVERSE DL-11(Delegation).unit -> UN-01, but UN-01.assigned_through does not contain DL-11
+ERROR INVERSE DL-12(Delegation).unit -> UN-02, but UN-02.assigned_through does not contain DL-12
+ERROR INVERSE GT-07(Gate).evaluates -> UN-02, but UN-02.gated_by does not contain GT-07
+ERROR INVERSE GT-08(Gate).bound_by -> WF-01, but WF-01.binds does not contain GT-08
+ERROR INVERSE GT-08(Gate).evaluates -> UN-01, but UN-01.gated_by does not contain GT-08
+ERROR INVERSE GT-08(Gate).evaluates -> UN-02, but UN-02.gated_by does not contain GT-08
+ERROR INVERSE AT-01(Attempt).governed_by -> DL-02, but DL-02.governs does not contain AT-01
+ERROR INVERSE AT-01(Attempt).governed_by -> DL-11, but DL-11.governs does not contain AT-01
+ERROR INVERSE AT-01(Attempt).governed_by -> DL-12, but DL-12.governs does not contain AT-01
+ERROR INVERSE AT-01(Attempt).governed_by -> DL-13, but DL-13.governs does not contain AT-01
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-01, but DL-01.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-03, but DL-03.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-04, but DL-04.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-05, but DL-05.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-06, but DL-06.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-07, but DL-07.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-08, but DL-08.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-09, but DL-09.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-10, but DL-10.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-12, but DL-12.governs does not contain AT-02
+ERROR INVERSE AT-02(Attempt).governed_by -> DL-13, but DL-13.governs does not contain AT-02
+ERROR INVERSE AT-05(Attempt).governed_by -> DL-04, but DL-04.governs does not contain AT-05
+ERROR INVERSE AT-05(Attempt).governed_by -> DL-05, but DL-05.governs does not contain AT-05
+ERROR INVERSE AT-05(Attempt).governed_by -> DL-06, but DL-06.governs does not contain AT-05
+ERROR INVERSE AT-10(Attempt).unit -> UN-03, but UN-03.attempts does not contain AT-10
+ERROR INVERSE AT-11(Attempt).unit -> UN-04, but UN-04.attempts does not contain AT-11
+ERROR INVERSE AT-12(Attempt).unit -> UN-02, but UN-02.attempts does not contain AT-12
+ERROR INVERSE AT-13(Attempt).unit -> UN-01, but UN-01.attempts does not contain AT-13
+ERROR INVERSE AT-14(Attempt).unit -> UN-02, but UN-02.attempts does not contain AT-14
+ERROR INVERSE AT-15(Attempt).unit -> UN-01, but UN-01.attempts does not contain AT-15
+ERROR INVERSE AT-16(Attempt).unit -> UN-01, but UN-01.attempts does not contain AT-16
+ERROR INVERSE AT-17(Attempt).unit -> UN-02, but UN-02.attempts does not contain AT-17
+ERROR INVERSE RC-01(Record).documents -> EV-05, but EV-05.documented_by does not contain RC-01
+ERROR INVERSE RC-08(Record).documents -> EV-09, but EV-09.documented_by does not contain RC-08
+ERROR INVERSE RC-08(Record).documents -> EV-10, but EV-10.documented_by does not contain RC-08
+ERROR INVERSE RC-24(Record).documents -> EV-06, but EV-06.documented_by does not contain RC-24
+ERROR INVERSE RC-26(Record).documents -> EV-27, but EV-27.documented_by does not contain RC-26
+WARN  RECORDED-ABSENCE SC-01(Scope): `objective` = 'missing-history'
+WARN  RECORDED-ABSENCE SC-01(Scope): `effective_at` = 'missing-history'
+WARN  RECORDED-ABSENCE SC-01(Scope): `expires_at` is explicitly null
+WARN  O-W2-1 SC-01(Scope): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE SC-02(Scope): `effective_at` = 'missing-history'
+WARN  O-W2-1 SC-02(Scope): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 SC-03(Scope): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GO-01(Goal): `success_criteria` = 'missing-history'
+WARN  RECORDED-ABSENCE GO-01(Goal): `claim_floor` = 'missing-history'
+WARN  RECORDED-ABSENCE GO-01(Goal): `north_star` = 'missing-history'
+WARN  O-W2-1 GO-01(Goal): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GO-02(Goal): `success_criteria` = 'missing-history'
+WARN  RECORDED-ABSENCE GO-02(Goal): `claim_floor` = 'missing-history'
+WARN  RECORDED-ABSENCE GO-02(Goal): relation `requires` = 'missing-history'
+WARN  O-W2-1 GO-02(Goal): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GO-03(Goal): `success_criteria` = 'missing-history'
+WARN  RECORDED-ABSENCE GO-03(Goal): `claim_floor` = 'missing-history'
+WARN  RECORDED-ABSENCE GO-03(Goal): relation `requires` = 'missing-history'
+WARN  O-W2-1 GO-03(Goal): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE CP-01(Capability): `evidence_record_refs` = 'missing-history'
+WARN  O-W2-1 CP-01(Capability): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE CP-02(Capability): `done_when` = 'missing-history'
+WARN  RECORDED-ABSENCE CP-02(Capability): `grade` = 'UNREPRESENTABLE'
+WARN  RECORDED-ABSENCE CP-02(Capability): `evidence_record_refs` = 'missing-history'
+WARN  O-W2-1 CP-02(Capability): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE AC-01(Actor): relation `has_skill` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-02(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-03(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-04(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-05(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-06(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-07(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-08(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-09(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-10(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-11(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-12(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-13(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-14(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-15(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE AC-16(Actor): `lifecycle_state` = 'missing-history'
+WARN  RECORDED-ABSENCE UN-01(Unit): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE UN-01(Unit): relation `assigned_through` = 'missing-history'
+WARN  O-W2-1 UN-01(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE UN-02(Unit): relation `assigned_through` = 'missing-history'
+WARN  O-W2-1 UN-02(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 UN-03(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 UN-04(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 UN-05(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 UN-06(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 UN-07(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 UN-08(Unit): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE WF-01(Workflow): relation `requires` = 'missing-history'
+WARN  O-W2-1 WF-01(Workflow): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE WF-02(Workflow): relation `requires` = 'missing-history'
+WARN  O-W2-1 WF-02(Workflow): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE SK-01(Skill): `definition_record_ref` is explicitly null
+WARN  RECORDED-ABSENCE SK-01(Skill): `local_binding` is explicitly null
+WARN  O-W2-1 SK-01(Skill): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 SK-02(Skill): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 SK-03(Skill): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-01(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-02(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-03(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-04(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-05(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-06(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-07(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-08(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-09(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-10(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-11(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-12(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  O-W2-1 RO-13(Role): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-01(Delegation): `resource_ceiling` = 'unestablished'
+WARN  RECORDED-ABSENCE DL-01(Delegation): `effective_at` = 'missing-history'
+WARN  RECORDED-ABSENCE DL-01(Delegation): `expires_at` is explicitly null
+WARN  O-W2-1 DL-01(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-02(Delegation): `resource_ceiling` = 'unestablished'
+WARN  RECORDED-ABSENCE DL-02(Delegation): `effective_at` = 'missing-history'
+WARN  O-W2-1 DL-02(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-03(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-03(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-04(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-04(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-05(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-05(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-06(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-06(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-07(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-07(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-08(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-08(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-09(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-09(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-10(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-10(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-11(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-11(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-12(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-12(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE DL-13(Delegation): `resource_ceiling` = 'unestablished'
+WARN  O-W2-1 DL-13(Delegation): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GT-04(Gate): `missingness_policy` = 'missing-history'
+WARN  O-W2-1 GT-04(Gate): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GT-05(Gate): `missingness_policy` = 'missing-history'
+WARN  O-W2-1 GT-05(Gate): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GT-06(Gate): `missingness_policy` = 'missing-history'
+WARN  O-W2-1 GT-06(Gate): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GT-07(Gate): `missingness_policy` = 'missing-history'
+WARN  O-W2-1 GT-07(Gate): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE GT-08(Gate): `missingness_policy` = 'missing-history'
+WARN  RECORDED-ABSENCE GT-08(Gate): `independence_predicate` = 'missing-history'
+WARN  O-W2-1 GT-08(Gate): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE EB-01(EffectBoundary): `can_refuse` = 'unestablished'
+WARN  RECORDED-ABSENCE AT-01(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-01(Attempt): `ended_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-01(Attempt): `resume_requirements` = 'not-applicable'
+WARN  RECORDED-ABSENCE AT-02(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-02(Attempt): `resume_requirements` = 'not-applicable'
+WARN  RECORDED-ABSENCE AT-03(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-03(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-03(Attempt): `ended_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-04(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-04(Attempt): `resume_requirements` = 'not-applicable'
+WARN  RECORDED-ABSENCE AT-06(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-07(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-08(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-09(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-10(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-10(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-10(Attempt): `ended_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-11(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-11(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-11(Attempt): `ended_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-12(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-13(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-13(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-13(Attempt): `ended_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-14(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-14(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-14(Attempt): `ended_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-15(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-15(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-16(Attempt): `baseline_ref` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-16(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE AT-17(Attempt): `started_at` = 'missing-history'
+WARN  RECORDED-ABSENCE TE-01(Technology): `grade` = 'unestablished'
+WARN  O-W2-1 TE-01(Technology): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE TE-02(Technology): `grade` = 'unestablished'
+WARN  RECORDED-ABSENCE TE-02(Technology): `constraints` = 'missing-history'
+WARN  RECORDED-ABSENCE TE-02(Technology): `evidence_record_refs` = 'missing-history'
+WARN  O-W2-1 TE-02(Technology): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE TE-03(Technology): `grade` = 'unestablished'
+WARN  O-W2-1 TE-03(Technology): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE EV-02(Event): `authority_ref` is explicitly null
+WARN  RECORDED-ABSENCE EV-05(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-05(Event): `recorded_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-06(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-07(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-08(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-09(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-09(Event): `recorded_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-09(Event): `custody` = 'none'
+WARN  RECORDED-ABSENCE EV-10(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-10(Event): `recorded_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-10(Event): `custody` = 'none'
+WARN  RECORDED-ABSENCE EV-11(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-12(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-17(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-18(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-19(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-19(Event): `recorded_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-26(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-30(Event): `occurred_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-30(Event): `recorded_at` = 'missing-history'
+WARN  RECORDED-ABSENCE EV-30(Event): `custody` = 'none'
+WARN  RECORDED-ABSENCE RC-01(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-01(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob at 37c7b09a:product/features/vnc-045/SCOPE.md'
+WARN  O-W2-1 RC-01(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-02(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-02(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../architecture/ARCHITECTURE.md'
+WARN  O-W2-1 RC-02(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-03(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-03(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../ALIGNMENT-REPORT.md'
+WARN  O-W2-1 RC-03(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-04(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-04(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git tree 37c7b09a:.../pseudocode/'
+WARN  O-W2-1 RC-04(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-05(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-05(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git tree 37c7b09a:.../test-plan/'
+WARN  O-W2-1 RC-05(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-06(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-06(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../RISK-TEST-STRATEGY.md'
+WARN  O-W2-1 RC-06(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-07(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-07(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../IMPLEMENTATION-BRIEF.md'
+WARN  O-W2-1 RC-07(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-08(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-08(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../reports/gate-3a-report.md'
+WARN  O-W2-1 RC-08(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-09(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-09(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../reports/gate-3b-report.md'
+WARN  O-W2-1 RC-09(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-10(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-10(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'GitHub review 4641592318 + git blob .../agents/vnc-045-security-reviewer-report.md'
+WARN  O-W2-1 RC-10(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-11(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-11(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'GitHub comment 4898695344'
+WARN  O-W2-1 RC-11(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-12(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-12(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'GitHub comment 4899256125'
+WARN  O-W2-1 RC-12(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-13(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-13(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../agents/vnc-045-vision-guardian-report.md'
+WARN  O-W2-1 RC-13(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-14(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-14(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../testing/RISK-COVERAGE-REPORT.md'
+WARN  O-W2-1 RC-14(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-15(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-15(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../agents/vnc-045-gate-3b-report.md'
+WARN  O-W2-1 RC-15(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-16(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-16(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../agents/vnc-045-agent-3-store-report.md'
+WARN  O-W2-1 RC-16(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-17(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-17(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../agents/vnc-045-agent-4-service-report.md'
+WARN  O-W2-1 RC-17(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-18(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-18(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../agents/vnc-045-agent-5-handler-report.md'
+WARN  O-W2-1 RC-18(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-19(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-19(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'GitHub comment 4900099734'
+WARN  O-W2-1 RC-19(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-20(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-20(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../agents/vnc-045-agent-1-architect-report.md'
+WARN  O-W2-1 RC-20(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-21(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-21(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob 37c7b09a:.../agents/vnc-045-agent-2-spec-report.md'
+WARN  O-W2-1 RC-21(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-22(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-22(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blobs .../architecture/ADR-003,005,006,007'
+WARN  O-W2-1 RC-22(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-23(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-23(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob .../SCOPE-RISK-ASSESSMENT.md'
+WARN  O-W2-1 RC-23(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-24(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-24(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob .../agents/vnc-045-synthesizer-report.md'
+WARN  O-W2-1 RC-24(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  MODEL-FORCED-APPROXIMATION RC-25(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'wfh-011-sources/github/unimatrix-issue-928.json'
+WARN  O-W2-1 RC-25(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  MODEL-FORCED-APPROXIMATION RC-26(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'wfh-011-sources/github/unimatrix-pr-929.json'
+WARN  O-W2-1 RC-26(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE RC-27(Record): `category_schema_version` = 'missing-history'
+WARN  MODEL-FORCED-APPROXIMATION RC-27(Record): `content_digest` is a required digest recorded as a custody-store locator rather than sha256:<64hex> -> 'git blob .../specification/SPECIFICATION.md'
+WARN  O-W2-1 RC-27(Record): construct is versioned:true and the object carries no `version`. M01 declares `versioned` on the construct; its `notation` never states that an instance object must carry a version key, so this is an OPERATIONALIZATION and is not counted as a model-discriminated failure.
+WARN  RECORDED-ABSENCE EV-01(Event/communication): extension.acknowledgement_requirement = 'none'
+WARN  RECORDED-ABSENCE EV-02(Event/communication): extension.acknowledgement_requirement = 'none'
+WARN  RECORDED-ABSENCE EV-03(Event/communication): extension.acknowledgement_requirement = 'none'
+WARN  RECORDED-ABSENCE EV-04(Event/communication): extension.acknowledgement_requirement = 'none'
+WARN  RECORDED-ABSENCE EV-07(Event/assessment): extension.independence_check = 'missing-history'
+WARN  RECORDED-ABSENCE EV-07(Event/assessment): extension.subject_baseline = 'missing-history'
+WARN  RECORDED-ABSENCE EV-08(Event/gate_outcome): extension.missingness = 'missing-history'
+WARN  RECORDED-ABSENCE EV-09(Event/assessment): extension.evidence_set = 'missing-history'
+WARN  RECORDED-ABSENCE EV-09(Event/assessment): extension.independence_check = 'missing-history'
+WARN  RECORDED-ABSENCE EV-09(Event/assessment): extension.subject_baseline = 'missing-history'
+WARN  RECORDED-ABSENCE EV-10(Event/gate_outcome): extension.missingness = 'missing-history'
+WARN  RECORDED-ABSENCE EV-11(Event/assessment): extension.independence_check = 'missing-history'
+WARN  RECORDED-ABSENCE EV-11(Event/assessment): extension.subject_baseline = 'missing-history'
+WARN  RECORDED-ABSENCE EV-17(Event/assessment): extension.independence_check = 'missing-history'
+WARN  RECORDED-ABSENCE EV-20(Event/effect_request): extension.delegation_ref = None
+WARN  RECORDED-ABSENCE EV-22(Event/effect_request): extension.delegation_ref = None
+WARN  RECORDED-ABSENCE EV-26(Event/observation): extension.capture_custody = 'ABSENT'
+WARN  RECORDED-ABSENCE EV-26(Event/observation): extension.raw_evidence_ref = 'ABSENT'
+WARN  RECORDED-ABSENCE EV-28(Event/adaptation): extension.decision_ref = 'missing-history'
+WARN  RECORDED-ABSENCE EV-28(Event/adaptation): extension.resume_conditions = 'not-applicable'
+WARN  EV-16: gate_outcome.outcome 'READY (risk low, 0 blocking)' is not verbatim in GT-07.allowed_outcomes ['READY', 'BLOCKED']
+WARN  EV-18: gate_outcome.outcome 'PASS 7 / WARN 0 / VARIANCE 0 / FAIL 0' is not verbatim in GT-08.allowed_outcomes ['PASS', 'WARN', 'VARIANCE', 'FAIL']
+WARN  product/research/wfh-011/artifacts/vnc-045-instance.yaml: registry record_category extension `scope-definition` omits declared shape key(s) ['schema_extension']
+WARN  product/research/wfh-011/artifacts/vnc-045-instance.yaml: registry record_category extension `design-source` omits declared shape key(s) ['schema_extension']
+WARN  product/research/wfh-011/artifacts/vnc-045-instance.yaml: registry record_category extension `agent-report` omits declared shape key(s) ['schema_extension']
+WARN  product/research/wfh-011/artifacts/vnc-045-instance.yaml: registry record_category extension `gate-assessment` omits declared shape key(s) ['schema_extension']
+WARN  product/research/wfh-011/artifacts/vnc-045-instance.yaml: registry record_category extension `test-observation-report` omits declared shape key(s) ['schema_extension']
+WARN  product/research/wfh-011/artifacts/vnc-045-instance.yaml: registry record_category extension `advisory-review` omits declared shape key(s) ['schema_extension']
+WARN  product/research/wfh-011/artifacts/vnc-045-instance.yaml: registry record_category extension `forge-record` omits declared shape key(s) ['schema_extension']
+NOTE  SK-02(Skill): relation `held_by` -> AC-07: declared attribute `expires_at` not carried
+NOTE  SK-02(Skill): relation `held_by` -> AC-08: declared attribute `expires_at` not carried
+NOTE  SK-02(Skill): relation `held_by` -> AC-09: declared attribute `expires_at` not carried
+NOTE  SK-03(Skill): relation `held_by` -> AC-10: declared attribute `expires_at` not carried
+NOTE  EV-13(Event): object declares STATUS: NOT-WRITABLE — the encoding records that a conforming object CANNOT be written from the alphabet. Field/relation checks skipped; the declaration is the finding. reason=GT-06's assessment cannot be written: required extension fields assessor_refs and independ...
+NOTE  EV-14(Event): object declares STATUS: NOT-WRITABLE — the encoding records that a conforming object CANNOT be written from the alphabet. Field/relation checks skipped; the declaration is the finding. reason=requires assessment_ref = EV-13, which is not writable....
+NOTE  SK-02(Skill): relation `held_by` -> AC-07: declared attribute `expires_at` not carried
+NOTE  SK-02(Skill): relation `held_by` -> AC-08: declared attribute `expires_at` not carried
+NOTE  SK-02(Skill): relation `held_by` -> AC-09: declared attribute `expires_at` not carried
+NOTE  SK-03(Skill): relation `held_by` -> AC-10: declared attribute `expires_at` not carried
+NOTE  product/research/wfh-011/artifacts/vnc-045-instance.yaml: declared-inverse edges checked=210 broken=55
+NOTE  S2: Gate.evaluates declares the QUALIFIED inverse `Unit.gated_by`; checked only where the target is a Unit
+NOTE  product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml: COUNTERFACTUAL BOUNDARY — zero id overlap with the historical instance
+NOTE  product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml:CF-03: cf_entity carries no `replaces` source-link
+
+OBJECTS VALIDATED: 151
+RESULT: 69 error(s), 285 warning(s), 14 note(s)
