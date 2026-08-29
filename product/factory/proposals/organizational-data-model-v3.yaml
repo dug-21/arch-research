@@ -1,0 +1,583 @@
+# ============================================================================
+# Agentic Organization Data Model — v3
+# Definitive working representation. Directional, not implemented or enforced.
+# ============================================================================
+
+meta:
+  name: organizational-data-model
+  version: 3.0.0
+  date: 2026-08-29
+  status: directional · working model · not ratified · not implemented · not enforced
+  theme: workflow-harness
+  supersedes_for_review:
+    - organizational-data-model-v2.yaml
+    - agentic-organization-data-model.md
+  derivation:
+    - product/research/wfh-010/findings-W4-data-model.md
+    - product/research/wfh-010/reports/gate-coverage-r2.md
+    - product/factory/proposals/organizational-data-model-v2.yaml
+    - product/factory/proposals/agentic-organization-data-model.md
+    - product/factory/proposals/target-concept-v1.md
+  enforcement_reality: >
+    No common cross-program checker implements this model. Existing workflows,
+    git/forge, Unimatrix, tests and human gates enforce fragments only.
+
+principles:
+  small_core: >
+    Seven entities describe the organization at its highest level: Scope, Goal,
+    Capability, Actor, Unit, Event and Record.
+  supporting_definitions: >
+    Workflow, Skill, Role, Delegation, Gate, EffectBoundary, Attempt and
+    Technology make the core operational without redefining it.
+  extend_by_registration: >
+    New program variation normally enters through a registry or catalog, not a
+    new entity.
+  construct_admission_bar: >
+    A new construct is admitted only when it has independent identity,
+    lifecycle, relations and behavior that cannot fit an existing construct or
+    registered type without semantic distortion.
+  separation_is_the_product: >
+    The common model preserves distinctions that collapse under pressure:
+    competence/capability, claim/observation, delivery/proof,
+    outcome/decision/consequence, intent/enforcement and record/effect.
+  program_ownership: >
+    Programs own their Workflows, proof bars, Record Categories and domain
+    extensions. The common model owns identity, relationships and invariants.
+  method_custody: >
+    A definition governing work is not writable by the activity it governs.
+    Changes are authorized adaptation Events, never silent edits.
+
+notation:
+  status: RESOLVED (accepted for the working model) | OPEN (requires resolution or broader evidence)
+  form: entity | event | value | registry | derived
+  identity: opaque stable id, distinct from name, version and state
+  versioned: immutable definition/content revisions under one identity
+  fields: "name: {type, required, definition}"
+  relations: "name: {target, cardinality, inverse, rule}"
+  extension_owner: common | program | workflow | category | gate
+  types: text · timestamp · digest · bool · ref<X> · list<ref<X>> · enum[...] · map
+
+# ============================================================================
+# CORE — seven entities
+# ============================================================================
+
+core:
+  Scope:
+    status: OPEN
+    form: entity
+    identity: scope_id
+    versioned: true
+    definition: An organizational boundary within which work, authority and information apply.
+    fields:
+      scope_type: {type: ref<registry.scope_type>, required: true}
+      name: {type: text, required: true}
+      objective: {type: text, required: false}
+      authority_root_ref: {type: ref<Actor>, required: true, definition: holder of undelegated authority for this Scope}
+      effective_at: {type: timestamp, required: true}
+      expires_at: {type: timestamp, required: false}
+    relations:
+      parent: {target: Scope, cardinality: "0..1", inverse: contains, rule: acyclic within one baseline}
+      contains: {target: Scope, cardinality: "0..*", inverse: parent}
+      owns: {target: "Goal|Workflow|Record", cardinality: "0..*"}
+    open:
+      - type-specific fields and nesting constraints
+      - federation between collective Scopes
+      - authority-root succession
+      - Scope termination and transfer
+
+  Goal:
+    status: RESOLVED
+    form: entity
+    identity: goal_id
+    versioned: true
+    definition: An intended outcome that defines what must become true. Goal is intent, never a Scope.
+    fields:
+      statement: {type: text, required: true}
+      scope_ref: {type: ref<Scope>, required: true}
+      claim_floor: {type: list<ref<Capability>>, required: true}
+      north_star: {type: list<ref<Capability>>, required: false}
+      lifecycle_state: {type: text, required: true}
+    relations:
+      requires: {target: Capability, cardinality: "0..*", inverse: required_by, rule: establishes Capability identity}
+      is_advanced_by: {target: Capability, cardinality: "0..*", rule: contributory only; never establishes Capability identity}
+      directs: {target: Unit, cardinality: "0..*", rule: intent relation; does not Scope the Unit}
+    invariants: [I3]
+
+  Capability:
+    status: RESOLVED
+    form: entity
+    identity: capability_id
+    versioned: true
+    definition: >
+      An observable behavior required by at least one Goal, delivered by work
+      and enabled by Technologies. Organizational level changes Scope and
+      composition, never meaning.
+    fields:
+      name: {type: text, required: true}
+      observable_behavior: {type: text, required: true}
+      scope_ref: {type: ref<Scope>, required: true}
+      done_when: {type: text, required: true}
+      grade: {type: ref<value.evidence_grade>, required: true}
+      evidence_record_refs: {type: list<ref<Record>>, required: false}
+    relations:
+      required_by: {target: Goal, cardinality: "1..*", inverse: requires, rule: no requiring Goal means no Capability}
+      composed_of: {target: Capability, cardinality: "0..*", rule: acyclic per baseline; parent clears its own done_when}
+      prerequisite_of: {target: Capability, cardinality: "0..*", rule: dependency is distinct from composition}
+      enabled_by: {target: Technology, cardinality: "0..*", inverse: enables, rule: no grade transfer}
+      delivered_by: {target: Unit, cardinality: "0..*", rule: delivery is structural; output is not proof}
+    extension_owner: {behavior_schema: program, evidence_bar: program}
+    invariants: [I3, I4, I5]
+    open:
+      - recursive evidence rollup
+      - parent and child done_when interaction
+      - Scope expiry
+
+  Actor:
+    status: OPEN
+    form: entity
+    identity: actor_id
+    versioned: false
+    definition: A human, agent, service or deterministic component participating in work or effects.
+    fields:
+      name: {type: text, required: true}
+      actor_type: {type: "enum[human,agent,service,deterministic-component]", required: true}
+      declared_identity: {type: text, required: true, definition: persisted self-assertion; not attestation}
+      lifecycle_state: {type: text, required: true}
+    relations:
+      has_skill: {target: Skill, cardinality: "0..*", attributes: "evidence_refs, grade, currentness, expiry"}
+      holds_role: {target: Role, cardinality: "0..*", attributes: "Scope, effective_at, expires_at"}
+      receives: {target: Delegation, cardinality: "0..*"}
+    invariants: [I2, I4]
+    open:
+      - identity attestation
+      - replacement and continuity
+      - composite Actors
+
+  Unit:
+    status: OPEN
+    form: entity
+    identity: unit_id
+    versioned: true
+    definition: One durable, attributable piece of work with a defined intended outcome.
+    fields:
+      unit_kind: {type: ref<registry.unit_kind>, required: true}
+      intended_outcome: {type: text, required: true, definition: changing it creates a new Unit}
+      scope_ref: {type: ref<Scope>, required: true}
+      current_state: {type: text, required: true, definition: Workflow-owned}
+      baseline_ref: {type: text, required: true}
+    relations:
+      goals: {target: Goal, cardinality: "0..*", rule: intent attribution; Goal is not Scope}
+      workflow: {target: Workflow, cardinality: "1", inverse: governs}
+      depends_on: {target: Unit, cardinality: "0..*", rule: evaluated against a Workflow baseline}
+      attempts: {target: Attempt, cardinality: "0..*", inverse: unit}
+      consumes: {target: Record, cardinality: "0..*", rule: currentness and admission remain explicit}
+      produces: {target: Record, cardinality: "0..*", rule: production implies neither admission nor truth}
+      replaces: {target: Unit, cardinality: "0..1", rule: used when intended outcome changes}
+    extension_owner: {unit_kind: workflow, states: workflow}
+    invariants: [I6]
+    open:
+      - interruption and resume requirements
+      - concurrent Attempts
+      - partial-output admission
+
+  Event:
+    status: RESOLVED
+    form: event
+    identity:
+      field: event_id
+      required_when: consequential or acknowledgement, replay or audit matters
+      otherwise: may remain ephemeral
+    versioned: false
+    definition: >
+      An immutable account that something occurred, was attempted, observed,
+      communicated or authoritatively decided within a Scope. Event type selects
+      a registered extension; it never creates another core noun.
+    fields:
+      event_type: {type: ref<registry.event_type>, required: true}
+      occurred_at: {type: timestamp, required: true}
+      recorded_at: {type: timestamp, required: true}
+      scope_ref: {type: ref<Scope>, required: true}
+      actor_refs: {type: list<ref<Actor>>, required: true}
+      subject_refs: {type: list, required: true}
+      authority_ref: {type: "ref<Delegation|Scope>", required: false}
+      epistemic_kind: {type: ref<value.epistemic_kind>, required: false}
+      significance: {type: ref<value.significance>, required: true}
+      custody: {type: text, required: true}
+      caused_by_refs: {type: list<ref<Event>>, required: false}
+      correlated_with_refs: {type: list<ref<Event>>, required: false}
+      supersedes_event_ref: {type: ref<Event>, required: false}
+      extension: {type: map, required: true, definition: fields required by the registered Event type}
+    relations:
+      documented_by: {target: Record, cardinality: "0..*", inverse: documents}
+    extension_owner: {event_type: common_registry}
+    invariants: [I7, I8, I9]
+    open:
+      - ordering and clock semantics
+      - retention
+      - durable identity threshold
+
+  Record:
+    status: OPEN
+    form: entity
+    identity: record_id
+    versioned: true
+    definition: Durable information governed by an extensible Category.
+    fields:
+      category: {type: ref<registry.record_category>, required: true}
+      category_schema_version: {type: text, required: true}
+      scope_ref: {type: ref<Scope>, required: true}
+      author_or_source_ref: {type: text, required: true}
+      created_at: {type: timestamp, required: true}
+      content_digest: {type: digest, required: true}
+      epistemic_kind: {type: ref<value.epistemic_kind>, required: true}
+      evidence_altitude: {type: "enum[directional,behavioral]", required: true}
+      lifecycle_state: {type: text, required: true, definition: Category-owned}
+      currentness: {type: "enum[current,superseded,stale,unknown]", required: true}
+      missing_or_unavailable_refs: {type: list<text>, required: false}
+    relations:
+      documents: {target: Event, cardinality: "0..*", inverse: documented_by, rule: Event and Record identities stay distinct}
+      supersedes: {target: Record, cardinality: "0..*", rule: correction never overwrites history}
+    extension_owner: {schema: category, admission: category, retrieval: category, lifecycle: category}
+    invariants: [I1, I8, I10]
+    open:
+      - common Category configuration contract
+      - lesson-learned versus pattern boundary
+
+# ============================================================================
+# SUPPORTING DEFINITIONS — operational, not core
+# ============================================================================
+
+supporting:
+  Workflow:
+    status: OPEN
+    form: entity
+    identity: workflow_id
+    versioned: true
+    definition: >
+      An end-to-end methodology for achieving a Goal: the reusable method by
+      which a class of intent is pursued through Units, dependencies, Skills,
+      states, transitions and Gates.
+    fields:
+      name: {type: text, required: true}
+      method_statement: {type: text, required: true}
+      owner_scope_ref: {type: ref<Scope>, required: true}
+      unit_kinds: {type: list<ref<registry.unit_kind>>, required: true}
+      dependency_rules: {type: list, required: true}
+      state_vocabulary: {type: list<text>, required: true}
+      definition_custodian_ref: {type: ref<Actor>, required: true}
+    relations:
+      applies_to: {target: Goal, cardinality: "0..*"}
+      requires: {target: Skill, cardinality: "0..*"}
+      uses: {target: Gate, cardinality: "0..*"}
+      governs: {target: Unit, cardinality: "0..*", inverse: workflow}
+      supersedes: {target: Workflow, cardinality: "0..1", rule: change is an adaptation Event}
+    extension_owner: {unit_kinds: program, states: program, dependencies: program}
+    invariants: [I1, I12]
+    open:
+      - method admission and improvement evidence
+      - cross-program reuse
+
+  Skill:
+    status: OPEN
+    form: entity
+    identity: skill_id
+    versioned: true
+    definition: A versioned specialty or reusable method required to perform a class of work.
+    fields:
+      name: {type: text, required: true}
+      work_class: {type: text, required: true}
+      definition_record_ref: {type: ref<Record>, required: false}
+      required_tool_classes: {type: list<text>, required: false}
+      local_binding_schema: {type: map, required: false}
+    relations:
+      required_by: {target: "Role|Workflow|Unit", cardinality: "0..*"}
+    invariants: [I4]
+    open:
+      - shared catalog and repository-local binding
+      - Skill admission and evidence
+
+  Role:
+    status: OPEN
+    form: entity
+    identity: role_id
+    versioned: true
+    definition: A reusable organizational responsibility with required Skills and decision latitude.
+    fields:
+      name: {type: text, required: true}
+      responsibility: {type: text, required: true}
+      autonomy_tier: {type: ref<value.autonomy_tier>, required: true, definition: non-authorizing}
+      independence_constraints: {type: list<text>, required: false}
+    relations:
+      requires: {target: Skill, cardinality: "0..*"}
+      delegation_template: {target: Delegation, cardinality: "0..1", rule: template only; not a grant}
+    invariants: [I2]
+    open:
+      - Role composition
+      - incompatible-Role enforcement
+      - program-local versus collective Roles
+
+  Delegation:
+    status: OPEN
+    form: entity
+    identity: delegation_id
+    versioned: true
+    definition: >
+      Assignment of responsibility to an Actor or Role within a Scope, including
+      initiative, allowed effects, resource ceilings and escalation conditions.
+    fields:
+      grantor_ref: {type: ref<Actor>, required: true}
+      grantee_ref: {type: "ref<Actor|Role>", required: true}
+      scope_ref: {type: ref<Scope>, required: true}
+      autonomy_tier: {type: ref<value.autonomy_tier>, required: true}
+      effect_grants: {type: list<ref<registry.effect_class>>, required: true}
+      resource_ceiling: {type: map, required: true}
+      escalation_conditions: {type: list<text>, required: true}
+      effective_at: {type: timestamp, required: true}
+      expires_at: {type: timestamp, required: false}
+      definition_custodian_ref: {type: ref<Actor>, required: true}
+    relations:
+      assigns: {target: Unit, cardinality: "0..*"}
+      enforced_by: {target: EffectBoundary, cardinality: "0..*", rule: no boundary means declared, not enforced, authority}
+    invariants: [I2, I11, I12]
+    open:
+      - common effect vocabulary
+      - attenuation and sub-delegation
+      - revocation
+
+  Gate:
+    status: OPEN
+    form: entity
+    identity: gate_id
+    versioned: true
+    definition: >
+      A rule defining what must be evaluated before a boundary may be crossed,
+      who evaluates it, eligible evidence, possible outcomes and consequences.
+    fields:
+      scope_ref: {type: ref<Scope>, required: true}
+      subject_identity_rule: {type: text, required: true}
+      baseline_rule: {type: text, required: true}
+      eligible_evidence: {type: list, required: true}
+      missing_evidence_rule: {type: text, required: true}
+      evaluator_role_ref: {type: ref<Role>, required: true}
+      independence_rule: {type: text, required: true}
+      evaluation_procedure: {type: text, required: true, definition: may be deterministic or judgment-based}
+      bar: {type: text, required: true}
+      allowed_outcomes: {type: list<text>, required: true}
+      outcome_consequences: {type: map, required: true}
+      required_record_category: {type: ref<registry.record_category>, required: true}
+      definition_custodian_ref: {type: ref<Actor>, required: true}
+    relations:
+      used_by: {target: Workflow, cardinality: "0..*", inverse: uses}
+    extension_owner: {procedure: gate, bar: gate, outcomes: gate, consequences: gate}
+    invariants: [I9, I10, I12]
+    open:
+      - cross-program portability
+      - external enforcement
+      - deterministic versus judgment-based evaluation
+
+  EffectBoundary:
+    status: OPEN
+    form: entity
+    identity: effect_boundary_id
+    versioned: false
+    definition: The system or authority boundary that can actually perform or refuse an effect.
+    fields:
+      name: {type: text, required: true}
+      effect_classes: {type: list<ref<registry.effect_class>>, required: true}
+      custody: {type: text, required: true}
+      can_refuse: {type: bool, required: true, definition: a boundary that cannot refuse enforces nothing}
+    invariants: [I11]
+    open:
+      - refusal evidence
+      - boundary attestation
+      - common effect taxonomy
+
+  Attempt:
+    status: RESOLVED
+    form: entity
+    identity: attempt_id
+    versioned: false
+    definition: One execution of a Unit against an identified baseline. Attempt is not a Unit subtype.
+    fields:
+      baseline_ref: {type: text, required: true}
+      started_at: {type: timestamp, required: true}
+      ended_at: {type: timestamp, required: false}
+      disposition: {type: text, required: true, definition: Workflow-owned}
+    relations:
+      unit: {target: Unit, cardinality: "1", inverse: attempts}
+      actors: {target: Actor, cardinality: "1..*"}
+      delegation: {target: Delegation, cardinality: "1..*", rule: pins immutable versions}
+      produces: {target: Record, cardinality: "0..*"}
+    invariants: [I6]
+
+  Technology:
+    status: OPEN
+    form: entity
+    identity: technology_id
+    versioned: true
+    definition: A reusable mechanism that may enable one or more Capabilities.
+    fields:
+      name: {type: text, required: true}
+      grade: {type: ref<value.evidence_grade>, required: true}
+      constraints: {type: text, required: false}
+      evidence_record_refs: {type: list<ref<Record>>, required: false}
+    relations:
+      enables: {target: Capability, cardinality: "0..*", inverse: enabled_by, rule: no grade transfer}
+    open:
+      - adopted component versus conceptual mechanism
+      - expiry and reassessment
+
+# ============================================================================
+# REGISTRIES — extensibility by data
+# ============================================================================
+
+registries:
+  scope_type:
+    status: OPEN
+    shape: {key: text, definition: text, required_fields: list<text>, constraints: list<text>, status: text}
+    admission_rule: >
+      Add a Scope type only when its boundary, authority or lifecycle behavior
+      cannot be expressed by an existing type.
+    seeded:
+      collective: {definition: complete organization under one human authority root, status: OPEN}
+      program: {definition: durable area responsible for an objective and continuing work, status: OPEN}
+      mission: {definition: bounded organizational effort formed to achieve an outcome, status: OPEN}
+      team: {definition: bounded composition of Actors formed within another Scope, status: OPEN}
+
+  event_type:
+    status: OPEN
+    shape: {key: text, definition: text, required_extension: list<text>, durable: text, status: text}
+    admission_rule: Add a type for a distinct occurrence schema, never to create another core noun.
+    seeded:
+      communication: {definition: information conveyed between participants or Scopes, required_extension: [sender, route_or_topic, recipients, acknowledgement], durable: when-consequential, status: OPEN}
+      decision: {definition: authority holder selects a consequential disposition, required_extension: [authority_basis, disposition, authorized_transition_or_effect_refs], durable: always, status: OPEN}
+      observation: {definition: fact mechanically captured from an identified source, required_extension: [instrument, observed_subject, capture_custody, raw_evidence_ref], durable: always, status: OPEN}
+      assessment: {definition: subject and baseline evaluated under a Gate, required_extension: [gate_version_ref, subject_baseline, evidence_set, evaluator_refs], durable: always, status: OPEN}
+      gate_outcome: {definition: one terminal outcome for one assessment attempt, required_extension: [assessment_ref, outcome, missingness, consequence], durable: always, status: OPEN}
+      unit_transition: {definition: Unit moves between Workflow-owned states, required_extension: [unit_ref, prior_state, next_state, authorization_ref], durable: always, status: OPEN}
+      effect_request: {definition: consequential effect requested from an EffectBoundary, required_extension: [requested_effect, delegation_ref, target_boundary_ref], durable: always, status: OPEN}
+      effect_disposition: {definition: EffectBoundary performs, refuses or cannot determine a request, required_extension: [request_ref, boundary_ref, disposition, coupling], durable: always, status: OPEN}
+      adaptation: {definition: authorized change to organizational definition, baseline, composition or method, required_extension: [decision_ref, affected_refs, prior_baseline, new_baseline, resume_conditions], durable: always, status: OPEN}
+
+  record_category:
+    status: OPEN
+    shape: {key: text, definition: text, schema_extension: map, admission_rule: text, retrieval: text, lifecycle: text, correction: text, status: text}
+    admission_rule: >
+      A Category earns existence through different admission, retrieval, reuse,
+      correction or lifecycle behavior, never by label alone.
+    seeded: {}
+
+  unit_kind:
+    status: OPEN
+    shape: {key: text, definition: text, workflow_ref: ref<Workflow>, required_fields: list<text>, status: text}
+    admission_rule: New work shape with distinct Workflow semantics; software Feature belongs here.
+    seeded: {}
+
+  effect_class:
+    status: OPEN
+    shape: {key: text, definition: text, target_schema: map, receipt_requirements: map, status: text}
+    admission_rule: New externally distinguishable effect governed by Delegation and EffectBoundary.
+    seeded: {}
+
+# Catalogs are collections of versioned supporting definitions, not new schemas.
+catalogs:
+  skill: {construct: Skill, scope: "collective|program", status: OPEN}
+  workflow: {construct: Workflow, scope: program, status: OPEN}
+  gate: {construct: Gate, scope: "program|workflow|record-category", status: OPEN}
+
+# ============================================================================
+# VALUES
+# ============================================================================
+
+values:
+  autonomy_tier:
+    status: OPEN
+    definition: Decision and initiative latitude carried by a Role or Delegation. Never effect authority.
+    values:
+      A0: {definition: analyze or recommend without discretionary work initiation, status: OPEN}
+      A1: {definition: exercise bounded judgment within an assigned Unit, status: OPEN}
+      A2: {definition: plan and delegate within an approved mission Scope, status: OPEN}
+      A3: {definition: adapt local tactics, team composition or reversible Workflow detail, status: insufficient-evidence}
+      A4: {definition: select and launch mission Scopes within an approved program Scope, status: insufficient-evidence}
+      A5: {definition: change collective policy, authority structures or strategic objectives, status: OPEN, held_by: human}
+
+  evidence_grade:
+    status: RESOLVED
+    values: [missing, claimed, partial, proven]
+    rule: proven requires evidence at the claim's altitude demonstrated by the organization
+
+  epistemic_kind:
+    status: OPEN
+    values: [mechanical-observation, reported-observation, claim, inference, reviewed-finding]
+    rule: independent of Event type, significance, authority and carrier
+
+  significance:
+    status: OPEN
+    values: [routine, exception, surprise]
+
+# ============================================================================
+# INVARIANTS
+# ============================================================================
+
+invariants:
+  I1: Identity, type, Scope, version, state, Category, currentness, provenance and relation are distinct.
+  I2: Autonomy, effect authority and evidence are independent.
+  I3: Capability meaning does not change with organizational level; every Capability is required by a Goal.
+  I4: Actor competence is represented by Skill possession, never Capability, and grants no authority.
+  I5: Delivery and enablement are structural and do not prove Capability.
+  I6: Unit identity survives retry and rework; each execution is an Attempt; changed intent creates a new Unit.
+  I7: Events are immutable; correction is another Event; occurred_at and recorded_at remain distinct.
+  I8: Event and Record are distinct; Event existence does not establish payload truth.
+  I9: Actor-authored disclosure is not mechanical observation; missing evidence is never inferred as success.
+  I10: Record existence, admission, truth, grade, currentness and effect occurrence are distinct.
+  I11: Declared authority is not enforced authority; only an EffectBoundary disposition demonstrates enforcement.
+  I12: A Workflow, Delegation or Gate is not writable by the activity it governs.
+  I13: Gate outcome, decision, transition, effect and Record remain distinct.
+
+# ============================================================================
+# EXCLUDED AND OPEN
+# ============================================================================
+
+excluded:
+  - organizational-level Capability kinds
+  - Goal as a Scope
+  - Attempt as a Unit subtype
+  - Signal, Decision, Transition, Assessment, GateOutcome, EffectRequest or EffectReceipt as core entities
+  - Feature as a core entity; it is a software Unit kind
+  - Qualification as a separate entity; evidence belongs to the Actor-has-Skill relation
+  - EvidenceItem as a separate entity; evidence is a Record role under a Gate
+  - RecordVersion as a separate entity; versions belong to Record
+  - AuthorityBasis as a separate entity; authority is rooted in Scope or conveyed by Delegation
+  - lesson as an Event type
+  - one universal lifecycle or state machine
+  - closed Scope, Event, effect or Record Category taxonomies
+  - autonomy as effect authority or evidence strength
+  - a universal proof bar
+
+open:
+  Scope: type-specific fields, nesting, federation, authority-root succession
+  Actor: attestation, continuity and composite identity
+  Unit: interruption, resume, concurrent Attempts and partial outputs
+  Event: durable identity threshold, ordering, clocks and retention
+  Record: Category configuration and lesson-versus-pattern boundary
+  Workflow: promotion evidence, improvement method and cross-program reuse
+  Skill: shared catalog, repository-local binding, admission and evidence
+  Role: composition and incompatible-Role enforcement
+  Delegation: common effect vocabulary, attenuation, sub-delegation and revocation
+  Gate: portability, custody, external enforcement and judgment-based procedures
+  EffectBoundary: refusal evidence and attestation
+  Capability: recursive rollup, parent/child done_when and Scope expiry
+  autonomy: A3 and A4 lack evidence
+  semantic_compression: plausible across two owner-operated programs, not proven generally
+
+changelog:
+  - version: 3.0.0
+    date: 2026-08-29
+    change: >
+      Converged the Claude v2 and Codex Markdown tracks. Established seven core
+      entities and eight supporting definitions; retained Event consolidation,
+      registries, extension ownership and invariants. Renamed ScopeContainer to
+      Scope, Envelope to Delegation, AdmissionContract to Gate and EffectPlane to
+      EffectBoundary. Made Scope types registry-extensible. Moved Feature to
+      unit_kind. Folded Qualification into evidenced Actor-Skill possession.
+      Replaced the fixed construct ceiling with a high construct admission bar.

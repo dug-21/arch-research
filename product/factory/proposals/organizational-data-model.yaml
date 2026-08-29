@@ -1,0 +1,603 @@
+# ============================================================================
+# Organizational Data Model — Claude track
+# Parallel to proposals/agentic-organization-data-model.md (Codex track).
+# Kept separate on purpose. Converge by hand; do not merge in place.
+# ============================================================================
+
+meta:
+  name: organizational-data-model
+  track: claude
+  version: 3.0.0
+  date: 2026-08-29
+  status: directional · working model · not ratified · not implemented · not enforced
+  theme: workflow-harness
+  superseded_by: product/factory/proposals/codex-organizational-data-model-v4.yaml
+  status_note: >
+    Retained for lineage only. The converged line continues on the Codex track
+    from v4; this track contributed the attenuation chain, standing/dynamic
+    Delegation, inverse discipline, the firewall and extension invariants, and
+    typed Attempt disposition. Do not edit further.
+  derivation:
+    - product/research/wfh-010/findings-W4-data-model.md            # + rework round 1
+    - product/research/wfh-010/reports/gate-coverage-r2.md          # PASS
+    - product/factory/proposals/agentic-organization-data-model.md  # core/supporting split, Delegation, Event consolidation
+    - product/factory/proposals/target-concept-v1.md                # method custody, determinism preference
+    - "Unimatrix finding: the custody predicate (directional, 55%, wfh-008)"
+  enforcement_reality: >
+    No cross-domain checker for any clause here exists today. Native repository
+    workflows, git/forge, Unimatrix operations, tests and human gates enforce
+    fragments only. Semantic compression is plausible, not proven.
+
+# ---------------------------------------------------------------------------
+principles:
+  seven_nouns: >
+    You must learn seven things to use this model: Scope, Goal, Capability,
+    Actor, Unit, Event, Record. Everything else is a supporting definition with
+    a named owner, read only when you need it.
+  extend_by_registration: >
+    New occurrences register an event_type. New durable semantics register a
+    record_category. New work shapes register a unit_kind. All are data. If
+    something new appears to demand an eighth core noun, that is a defect in
+    this model — raise it as one.
+  separation_is_the_product: >
+    The core exists to keep apart six things that collapse under pressure:
+    competence/capability, claim/observation, delivery/proof,
+    outcome/consequence, declared/enforced authority, record/effect.
+  authority_flows_down_and_narrows: >
+    Authority is rooted in a Scope and reaches an Actor only through a chain of
+    Delegations, each no wider than its parent. A standing Delegation names a
+    Role; a dynamic one names an Actor and a Unit. Same construct, one field apart.
+  declaration_is_not_enforcement: >
+    Every authority statement here is intent. Only an Effect Plane disposition
+    demonstrates that a limit held, and only where the plane's custody sits
+    outside the governed party.
+
+# ---------------------------------------------------------------------------
+notation:
+  status: RESOLVED (accepted in the working model) | OPEN (needs resolution or broader testing)
+  form: entity | event | value | registry | derived
+  identity: the opaque stable id; distinct from name and from version
+  versioned: whether the identity carries an immutable version chain
+  fields: "name: {type, req, def}"
+  relations: "name: {target, card, inverse, rule, attributes}"
+  card: cardinality of the target as seen from this construct
+  scope_ref: >
+    a construct is located by a scope_ref field, not by a reciprocal relation on
+    Scope. One direction only, deliberately.
+  owner: for supporting definitions — who may define and change instances
+  provenance: "D = derived from gated wfh-010 · A = adapted · O = authored here"
+  types: text · timestamp · digest · bool · id · ref<X> · list<ref<X>> · enum[...] · map
+
+# ===========================================================================
+# CORE — seven entities. Learn these.
+# ===========================================================================
+core:
+
+  Scope:
+    status: OPEN
+    def: An organizational boundary within which work, authority and information apply.
+    form: entity
+    identity: scope_id
+    versioned: true
+    fields:
+      scope_type: {type: "enum[collective,program,mission,team]", req: true}
+      name: {type: text, req: true}
+      objective: {type: text, req: true}
+      authority_root_ref: {type: ref<Actor>, req: true, def: where undelegated authority sits for this boundary}
+      effective_at: {type: timestamp, req: true}
+      expires_at: {type: timestamp, req: false, def: Missions and Teams are commonly temporary}
+    relations:
+      parent: {target: Scope, card: "0..1", inverse: contains, rule: at most one parent per baseline}
+      contains: {target: Scope, card: "0..*", inverse: parent, rule: acyclic; nesting policy is program-owned}
+    invariants: [I12]
+    open: [type-specific required fields, federation between collectives, authority-root succession, termination and transfer]
+
+  Goal:
+    status: RESOLVED
+    def: An intended outcome that defines what must become true. Intent, never a boundary.
+    form: entity
+    identity: goal_id
+    versioned: true
+    fields:
+      statement: {type: text, req: true}
+      scope_ref: {type: ref<Scope>, req: true}
+      success_criteria: {type: text, req: true}
+      claim_floor: {type: list<ref<Capability>>, req: true, def: required Capabilities that must be proven before the Goal is claimable}
+      north_star: {type: list<ref<Capability>>, req: false, def: required Capabilities whose bars stay deliberately open}
+      lifecycle_state: {type: text, req: true}
+    relations:
+      requires: {target: Capability, card: "0..*", inverse: required_by, rule: establishes Capability identity; claim-floor membership is separate policy}
+      is_advanced_by: {target: Capability, card: "0..*", inverse: advances, rule: contribution only; never establishes Capability identity}
+      directs: {target: Unit, card: "0..*", inverse: directed_by, rule: intent attribution; a Goal never becomes the Unit's Scope}
+    invariants: [I12]
+
+  Capability:
+    status: RESOLVED
+    def: >
+      An observable behavior required by at least one Goal, delivered by work and
+      enabled by Technologies. Organizational level changes scope and composition,
+      never meaning.
+    form: entity
+    identity: capability_id
+    versioned: true
+    fields:
+      name: {type: text, req: true}
+      observable_behavior: {type: text, req: true, def: observable at the declared scope}
+      scope_ref: {type: ref<Scope>, req: true}
+      classification: {type: "enum[functional,nfr] + enum[threshold,curve]", req: true, def: orthogonal; encodes no organizational level}
+      done_when: {type: text, req: true, def: the bar this Capability's own evidence must clear}
+      grade: {type: "enum[missing,claimed,partial,proven]", req: true}
+      evidence_refs: {type: list<ref<Record>>, req: false}
+    relations:
+      required_by: {target: Goal, card: "1..*", inverse: requires, rule: identity-establishing — no requiring Goal, no Capability}
+      advances: {target: Goal, card: "0..*", inverse: is_advanced_by}
+      composed_of: {target: Capability, card: "0..*", rule: directed and acyclic per baseline; a parent clears only its own done_when; every child stays independently observable}
+      prerequisite_of: {target: Capability, card: "0..*", rule: execution dependency, distinct from composition}
+      delivered_by: {target: Unit, card: "0..*", inverse: delivers, rule: structural; producing output is not proof}
+      enabled_by: {target: Technology, card: "0..*", inverse: enables, rule: structural; no grade transfer}
+    extension_owner: {behavior_schema: program, evidence_bar: program}
+    invariants: [I9, I10, I12]
+    open: [recursive evidence rollup, parent and child done_when interaction, scope expiry]
+
+  Actor:
+    status: OPEN
+    def: A human, agent, service or deterministic component participating in work or effects.
+    form: entity
+    identity: actor_id
+    fields:
+      name: {type: text, req: true}
+      actor_type: {type: "enum[human,agent,service,deterministic-component]", req: true}
+      declared_identity:
+        type: text
+        req: true
+        def: >
+          self-asserted and persisted, not attested. Supports reconstructing what
+          happened; does not establish accountability. Never build an authority
+          check on it — a guard whose input the guarded party writes is defeated
+          by editing that field.
+      lifecycle_state: {type: text, req: true}
+    relations:
+      has: {target: Skill, card: "0..*", inverse: held_by}
+      holds: {target: Role, card: "0..*", inverse: assigned_to}
+      receives: {target: Delegation, card: "0..*", rule: as grantee; authority reaches an Actor only this way}
+    invariants: [I9, I11]
+    open: [identity attestation, replacement and continuity, composite actors]
+
+  Unit:
+    status: OPEN
+    def: One durable, attributable piece of work with a defined intended outcome.
+    form: entity
+    identity: unit_id
+    versioned: true
+    fields:
+      unit_kind: {type: text, req: true, def: workflow-owned; this is where domain shapes such as `feature` live}
+      intended_outcome: {type: text, req: true, def: changing it creates a new Unit}
+      scope_ref: {type: ref<Scope>, req: true, def: exactly one primary boundary}
+      current_state: {type: text, req: true, def: workflow-owned}
+      baseline_ref: {type: text, req: true}
+    relations:
+      directed_by: {target: Goal, card: "0..*", inverse: directs}
+      follows: {target: Workflow, card: "1", inverse: governs}
+      depends_on: {target: Unit, card: "0..*", rule: DAG per workflow baseline; the workflow determines readiness}
+      attempts: {target: Attempt, card: "0..*", inverse: unit, rule: at most one active}
+      assigned_through: {target: Delegation, card: "0..*", inverse: unit, rule: assignment carries its limits or it is not an assignment}
+      gated_by: {target: Gate, card: "0..*"}
+      consumes: {target: Record, card: "0..*", rule: admission and currentness stay explicit}
+      produces: {target: Record, card: "0..*", rule: production implies neither admission nor truth}
+      delivers: {target: Capability, card: "0..*", inverse: delivered_by}
+      replaces: {target: Unit, card: "0..1", rule: used when the intended outcome changed}
+    extension_owner: {unit_kind: workflow, states: workflow, transitions: workflow}
+    invariants: [I13]
+    open: [common unit kinds, interruption and resume requirements, concurrent attempts]
+
+  Event:
+    status: RESOLVED
+    def: >
+      An immutable occurrence within an identified Scope. One envelope;
+      `event_type` selects the required extension and never creates a core noun.
+    form: event
+    identity:
+      field: event_id
+      req_when: consequential, or acknowledgement, replay or audit matters
+      else: may remain an ephemeral value with no durable identity
+    fields:
+      event_type: {type: text, req: true, def: a key in the event_type registry}
+      occurred_at: {type: timestamp, req: true}
+      recorded_at: {type: timestamp, req: true, def: distinct from occurred_at, always}
+      scope_ref: {type: ref<Scope>, req: true}
+      actor_refs: {type: list<ref<Actor>>, req: true}
+      subject_refs: {type: list, req: true, def: what the event is about; identified, never implicit prose}
+      authority_ref: {type: "ref<Delegation|Actor>", req: false, def: required for decision and effect-request events; a Delegation, or the Scope's authority root}
+      epistemic_kind: {type: "enum[mechanical-observation,reported-observation,claim,inference,reviewed-finding]", req: false, def: how the payload relates to knowledge; orthogonal to event_type}
+      significance: {type: "enum[routine,exception,surprise]", req: true}
+      carrier: {type: "enum[inline,record-ref,artifact-ref]", req: true}
+      custody: {type: text, req: true, def: who captured or asserted this, and under whose control}
+      payload: {type: map, req: false}
+      extension: {type: map, req: true, def: the fields the registered event_type requires}
+    relations:
+      documented_by: {target: Record, card: "0..*", inverse: documents, rule: Event and Record identities stay distinct}
+      caused_by: {target: Event, card: "0..*"}
+      correlated_with: {target: Event, card: "0..*", rule: correlation is stored separately from causation and never implies it}
+      supersedes: {target: Event, card: "0..1", rule: correction is a new Event; the occurrence is never rewritten}
+    extension_owner: {event_type: registry}
+    invariants: [I4, I5]
+    open: [which types require durable identity, event admission and retention, ordering and clock semantics]
+
+  Record:
+    status: OPEN
+    def: Durable information governed by an extensible Category.
+    form: entity
+    identity: record_id
+    versioned: true
+    fields:
+      category: {type: text, req: true, def: a key in the record_category registry}
+      category_schema_version: {type: text, req: true}
+      scope_ref: {type: ref<Scope>, req: true}
+      author_or_source_ref: {type: text, req: true}
+      created_at: {type: timestamp, req: true}
+      content_digest: {type: digest, req: true}
+      epistemic_kind: {type: "enum[mechanical-observation,reported-observation,claim,inference,reviewed-finding]", req: true}
+      evidence_altitude: {type: "enum[directional,behavioral]", req: true}
+      lifecycle_state: {type: text, req: true, def: category-owned}
+      currentness: {type: "enum[current,superseded,stale,unknown]", req: true}
+      provenance_refs: {type: list, req: true}
+      missing_or_unavailable_refs: {type: list<text>, req: false, def: expected material that is absent, named explicitly}
+    relations:
+      documents: {target: Event, card: "0..*", inverse: documented_by, rule: many Records may document one Event; correcting the Record does not change the Event}
+      admitted_by: {target: Event, card: "0..*", rule: assessment events only; existence is not admission}
+      supersedes: {target: Record, card: "0..*"}
+    extension_owner: {schema: category, admission: category, retrieval: category, lifecycle: category, correction: category}
+    invariants: [I2, I3, I4]
+    open: [common category configuration contract, record admission rules, lesson-learned versus pattern boundary]
+
+# ===========================================================================
+# SUPPORTING — needed, but not nouns everyone must learn. Each has an owner.
+# ===========================================================================
+supporting:
+
+  Attempt:
+    status: RESOLVED
+    owner: Workflow
+    def: One execution of a Unit against an identified baseline. Not a Unit subtype.
+    form: entity
+    identity: attempt_id
+    fields:
+      baseline_ref: {type: text, req: true}
+      started_at: {type: timestamp, req: true}
+      ended_at: {type: timestamp, req: false}
+      disposition:
+        type: "enum[continue,hold,cancel,rework,complete]"
+        req: true
+        def: >
+          workflow-extensible. On interruption every affected Unit takes an explicit
+          disposition, and safe resume names baseline, preconditions, unresolved
+          residue and the next admissible transition.
+    relations:
+      unit: {target: Unit, card: "1", inverse: attempts}
+      actors: {target: Actor, card: "1..*"}
+      governed_by: {target: Delegation, card: "1..*", inverse: governs, rule: pins immutable Delegation versions}
+      produces: {target: Record, card: "0..*"}
+    invariants: [I13]
+
+  Delegation:
+    status: OPEN
+    owner: Program or Workflow
+    provenance: A   # Codex construct, extended here with the standing/dynamic split and attenuation
+    def: >
+      A grant of work and limits from a grantor to a grantee: how much initiative,
+      which effects and resources, who enforces, when to escalate, when it expires.
+      Standing when it names a Role and no Unit; dynamic when it names an Actor and
+      a Unit. One construct, one field apart.
+    form: entity
+    identity: delegation_id
+    versioned: true
+    fields:
+      autonomy: {type: "enum[A0,A1,A2,A3,A4,A5]", req: true, def: initiative latitude; grants no effect}
+      effect_grants: {type: list<text>, req: true, def: typed effect classes; registry-extensible}
+      resource_ceiling: {type: map, req: true, def: spend · concurrency · time}
+      escalation_conditions: {type: list<text>, req: true, def: when the grantee must stop and ask}
+      effective_at: {type: timestamp, req: true}
+      expires_at: {type: timestamp, req: false}
+      definition_custody:
+        type: ref<Actor>
+        req: true
+        def: >
+          who may change this grant — must not be the grantee. A limit the limited
+          party can edit is a label, not a limit.
+    relations:
+      grantor: {target: Actor, card: "1", rule: or the Scope authority root acting}
+      grantee: {target: "Role|Actor", card: "1", rule: a Role makes it standing; an Actor makes it dynamic}
+      scope: {target: Scope, card: "1"}
+      unit: {target: Unit, card: "0..1", inverse: assigned_through, rule: absent = standing · present = dynamic}
+      derived_from: {target: Delegation, card: "0..1", rule: a derived grant may not exceed its parent on any axis}
+      governs: {target: Attempt, card: "0..*", inverse: governed_by}
+      enforced_by: {target: EffectPlane, card: "0..*", inverse: enforces, rule: a Delegation no plane enforces is documentation}
+    invariants: [I11, I14, I15]
+    open: [attenuation comparison for non-numeric grants, revocation propagation, sub-delegation depth]
+
+  Gate:
+    status: OPEN
+    owner: Workflow
+    def: >
+      A rule for evaluating an identified subject and baseline and deciding whether
+      a boundary may be crossed. Fields, not prose — a Gate is the one construct
+      whose failure mode is silent false success.
+    form: entity
+    identity: gate_id
+    versioned: true
+    fields:
+      subject_rule: {type: text, req: true, def: what is evaluated and how it is identified}
+      baseline_rule: {type: text, req: true, def: what is pinned; no moving target}
+      eligible_evidence: {type: list, req: true}
+      missingness_policy: {type: text, req: true, def: what happens when required evidence is unavailable}
+      independence_predicate: {type: text, req: true, def: a predicate over assessor, evidence custodian and governed subject — not an Actor label}
+      procedure: {type: "enum[deterministic,judgment]", req: true, def: say which it is; do not imply determinism}
+      bar: {type: text, req: true, def: must match the altitude of the claim it admits}
+      allowed_outcomes: {type: list<text>, req: true}
+      outcome_consequences: {type: map, req: true, def: outcome is never silently equal to consequence}
+      required_record_category: {type: text, req: true}
+      definition_custody: {type: ref<Actor>, req: true, def: must not be the governed subject}
+    relations:
+      requires_assessor: {target: Role, card: "1"}
+      bound_by: {target: Workflow, card: "0..1", inverse: binds}
+      evaluates: {target: "Unit|Record|Capability|Event", card: "0..*"}
+    extension_owner: {procedure: workflow, bar: workflow, outcomes: workflow, consequences: workflow}
+    invariants: [I6, I7, I8, I9, I15]
+    open: [deterministic versus judgment procedures, cross-program portability, external enforcement]
+
+  Workflow:
+    status: OPEN
+    owner: Program
+    provenance: O   # promoted here; wfh-010 referenced workflow_ref but never defined it
+    def: >
+      An end-to-end methodology for achieving a goal — the reusable method by which
+      a class of intent is pursued: which Units exist, in what order, requiring which
+      Skills, gated how.
+    form: entity
+    identity: workflow_id
+    versioned: true
+    fields:
+      name: {type: text, req: true}
+      method_statement: {type: text, req: true, def: what this methodology is for, end to end}
+      unit_kinds: {type: list<text>, req: true}
+      dependency_rules: {type: list, req: true}
+      state_vocabulary: {type: list<text>, req: true, def: workflow-owned; not universal}
+      definition_custody: {type: ref<Actor>, req: true, def: must not be the activity this method governs}
+    relations:
+      applies_to: {target: Goal, card: "0..*", rule: a methodology is for a class of intent}
+      owned_by: {target: Scope, card: "1"}
+      requires: {target: Skill, card: "0..*", inverse: required_by}
+      binds: {target: Gate, card: "0..*", inverse: bound_by}
+      governs: {target: Unit, card: "0..*", inverse: follows}
+      supersedes: {target: Workflow, card: "0..1", rule: method change is an adaptation Event, never a silent edit}
+    extension_owner: {unit_kinds: program, states: program, dependency_rules: program}
+    invariants: [I1, I15]
+    open: [method improvement evidence, cross-program methodology reuse, which properties are common versus program-owned]
+
+  Skill:
+    status: OPEN
+    owner: Collective or Program
+    def: >
+      A specialty required to perform a class of work — database modeller, security
+      reviewer, coverage auditor. Competence, never a Capability, and never a method.
+    form: entity
+    identity: skill_id
+    versioned: true
+    fields:
+      name: {type: text, req: true}
+      work_class: {type: text, req: true}
+      definition_ref: {type: ref<Record>, req: false, def: what the specialty is and how it is evidenced}
+      required_tool_classes: {type: list<text>, req: false}
+      local_binding: {type: map, req: false, def: OPEN — how a repository binds a shared specialty to its own tools, roles and constraints}
+    relations:
+      held_by:
+        target: Actor
+        card: "0..*"
+        inverse: has
+        rule: holding a Skill grants no authority and proves no Capability
+        attributes: {evidence_refs: list<ref<Record>>, grade: "enum[missing,claimed,partial,proven]", currentness: text, expires_at: timestamp}
+      required_by: {target: "Role|Workflow|Unit", card: "0..*", rule: requirement does not grant the authority to act}
+    invariants: [I10]
+    open:
+      catalog_hypothesis: >
+        A shared organizational catalog of Skills with repository-local bindings is
+        an idea, recorded because the question arose, not because evidence supports
+        it. Not designed, selected or recommended.
+
+  Role:
+    status: OPEN
+    owner: Program
+    def: A reusable organizational responsibility with required Skills and permitted decision latitude.
+    form: entity
+    identity: role_id
+    versioned: true
+    fields:
+      name: {type: text, req: true}
+      responsibility: {type: text, req: true}
+      independence_constraints: {type: list<text>, req: false, def: roles this one may not simultaneously hold on the same subject}
+    relations:
+      requires: {target: Skill, card: "0..*", inverse: required_by}
+      assigned_to: {target: Actor, card: "0..*", inverse: holds, rule: scoped and time-bounded}
+    invariants: [I11]
+    open: [role composition, incompatible-role enforcement, program-local versus collective roles]
+
+  EffectPlane:
+    status: OPEN
+    owner: Collective
+    def: >
+      The custodian that performs, refuses, or cannot determine a requested effect.
+      The only place where declared authority becomes enforced authority.
+    form: entity
+    identity: plane_id
+    fields:
+      name: {type: text, req: true}
+      effect_classes: {type: list<text>, req: true}
+      custody: {type: text, req: true, def: whose control it is under; must sit outside the requester's, or say plainly that it does not}
+      can_refuse: {type: bool, req: true, def: a plane that cannot refuse enforces nothing}
+    relations:
+      enforces: {target: Delegation, card: "0..*", inverse: enforced_by}
+    invariants: [I11]
+    open: [common effect taxonomy, refusal evidence, plane attestation]
+
+  Technology:
+    status: OPEN
+    owner: Program
+    def: A reusable mechanism that may enable one or more Capabilities.
+    form: entity
+    identity: technology_id
+    versioned: true
+    fields:
+      name: {type: text, req: true}
+      grade: {type: "enum[missing,claimed,partial,proven]", req: true, def: its own; never transfers to a Capability}
+      constraints: {type: text, req: false}
+      evidence_refs: {type: list<ref<Record>>, req: false}
+    relations:
+      enables: {target: Capability, card: "0..*", inverse: enabled_by}
+    invariants: [I10]
+    open: [adopted component versus conceptual mechanism, expiry and reassessment]
+
+# ===========================================================================
+# REGISTRIES — extension by data, not by schema
+# ===========================================================================
+registries:
+
+  event_type:
+    form: registry
+    shape: {key: text, def: text, required_extension: list<text>, durable: text, status: text}
+    rule: a new organizational occurrence registers a type; it never adds a core noun
+    seeded:
+      communication:      {def: information conveyed between Actors, Roles or Scopes, required_extension: [sender, route_or_topic, recipients, acknowledgement_requirement], durable: when-consequential, status: OPEN}
+      decision:           {def: an authority holder selects a consequential disposition, required_extension: [authority_ref, disposition, authorized_transition_or_effect_refs], durable: always, status: OPEN}
+      observation:        {def: a fact mechanically captured from an identified source, required_extension: [instrument, observed_subject, capture_custody, raw_evidence_ref], durable: always, status: OPEN}
+      assessment:         {def: a subject and baseline evaluated under a Gate, carrying its one terminal outcome, required_extension: [gate_version_ref, subject_baseline, evidence_set, assessor_refs, independence_check, outcome, missingness, consequence_disposition], durable: always, status: OPEN}
+      transition:         {def: a Unit moves between workflow-owned states, required_extension: [unit_ref, prior_state, next_state, authorizing_outcome_or_decision_ref], durable: always, status: OPEN}
+      effect-request:     {def: a consequential effect is requested from an Effect Plane, required_extension: [requested_effect, delegation_ref, target_plane_ref], durable: always, status: OPEN}
+      effect-disposition: {def: a plane performs, refuses, or cannot determine a request, required_extension: [request_ref, plane_ref, disposition, coupling], durable: always, status: OPEN}
+      adaptation:         {def: an authorized change to an organizational definition, baseline, composition or method, required_extension: [decision_ref, affected_identities, prior_baseline, new_baseline, resume_conditions], durable: always, status: OPEN}
+    note: >
+      request and disposition stay separate types on purpose. Merged, a request
+      that never returned a disposition becomes indistinguishable from no request
+      at all — which is exactly the vnc-045 audit gap the model must preserve.
+      Assessment and outcome are merged: one terminal outcome per attempt, and
+      rework is a new assessment Event rather than an erased one.
+
+  record_category:
+    form: registry
+    shape: {key: text, def: text, schema_extension: text, admission_rule: text, retrieval: text, lifecycle: text, correction: text, status: text}
+    rule: >
+      open set, behavior-bearing. A category earns existence by differing in
+      admission, retrieval, reuse, correction or lifecycle — never by label. Each
+      program binds its own; Unimatrix's current set is one such binding.
+    seeded: {}
+
+# ===========================================================================
+values:
+  autonomy:
+    def: initiative and decision latitude carried by a Delegation. Independent of effect authority and of evidence.
+    A0: {def: analyse, evaluate or recommend without discretionary work initiation, status: OPEN}
+    A1: {def: exercise bounded judgment within an assigned Unit, status: OPEN}
+    A2: {def: plan and delegate within an approved Mission, status: OPEN}
+    A3: {def: adapt local tactics, team composition or reversible method detail, status: insufficient-evidence}
+    A4: {def: select and launch Missions within an approved Program, status: insufficient-evidence}
+    A5: {def: change Collective policy, authority structures or strategic objectives, status: OPEN, held_by: human}
+  evidence_grade:
+    values: [missing, claimed, partial, proven]
+    rule: proven requires evidence at the claim's own altitude, demonstrated by us
+  epistemic_kind:
+    values: [mechanical-observation, reported-observation, claim, inference, reviewed-finding]
+    rule: >
+      independent of event type, significance, authority and carrier. A decision is
+      an event type, not an epistemic kind — a determination is not a knowledge
+      claim. `inference` is where model-generated reasoning belongs.
+  significance: {values: [routine, exception, surprise]}
+  carrier: {values: [inline, record-ref, artifact-ref]}
+  currentness: {values: [current, superseded, stale, unknown]}
+  coupling:
+    values: [atomic, ordered-best-effort, reported, unknown]
+    rule: an effect and the record of that effect are coupled at a stated strength, or the strength is unknown and says so
+
+# ===========================================================================
+invariants:
+  I1:  {p: D, s: Every durable identity is opaque and distinct from name and version. Supersession links predecessor and successor and never overwrites history.}
+  I2:  {p: D, s: Record existence, admission, truth, evidence grade, currentness and effect occurrence are independent facts. A Record may be durable and not current.}
+  I3:  {p: D, s: Categories are extensible and own schema, admission, retrieval, lifecycle and correction. A Record may document an Event without becoming it, and correcting the Record does not change the Event.}
+  I4:  {p: D, s: A mechanical observation requires capture provenance. An actor-authored account of a mechanical result is a claim or an inference, never an observation.}
+  I5:  {p: D, s: Events are immutable. Correction is a new Event. Event existence never establishes payload truth. occurred_at and recorded_at are distinct.}
+  I6:  {p: D, s: Outcome, decision, transition, effect request, effect disposition and Record remain distinct. A workflow may map an outcome straight to a transition, but that mapping is declared in the Gate, never assumed.}
+  I7:  {p: D, s: A Gate fails closed. Where required independence or evidence cannot be established, no admitting outcome may be issued.}
+  I8:  {p: D, s: Missing or unavailable evidence is represented explicitly and never inferred as success.}
+  I9:  {p: A, s: Grade advances to proven only on evidence at the claim's own altitude, demonstrated by us. Research and expectation move structure, never proof.}
+  I10: {p: D, s: A Skill is competence and a Technology is a mechanism. Neither becomes a Capability, and delivery and enablement never prove one.}
+  I11: {p: D, s: Autonomy is not authority, and declared authority is not enforced authority. Only an Effect Plane disposition demonstrates that a limit held.}
+  I12: {p: D, s: A Capability is required by at least one Goal. Organizational level changes its boundary and composition, never its meaning. A Goal is intent and is never a Scope.}
+  I13: {p: D, s: A Unit's identity survives retry and rework; each execution is an Attempt. A changed intended outcome creates a new Unit.}
+  I14: {p: O, s: Attenuation — a derived Delegation may not exceed its parent on any axis, and authority reaches an Actor only through such a chain from a Scope authority root.}
+  I15: {p: O, s: Custody — a definition that governs a party is not writable by that party. Workflow, Gate and Delegation custody sits outside the governed activity, and changing one is an adaptation Event under declared authority.}
+  I16: {p: A, s: No program extension may weaken these invariants, move their semantics into free text, erase custody, or equate Record, admission and effect.}
+
+# ===========================================================================
+extension_points:
+  event_type: new kinds of occurrence
+  record_category: new durable semantics
+  unit_kind: new work shapes, owned by the Workflow — this is where `feature` lives
+  effect_class: new effect kinds, declared by Delegation and Effect Plane
+  skill: new specialties
+  gate: new bars, outcomes and consequences
+  workflow: new methodologies
+  rule: >
+    All seven are data. If something new appears to demand an eighth core entity,
+    that is a defect in this model — raise it as one.
+
+# ===========================================================================
+excluded:
+  - Feature as a construct — it is a unit_kind, and a software-shaped one; the common Capability definition must not reference it
+  - Qualification as a construct separate from Skill — the evidenced claim is an attribute of the held_by relation
+  - Envelope as a construct separate from Delegation — limits travel with the assignment
+  - AuthorityBasis as a construct — authority is rooted in a Scope or delegated by a Delegation; there is no third kind
+  - EvidenceItem as a construct — evidence is a role a Record plays under a Gate
+  - RecordVersion as a construct — versions belong to the Record identity
+  - Signal, Decision, Transition, Assessment, Outcome, EffectRequest, EffectReceipt as constructs — all are Events
+  - a single merged `effect` event type — request and disposition stay separate
+  - "`decision` as an epistemic kind — it is an event type"
+  - organizational-level Capability kinds; Goal as a Scope; Attempt as a Unit subtype; lesson as an event type
+  - a universal lifecycle or state machine; closed event, effect or Record-category taxonomies
+  - autonomy as a proxy for effect authority or evidence strength
+  - a universal proof bar, or any claim that judgment-based Gates are deterministic
+
+open:
+  delegation_attenuation: how non-numeric grants are compared, and how revocation propagates down a chain
+  workflow_promotion: Workflow is authored here, not gated by wfh-010; it needs its own adjudication
+  custody_enforcement: I14 and I15 have no enforcement point anywhere in the garage today
+  event_identity_threshold: which event types must take durable identity, and at what consequence level
+  gate_identity: whether a Gate needs durable identity or is always a versioned Workflow rule
+  skill_catalog: shared Skill catalog with repository-local bindings — an idea, not a commitment; untested
+  lesson_vs_pattern: still insufficient evidence for a behavioural distinction
+  collective_boundary: authority root and membership remain inferred, not modelled
+  autonomy_A3_A4: insufficient evidence from two cases
+  capability_rollup: recursive composition, parent done_when, evidence rollup and scope expiry — modelled, unexecuted
+
+# ===========================================================================
+changelog:
+  - version: 3.0.0
+    date: 2026-08-29
+    change: >
+      Restructured onto the Codex track's core/supporting split — seven core
+      entities, everything else a supporting definition with a named owner.
+      Adopted Scope naming and Delegation, extended with the owner's
+      standing/dynamic distinction: one construct where an absent Unit means
+      standing and a present Unit means dynamic, chained by derived_from with
+      attenuation as invariant I14. Envelope, Qualification and AuthorityBasis
+      removed as separate constructs. Gate given a field set in place of prose
+      questions. Assessment and outcome merged into one Event type; effect
+      request and disposition deliberately kept apart. Retained from the Claude
+      track — cardinality/inverse/rule on every relation, numbered invariants
+      referenced per construct, custody and firewall invariants, EffectPlane
+      (demoted to supporting), epistemic kinds including inference, and the
+      excluded block. Corrected in both tracks — Skill is a specialty, not a
+      method; Capability is defined without reference to Feature.
+  - version: 2.0.0
+    date: 2026-08-28
+    change: Event consolidation adopted; 27 constructs to 15. Superseded.
+  - version: 0.1.0
+    date: 2026-08-28
+    change: First schema transcription of wfh-010 W4. Superseded.
