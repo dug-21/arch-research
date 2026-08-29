@@ -40,15 +40,22 @@ candidates:
       the commit id, and add one line to the factory-git skill: once a gate has ruled against a
       commit, that commit's branch is not rebased. Nothing else changes.
     independent_reason: >
-      RESTATED 2026-08-29 at its true weight; the original rationale is withdrawn. It claimed "a
-      reader cannot reproduce the audited tree from the audit." That is FALSE: wfh-010's R08 ledger
-      pins the post-rebase oids, all of which are ancestors of main, and the ten pre-rebase short ids
-      quoted in Issue #66 prose still resolve as objects via the published branch
-      workflow/agentic-organization-reframe. The surviving, smaller, still-independent reason: those
-      ten gate citations in the run's governance record depend for resolvability on a side branch that
-      no policy protects, and git records no supersession link from the new id to the old. Delete the
-      branch and ten citations become unresolvable. Tree oids are invariant under rebase; commit oids
-      are not — measured, not asserted. True with or without V5.
+      RESTATED TWICE on 2026-08-29; both earlier rationales are withdrawn and named here so W4 can see
+      what was claimed. (i) WITHDRAWN: "a reader cannot reproduce the audited tree from the audit" —
+      false; wfh-010's R08 ledger pins the post-rebase oids and all twelve are ancestors of main.
+      (ii) WITHDRAWN: "the ids survive on a branch published on origin" — false; that read a stale
+      local remote-tracking ref as evidence about the remote. `git ls-remote --heads origin` returns
+      nine heads without it, `git fetch --prune --dry-run` reports it deleted, and
+      delete_branch_on_merge is true.
+      STATED FACT, not an argument: the ten gate citations in the run's governance record resolve today
+      only through two unprotected accidents — this clone's local branch ref, and the forge answering
+      for a bare oid contained by no branch. No published branch backs either. git records no
+      supersession link from the new id to the old, whereas Unimatrix's context_correct leaves a
+      queryable chain. Tree oids are invariant under rebase; commit oids are not — measured.
+      True with or without V5.
+      W4 NOTE: this fact may make the residual stronger than the branch-based version, or may not. The
+      author is deliberately not arguing either way; adjudicating independent reasonableness is W4's
+      task under the amendment.
     semantic_proof_authority_custody_preservation: >
       Preserves everything. It adds an identifier that is stable under the operation that broke
       the existing one. No authority moves, no proof bar changes, no custody relocates, and the

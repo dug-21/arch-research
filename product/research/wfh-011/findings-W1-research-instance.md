@@ -57,12 +57,12 @@ untestable here. Compression is plausible on one domain and unproven generally �
 
 | Artifact | Lines | SHA-256 |
 |---|---:|---|
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-instance.yaml` | 5388 | `011de28058817c7f750c7450b8ca31d4d8aeb890659f3f69845ebf6e914361c9` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml` | 415 | `33887044db11028bb546ddb119a2e9c8714b23584089b0ad66119797e333f669` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage.csv` | 469 (468 rows) | `e1977062fc3cfdc1cf0841760150f5ef9bc61af9c60aecc76b30b5ca7d86f645` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-instance.yaml` | 5389 | `b8a2e034db4a3192e0de3c9468f43ac3729f145bc8be094b712dde045dcdec16` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml` | 422 | `beadfb5d7e239189ac9fe618a6ed6258d2caa6a2281e92fe0ad835d8753a26f3` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage.csv` | 469 (468 rows) | `28062209bbf578d6a14a2bdd06872e939222f016fa2d2f9b70b2429bf8fa0951` |
 | `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-validate.py` | 408 | `eed0485f42f32ec07661db26137811b6650552a4b078b3b97f2e332b1f8e621e` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage-gen.py` | 462 | `174f0fbeba9fabc598572ed009b295449c7e3af139c55e080cf9ba3db8631b2f` |
-| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-validate.out.txt` | 115 | `5042d234ad31830f02955c02c96d465531a60b267c220b7e3bea69df157c9094` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage-gen.py` | 462 | `977a5fdc8fc6edac3851869ca9035263e9dfedce38e0b4507f66417a7ca68b0f` |
+| `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-validate.out.txt` | 115 | `2803ffb76785550ef3aa9aa118c9d94aa7452e37e932bd59cb1ec80a8bddc52b` |
 | `/workspaces/arch-research/product/research/wfh-011/artifacts/wfh-008-coverage-gen.out.txt` | 14 | `6576e352576a9684a3d99d7e44ea1653d1a4e13c153be69b42d642eab82ecf1a` |
 
 ```bash
@@ -302,9 +302,9 @@ recommendation this scope forbids.
 > scope; **it does not**, and it is downgraded to a documentation defect in `M04`. The retraction was
 > prompted by an independent re-run whose result I reproduced before conceding.
 >
-> **Downstream effect, measured rather than asserted:** re-running the generator after the correction
-> changes **2 of 468** CSV rows (`invariant:I1`, `notation:identity`), both text-only. **No row changed
-> `disposition` and no row changed `cause_classification`** — because the cause was always the rebase
+> **Downstream effect, measured rather than asserted, after BOTH corrections:** re-running the
+> generator changes **2 of 468** CSV rows (`invariant:I1`, `notation:identity`), both text-only. **No
+> row changed `disposition` and no row changed `cause_classification`** — because the cause was always the rebase
 > itself, which is measured and unretracted, not the resolvability claim built on top of it. The
 > `enforcement-gap` classification stands on the absence of any supersession link or adaptation Event
 > for the rewrite; the `project-evolution-candidate` stands on a restated and smaller rationale.
@@ -343,15 +343,68 @@ $ for c in 6acc952 0c01522 17ebf2e 7d28294 3cd296d 215942d 962a6c1 017f4fc c29a0
 
 `M04`'s R08 ledger pins the **post-rebase full oids, and all twelve are on `main`**. Nothing in the
 fixed alphabet's commit ledger dangles. The ten *short* ids quoted in Issue #66 prose are not
-ancestors of `main`, but every one still resolves as an object, because the pre-rebase branch
-`workflow/agentic-organization-reframe` retains them — and that branch is **published on `origin`**,
-not merely local, so a fresh clone that fetches all refs resolves them too.
+ancestors of `main`; where they nonetheless resolve, and why, is §5.3a.
 
-**Epistemics, stated in both directions.** Those ten ids are *unreachable from `main`* and *reachable
-from a published side branch*. That is not durability: nothing protects that branch, and deleting it
-would make ten gate citations in the run's governance record unresolvable. It is also not breakage:
-today they resolve, and their trees are identical to their `main` counterparts. I overclaimed in one
-direction and will not now overclaim in the other.
+#### 5.3a Where the ten pre-rebase ids actually resolve — three facts, none of them durability
+
+> **SECOND CORRECTION, 2026-08-29.** My first correction said those ids "still resolve as an object,
+> because the pre-rebase branch `workflow/agentic-organization-reframe` retains them — and that branch
+> is **published on `origin`**". **That is also wrong and is retracted.** I read
+> `git branch -a --contains`, saw a `remotes/origin/…` line, and treated it as evidence about the
+> remote. It is not: that command reads **local remote-tracking refs**, which can be arbitrarily stale.
+> Prompted again by an independent challenge, which I re-measured before conceding.
+
+**(1) Unreachable from `main`.** `git merge-base --is-ancestor <id> main` is false for all ten.
+
+**(2) Not on any published branch.** The branch was deleted on the remote:
+
+```
+$ git ls-remote --heads origin | sed 's|.*refs/heads/||'
+archive/main-2026-05-13   claude/active-memory-layer-…   claude/async-pkm-ingestion-…
+claude/research-pkm-2035-…   claude/research-product-vision-…   claude/review-devcontainer-…
+main   research/jurati-001   research/wfh-004
+        -> nine heads; workflow/agentic-organization-reframe is NOT among them
+
+$ git fetch --prune --dry-run origin
+ - [deleted]         (none)     -> origin/workflow/agentic-organization-reframe
+
+$ gh api repos/dug-21/arch-research --jq '.delete_branch_on_merge'
+true
+```
+
+`delete_branch_on_merge: true` doing what `factory-git` documents. **A fresh clone does not get these
+objects.** My `remotes/origin/…` ref was a stale ref this clone had never pruned.
+
+**(3) They nonetheless resolve today, by two unrelated accidents.**
+
+*(3a) In this working copy* — and precisely, not via the stale remote-tracking ref but via a **local
+branch** that is a real ref and keeps the objects off the GC list here:
+
+```
+$ git for-each-ref --contains 17ebf2e --format='%(refname)'
+refs/heads/workflow/agentic-organization-reframe          <- local branch, real ref
+refs/remotes/origin/workflow/agentic-organization-reframe <- stale, prunes away
+```
+
+*(3b) Through the forge, by full oid*, even though no branch contains them:
+
+```
+$ gh api repos/dug-21/arch-research/commits/17ebf2eecc4ac67f3a1319abdafa5490ad0bfc51 --jq '.sha'
+17ebf2eecc4ac67f3a1319abdafa5490ad0bfc51
+$ gh api repos/dug-21/arch-research/commits/3cd296d8cb00d695155b381ff7cd6bd893cf82f3 --jq '.sha'
+3cd296d8cb00d695155b381ff7cd6bd893cf82f3
+```
+
+**This is a retention behaviour, not a guarantee, and I will not convert it into one.** *"GitHub
+currently answers for this oid"* and *"this citation will resolve later"* are different claims and only
+the first is measured. Nothing in this repository's policy protects, promises or documents either
+accident. Equally, I will not overclaim in the other direction: as of 2026-08-29 both paths answer.
+
+**Method note, because it is the same failure the case is about.** I asserted a fact about a remote
+from a local artifact that mirrors it. `git branch -a --contains` is not evidence about `origin`;
+`git ls-remote` is. That is `#320`'s custody predicate — *a control whose input sits inside the
+governed party is a label, not a control* — turned on my own instrument. It is also why every
+`[MEASURED]` label in this document should be read as naming the command, not the conclusion.
 
 **My instance was already correct and needs no change.** Every `baseline_ref` in
 `wfh-008-instance.yaml` is a post-rebase full oid; all twelve verify as `ANCESTOR-OF-MAIN`. I never
@@ -374,11 +427,16 @@ smaller finding than the one I first filed.
   carries no integrity binding and no supersession link.**
 - **`post-bounded-evolution fit` (CF-01): REPRESENTABLE** — identical V5 shape; a tree oid is
   invariant under rebase, so the pin survives the operation that reissued the commit id.
-- **Independent reason (restated at its true weight):** ten gate citations in the run's governance
-  record depend for resolvability on a side branch that no policy protects. That is a modest
-  reproducibility exposure in a method whose product is reproducible evidence, and it is true with or
-  without V5. It is **not** the "a reader cannot reproduce the audited tree" claim CF-01 originally
-  carried, which is withdrawn.
+- **Independent reason (restated, and stated flatly rather than argued):** ten gate citations in the
+  run's governance record resolve only through the two unprotected accidents in §5.3(3) — one local
+  object database and one forge retention behaviour — with no published branch behind either. That is
+  a fact about the current project, true with or without V5. It is **not** the "a reader cannot
+  reproduce the audited tree" claim CF-01 originally carried, which stays withdrawn.
+  **I am deliberately not arguing from it.** §5.3a's third measurement may make CF-01's residual
+  stronger than the branch-based version I filed in the first correction, or may not; adjudicating
+  whether an evolution candidate's rationale is independently reasonable is W4's job under the
+  amendment, and quietly strengthening a rationale to survive a challenge that has not happened yet
+  would hollow out that independence. The fact is recorded; W4 rules.
 
 ### 5.4 An interrupted Attempt has no admissible disposition — `PR-ATTEMPT-DISPOSITION`
 
