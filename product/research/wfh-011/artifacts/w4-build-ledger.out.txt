@@ -1,0 +1,13 @@
+ledger rows total: 705
+  model-X rows: 679
+  appendix instance-extension rows: 23
+  appendix w3-fixture rows: 3
+
+reconciled disposition: {'exercised': 522, 'construct-pressure': 123, 'not-applicable': 31, 'blocked-by-OPEN': 3}
+divergence class: {'agree': 324, 'divergent': 150, 'w1-not-enumerated': 205}
+RECONCILED cause tally (row-weighted): {'historical-evidence-gap': 85, 'model-defect': 74, 'enforcement-gap': 33, 'project-evolution-candidate': 31, 'unresolved': 33}
+rows carrying >=1 cause: 183
+pressure rows with NO cause: 0
+rows with a silent blank: 0
+W3-adverse rows: 32
+evolution-candidate rows: 31

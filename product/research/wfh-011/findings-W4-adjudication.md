@@ -109,6 +109,8 @@ Four findings carry the verdict.
 |---|---|
 | This file | `/workspaces/arch-research/product/research/wfh-011/findings-W4-adjudication.md` |
 | Reconciled ledger | `/workspaces/arch-research/product/research/wfh-011/reports/construct-pressure-ledger.csv` |
+| Witness extractor (rework round 1, §13.1) | `/workspaces/arch-research/product/research/wfh-011/artifacts/w4-witness.py` |
+| Measured witness counts | `/workspaces/arch-research/product/research/wfh-011/artifacts/w4-witness.json` |
 
 **705 ledger rows: 679 canonical model-X rows + 23 appendix rows (W1's instance-level registry
 extensions, which are not model X items) + 3 appendix rows (W3 fixtures finer than any X path).** The
@@ -246,12 +248,16 @@ the auditor, not a model finding — and I record it as W1's enumeration being c
 
 ### 4.1 The reconciled row set
 
-| Reconciled disposition | Rows |
-|---|---:|
-| `exercised` | **552** |
-| `construct-pressure` | **114** |
-| `blocked-by-OPEN` | **3** |
-| `not-applicable` | **10** |
+| Reconciled disposition | Rows | (round 0, superseded) |
+|---|---:|---:|
+| `exercised` | **522** | 552 |
+| `construct-pressure` | **123** | 114 |
+| `not-applicable` | **31** | 10 |
+| `blocked-by-OPEN` | **3** | 3 |
+
+**Restated after rework round 1 (§13).** The round-0 column is retained rather than overwritten. The
+movement decomposes cleanly into two independent causes, measured separately in §13.2: W2's RW-1/RW-2
+correction of its own coverage table, and my RW-3 witness guard.
 
 **Reconciliation rule, stated so it can be audited:** pressure evidenced in *either* case stands for
 the run and is never averaged away; `exercised` in one case and `not-applicable` in the other resolves
@@ -259,15 +265,15 @@ to `exercised` (the run has a witness); absence is never filled; no OPEN is norm
 
 **Reconciled cause tally (row-weighted; multi-cause rows retain every cause):**
 
-| Cause | Rows |
-|---|---:|
-| `historical-evidence-gap` | **81** |
-| `model-defect` | **73** |
-| `unresolved` | **33** |
-| `project-evolution-candidate` | **31** |
-| `enforcement-gap` | **30** |
+| Cause | Rows | (round 0, superseded) |
+|---|---:|---:|
+| `historical-evidence-gap` | **85** | 81 |
+| `model-defect` | **74** | 73 |
+| `unresolved` | **33** | 33 |
+| `project-evolution-candidate` | **31** | 31 |
+| `enforcement-gap` | **33** | 30 |
 
-176 rows carry at least one cause. **Zero pressure rows without a cause. Zero silent blanks.**
+**183** rows carry at least one cause. **Zero pressure rows without a cause. Zero silent blanks.**
 
 `project-evolution-candidate` appears on 31 of 176 caused rows and **never as a residual bucket**:
 every one of the twelve distinct candidates co-classifies with `model-defect`, `enforcement-gap`,
@@ -277,11 +283,15 @@ every one of the twelve distinct candidates co-classifies with `model-defect`, `
 
 | Class | Rows | Adjudication |
 |---|---:|---|
-| both agree | 318 | — |
+| both agree | 324 | — |
 | `w1-not-enumerated` | 205 | §3.4 — reconciled from W2 alone |
-| **divergent** | **156** | below |
+| **divergent** | **150** | below |
 
-Of the 156, **129 are case-difference, not contradiction** — one history supplies a witness and the
+*(Round 0 read 318 / 205 / 156. The six-row shift is entirely W2's RW-1 correction of its own
+dispositions; my guard changes no `w1_disposition` or `w2_disposition` cell, only the reconciled
+column — §13.2.)*
+
+Of the 150, **123 are case-difference, not contradiction** — one history supplies a witness and the
 other does not, or one strains where the other does not. Those two facts coexist and I recorded both:
 the `exercised` side is a witness that the construct can carry *at least one* history; the
 `construct-pressure` side is evidence it does not carry *every* history. Averaging them would destroy
@@ -661,6 +671,185 @@ absence and did **not** move the verdict; the **evidence** gaps (Delegations who
 runner output, no scope-decision record) prevented positive claims and did **not** move the verdict;
 the verdict moved only on **`model-defect`** rows — the grade vocabulary, the missing bindings, the
 enum gaps.
+
+---
+
+## 13. Rework round 1 — RW-3 and RW-4
+
+Ruling: `gate-coverage.md` (`b755bb5`), `REWORKABLE`. RW-1/RW-2 were W2's and landed at `0421142`; I
+verified `vnc-045-instance.yaml` is byte-unchanged there (`git diff 0421142^..0421142 --` on that path
+is empty) and that W2's new validator reproduces byte-identically. RW-3 and RW-4 are mine.
+
+**The audit is right and the defect is mine.** My §4.1 rule reads *"`exercised` in one case and
+`not-applicable` in the other resolves to `exercised` (the run has a witness)"*. The rule is sound; I
+applied it to the **disposition** column and never tested the **value**. A reconciler that trusts a
+label is the same instrument failure as a coverage table that never opens its instance — one layer up.
+I did catch the inverse defect (§3.5) and disclosed the enabling limit (§10), and the auditor is
+correct that disclosure is not discharge.
+
+### 13.1 What I built
+
+`artifacts/w4-witness.py` reads **both case instances natively** — W1's `instances:` form and W2's
+section form — and measures, per canonical X path, how many objects actually populate it. A value is a
+witness only if it is non-empty and not one of the encodings' absence placeholders (`missing-history`,
+`unestablished`, `UNREPRESENTABLE`, `ABSENT`, `NOT-WRITABLE`, `none`). A **declared inverse** counts as
+witnessed only where an edge actually **closes**. Output: `artifacts/w4-witness.json`, consumed by the
+ledger build. Deterministic; the ledger rebuilds byte-identically.
+
+It reproduces the auditor's six independently: all six measure **0 witnesses in both cases**.
+
+**One deliberate refinement.** A value-vocabulary member appearing inside a declared `map` field
+(`Event.extension`) is counted as **witnessed**. Absence of a *typed carrier* is a separate finding
+(W3 `F-A15`/`F-A16`: `values.coupling` is referenced by no field in M01) and must not be laundered into
+absence of a *witness*. Without this, three `value-member` rows would have been wrongly flipped.
+
+### 13.2 Decomposition — two independent causes, measured separately
+
+The leader's instruction was to repair the instrument and report whatever comes out, without steering
+or protecting the result. Both W2's rework and my guard moved counts, so reporting them merged would
+hide which did what:
+
+| | `exercised` | `construct-pressure` | `not-applicable` | `blocked-by-OPEN` | agree / divergent |
+|---|---:|---:|---:|---:|---|
+| **A** round 0 (committed `3b7efbe`) | 552 | 114 | 10 | 3 | 318 / 156 |
+| **B** = A + W2's RW-1/RW-2 only | 546 | 114 | 16 | 3 | **324 / 150** |
+| **C** = B + my RW-3 guard — **final** | **522** | **123** | **31** | **3** | 324 / 150 |
+
+**W2's rework alone** moved 6 rows off `exercised` and is the entire source of the divergence shift.
+**My guard alone** moved 24 further rows off `exercised` and 3 more onto pressure. My guard changes no
+`w1_disposition` or `w2_disposition` cell — only the reconciled column and the adjudication text.
+
+### 13.3 What the guard caught — the auditor's six versus everything else
+
+RW-3's text is general: *"refuses `reconciled_disposition: exercised` for any row with no populated
+instance witness on either side."* I ran it over every row, not only the six.
+
+**Scoping, disclosed.** The guard applies to the row classes where "a populated instance witness" is a
+defined concept: fields, relations, relation sub-keys, value members, registry seeds — **274** rows
+reconciled `exercised`. It does **not** apply to principles, notation, invariants, invariant bindings,
+`extension_owner`, construct attributes, catalogs, excluded items, OPEN items, review concerns,
+changelog or traversal rows, whose `exercised` asserts consumption during encoding or analysis, not an
+instance witness. Those **269** rows are reported here and **not silently flipped**; the re-audit
+should rule on the scoping, which is my interpretation and not the auditor's text.
+
+**Annotate and refuse are separate operations**, because W2's RW-1 rework had independently moved three
+of the auditor's six off `exercised` before my guard ran. RW-3 still requires their boilerplate be
+replaced by the measured fact, so the guard **annotates every zero-witness row** and **refuses only
+those still reading `exercised`**.
+
+| | count |
+|---|---:|
+| zero-witness rows annotated with the measurement | **39** |
+| — the auditor's six | **6** (all annotated) |
+| — found by the guard beyond the six | **33** |
+| rows whose disposition the guard **changed** | **27** |
+| — of the auditor's six | **3** (the other 3 were already correct via W2's RW-1) |
+| — beyond the six | **24** |
+
+Changed to `construct-pressure` with a cause (the emptiness is itself an evidenced finding):
+`core.Capability.relations.advances` · `core.Capability.relations.delivered_by` ·
+`core.Event.relations.supersedes` · `core.Goal.fields.north_star` ·
+`core.Actor.relations.has_skill.attributes` · `core.Actor.relations.holds_role.attributes` ·
+`supporting.EffectBoundary.relations.enforces.cardinality` and `.inverse` ·
+`supporting.Delegation.relations.enforced_by.inverse`.
+The remaining 18 moved to `not-applicable` with the measured reason: they are `cardinality`, `inverse`
+and `rule` sub-rows of relations with no occurrence in either history, so the sub-rule has nothing to
+be exercised by.
+
+`core.Event.relations.supersedes` carries its own sentence, as RW-3 requires: `F-E07` is
+`accepted-defect` — `Event.supersedes`, `Record.supersedes` and `Workflow.supersedes` declare **no
+acyclicity**, so a correction chain can close on itself and erase the history `I1` exists to protect,
+while M01 declares `acyclic` three times elsewhere. Measured alongside it: the relation is populated on
+**0 of 32** W1 Events and **0 of 30** W2 Events. An adverse W3 result on a relation neither case
+exercises is the weakest possible standing for the rule and the strongest for the defect.
+
+### 13.4 A finding the audit did not have — the same defect exists in W1's generator
+
+`core.Goal.fields.north_star` was reconciled `exercised` on W1's witness text *"set on 2/2 instances"*.
+Measured: the W1 instance carries `north_star: []` on **both** Goals, and W2 carries the placeholder
+`missing-history`.
+
+**W1's generator counts key presence, not value population** (`fname in r.get('fields')`). That is the
+same label-over-value defect the audit found in W2's table, on the side the audit credited as sound —
+W1's generator does read its instance, which is why it was not suspected. Its consequences are narrower
+than W2's because most W1 fields are genuinely populated, but the property is identical. It also ties
+to W1's own `PR-LIST-REQUIRED`: M01's `notation` never says whether `required` on a `list<>` type means
+key-present or non-empty, so `[]` is a value no checker can rule on — which is exactly how it survived.
+
+### 13.5 W2's flag on the 34 declared-inverse rows — measured, not adopted
+
+W2 reports that its new validator finds **55 of 210** declared-inverse edges broken in `vnc-045`, and
+that 34 inverse X rows stay `exercised` on an authored basis. I re-executed the validator (byte-identical)
+and then measured closure per row across **both** instances:
+
+| inverse closes in | rows | reconciled |
+|---|---:|---|
+| **both** cases | 18 | `exercised` — correct |
+| **W1 only** (zero closing edges in `vnc-045`) | 6 | `exercised` — W1 supplies the witness |
+| **W2 only** (W1 has no `Capability`) | 4 | `exercised` — W2 supplies the witness |
+| **neither** | **6** | **caught by the guard** |
+
+**The guard's own text answers W2's question: 6 of the 34, not 34.** The other 28 have a real witness in
+at least one case, and reconciling them to `exercised` is the rule working, not the rule failing. W2's
+characterisation is true of its **own case matrix** and not of the **reconciled** ledger — the
+distinction the guard exists to draw. W2 was right to flag it and right not to re-disposition it.
+
+**The asymmetry is recorded, not resolved:** on 6 declared inverses the research case closes every edge
+and the software case closes none. That is one more instance of the run's standing limit — a
+construct carried by one history and not the other — and it caps how much either case can say alone.
+
+### 13.6 RW-4 — my own rulings carried into the ledger
+
+`W1/unlabelled` and `not-challenged` are gone (0 occurrences each). `CF-05`, `CF-06` and `CF-07` now
+appear on 12 rows.
+
+| Ledger row | `evolution_candidate_id` | `evolution_challenge_result` |
+|---|---|---|
+| `supporting.Gate.relations.requires_assessor` | `W1/CF-05` | survives |
+| `invariants.I10` | `W1/CF-06` | survives, recorded defect — independent reasonableness not evidenced inside the fixed alphabet |
+| `notation.types` | `W1/CF-07` | **FAILS concern 17 (migration realism)** |
+| `core.Record.fields.content_digest` | `W1/CF-07` | **FAILS concern 17 (migration realism)** |
+| `M02.sanity.S3` | `W1/CF-07` | **FAILS concern 17 (migration realism)** |
+
+A reader of the ledger alone now sees what §7 ruled, including the failure.
+
+### 13.7 Verdict tension — checked, and none found
+
+Per the ruling I did not move any §8 verdict, and I checked whether the corrected evidence bears on one:
+
+- The single new `model-defect` row is `core.Event.relations.supersedes`. **`Event` was already
+  `revise`.**
+- The three new `enforcement-gap` rows are all `EffectBoundary`/`Delegation` enforcement sub-rows.
+  **Both were already `revise`**, and this is the same zero-enforced-authority absence already carrying
+  those verdicts. Reported as absence, not converted into model failure.
+- The four new `historical-evidence-gap` rows touch `Goal`, `Actor` and `Capability`. `Actor` and
+  `Capability` were already `revise`. **`Goal` was `retain` and stays `retain`:** its new row carries
+  `historical-evidence-gap` only, no `model-defect`, and a historical-evidence-gap prevents a positive
+  claim at that altitude without being a model defect — the same test on which `Role` and `Technology`
+  were retained. Recorded because it is the one verdict the correction came closest to touching.
+- No registry, catalog or supporting-definition verdict has a changed cause profile.
+
+**Nothing here moves the seven-entity verdict or its clause mapping.** The `revise` ruling turned on
+`values.evidence_grade` having no conforming home (§4.3) and on no case behaviour requiring an eighth
+core entity — neither is touched by a witness guard. Had the corrected ledger produced evidence that
+did bear on a verdict, the instruction was to report the tension rather than act on it; there is none
+to report beyond the `Goal` check above.
+
+### 13.8 What I did not do
+
+- I did **not** re-encode either case instance. `wfh-008-instance.yaml` and `vnc-045-instance.yaml` are
+  untouched by me; the witness extractor opens them read-only.
+- I did **not** apply the guard to the 269 non-witness-bearing `exercised` rows (§13.3) — scoping
+  disclosed for the re-audit to rule on.
+- I did **not** re-disposition the 28 inverse rows outside the guard's reach (§13.5).
+- I did **not** correct W1's generator or its 27 cause-but-`exercised` rows; §13.4 is a finding about
+  it, and W1 owns its own artifacts. The reconciled ledger is correct at those paths regardless,
+  because the guard measures the instance rather than trusting either table.
+- I did **not** rule on my own repair. The same independent `factory-validator` re-audits.
+
+**Transitive sources: none added.** The witness extractor reads the two case instances and M01, all
+already in the alphabet. My round-0 ledger entry `T-W4-01` (read-only remote-state queries) is
+unchanged and nothing was added to it.
 
 ---
 
