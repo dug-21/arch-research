@@ -55,10 +55,17 @@ def rel_entries(v):
     if isinstance(v,list): return v
     return [v]
 def entry_id(e):
+    # A relation entry is either a bare id or an ATTRIBUTED record (M01 declares `attributes:`
+    # on has_skill / holds_role / held_by / assigned_to but never says how one is written in an
+    # instance). vnc-045-instance.yaml keys attributed entries on `actor:`.
+    # CORRECTION 2026-08-29 (post-close, #70): the original key list ('id','ref','target','to')
+    # OMITTED `actor` and returned None SILENTLY, so all 21 attributed entries in the software
+    # case were read as non-closing edges. Key order and the loud failure now match
+    # vnc-045-validate.py's `rel_target`, the reader that got this right in the same run.
     if isinstance(e,dict):
-        for k in ('id','ref','target','to'):
+        for k in ('actor','target','ref','id'):
             if k in e: return e[k]
-        return None
+        raise KeyError(f"attributed relation entry carries no target key; keys={sorted(e.keys())}")
     return e
 
 def witness(objs):

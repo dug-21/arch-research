@@ -288,6 +288,60 @@ inverses"* taken from that matrix is wrong by up to 12. The correct figure for t
 **22 of 34 declared inverses closing at least one edge**; the correct figure for the *run* is **28 of
 34**. Those are my numbers, not the run's.
 
+> **CORRECTION — 2026-08-29 (post-close; appended, nothing above edited or withdrawn).**
+>
+> **Old figure → new figure.** The software case's declared-inverse coverage is **25 of 34**, not
+> **22 of 34**; the rows on which the boilerplate is false as a software-case witness number **9**,
+> not **12**. The cross-case figure — **28 of 34 closing in at least one case** — is **unchanged**;
+> it was already correct. The corrected split is **21 close in both cases, 3 in W1 only, 4 in W2
+> only, 6 in neither** (published as 18 / 6 / 4 / 6).
+>
+> **Mechanical cause.** `artifacts/w4-witness.py`'s `entry_id()` searched the keys
+> `('id','ref','target','to')`, **omitted `actor`**, and returned `None` **silently** when no key
+> matched. `vnc-045-instance.yaml` keys its attributed relation entries on `actor:`, so all **21**
+> such entries — 16 on `Role.assigned_to`, 5 on `Skill.held_by` — were scored as non-closing edges.
+> Three rows were undercounted to zero: `core.Actor.relations.has_skill.inverse` (0 → 5),
+> `supporting.Skill.relations.held_by.inverse` (0 → 5),
+> `supporting.Role.relations.assigned_to.inverse` (0 → 16). The same run's
+> `artifacts/vnc-045-validate.py` read the same file correctly, searching
+> `('actor','target','ref','id')`, disclosing the accommodation, and **erroring** rather than
+> returning `None` — two readers of one file, one of which failed silently. `w4-witness.py` now does
+> both, and `artifacts/w4-witness.json` is regenerated from it.
+>
+> **`wfh-008` is unaffected.** `wfh-008-instance.yaml` carries **zero** dict-form relation entries,
+> so the omission could not reach it: all 268 of its witnessed paths and every one of its inverse
+> counts are identical before and after.
+>
+> **Downstream blast radius: empty.** `reports/construct-pressure-ledger.csv`, regenerated from the
+> corrected witness map into a scratch location and diffed, is **byte-identical** to the committed
+> ledger (md5 `54c035cda9a7a85d346d5fd6e8e2f6b6`, 706 lines), which is therefore left untouched. The
+> mechanism: the ledger's RW-3 guard fires only where **both** cases measure zero, and all three
+> corrected rows already carried a non-zero `wfh-008` witness (49, 49, 21). **No disposition,
+> cause, adjudication or verdict moves.** The seven-entity `revise`, `current-project fit: revise`
+> and `post-bounded-evolution fit: revise` rest on bar clause 2 and the two reject limbs, not on
+> inverse closure; the round-2 `PASS` and its six clause verdicts stand exactly as ruled, and this
+> note does not re-rule them.
+>
+> **Direction of the error, checked rather than repeated.** It ran **against** the run's interest —
+> it understated coverage and overstated the defect count — so correcting it moves both figures in
+> the **flattering** direction (22 → 25, 12 → 9). Stated plainly rather than as vindication: a
+> correction that improves the corrector's own numbers earns more scrutiny, not less. The corrected
+> reader was therefore also run in strict mode across both instances; every dict-form relation entry
+> resolves a target key, so nothing is now failing silently in the opposite direction.
+>
+> **What was deliberately not done.** Neither instance was re-serialized: the finding is that the
+> reader is fixed to the data, never the data to the reader. The referral to the owner on clause 3's
+> strict per-case limb is unchanged in kind and now concerns **9** rows rather than 12; it remains
+> the owner's call and is not touched here. The stale **22 of 34** also stands, uncorrected, in
+> `reports/relevance.md` (three places) and `findings-W4-adjudication.md`; extending the correction
+> to those surfaces is the owner's call and outside this correction's scope.
+>
+> **First raised:** Issue #70 comment
+> <https://github.com/dug-21/arch-research/issues/70#issuecomment-5462364469>. That comment recorded
+> the retro's recomputation (25 / 9); this correction independently reproduced **both** the erroneous
+> 18 / 6 / 4 / 6 split and the corrected 21 / 3 / 4 / 6 split from the committed generator before
+> adopting either.
+
 ### 4.2 `core.Capability.versioned` — the one demonstrated escape from the scoping
 
 ```
@@ -426,6 +480,14 @@ on that limb. That is the owner's call, not mine, and the remedy is one line of 
    468-row matrix is not.
 4. Nothing in this run witnesses a versioned `Capability`, and 205 canonical X rows still rest on a
    single case.
+
+> **CORRECTION — 2026-08-29 (post-close; appended, item 1 above not edited).** Item 1's **22 of
+> 34** is superseded by **25 of 34**, and the 12-row count by **9**; the run's **28 of 34** is
+> unchanged. Cause: `w4-witness.py`'s `entry_id()` omitted the `actor` key and returned `None`
+> silently, so 21 attributed relation entries in `vnc-045-instance.yaml` were scored as
+> non-closing. Full note, blast-radius measurement and direction ruling in §4.1 above; first
+> raised at <https://github.com/dug-21/arch-research/issues/70#issuecomment-5462364469>.
+> Items 2, 3 and 4 are unaffected, and the `PASS` and its clause verdicts are not re-ruled.
 
 **What is right about this rework, said plainly.** It was scoped exactly to what was asked and stopped
 there. It reduced its own claimed coverage by 30 rows and increased it on none. It left both case
