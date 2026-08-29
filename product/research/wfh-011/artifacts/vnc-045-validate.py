@@ -35,6 +35,18 @@ def load(p):
     return yaml.safe_load(raw.decode()), hashlib.sha256(raw).hexdigest()
 
 model_path, inst_paths = sys.argv[1], sys.argv[2:]
+
+# The note count is invocation-sensitive: the counterfactual file contributes two
+# COUNTERFACTUAL-BOUNDARY notes, so the same script over the same instance prints 12 notes
+# without it and 14 with it (errors, warnings and object count are identical either way).
+# A printed number whose meaning depends on an unrecorded input is a label that has quietly
+# stopped naming one thing, so the invocation travels with the counts.
+print("INVOCATION")
+print(f"        argv     : {' '.join(sys.argv)}")
+print(f"        model    : {model_path}")
+print(f"        instances: {len(inst_paths)} -> {inst_paths}")
+print()
+
 M, MSHA = load(model_path)
 PIN = "bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060"
 print(f"MODEL   {model_path}")
@@ -442,4 +454,5 @@ for m in WARNS:  print("WARN  " + m)
 for m in NOTES:  print("NOTE  " + m)
 print(f"\nOBJECTS VALIDATED: {TOTAL_OBJ}")
 print(f"RESULT: {len(ERRORS)} error(s), {len(WARNS)} warning(s), {len(NOTES)} note(s)")
+print(f"        produced by: {' '.join(sys.argv)}")
 sys.exit(1 if ERRORS else 0)

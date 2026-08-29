@@ -1,3 +1,8 @@
+INVOCATION
+        argv     : product/research/wfh-011/artifacts/vnc-045-validate.py product/factory/proposals/organizational-data-model-v5.yaml product/research/wfh-011/artifacts/vnc-045-instance.yaml product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml
+        model    : product/factory/proposals/organizational-data-model-v5.yaml
+        instances: 2 -> ['product/research/wfh-011/artifacts/vnc-045-instance.yaml', 'product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml']
+
 MODEL   product/factory/proposals/organizational-data-model-v5.yaml
         sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
         pin    bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060   MATCH=True
@@ -397,3 +402,4 @@ NOTE  product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml:CF
 
 OBJECTS VALIDATED: 151
 RESULT: 69 error(s), 285 warning(s), 14 note(s)
+        produced by: product/research/wfh-011/artifacts/vnc-045-validate.py product/factory/proposals/organizational-data-model-v5.yaml product/research/wfh-011/artifacts/vnc-045-instance.yaml product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml

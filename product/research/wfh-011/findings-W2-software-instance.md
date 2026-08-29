@@ -133,13 +133,24 @@ checked (exercised field/relation rows)     : 119
 RULE W2-EXTRA re-dispositioned                : 1
    (full log: artifacts/vnc-045-coverage-build.out.txt)
 
-# C12 (RW-2) — the instance is parsed for the first time
-$ python3 product/research/wfh-011/artifacts/vnc-045-validate.py <model> <instance> <counterfactual>
+# C12 (RW-2) — the instance is parsed for the first time.
+# The note count is INVOCATION-SENSITIVE, so the invocation is quoted with it and the script
+# now prints its own argv into the log header and beside the RESULT line.
+$ python3 product/research/wfh-011/artifacts/vnc-045-validate.py \
+      product/factory/proposals/organizational-data-model-v5.yaml \
+      product/research/wfh-011/artifacts/vnc-045-instance.yaml \
+      product/research/wfh-011/artifacts/vnc-045-counterfactual-instance.yaml
 151 instance objects across 15 constructs
 NOT-WRITABLE objects: 2 ['EV-13', 'EV-14']
 declared-inverse edges checked=210 broken=55
-RESULT: 69 error(s), 285 warning(s), 14 note(s)     # exit 1
+RESULT: 69 error(s), 285 warning(s), 14 note(s)     # exit 1  <- the committed log
    (full log: artifacts/vnc-045-validate.out.txt)
+
+# Same script, same instance, WITHOUT the counterfactual file: identical errors, warnings and
+# object count; 12 notes rather than 14. The two absent notes are the counterfactual-boundary
+# pair (zero id overlap with the historical instance; CF-03 carrying no `replaces` source-link).
+$ python3 …/vnc-045-validate.py …/organizational-data-model-v5.yaml …/vnc-045-instance.yaml
+RESULT: 69 error(s), 285 warning(s), 12 note(s)
 ```
 
 The coverage CSV is regenerated deterministically by
@@ -495,7 +506,13 @@ stand unchanged, with the drop accepted in Residual Risk 2). Non-adoption of an 
 Until this round no executed checker in the run could read `vnc-045-instance.yaml`: both existing
 validators key on a top-level `instances:` map, the W2 file uses flat sections, and both therefore
 printed a green result over **zero objects**. `vnc-045-validate.py` reads the W2 encoding natively and
-parses **151 objects across all 15 constructs**. It reports **69 errors, 285 warnings, 14 notes**.
+parses **151 objects across all 15 constructs**. It reports **69 errors, 285 warnings, 14 notes**
+over the invocation quoted at C12 — model, historical instance and counterfactual file. Run without
+the counterfactual it prints 12 notes, the errors, warnings and object count being identical; the two
+notes are the counterfactual-boundary pair. The count is invocation-sensitive, so the script now
+prints its full `argv` into the log header and beside the `RESULT` line: a printed value whose
+meaning depends on an unrecorded input has quietly stopped naming one thing, which is the standard
+this run is holding M01 to and therefore the standard its instruments have to meet.
 
 The errors are mine, not V5's, and they are recorded rather than repaired:
 
