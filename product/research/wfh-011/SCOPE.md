@@ -1,6 +1,6 @@
 # wfh-011 — Organizational data-model instantiation and rejection test
 
-**Status:** researching
+**Status:** done
 **Goal(s):** workflow-harness — establish a manageable common operating model for a distributed, continually improving agentic organization (primary)
 **Capability target(s):** seven-entity organizational data-model hypothesis — no current Unimatrix capability id; structure-only theme hypothesis, with no grade advancement
 **Confidence-required:** directional
