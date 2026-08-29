@@ -1,6 +1,6 @@
 # wfh-011 — Organizational data-model instantiation and rejection test
 
-**Status:** scoped · pending-human-resume
+**Status:** researching
 **Goal(s):** workflow-harness — establish a manageable common operating model for a distributed, continually improving agentic organization (primary)
 **Capability target(s):** seven-entity organizational data-model hypothesis — no current Unimatrix capability id; structure-only theme hypothesis, with no grade advancement
 **Confidence-required:** directional
@@ -453,3 +453,71 @@ approval/resume and the leader's cycle transition. This amendment authorizes no 
 or process change, model revision, schema/configuration mutation, Unimatrix graph/category write, grade
 movement, build recommendation, `wfh-009` synthesis, or runtime-enforcement claim. All prior out-of-scope,
 zero-cost, fixed-alphabet, independence, and human-gate constraints remain binding.
+
+## Extension — 2026-08-29: Human resume, M01 tracking fix, and S-alphabet provenance
+
+**Authority:** owner approval of the scope as written (including both preceding append-only sections) and
+explicit resume of Issue #70 from the premise hold. Recorded by `research-leader`; append-only, and it
+changes no boundary, alphabet, contract, or verdict above.
+
+### Gate transition
+
+- Status moved `scoped · pending-human-resume` -> `researching`.
+- Cycle `wfh-011`: `phase-end phase=scope next_phase=tech-discovery`, `agent_id=research-leader`. Cycle
+  `tags` remain `wf-v0.26-11-gaaa64b2` (set-once at INIT; not appended to, not retro-fixed).
+- Run type confirmed **research-scope, directional**: phases `scope` (done) -> `tech-discovery` ->
+  `synthesis`. **`feasibility` is SKIPPED** — no POC, no validator-of-artifact, no compute spend.
+
+### M01 tracking fix and digest verification
+
+The pinned model and the review were untracked working-tree files while `wfh-011` pinned one of them as
+its model under test. Six `wfh-010`-vintage proposal documents were committed to `main` **byte-for-byte
+unchanged** at commit `6718049`, staged path-scoped to `product/factory/proposals/` only. **No content
+edit was made to any of them**; editing V5 remains out of scope.
+
+Post-commit verification — worktree file and committed blob both hash identically, and the M01 value
+matches the pin in the preceding Premise Recheck extension:
+
+| Alphabet id | Path (repo-relative) | SHA-256 of committed blob |
+|---|---|---|
+| `M01` | `product/factory/proposals/organizational-data-model-v5.yaml` | `bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060` |
+| `M02` | `product/factory/proposals/codex-organizational-data-model-v4-review.md` | `aaecaf77c60b1ee25f683b001c72275d54dc80d61e25b1e9344373a53d4249be` |
+| (context) | `product/factory/proposals/agentic-organization-data-model.md` | `cb9d319f3acd53794ee0b95668d3cf5c77d4106992f32779d0f4d0fe41aac302` |
+| (context) | `product/factory/proposals/codex-organizational-data-model-v4.yaml` | `c5db5c3f47967e1c598901a2bc78f263fcbb1a336461c15364ee4e8cc8ebb1fb` |
+| (context) | `product/factory/proposals/organizational-data-model-v3.yaml` | `faad526cf635c084c183624ec646706369c601bc4af5652dfdc839f36a5da0ed` |
+| (context) | `product/factory/proposals/organizational-data-model.yaml` | `1f80e42bb62258a08d943d148a97b25d60bfedbcd268606fe418ce4edca44a23` |
+
+**M01 digest VERIFIED against the pin.** The four `(context)` rows are the same-vintage predecessors; they
+are now tracked so the V5 lineage is inspectable, but they are **not** additions to the M alphabet and
+carry no coverage obligation.
+
+### S03–S06 provenance (resolution of existing identifiers, not an alphabet expansion)
+
+`S03`, `S04`, and `S05` are not in `dug-21/arch-research`. They are resolved to `dug-21/unimatrix`, a
+public repository, read-only. This records **where already-named identifiers live**; it introduces no new
+transitive source and must not be used to widen the alphabet.
+
+- Repository: `dug-21/unimatrix` (public, default branch `main`).
+- `S01` Issue **#928** — CLOSED. `S02` PR **#929** — MERGED, base `main`, 11 commits, 57 changed files.
+- Pinned merge commit: `37c7b09aa0db6ba16f5f95dadd24c58adb4e6e2b` — matches the scope's `37c7b09a`.
+- `S03`/`S04`/`S05` are 43 files under `product/features/vnc-045/**` at that commit.
+- **Material provenance fact for W2/W3/W4:** `37c7b09a` has a **single parent** (`9927de02`), so PR #929
+  was **squash-merged**. The eleven named delivery commits — including `S06`'s `a63d45f0`, `74bc1fd4`,
+  `b68c2c43`, `bf7c4812` — are **not ancestors of `main`**; they are reachable only via
+  `refs/pull/929/head` (head `08a45c533389a8b1b4d9c622c18473c85bebf101`). Any statement about ordering,
+  authorship, or per-commit custody in `vnc-045` must cite the PR-head ref, not `main`'s history. This is
+  an observed property of the historical project, recorded as such — not a defect and not a pressure row
+  by itself.
+
+### Pinned local source corpus (fixed alphabet, read-only)
+
+To keep the alphabet fixed and the run reproducible, the external sources are materialized once, outside
+the repository, and consumed from disk rather than re-queried per workstream:
+
+- `/tmp/claude-1000/-workspaces-arch-research/wfh-011-sources/unimatrix/` — blobless read-only clone,
+  checked out at `37c7b09a`, with `refs/remotes/origin/pr-929` fetched for the `S06` commits.
+- `/tmp/claude-1000/-workspaces-arch-research/wfh-011-sources/github/` — pinned JSON dumps of `S01`,
+  `S02` (issue body, comments, reviews, review comments, commits, files) and `R05` (arch-research Issue
+  #66 body and comments), plus Issue #70 for governance reference.
+
+These are transport for `S01`–`S06` and `R05`, not new sources.
