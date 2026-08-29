@@ -1,0 +1,5392 @@
+# wfh-008 encoded as Organizational Data Model V5 instances
+# W1 of run wfh-011. HISTORICAL INSTANCE ONLY — no counterfactual content.
+# Counterfactuals live in artifacts/wfh-008-counterfactual-instance.yaml.
+
+meta:
+  instance_id: INST-WFH008-V5
+  instance_version: 1
+  case: wfh-008
+  case_window:
+    start: '2026-08-28T11:45:42Z'
+    end: '2026-08-28T15:13:04Z'
+  authored_by: factory-researcher
+  run: wfh-011
+  workstream: W1
+  provenance_class: observed-history
+  counterfactual: false
+  model_under_test:
+    path: product/factory/proposals/organizational-data-model-v5.yaml
+    version: 5.0.0
+    sha256: bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+    parsed: as-is
+  encoding_conventions:
+    ids: opaque within this instance; prefix names the construct
+    approximation_marker: 'Any field whose value could not be established from the fixed alphabet but whose model definition requires a value carries a sibling key `_approx` naming the pressure row. The checker reports every `_approx` as MODEL-FORCED-APPROXIMATION.
+
+      '
+    absent_marker: '`unavailable:<reason>` is a sentinel string used only where the model requires a typed value the alphabet cannot supply. The checker reports every sentinel.
+
+      '
+    provenance_ids: M01 M02 M06 R01 R02 R03 R04 R05 R06 T01 T02 — see findings source ledger
+registry_extensions:
+  unit_kind:
+    owner: WF-RESEARCH-SCOPE
+    entries:
+      research-scope-run:
+        definition: one directional/empirical/validated research run over one question
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        - baseline_ref
+        status: OPEN
+      scope-definition:
+        definition: authoring the run boundary, workstream partition, proof bar and coverage rule
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        status: OPEN
+      research-workstream:
+        definition: one disjoint question-partition producing a FINDINGS record
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        status: OPEN
+      coverage-audit:
+        definition: independent adjudication of the run's coverage predicates; assessor authored none of the audited work
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        - baseline_ref
+        status: OPEN
+      pre-distillation-correction:
+        definition: removal of false or overstated claims from findings before they are carried into the knowledge graph
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        status: OPEN
+      synthesis:
+        definition: adjudication of findings into a position plus the run report and the graph writes that carry it
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        status: OPEN
+      relevance-review:
+        definition: advisory drift/under-reach challenge of the synthesis against the goal
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        status: OPEN
+      run-close:
+        definition: recording the human verdict, setting run status and stopping telemetry
+        workflow_ref: WF-RESEARCH-SCOPE
+        required_fields:
+        - intended_outcome
+        status: OPEN
+  record_category:
+    owner: SC-PROG
+    entries:
+      research-scope-definition:
+        definition: the fixed boundary, partition, proof bar and coverage rule of one run
+        schema_extension:
+          status_line: text
+          confidence_required: text
+          coverage_predicates: list
+        admission_rule: admitted by a human advisory scope gate; amendable only by an owner decision Event
+        retrieval: by run id
+        lifecycle: scoped -> researching -> done
+        correction: append-only amendment; the Status line is mutated in place at close
+        status: OPEN
+      research-finding:
+        definition: one workstream's authored evidence-labelled claims over its partition
+        schema_extension:
+          evidence_labels: list
+          workstream: text
+        admission_rule: admitted as discovery input only after an independent coverage gate outcome of PASS
+        retrieval: by run id and workstream
+        lifecycle: authored -> reworked -> corrected -> admitted
+        correction: in-place file edit; prior content retained only in the git object store
+        status: OPEN
+      coverage-audit:
+        definition: an independent assessor's per-predicate ruling on a run's coverage
+        schema_extension:
+          predicate_results: map
+          independence_statement: text
+          residue_register: list
+        admission_rule: assessor must have authored none of the audited work and none of the prior round's audit
+        retrieval: by run id and audit round
+        lifecycle: issued -> superseded-by-later-round | amended
+        correction: append-only amendment inside the same file; earlier verdict retained verbatim
+        status: OPEN
+      synthesis-report:
+        definition: the curator's adjudicated position and directional output for a run
+        schema_extension:
+          position_ref: text
+          gap_register: list
+          follow_on: list
+        admission_rule: written only after a coverage PASS; accepted only at a human synthesis gate
+        retrieval: by run id
+        lifecycle: drafted -> accepted | returned
+        correction: superseded by a later report; never overwritten after acceptance
+        status: OPEN
+      relevance-review:
+        definition: advisory goal-owner challenge; never mutates and never gates
+        schema_extension:
+          drift_verdict: text
+          under_reach: list
+        admission_rule: advisory only; admission is the human's, not the reviewer's
+        retrieval: by run id
+        lifecycle: issued
+        correction: none observed
+        status: OPEN
+      governance-decision-log:
+        definition: the forge-hosted surface on which every gate request and human decision for a run is recorded
+        schema_extension:
+          issue_number: text
+          comment_sequence: list
+        admission_rule: publication requires a forge credential; content is authoritative for gates because the method designates the surface, not because comments are true
+        retrieval: by issue number
+        lifecycle: open -> closed
+        correction: new comment; comments are not edited in the observed history
+        status: OPEN
+      knowledge-node:
+        definition: a durable graded knowledge entry in Unimatrix under a configurable category
+        schema_extension:
+          node_id: text
+          node_category: text
+          grade_tag: text
+          edges: list
+        admission_rule: single-writer curator only, after a coverage PASS; grade proven requires an attached artifact
+        retrieval: semantic search and typed edge traversal
+        lifecycle: active -> deprecated (superseded, id reissued, prior version retained)
+        correction: context_correct — deprecates, re-links and reissues the id; history preserved
+        status: OPEN
+      run-telemetry:
+        definition: cycle start/phase-end/stop events carrying run attribution and phase boundaries
+        schema_extension:
+          topic: text
+          tags: list
+          phases: map
+        admission_rule: accepted by the cycle service on payload conformance; tags are set-once at start
+        retrieval: by cycle topic
+        lifecycle: started -> phase-ended* -> stopped
+        correction: none; point-in-time events are never backfilled
+        status: OPEN
+      method-definition:
+        definition: a protocol, role contract, rule file or skill that governs how work is performed
+        schema_extension:
+          surface: text
+          custodian: text
+        admission_rule: none enforced; any actor with repository write can change these files
+        retrieval: by repository path
+        lifecycle: authored -> revised
+        correction: git commit
+        status: OPEN
+  effect_class:
+    owner: SC-COL
+    entries:
+      worktree-write:
+        definition: write a file into the working tree; no durable external effect until committed
+        target_schema:
+          path: text
+        receipt_requirements:
+          receipt: none
+        status: OPEN
+      repo-write:
+        definition: create a commit and/or update a remote ref
+        target_schema:
+          repo: text
+          ref: text
+        receipt_requirements:
+          commit_id: text
+          note: content-addressed but not rewrite-proof
+        status: OPEN
+      forge-write:
+        definition: publish or close an Issue/comment on the forge
+        target_schema:
+          issue: text
+        receipt_requirements:
+          comment_id: text
+          created_at: timestamp
+        status: OPEN
+      graph-write:
+        definition: store, correct, tag or link a Unimatrix knowledge node
+        target_schema:
+          node_id: text
+        receipt_requirements:
+          returned_id: text
+          status: text
+        status: OPEN
+      cycle-write:
+        definition: emit a run-telemetry cycle event
+        target_schema:
+          topic: text
+          phase: text
+        receipt_requirements:
+          accepted: bool
+          error_text: text
+        status: OPEN
+  event_type:
+    owner: registry
+    entries:
+      unrecorded_change:
+        definition: 'a change to a definition, baseline or composition that occurred without an authorizing decision Event; distinct from adaptation, whose seeded definition requires the change to be authorized and to carry a decision_ref
+
+          '
+        required_extension:
+        - affected_refs
+        - prior_baseline
+        - new_baseline
+        - authorization_status
+        durable: always
+        status: OPEN
+        admission_justification: 'Two occurrences in the observed history changed governing definitions or pinned baselines with no decision Event: the 2026-08-27 package install that overwrote twelve skill files, and the 2026-08-28 rebase that reissued every wfh-008 commit id. Neither satisfies the seeded adaptation extension, which requires decision_ref. Registered rather than modelled as adaptation so that "authorized" is not asserted where no decision exists. Weakens no common invariant (I19).
+
+          '
+catalogs:
+  skill:
+    scope: collective
+    status: OPEN
+    members:
+    - SK-READ-ONLY-RESEARCH
+    - SK-FINDINGS-AUTHORING
+    - SK-RUN-ORCHESTRATION
+    - SK-PHASE-GATING
+    - SK-GIT-AND-ISSUE-OPS
+    - SK-BUDGET-CONTROL
+    - SK-KNOWLEDGE-CURATION
+    - SK-FIREWALL-ENFORCEMENT
+    - SK-GRAPH-AUTHORING
+    - SK-RELEVANCE-REVIEW
+    - SK-STEP-FUNCTION-REVIEW
+    - SK-HYPOTHESIS-TRIAGE
+    - SK-THEME-PORTFOLIO-STEERING
+    - SK-DELEGATED-RUN-LAUNCH
+    - SK-SURPRISE-AND-STOP-GOVERNANCE
+    - SK-HUMAN-DECISION-INTERFACE
+  workflow:
+    scope: program
+    status: OPEN
+    members:
+    - WF-RESEARCH-SCOPE
+  gate:
+    scope: workflow
+    status: OPEN
+    members:
+    - GT-SCOPE
+    - GT-COVERAGE
+    - GT-SYNTHESIS
+    - GT-FIREWALL
+instances:
+  Scope:
+  - id: SC-COL
+    construct: Scope
+    version: 1
+    fields:
+      scope_type: collective
+      name: arch-research garage collective
+      objective: 'concept -> trial -> proof: an autonomous research and development garage on Unimatrix'
+      authority_root_ref: AC-OWNER
+      effective_at: '2026-06-24T00:00:00Z'
+    relations:
+      contains:
+      - SC-PROG
+    provenance:
+    - T01
+    - R06
+    custody: dug-21/arch-research repository plus the owner's GitHub account; no CODEOWNERS file and no branch protection artifact exists in the tree
+    evidence_note: effective_at is a lower bound from the earliest method commit 1a9b3d3 (2026-06-24); the alphabet does not establish a founding date
+    _approx:
+      effective_at: PR-SCOPE-EFFECTIVE-AT
+  - id: SC-PROG
+    construct: Scope
+    version: 1
+    fields:
+      scope_type: program
+      name: theme:workflow-harness
+      objective: Discover the smallest operating model and technical substrate that turns centralized human intent into distributed agentic execution, cross-program learning, and rapid redirection while keeping consequential authority outside the agents being governed.
+      authority_root_ref: AC-OWNER
+      effective_at: '2026-07-22T00:00:00Z'
+    relations:
+      parent:
+      - SC-COL
+      contains:
+      - SC-MIS
+    provenance:
+    - M06
+    custody: product/factory/themes.md — owner-authored steering config; revised 2026-08-28 by owner decision
+  - id: SC-MIS
+    construct: Scope
+    version: 1
+    fields:
+      scope_type: mission
+      name: wfh-008 — MetaHarness architecture and ecosystem dependency analysis
+      objective: static architecture, dependency and authority account of ruvnet/metaharness at one pinned commit, as input to a proposed Jurati architecture
+      authority_root_ref: AC-OWNER
+      effective_at: '2026-08-28T11:45:42Z'
+      expires_at: '2026-08-28T15:13:04Z'
+    relations:
+      parent:
+      - SC-PROG
+      contains:
+      - SC-TEAM
+    provenance:
+    - R01
+    - R05
+    custody: 'three surfaces: Issue #66 (forge), cycle topic wfh-008 (Unimatrix), product/research/wfh-008/ (git)'
+    evidence_note: one mission carried three identifiers on three surfaces; the model gives it one scope_id, which is the correct compression
+  - id: SC-TEAM
+    construct: Scope
+    version: 1
+    fields:
+      scope_type: team
+      name: wfh-008 delegated specialist composition
+      objective: seven disjoint research workstreams plus two independent coverage audits, one correction pass, one synthesis and one advisory review
+      authority_root_ref: AC-OWNER
+      effective_at: '2026-08-28T12:27:15Z'
+      expires_at: '2026-08-28T15:13:04Z'
+    relations:
+      parent:
+      - SC-MIS
+    provenance:
+    - R01
+    - R05
+    custody: composition is asserted by the leader's Issue comments and by the delegation record; no roster artifact exists
+    evidence_note: 'authority_root_ref is forced to AC-OWNER. A nested team Scope holds no undelegated authority, so the field is either non-informative (name the collective root) or false (name the leader). Pressure PR-SCOPE-AUTHORITY-ROOT.
+
+      '
+  Goal:
+  - id: GO-WFH
+    construct: Goal
+    version: 1
+    fields:
+      statement: 'Establish a manageable common operating model for a distributed, continually improving agentic organization: centralize intent, constraints, consequential decisions and institutional memory; distribute reasoning, exploration, planning, communication and reversible execution.'
+      scope_ref: SC-PROG
+      success_criteria: The organization turns centralized intent into distributed governed work, forms capabilities and teams, communicates across programs, preserves institutional memory and redirects quickly, without granting workers authority to rewrite their own rules.
+      claim_floor: []
+      north_star: []
+      lifecycle_state: active
+    relations:
+      directs:
+      - UN-RUN
+    provenance:
+    - M06
+    evidence_note: 'claim_floor is empty. The theme names no Unimatrix capability id. `required: true` on a list<> type does not say whether an empty list satisfies it (PR-LIST-REQUIRED).
+
+      '
+  - id: GO-JURATI-SUBSTRATE
+    construct: Goal
+    version: 1
+    fields:
+      statement: Inform the smallest defensible personal-OS / Jurati substrate.
+      scope_ref: SC-PROG
+      success_criteria: A proposer of the (proposed) jurati-arch-002 architecture has an evidence-graded account of which candidate mechanisms are reusable, which are inseparable from their origin runtime, and which are portable only as concepts.
+      claim_floor: []
+      north_star: []
+      lifecycle_state: active
+    relations:
+      directs:
+      - UN-RUN
+      - UN-SYNTH
+      - UN-RELEVANCE
+    provenance:
+    - R01
+    evidence_note: 'The run''s named capability target, "proposed jurati-arch-002", is deliberately NOT instantiated as a Capability. It had no identity, no observable_behavior and no done_when in the alphabet, and V5 requires all three. See PR-CAPABILITY-ABSENT.
+
+      '
+  Capability: []
+  Actor:
+  - id: AC-OWNER
+    construct: Actor
+    fields:
+      name: repository owner (dug-21)
+      actor_type: human
+      declared_identity: dug-21
+      lifecycle_state: active
+    relations:
+      holds_role:
+      - RO-OWNER
+      receives: []
+    provenance:
+    - R05
+    - R06
+    custody: GitHub account dug-21; git identities observed as 'Doug Faist', 'dug-21 <angryweed@gmail.com>'
+    evidence_note: three distinct identity strings across two custody stores map to one Actor; declared_identity is a single text field (PR-ACTOR-IDENTITY-SINGULAR)
+  - id: AC-COORD
+    construct: Actor
+    fields:
+      name: theme-coordinator
+      actor_type: agent
+      declared_identity: theme-coordinator
+      lifecycle_state: active
+    relations:
+      holds_role:
+      - RO-THEME-COORD
+      has_skill:
+      - SK-THEME-PORTFOLIO-STEERING
+      - SK-DELEGATED-RUN-LAUNCH
+      - SK-SURPRISE-AND-STOP-GOVERNANCE
+      - SK-HUMAN-DECISION-INTERFACE
+      - SK-GIT-AND-ISSUE-OPS
+      receives:
+      - DL-COORD-STANDING
+    provenance:
+    - R05
+    - T01
+  - id: AC-LEAD-1
+    construct: Actor
+    fields:
+      name: research-leader (original, Codex-platform session)
+      actor_type: agent
+      declared_identity: research-leader
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-RESEARCH-LEADER
+      has_skill:
+      - SK-RUN-ORCHESTRATION
+      - SK-PHASE-GATING
+      - SK-GIT-AND-ISSUE-OPS
+      - SK-BUDGET-CONTROL
+      receives:
+      - DL-RUN-1
+    provenance:
+    - R05
+    evidence_note: terminated by platform credit exhaustion mid-gate; no actor-issued termination
+  - id: AC-LEAD-2
+    construct: Actor
+    fields:
+      name: research-leader (replacement)
+      actor_type: agent
+      declared_identity: research-leader
+      lifecycle_state: active
+    relations:
+      holds_role:
+      - RO-RESEARCH-LEADER
+      has_skill:
+      - SK-RUN-ORCHESTRATION
+      - SK-PHASE-GATING
+      - SK-GIT-AND-ISSUE-OPS
+      - SK-BUDGET-CONTROL
+      receives:
+      - DL-RUN-2
+    provenance:
+    - R05
+    evidence_note: shares declared_identity with AC-LEAD-1; Actor.open [replacement and continuity] is exercised, not resolved
+  - id: AC-RES-W1
+    construct: Actor
+    fields:
+      name: wfh-008 W1 researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-W1
+    provenance:
+    - R02
+    - R05
+  - id: AC-RES-W2
+    construct: Actor
+    fields:
+      name: wfh-008 W2 researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-W2
+    provenance:
+    - R02
+    - R05
+  - id: AC-RES-W3
+    construct: Actor
+    fields:
+      name: wfh-008 W3 researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-W3
+    provenance:
+    - R02
+    - R05
+  - id: AC-RES-W4
+    construct: Actor
+    fields:
+      name: wfh-008 W4 researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-W4
+    provenance:
+    - R02
+    - R05
+  - id: AC-RES-W5
+    construct: Actor
+    fields:
+      name: wfh-008 W5 researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-W5
+    provenance:
+    - R02
+    - R05
+  - id: AC-RES-W6
+    construct: Actor
+    fields:
+      name: wfh-008 W6 researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-W6
+    provenance:
+    - R02
+    - R05
+  - id: AC-RES-W7
+    construct: Actor
+    fields:
+      name: wfh-008 W7 researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-W7
+    provenance:
+    - R02
+    - R05
+  - id: AC-AUD-R1
+    construct: Actor
+    fields:
+      name: round-1 coverage auditor
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-COVERAGE-AUDITOR
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-AUD-R1
+    provenance:
+    - R03
+    evidence_note: declared_identity is factory-researcher, not factory-validator; the protocol reserves factory-validator for validated runs only
+  - id: AC-AUD-R2
+    construct: Actor
+    fields:
+      name: round-2 coverage re-auditor
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-COVERAGE-AUDITOR
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-AUD-R2
+    provenance:
+    - R03
+  - id: AC-RWK-P1
+    construct: Actor
+    fields:
+      name: rework pass 1 researcher (not individuated in the alphabet)
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-RWK-P1-W1
+      - DL-RWK-P1-W2
+      - DL-RWK-P1-W4
+    provenance:
+    - R05
+    evidence_note: the alphabet names no individual; the work was orphaned uncommitted when AC-LEAD-1's session died and was committed by AC-COORD
+  - id: AC-RWK-P2A
+    construct: Actor
+    fields:
+      name: rework pass 2 researcher — W1/W2
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-RWK-P2A
+    provenance:
+    - R05
+  - id: AC-RWK-P2B
+    construct: Actor
+    fields:
+      name: rework pass 2 researcher — W4
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-RWK-P2B
+    provenance:
+    - R05
+  - id: AC-RWK-P2C
+    construct: Actor
+    fields:
+      name: rework pass 2 researcher — W6
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-RWK-P2C
+    provenance:
+    - R05
+  - id: AC-RWK-P2D
+    construct: Actor
+    fields:
+      name: rework pass 2 researcher — W5/W7
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-RWK-P2D
+    provenance:
+    - R05
+  - id: AC-CORR
+    construct: Actor
+    fields:
+      name: pre-distillation corrections researcher
+      actor_type: agent
+      declared_identity: factory-researcher
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-RESEARCHER
+      has_skill:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+      receives:
+      - DL-CORR
+    provenance:
+    - R05
+  - id: AC-CUR
+    construct: Actor
+    fields:
+      name: factory-curator
+      actor_type: agent
+      declared_identity: factory-curator
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-FACTORY-CURATOR
+      has_skill:
+      - SK-KNOWLEDGE-CURATION
+      - SK-FIREWALL-ENFORCEMENT
+      - SK-GRAPH-AUTHORING
+      receives:
+      - DL-CUR-CLOSE
+      - DL-CUR-DYN
+    provenance:
+    - R04
+    - R05
+    - T02
+  - id: AC-GOALOWNER
+    construct: Actor
+    fields:
+      name: goal-owner
+      actor_type: agent
+      declared_identity: goal-owner
+      lifecycle_state: terminated
+    relations:
+      holds_role:
+      - RO-GOAL-OWNER
+      has_skill:
+      - SK-RELEVANCE-REVIEW
+      - SK-STEP-FUNCTION-REVIEW
+      - SK-HYPOTHESIS-TRIAGE
+      receives:
+      - DL-GOALOWNER-DYN
+    provenance:
+    - R04
+  - id: AC-GIT
+    construct: Actor
+    fields:
+      name: git (local object store and origin remote)
+      actor_type: deterministic-component
+      declared_identity: git
+      lifecycle_state: active
+    relations: {}
+    provenance:
+    - R06
+    evidence_note: records two attribution fields (author, committer); the rebase preserved author and changed committer
+  - id: AC-FORGE
+    construct: Actor
+    fields:
+      name: github.com — dug-21/arch-research issue service
+      actor_type: service
+      declared_identity: github.com
+      lifecycle_state: active
+    relations: {}
+    provenance:
+    - R05
+  - id: AC-UNI
+    construct: Actor
+    fields:
+      name: Unimatrix knowledge service (MCP)
+      actor_type: service
+      declared_identity: unimatrix
+      lifecycle_state: active
+    relations: {}
+    provenance:
+    - R05
+    - T02
+  Skill:
+  - id: SK-READ-ONLY-RESEARCH
+    construct: Skill
+    version: 1
+    fields:
+      name: read_only_research
+      work_class: bounded read-only investigation of one question-partition
+      definition_record_ref: RC-METHOD-AGENT-RESEARCHER
+      required_tool_classes:
+      - repository-read
+      - read-only-knowledge-query
+    relations:
+      held_by:
+      - AC-RES-W1
+      - AC-RES-W2
+      - AC-RES-W3
+      - AC-RES-W4
+      - AC-RES-W5
+      - AC-RES-W6
+      - AC-RES-W7
+      - AC-AUD-R1
+      - AC-AUD-R2
+      - AC-RWK-P1
+      - AC-RWK-P2A
+      - AC-RWK-P2B
+      - AC-RWK-P2C
+      - AC-RWK-P2D
+      - AC-CORR
+      required_by:
+      - RO-FACTORY-RESEARCHER
+      - RO-COVERAGE-AUDITOR
+      - WF-RESEARCH-SCOPE
+    provenance:
+    - T01
+  - id: SK-FINDINGS-AUTHORING
+    construct: Skill
+    version: 1
+    fields:
+      name: findings_authoring
+      work_class: authoring an evidence-labelled, cited findings record
+      definition_record_ref: RC-METHOD-AGENT-RESEARCHER
+      required_tool_classes:
+      - file-write
+    relations:
+      held_by:
+      - AC-RES-W1
+      - AC-RES-W2
+      - AC-RES-W3
+      - AC-RES-W4
+      - AC-RES-W5
+      - AC-RES-W6
+      - AC-RES-W7
+      - AC-AUD-R1
+      - AC-AUD-R2
+      - AC-RWK-P1
+      - AC-RWK-P2A
+      - AC-RWK-P2B
+      - AC-RWK-P2C
+      - AC-RWK-P2D
+      - AC-CORR
+      required_by:
+      - RO-FACTORY-RESEARCHER
+      - RO-COVERAGE-AUDITOR
+    provenance:
+    - T01
+  - id: SK-RUN-ORCHESTRATION
+    construct: Skill
+    version: 1
+    fields:
+      name: run_orchestration
+      work_class: spawning and sequencing specialists against a protocol
+    relations:
+      held_by:
+      - AC-LEAD-1
+      - AC-LEAD-2
+      required_by:
+      - RO-RESEARCH-LEADER
+      - WF-RESEARCH-SCOPE
+    provenance:
+    - T01
+  - id: SK-PHASE-GATING
+    construct: Skill
+    version: 1
+    fields:
+      name: phase_gating
+      work_class: operating blocking and advisory gates and routing their consequences
+    relations:
+      held_by:
+      - AC-LEAD-1
+      - AC-LEAD-2
+      required_by:
+      - RO-RESEARCH-LEADER
+    provenance:
+    - T01
+  - id: SK-GIT-AND-ISSUE-OPS
+    construct: Skill
+    version: 1
+    fields:
+      name: git_and_issue_ops
+      work_class: repository and forge operations for a run
+      required_tool_classes:
+      - git
+      - forge-api
+    relations:
+      held_by:
+      - AC-LEAD-1
+      - AC-LEAD-2
+      - AC-COORD
+      required_by:
+      - RO-RESEARCH-LEADER
+    provenance:
+    - T01
+  - id: SK-BUDGET-CONTROL
+    construct: Skill
+    version: 1
+    fields:
+      name: budget_control
+      work_class: keeping a run inside its cost and compute ceiling
+    relations:
+      held_by:
+      - AC-LEAD-1
+      - AC-LEAD-2
+      required_by:
+      - RO-RESEARCH-LEADER
+    provenance:
+    - T01
+    evidence_note: the historical failure — credit exhaustion mid-run — is the clearest evidence that this Skill had no evidence_refs, no grade and no enforcement
+  - id: SK-KNOWLEDGE-CURATION
+    construct: Skill
+    version: 1
+    fields:
+      name: knowledge_curation
+      work_class: distilling findings into reusable graded knowledge
+    relations:
+      held_by:
+      - AC-CUR
+      required_by:
+      - RO-FACTORY-CURATOR
+    provenance:
+    - T01
+  - id: SK-FIREWALL-ENFORCEMENT
+    construct: Skill
+    version: 1
+    fields:
+      name: firewall_enforcement
+      work_class: refusing a proven grade without an attached artifact at the claim's altitude
+    relations:
+      held_by:
+      - AC-CUR
+      required_by:
+      - RO-FACTORY-CURATOR
+    provenance:
+    - T01
+    evidence_note: named a competence, exercised as a convention; no EffectBoundary refuses a grade write
+  - id: SK-GRAPH-AUTHORING
+    construct: Skill
+    version: 1
+    fields:
+      name: graph_authoring
+      work_class: storing, correcting, tagging and linking knowledge nodes
+      required_tool_classes:
+      - knowledge-write
+    relations:
+      held_by:
+      - AC-CUR
+      required_by:
+      - RO-FACTORY-CURATOR
+    provenance:
+    - T01
+  - id: SK-RELEVANCE-REVIEW
+    construct: Skill
+    version: 1
+    fields:
+      name: relevance_review
+      work_class: challenging a synthesis for drift against the goal
+    relations:
+      held_by:
+      - AC-GOALOWNER
+      required_by:
+      - RO-GOAL-OWNER
+    provenance:
+    - T01
+  - id: SK-STEP-FUNCTION-REVIEW
+    construct: Skill
+    version: 1
+    fields:
+      name: step_function_review
+      work_class: detecting an under-reached level-up in a synthesis
+    relations:
+      held_by:
+      - AC-GOALOWNER
+      required_by:
+      - RO-GOAL-OWNER
+    provenance:
+    - T01
+  - id: SK-HYPOTHESIS-TRIAGE
+    construct: Skill
+    version: 1
+    fields:
+      name: hypothesis_triage
+      work_class: adopt/assemble/build/park cut over divergent candidates
+    relations:
+      held_by:
+      - AC-GOALOWNER
+      required_by:
+      - RO-GOAL-OWNER
+    provenance:
+    - T01
+    evidence_note: held but not exercised in this case; no triage occurred
+  - id: SK-THEME-PORTFOLIO-STEERING
+    construct: Skill
+    version: 1
+    fields:
+      name: theme_portfolio_steering
+      work_class: maintaining a theme frontier and selecting bounded work
+    relations:
+      held_by:
+      - AC-COORD
+      required_by:
+      - RO-THEME-COORD
+    provenance:
+    - T01
+  - id: SK-DELEGATED-RUN-LAUNCH
+    construct: Skill
+    version: 1
+    fields:
+      name: delegated_run_launch
+      work_class: scoping a run and handing it to a leader
+    relations:
+      held_by:
+      - AC-COORD
+      required_by:
+      - RO-THEME-COORD
+    provenance:
+    - T01
+  - id: SK-SURPRISE-AND-STOP-GOVERNANCE
+    construct: Skill
+    version: 1
+    fields:
+      name: surprise_and_stop_governance
+      work_class: escalating premise-changing evidence and honouring human STOP
+    relations:
+      held_by:
+      - AC-COORD
+      required_by:
+      - RO-THEME-COORD
+    provenance:
+    - T01
+  - id: SK-HUMAN-DECISION-INTERFACE
+    construct: Skill
+    version: 1
+    fields:
+      name: human_decision_interface
+      work_class: reducing a run's state to a short human decision
+    relations:
+      held_by:
+      - AC-COORD
+      required_by:
+      - RO-THEME-COORD
+    provenance:
+    - T01
+  Role:
+  - id: RO-OWNER
+    construct: Role
+    version: 1
+    fields:
+      name: repository owner
+      responsibility: hold the collective authority root; approve scopes; rule human gates; set direction
+      independence_constraints: []
+    relations:
+      assigned_to:
+      - AC-OWNER
+      receives: []
+      requires: []
+    provenance:
+    - M06
+    - R05
+  - id: RO-THEME-COORD
+    construct: Role
+    version: 1
+    fields:
+      name: theme-coordinator
+      responsibility: own one theme; reconstruct state; scope and delegate bounded runs; never execute a run or rule its own gate
+      independence_constraints:
+      - never executes a run it scoped
+      - never rules its own firewall gate
+      - never writes Unimatrix knowledge
+    relations:
+      assigned_to:
+      - AC-COORD
+      receives:
+      - DL-COORD-STANDING
+      requires:
+      - SK-THEME-PORTFOLIO-STEERING
+      - SK-DELEGATED-RUN-LAUNCH
+      - SK-SURPRISE-AND-STOP-GOVERNANCE
+      - SK-HUMAN-DECISION-INTERFACE
+    provenance:
+    - T01
+  - id: RO-RESEARCH-LEADER
+    construct: Role
+    version: 1
+    fields:
+      name: research-leader
+      responsibility: execute a run's protocol; spawn specialists; issue cycle events; manage gates, budget, git and the Issue
+      independence_constraints:
+      - never generates research content
+      - never writes knowledge nodes
+      - cannot approve its own scope, coverage or synthesis
+    relations:
+      assigned_to:
+      - AC-LEAD-1
+      - AC-LEAD-2
+      receives:
+      - DL-RESEARCH-LEADER-STANDING
+      requires:
+      - SK-RUN-ORCHESTRATION
+      - SK-PHASE-GATING
+      - SK-GIT-AND-ISSUE-OPS
+      - SK-BUDGET-CONTROL
+    provenance:
+    - T01
+  - id: RO-FACTORY-RESEARCHER
+    construct: Role
+    version: 1
+    fields:
+      name: factory-researcher
+      responsibility: investigate one workstream partition read-only and produce a findings record
+      independence_constraints:
+      - no Unimatrix writes
+      - never asserts proven
+    relations:
+      assigned_to:
+      - AC-RES-W1
+      - AC-RES-W2
+      - AC-RES-W3
+      - AC-RES-W4
+      - AC-RES-W5
+      - AC-RES-W6
+      - AC-RES-W7
+      - AC-RWK-P1
+      - AC-RWK-P2A
+      - AC-RWK-P2B
+      - AC-RWK-P2C
+      - AC-RWK-P2D
+      - AC-CORR
+      receives:
+      - DL-RESEARCHER-STANDING
+      requires:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+    provenance:
+    - T01
+  - id: RO-COVERAGE-AUDITOR
+    construct: Role
+    version: 1
+    fields:
+      name: coverage auditor
+      responsibility: independently rule the blocking coverage gate PASS | REWORKABLE | SCOPE-FAIL against the scope's predicates
+      independence_constraints:
+      - authored none of the audited findings
+      - authored none of the prior round's coverage audit
+      - may not advance the phase or rewrite findings
+    relations:
+      assigned_to:
+      - AC-AUD-R1
+      - AC-AUD-R2
+      receives: []
+      requires:
+      - SK-READ-ONLY-RESEARCH
+      - SK-FINDINGS-AUTHORING
+    provenance:
+    - R03
+    - R05
+    evidence_note: this Role has no definition file under .claude/agents/; it is a duty assigned to a factory-researcher. The protocol's factory-validator is reserved for validated runs.
+  - id: RO-FACTORY-CURATOR
+    construct: Role
+    version: 1
+    fields:
+      name: factory-curator
+      responsibility: sole writer of knowledge nodes; distil findings; hold the evidence firewall
+      independence_constraints:
+      - single writer across the funnel
+      - never advances proven without a verified artifact
+    relations:
+      assigned_to:
+      - AC-CUR
+      receives:
+      - DL-CUR-STANDING
+      requires:
+      - SK-KNOWLEDGE-CURATION
+      - SK-FIREWALL-ENFORCEMENT
+      - SK-GRAPH-AUTHORING
+    provenance:
+    - T01
+  - id: RO-GOAL-OWNER
+    construct: Role
+    version: 1
+    fields:
+      name: goal-owner
+      responsibility: advisory drift and under-reach review at the funnel's neck
+      independence_constraints:
+      - advisory only
+      - never modifies the graph
+      - cannot act on its own advice
+    relations:
+      assigned_to:
+      - AC-GOALOWNER
+      receives:
+      - DL-GOALOWNER-STANDING
+      requires:
+      - SK-RELEVANCE-REVIEW
+      - SK-STEP-FUNCTION-REVIEW
+      - SK-HYPOTHESIS-TRIAGE
+    provenance:
+    - T01
+  Workflow:
+  - id: WF-RESEARCH-SCOPE
+    construct: Workflow
+    version: 1
+    fields:
+      name: research-scope
+      method_statement: 'The proving-grounds run: research ONE capability to a graded technology landscape (directional/empirical) or prove a technology (validated). Phases scope -> tech-discovery -> [feasibility] -> synthesis. INIT opens three surfaces first: Issue, cycle, git.'
+      owner_scope_ref: SC-COL
+      unit_kinds:
+      - research-scope-run
+      - scope-definition
+      - research-workstream
+      - coverage-audit
+      - pre-distillation-correction
+      - synthesis
+      - relevance-review
+      - run-close
+      dependency_rules:
+      - scope-definition precedes every research-workstream
+      - every research-workstream precedes coverage-audit
+      - coverage-audit PASS precedes synthesis
+      - synthesis precedes relevance-review
+      - relevance-review and the human synthesis gate precede run-close
+      - feasibility is SKIPPED for directional runs
+      - REWORK is bounded at two rounds; the third is SCOPE-FAIL
+      state_vocabulary:
+      - scoped
+      - researching
+      - done
+      - scope
+      - tech-discovery
+      - feasibility
+      - synthesis
+      - closed
+      definition_custodian_ref: AC-OWNER
+    relations:
+      applies_to:
+      - GO-WFH
+      - GO-JURATI-SUBSTRATE
+      requires:
+      - SK-READ-ONLY-RESEARCH
+      - SK-RUN-ORCHESTRATION
+      binds:
+      - GT-SCOPE
+      - GT-COVERAGE
+      - GT-SYNTHESIS
+      - GT-FIREWALL
+      governs:
+      - UN-RUN
+      - UN-SCOPE
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      - UN-AUDIT-R1
+      - UN-AUDIT-R2
+      - UN-CORRECTIONS
+      - UN-SYNTH
+      - UN-RELEVANCE
+      - UN-CLOSE
+    provenance:
+    - T01
+    - R01
+    - R05
+    custody: .claude/workflow/research-scope.md, sha256 bd3fa02b761497303e4c72f3edd3c1e98b6eb31427fd9f10b12633c8d6cd5648 — inside the same repository the governed agents write to; no CODEOWNERS file exists
+    evidence_note: 'definition_custodian_ref is set to AC-OWNER on repository-ownership grounds only. The file''s most recent revision (9d7806a, 2026-08-27) was authored by the agent identity ''Claude Opus 4.8'', i.e. by the same actor class the definition governs. See PR-METHOD-CUSTODY.
+
+      '
+    _approx:
+      definition_custodian_ref: PR-METHOD-CUSTODY
+  Delegation:
+  - id: DL-COORD-STANDING
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A4
+      effect_grants:
+      - worktree-write
+      - repo-write
+      - forge-write
+      - cycle-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+        max_concurrent_runs: 1
+        max_autonomous_follow_on_depth: 2
+        allowed_confidence:
+        - directional
+      escalation_conditions:
+      - theme_revision
+      - material_spend
+      - validated_scope
+      - build_recommendation
+      - cross_theme_dependency
+      - proven_grade_change
+      effective_at: '2026-07-22T00:00:00Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-OWNER
+      grantee:
+      - RO-THEME-COORD
+      scope:
+      - SC-PROG
+      unit: []
+      derived_from: []
+      governs: []
+      enforced_by: []
+    provenance:
+    - M06
+    custody: product/factory/themes.md coordinator block — owner-authored
+    evidence_note: 'The single best V5 fit in the case: the theme''s `coordinator:` block maps field-for-field onto autonomy_tier / effect_grants / resource_ceiling / escalation_conditions. enforced_by is empty — nothing refuses a spend or a concurrent run. Delegation''s own rule applies: "without a boundary authority is declared only." autonomy_tier A4 carries status insufficient-evidence in M01.
+
+      '
+  - id: DL-RESEARCH-LEADER-STANDING
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A2
+      effect_grants:
+      - worktree-write
+      - repo-write
+      - forge-write
+      - cycle-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - scope expansion
+      - premise change
+      - material spend
+      effective_at: '2026-07-08T00:00:00Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-OWNER
+      grantee:
+      - RO-RESEARCH-LEADER
+      scope:
+      - SC-COL
+      unit: []
+      derived_from: []
+      governs: []
+      enforced_by: []
+    provenance:
+    - T01
+  - id: DL-RESEARCHER-STANDING
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - cross-boundary conclusion
+      - boundary expansion
+      effective_at: '2026-07-08T00:00:00Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-OWNER
+      grantee:
+      - RO-FACTORY-RESEARCHER
+      scope:
+      - SC-COL
+      unit: []
+      derived_from: []
+      governs: []
+      enforced_by: []
+    provenance:
+    - T01
+  - id: DL-CUR-STANDING
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A2
+      effect_grants:
+      - worktree-write
+      - repo-write
+      - graph-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+        grade_ceiling: claimed
+      escalation_conditions:
+      - proven grade movement
+      - capability creation
+      effective_at: '2026-07-08T00:00:00Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-OWNER
+      grantee:
+      - RO-FACTORY-CURATOR
+      scope:
+      - SC-COL
+      unit: []
+      derived_from: []
+      governs: []
+      enforced_by: []
+    provenance:
+    - T01
+    evidence_note: the single-writer rule is the strongest custody claim in the garage and has no enforcement point; any actor may call context_store
+  - id: DL-GOALOWNER-STANDING
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A0
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions: []
+      effective_at: '2026-07-08T00:00:00Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-OWNER
+      grantee:
+      - RO-GOAL-OWNER
+      scope:
+      - SC-COL
+      unit: []
+      derived_from: []
+      governs: []
+      enforced_by: []
+    provenance:
+    - T01
+    evidence_note: 'A0 as parsed: analyze, evaluate or recommend without discretionary work initiation. Exact fit.'
+  - id: DL-RUN-1
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A2
+      effect_grants:
+      - worktree-write
+      - repo-write
+      - forge-write
+      - cycle-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - scope expansion
+      - premise change
+      effective_at: '2026-08-28T11:45:42Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-COORD
+      grantee:
+      - AC-LEAD-1
+      scope:
+      - SC-MIS
+      unit:
+      - UN-RUN
+      derived_from:
+      - DL-COORD-STANDING
+      governs:
+      - AT-RUN-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R05
+  - id: DL-RUN-2
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A2
+      effect_grants:
+      - worktree-write
+      - repo-write
+      - forge-write
+      - cycle-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - scope expansion
+      - premise change
+      effective_at: '2026-08-28T13:28:56Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-COORD
+      grantee:
+      - AC-LEAD-2
+      scope:
+      - SC-MIS
+      unit:
+      - UN-RUN
+      derived_from:
+      - DL-COORD-STANDING
+      governs:
+      - AT-RUN-2
+      enforced_by: []
+    provenance:
+    - R05
+  - id: DL-SCOPE
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - boundary expansion
+      effective_at: '2026-08-28T11:45:42Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-LEAD-1
+      scope:
+      - SC-MIS
+      unit:
+      - UN-SCOPE
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-SCOPE-1
+      - AT-SCOPE-2
+      enforced_by: []
+    provenance:
+    - R01
+    - R05
+    evidence_note: grantor and grantee are the same Actor; V5 does not forbid self-delegation and no rule detects it
+  - id: DL-W1
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - cross-boundary conclusion
+      - target outside ruvnet/metaharness
+      effective_at: '2026-08-28T12:27:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RES-W1
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W1
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W1-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R02
+    - R05
+  - id: DL-W2
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - cross-boundary conclusion
+      effective_at: '2026-08-28T12:27:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RES-W2
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W2
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W2-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R02
+  - id: DL-W3
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - cross-boundary conclusion
+      effective_at: '2026-08-28T12:27:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RES-W3
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W3
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W3-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R02
+  - id: DL-W4
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - cross-boundary conclusion
+      effective_at: '2026-08-28T12:27:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RES-W4
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W4
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W4-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R02
+  - id: DL-W5
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - adoption or design recommendation
+      effective_at: '2026-08-28T12:27:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RES-W5
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W5
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W5-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R02
+  - id: DL-W6
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - intrusive or dynamic security testing
+      effective_at: '2026-08-28T12:27:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RES-W6
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W6
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W6-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R02
+  - id: DL-W7
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - cross-boundary conclusion
+      effective_at: '2026-08-28T12:27:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RES-W7
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W7
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W7-1
+      enforced_by: []
+    provenance:
+    - R01
+    - R02
+  - id: DL-AUD-R1
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - boundary-expanding discovery
+      effective_at: '2026-08-28T12:45:25Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-AUD-R1
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-AUDIT-R1
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-AUD-R1-1
+      enforced_by: []
+    provenance:
+    - R03
+    evidence_note: 'autonomy A1 for judgment, effect_grants restricted to worktree-write: V5 separates the two axes cleanly, resolving a strain wfh-010 W1 recorded as ''A1 judgment / A0 effects'''
+  - id: DL-AUD-R2
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - boundary-expanding discovery
+      effective_at: '2026-08-28T13:28:56Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-AUD-R2
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-AUDIT-R2
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-AUD-R2-1
+      - AT-AUD-R2-2
+      enforced_by: []
+    provenance:
+    - R04
+    - R05
+  - id: DL-RWK-P1-W1
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T12:50:22Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RWK-P1
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W1
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W1-2
+      enforced_by: []
+    provenance:
+    - R03
+    - R05
+    evidence_note: ONE historical rework directive covering W1, W2 and W4 had to be split into three Delegations because Delegation.unit is cardinality 0..1. See PR-DELEGATION-UNIT-CARDINALITY.
+  - id: DL-RWK-P1-W2
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T12:50:22Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RWK-P1
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W2
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W2-2
+      enforced_by: []
+    provenance:
+    - R03
+    - R05
+  - id: DL-RWK-P1-W4
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T12:50:22Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-1
+      grantee:
+      - AC-RWK-P1
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W4
+      derived_from:
+      - DL-RUN-1
+      governs:
+      - AT-W4-2
+      enforced_by: []
+    provenance:
+    - R03
+    - R05
+  - id: DL-RWK-P2A
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T13:39:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-RWK-P2A
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W1
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-W1-3
+      enforced_by: []
+    provenance:
+    - R05
+    evidence_note: split from a single W1+W2 grant; see PR-DELEGATION-UNIT-CARDINALITY
+  - id: DL-RWK-P2A2
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T13:39:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-RWK-P2A
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W2
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-W2-3
+      enforced_by: []
+    provenance:
+    - R05
+  - id: DL-RWK-P2B
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T13:39:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-RWK-P2B
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W4
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-W4-3
+      enforced_by: []
+    provenance:
+    - R05
+  - id: DL-RWK-P2C
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T13:39:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-RWK-P2C
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W6
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-W6-2
+      enforced_by: []
+    provenance:
+    - R05
+  - id: DL-RWK-P2D
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T13:39:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-RWK-P2D
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W5
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-W5-2
+      enforced_by: []
+    provenance:
+    - R05
+    evidence_note: split from a single W5+W7 grant; see PR-DELEGATION-UNIT-CARDINALITY
+  - id: DL-RWK-P2D2
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - repair outside the named list
+      effective_at: '2026-08-28T13:39:15Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-RWK-P2D
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-W7
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-W7-2
+      enforced_by: []
+    provenance:
+    - R05
+  - id: DL-CLOSE
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A2
+      effect_grants:
+      - worktree-write
+      - repo-write
+      - forge-write
+      - cycle-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - proven grade movement
+      effective_at: '2026-08-28T15:13:03Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-OWNER
+      grantee:
+      - AC-LEAD-2
+      scope:
+      - SC-MIS
+      unit:
+      - UN-CLOSE
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-CLOSE-1
+      enforced_by: []
+    provenance:
+    - R05
+    evidence_note: 'Corrected during validation: the first encoding gave the leader''s close grant `graph-write`, which its parent DL-RUN-2 does not carry. The mechanical I17 attenuation check rejected it. The #320/#321 writes actually ran under the curator''s standing grant — DL-CUR-CLOSE.'
+  - id: DL-CORR
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A1
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions:
+      - a correction that changes a finding's substance
+      effective_at: '2026-08-28T13:58:31Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-CORR
+      scope:
+      - SC-TEAM
+      unit:
+      - UN-CORRECTIONS
+      derived_from:
+      - DL-RUN-2
+      governs:
+      - AT-CORR-1
+      enforced_by: []
+    provenance:
+    - R05
+  - id: DL-CUR-DYN
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A2
+      effect_grants:
+      - worktree-write
+      - graph-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+        grade_ceiling: claimed
+      escalation_conditions:
+      - proven grade movement
+      - capability creation
+      - Prerequisite edge without a capability target
+      effective_at: '2026-08-28T14:11:07Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-CUR
+      scope:
+      - SC-MIS
+      unit:
+      - UN-SYNTH
+      derived_from:
+      - DL-CUR-STANDING
+      governs:
+      - AT-SYNTH-1
+      enforced_by: []
+    provenance:
+    - R04
+    - R05
+  - id: DL-GOALOWNER-DYN
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A0
+      effect_grants:
+      - worktree-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+      escalation_conditions: []
+      effective_at: '2026-08-28T14:25:29Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-LEAD-2
+      grantee:
+      - AC-GOALOWNER
+      scope:
+      - SC-MIS
+      unit:
+      - UN-RELEVANCE
+      derived_from:
+      - DL-GOALOWNER-STANDING
+      governs:
+      - AT-REL-1
+      enforced_by: []
+    provenance:
+    - R04
+  - id: DL-CUR-CLOSE
+    construct: Delegation
+    version: 1
+    fields:
+      autonomy_tier: A2
+      effect_grants:
+      - worktree-write
+      - graph-write
+      resource_ceiling:
+        compute: none
+        external_cost: 0
+        grade_ceiling: claimed
+      escalation_conditions:
+      - proven grade movement
+      - capability creation
+      effective_at: '2026-08-28T15:13:03Z'
+      definition_custodian_ref: AC-OWNER
+    relations:
+      grantor:
+      - AC-OWNER
+      grantee:
+      - AC-CUR
+      scope:
+      - SC-MIS
+      unit:
+      - UN-CLOSE
+      derived_from:
+      - DL-CUR-STANDING
+      governs:
+      - AT-CLOSE-1
+      enforced_by: []
+    provenance:
+    - R05
+    evidence_note: 'carries the close-time writes of #320 and #321; attenuates cleanly from DL-CUR-STANDING'
+  Gate:
+  - id: GT-SCOPE
+    construct: Gate
+    version: 1
+    fields:
+      subject_rule: the run's SCOPE.md at the commit named in the gate request
+      baseline_rule: the scope commit id posted in the Issue gate-request comment
+      eligible_evidence:
+      - the SCOPE.md content
+      - the leader's INIT surface report
+      missingness_policy: no discovery may begin before an explicit approval; silence is not approval
+      independence_predicate: the approver is the human owner and did not author the scope
+      procedure: judgment
+      bar: the directional boundary, workstream partition, evidence-label discipline and coverage rule are acceptable
+      allowed_outcomes:
+      - approved
+      - approved-with-amendment
+      - rejected
+      outcome_consequences:
+        approved: advance scope -> tech-discovery
+        approved-with-amendment: amend SCOPE.md by adaptation, then advance
+        rejected: state required scope changes; do not begin discovery
+      required_record_category: governance-decision-log
+      definition_custodian_ref: AC-OWNER
+    relations:
+      requires_assessor:
+      - RO-OWNER
+      bound_by:
+      - WF-RESEARCH-SCOPE
+      evaluates:
+      - UN-SCOPE
+    provenance:
+    - T01
+    - R05
+  - id: GT-COVERAGE
+    construct: Gate
+    version: 1
+    fields:
+      subject_rule: the run's findings set at the pinned rework commit, against the SCOPE's numbered coverage predicates
+      baseline_rule: the commit id of the findings under audit; each round re-pins
+      eligible_evidence:
+      - the findings records
+      - the auditor's own independent residue sweeps
+      - deterministic repository enumeration at the pinned target commit
+      missingness_policy: unresolved dynamic or provenance questions remain visible as gaps; they never become inferred closures; absence is never filled
+      independence_predicate: the assessor authored none of the audited findings and none of the prior round's coverage audit
+      procedure: judgment
+      bar: all six SCOPE coverage predicates discharged, and both residue sweeps dry against an assessor-run instrument
+      allowed_outcomes:
+      - PASS
+      - REWORKABLE
+      - SCOPE-FAIL
+      outcome_consequences:
+        PASS: tech-discovery closes; synthesis may begin
+        REWORKABLE: one bounded rework round; at most two rounds exist
+        SCOPE-FAIL: the run stops; the boundary is re-scoped
+      required_record_category: coverage-audit
+      definition_custodian_ref: AC-OWNER
+    relations:
+      requires_assessor:
+      - RO-COVERAGE-AUDITOR
+      bound_by:
+      - WF-RESEARCH-SCOPE
+      evaluates:
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+    provenance:
+    - T01
+    - R01
+    - R03
+    - R04
+    evidence_note: 'procedure is forced to `judgment`. The historical gate ran deterministic enumerations (git ls-files, set diffs, lock bijection) AND independent semantic judgment, and the auditor''s PASS turned on the judgment half. enum[deterministic, judgment] admits no mixed value. See PR-GATE-PROCEDURE.
+
+      '
+    _approx:
+      procedure: PR-GATE-PROCEDURE
+  - id: GT-SYNTHESIS
+    construct: Gate
+    version: 1
+    fields:
+      subject_rule: the run's REPORT.md and position, together with the goal-owner relevance review
+      baseline_rule: the synthesis commit ids posted in the Issue gate-request comment
+      eligible_evidence:
+      - REPORT.md
+      - reports/relevance.md
+      - the coverage PASS ruling
+      - the graph write disclosure
+      missingness_policy: the gap register travels with the recommendation rather than behind it
+      independence_predicate: the human owner authored neither the report nor the review
+      procedure: judgment
+      bar: the directional output is accepted as the run's result and the named dispositions are ruled
+      allowed_outcomes:
+      - accepted
+      - returned
+      outcome_consequences:
+        accepted: record the verdict, close the Issue, set status done, stop the cycle
+        returned: the run stays open for rework of the synthesis
+      required_record_category: governance-decision-log
+      definition_custodian_ref: AC-OWNER
+    relations:
+      requires_assessor:
+      - RO-OWNER
+      bound_by:
+      - WF-RESEARCH-SCOPE
+      evaluates:
+      - UN-SYNTH
+      - UN-CLOSE
+    provenance:
+    - T01
+    - R05
+  - id: GT-FIREWALL
+    construct: Gate
+    version: 1
+    fields:
+      subject_rule: a technology proposed for grade proven, and the artifact attached in proven_by
+      baseline_rule: the artifact's own commit or measurement pin
+      eligible_evidence:
+      - a verified, demonstrated-by-us artifact at the claim's altitude
+      missingness_policy: no artifact, no proven; missing evidence is never inferred as success
+      independence_predicate: the validator must not be the agent that built the artifact
+      procedure: deterministic
+      bar: an attached real artifact matching the claim's altitude, demonstrated by the organization
+      allowed_outcomes:
+      - proven
+      - partial
+      - rejected
+      outcome_consequences:
+        proven: grade advances and proven_by is attached
+        partial: grade partial
+        rejected: no grade movement
+      required_record_category: knowledge-node
+      definition_custodian_ref: AC-OWNER
+    relations:
+      requires_assessor:
+      - RO-FACTORY-CURATOR
+      bound_by:
+      - WF-RESEARCH-SCOPE
+      evaluates: []
+    provenance:
+    - T01
+    evidence_note: 'NEGATIVE TEST. Bound by the Workflow but never evaluated: feasibility was SKIPPED, no artifact existed, and no instance in this case depends on it. `evaluates: []` is the witness that the case does not rely on the firewall gate.
+
+      '
+  EffectBoundary:
+  - id: EB-UNIMATRIX
+    construct: EffectBoundary
+    fields:
+      name: Unimatrix knowledge service (MCP server)
+      effect_classes:
+      - graph-write
+      - cycle-write
+      custody: server process outside the calling agent; rejects on payload shape and, for context_store/context_correct, on absent identity
+      can_refuse: true
+    relations:
+      enforces: []
+    provenance:
+    - R05
+    - T02
+    evidence_note: 'The ONLY boundary in this case with a refusal receipt: five context_cycle phase-end calls were refused (one for a 512-character outcome cap, four for control characters), then one was performed. `enforces: []` is deliberate and load-bearing: the refusals were SCHEMA refusals, not authority refusals. Under I12 the case therefore demonstrates zero enforced authority.
+
+      '
+  Attempt:
+  - id: AT-SCOPE-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@7cf95b20876f19271758d5376ed3b296b3099a2f
+      started_at: '2026-08-28T11:45:42Z'
+      ended_at: '2026-08-28T11:49:58Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-SCOPE
+      actors:
+      - AC-LEAD-1
+      governed_by:
+      - DL-SCOPE
+      produces:
+      - RC-SCOPE
+    provenance:
+    - R06
+    - R05
+  - id: AT-SCOPE-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:02Z'
+      ended_at: '2026-08-28T12:27:15Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-SCOPE
+      actors:
+      - AC-LEAD-1
+      - AC-OWNER
+      governed_by:
+      - DL-SCOPE
+      produces:
+      - RC-SCOPE
+    provenance:
+    - R06
+    - R05
+    evidence_note: the owner amendment; same Unit, new Attempt, new baseline — I15 witness
+  - id: AT-RUN-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T11:45:42Z'
+      ended_at: '2026-08-28T13:24:34Z'
+      disposition: hold
+    relations:
+      unit:
+      - UN-RUN
+      actors:
+      - AC-LEAD-1
+      governed_by:
+      - DL-RUN-1
+      produces: []
+    provenance:
+    - R05
+    evidence_note: 'AC-LEAD-1''s session terminated on platform credit exhaustion during the coverage gate. NO ACTOR RECORDED A DISPOSITION. `hold` is a later reconstruction by AC-COORD, not the attempt''s own record; enum[continue,hold,cancel,rework,complete] offers no abandoned/unknown value. ended_at is bounded by the last effect attributable to the session and is likewise approximate.
+
+      '
+    _approx:
+      disposition: PR-ATTEMPT-DISPOSITION
+      ended_at: PR-ATTEMPT-DISPOSITION
+  - id: AT-RUN-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@9158a11960dd6eea564a30724fcfbbfdf6715478
+      started_at: '2026-08-28T13:28:56Z'
+      ended_at: '2026-08-28T15:12:31Z'
+      disposition: complete
+      resume_requirements:
+        baseline: 17ebf2e on main; SCOPE + findings-W1..W7 + reports/coverage.md all committed
+        preconditions:
+        - scope boundary unchanged
+        - owner amendment of 2026-08-28T12:27Z remains binding
+        - target pin re-verified as unmoved
+        unresolved_residue:
+        - coverage gate open with one rework allowance remaining
+        - the 38-vs-37 manifest count conflict
+        - phase boundaries and durations for scope and the first tech-discovery pass are permanently lost and are not backfilled
+        next_admissible_transition: independent round-2 coverage re-audit, then the coverage gate outcome
+    relations:
+      unit:
+      - UN-RUN
+      actors:
+      - AC-LEAD-2
+      governed_by:
+      - DL-RUN-2
+      produces:
+      - RC-ISSUE-66
+    provenance:
+    - R05
+    evidence_note: 'resume_requirements is populated in full and maps the handover comment field-for-field — the strongest positive witness for the field in this case. It was authored by the RESUMING actor, not the interrupted one; the model places the field on Attempt without saying which attempt owns it. The recorded baseline `17ebf2e` no longer resolves on main (see PR-BASELINE-REWRITE); the value above is the surviving equivalent commit.
+
+      '
+  - id: AT-W1-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:15Z'
+      ended_at: '2026-08-28T12:45:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-W1
+      actors:
+      - AC-RES-W1
+      governed_by:
+      - DL-W1
+      produces:
+      - RC-W1
+    provenance:
+    - R02
+    - R06
+  - id: AT-W1-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@28704da83c8bcec73a0049d878a1dfb4d2afe051
+      started_at: '2026-08-28T12:50:22Z'
+      ended_at: '2026-08-28T13:24:34Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W1
+      actors:
+      - AC-RWK-P1
+      - AC-COORD
+      governed_by:
+      - DL-RWK-P1-W1
+      produces:
+      - RC-W1
+    provenance:
+    - R03
+    - R05
+    - R06
+    evidence_note: authored in AC-LEAD-1's dying session, orphaned uncommitted, committed by AC-COORD — author and effect-performer differ
+  - id: AT-W1-3
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@cfbedaacbe6228a51741bf040a2b165bc25698db
+      started_at: '2026-08-28T13:39:15Z'
+      ended_at: '2026-08-28T13:50:23Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W1
+      actors:
+      - AC-RWK-P2A
+      governed_by:
+      - DL-RWK-P2A
+      produces:
+      - RC-W1
+    provenance:
+    - R04
+    - R05
+    - R06
+  - id: AT-W2-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:15Z'
+      ended_at: '2026-08-28T12:45:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-W2
+      actors:
+      - AC-RES-W2
+      governed_by:
+      - DL-W2
+      produces:
+      - RC-W2
+    provenance:
+    - R02
+    - R06
+  - id: AT-W2-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@28704da83c8bcec73a0049d878a1dfb4d2afe051
+      started_at: '2026-08-28T12:50:22Z'
+      ended_at: '2026-08-28T13:24:34Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W2
+      actors:
+      - AC-RWK-P1
+      - AC-COORD
+      governed_by:
+      - DL-RWK-P1-W2
+      produces:
+      - RC-W2
+    provenance:
+    - R03
+    - R06
+  - id: AT-W2-3
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@cfbedaacbe6228a51741bf040a2b165bc25698db
+      started_at: '2026-08-28T13:39:15Z'
+      ended_at: '2026-08-28T13:50:23Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W2
+      actors:
+      - AC-RWK-P2A
+      governed_by:
+      - DL-RWK-P2A2
+      produces:
+      - RC-W2
+    provenance:
+    - R04
+    - R06
+  - id: AT-W3-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:15Z'
+      ended_at: '2026-08-28T12:45:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-W3
+      actors:
+      - AC-RES-W3
+      governed_by:
+      - DL-W3
+      produces:
+      - RC-W3
+    provenance:
+    - R02
+    - R06
+    evidence_note: the only workstream with exactly one Attempt; W3 was never reworked or corrected
+  - id: AT-W4-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:15Z'
+      ended_at: '2026-08-28T12:45:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-W4
+      actors:
+      - AC-RES-W4
+      governed_by:
+      - DL-W4
+      produces:
+      - RC-W4
+    provenance:
+    - R02
+    - R06
+  - id: AT-W4-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@28704da83c8bcec73a0049d878a1dfb4d2afe051
+      started_at: '2026-08-28T12:50:22Z'
+      ended_at: '2026-08-28T13:24:34Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W4
+      actors:
+      - AC-RWK-P1
+      - AC-COORD
+      governed_by:
+      - DL-RWK-P1-W4
+      produces:
+      - RC-W4
+    provenance:
+    - R03
+    - R06
+  - id: AT-W4-3
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@cfbedaacbe6228a51741bf040a2b165bc25698db
+      started_at: '2026-08-28T13:39:15Z'
+      ended_at: '2026-08-28T13:50:23Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W4
+      actors:
+      - AC-RWK-P2B
+      governed_by:
+      - DL-RWK-P2B
+      produces:
+      - RC-W4
+    provenance:
+    - R04
+    - R06
+  - id: AT-W5-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:15Z'
+      ended_at: '2026-08-28T12:45:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-W5
+      actors:
+      - AC-RES-W5
+      governed_by:
+      - DL-W5
+      produces:
+      - RC-W5
+    provenance:
+    - R02
+    - R06
+  - id: AT-W5-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@cfbedaacbe6228a51741bf040a2b165bc25698db
+      started_at: '2026-08-28T13:39:15Z'
+      ended_at: '2026-08-28T13:50:23Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W5
+      actors:
+      - AC-RWK-P2D
+      governed_by:
+      - DL-RWK-P2D
+      produces:
+      - RC-W5
+    provenance:
+    - R04
+    - R06
+  - id: AT-W6-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:15Z'
+      ended_at: '2026-08-28T12:45:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-W6
+      actors:
+      - AC-RES-W6
+      governed_by:
+      - DL-W6
+      produces:
+      - RC-W6
+    provenance:
+    - R02
+    - R06
+  - id: AT-W6-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@cfbedaacbe6228a51741bf040a2b165bc25698db
+      started_at: '2026-08-28T13:39:15Z'
+      ended_at: '2026-08-28T13:50:23Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W6
+      actors:
+      - AC-RWK-P2C
+      governed_by:
+      - DL-RWK-P2C
+      produces:
+      - RC-W6
+    provenance:
+    - R04
+    - R06
+    evidence_note: this attempt WITHDREW W6's own closure claim — the run's strongest self-limiting act
+  - id: AT-W7-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@36e35e1ed012e0256065527b64b40dd914c3fc9e
+      started_at: '2026-08-28T12:27:15Z'
+      ended_at: '2026-08-28T12:45:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-W7
+      actors:
+      - AC-RES-W7
+      governed_by:
+      - DL-W7
+      produces:
+      - RC-W7
+    provenance:
+    - R02
+    - R06
+  - id: AT-W7-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@cfbedaacbe6228a51741bf040a2b165bc25698db
+      started_at: '2026-08-28T13:39:15Z'
+      ended_at: '2026-08-28T13:50:23Z'
+      disposition: rework
+    relations:
+      unit:
+      - UN-W7
+      actors:
+      - AC-RWK-P2D
+      governed_by:
+      - DL-RWK-P2D2
+      produces:
+      - RC-W7
+    provenance:
+    - R04
+    - R06
+  - id: AT-AUD-R1-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@e9444fd99d855e35c0674e21632000b40008d210
+      started_at: '2026-08-28T12:45:25Z'
+      ended_at: '2026-08-28T12:50:22Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-AUDIT-R1
+      actors:
+      - AC-AUD-R1
+      governed_by:
+      - DL-AUD-R1
+      produces:
+      - RC-COV-R1
+    provenance:
+    - R03
+    - R06
+  - id: AT-AUD-R2-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@9158a11960dd6eea564a30724fcfbbfdf6715478
+      started_at: '2026-08-28T13:28:56Z'
+      ended_at: '2026-08-28T13:36:45Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-AUDIT-R2
+      actors:
+      - AC-AUD-R2
+      governed_by:
+      - DL-AUD-R2
+      produces:
+      - RC-COV-R2
+    provenance:
+    - R04
+    - R06
+  - id: AT-AUD-R2-2
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@2929599a4022e50f6aef1e9fc6a4f0c4a1d9bcb2
+      started_at: '2026-08-28T13:50:23Z'
+      ended_at: '2026-08-28T13:58:31Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-AUDIT-R2
+      actors:
+      - AC-AUD-R2
+      governed_by:
+      - DL-AUD-R2
+      produces:
+      - RC-COV-R2
+    provenance:
+    - R04
+    - R06
+    evidence_note: second Attempt of the same Unit against a NEW baseline — the rework pass 2 tree. Same intended outcome, so I15 not I16.
+  - id: AT-CORR-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@d9036ae6162d5cb344674dbd30d16e65cfd5703f
+      started_at: '2026-08-28T13:58:31Z'
+      ended_at: '2026-08-28T14:10:25Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-CORRECTIONS
+      actors:
+      - AC-CORR
+      governed_by:
+      - DL-CORR
+      produces:
+      - RC-W1
+      - RC-W2
+      - RC-W4
+      - RC-W6
+    provenance:
+    - R05
+    - R06
+  - id: AT-SYNTH-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@61b9b1dec320f5d5c47ebde4e689ea659b078247
+      started_at: '2026-08-28T14:11:07Z'
+      ended_at: '2026-08-28T14:25:29Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-SYNTH
+      actors:
+      - AC-CUR
+      governed_by:
+      - DL-CUR-DYN
+      produces:
+      - RC-REPORT
+      - RC-UNI-316
+      - RC-UNI-317
+      - RC-UNI-318
+      - RC-UNI-319
+    provenance:
+    - R04
+    - R05
+    - R06
+  - id: AT-REL-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@a595ac758929736a15cf835378c691f306af9bd7
+      started_at: '2026-08-28T14:25:29Z'
+      ended_at: '2026-08-28T14:32:48Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-RELEVANCE
+      actors:
+      - AC-GOALOWNER
+      governed_by:
+      - DL-GOALOWNER-DYN
+      produces:
+      - RC-RELEVANCE
+    provenance:
+    - R04
+    - R06
+  - id: AT-CLOSE-1
+    construct: Attempt
+    fields:
+      baseline_ref: git:dug-21/arch-research@600471c4c390dce2d54408ad8bd5960bbceb3244
+      started_at: '2026-08-28T15:13:03Z'
+      ended_at: '2026-08-28T15:13:04Z'
+      disposition: complete
+    relations:
+      unit:
+      - UN-CLOSE
+      actors:
+      - AC-LEAD-2
+      - AC-OWNER
+      - AC-CUR
+      governed_by:
+      - DL-CLOSE
+      - DL-CUR-CLOSE
+      produces:
+      - RC-SCOPE
+      - RC-ISSUE-66
+      - RC-UNI-320
+      - RC-UNI-321
+    provenance:
+    - R05
+    - R06
+  Unit:
+  - id: UN-RUN
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-scope-run
+      intended_outcome: a commit-pinned directional account of ruvnet/metaharness's architecture, dependency closure, generation chains, extraction seams, authority boundary and maturity, plus a position for the jurati-arch-002 proposer
+      scope_ref: SC-MIS
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@b847cee5781b775e23cdf91f95aabd7631de8d20
+    relations:
+      directed_by:
+      - GO-WFH
+      - GO-JURATI-SUBSTRATE
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on: []
+      attempts:
+      - AT-RUN-1
+      - AT-RUN-2
+      assigned_through:
+      - DL-RUN-1
+      - DL-RUN-2
+      gated_by: []
+      consumes: []
+      produces:
+      - RC-ISSUE-66
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R05
+    - R06
+  - id: UN-SCOPE
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: scope-definition
+      intended_outcome: a fixed, human-approved boundary, seven-workstream partition, evidence-label discipline and ledger-based coverage rule for wfh-008
+      scope_ref: SC-MIS
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@b847cee5781b775e23cdf91f95aabd7631de8d20
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on: []
+      attempts:
+      - AT-SCOPE-1
+      - AT-SCOPE-2
+      assigned_through:
+      - DL-SCOPE
+      gated_by:
+      - GT-SCOPE
+      consumes: []
+      produces:
+      - RC-SCOPE
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R05
+  - id: UN-W1
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-workstream
+      intended_outcome: a complete component inventory and boundary/topology map with a completeness ledger accounting for every top-level and workspace-owned component
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@61b9b1dec320f5d5c47ebde4e689ea659b078247
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SCOPE
+      attempts:
+      - AT-W1-1
+      - AT-W1-2
+      - AT-W1-3
+      assigned_through:
+      - DL-W1
+      - DL-RWK-P1-W1
+      - DL-RWK-P2A
+      gated_by:
+      - GT-COVERAGE
+      consumes:
+      - RC-SCOPE
+      produces:
+      - RC-W1
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R02
+  - id: UN-W2
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-workstream
+      intended_outcome: a complete first-party and third-party dependency graph with classes, unresolved dynamic edges, cycles, roots/leaves and per-component closures
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@61b9b1dec320f5d5c47ebde4e689ea659b078247
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SCOPE
+      attempts:
+      - AT-W2-1
+      - AT-W2-2
+      - AT-W2-3
+      assigned_through:
+      - DL-W2
+      - DL-RWK-P1-W2
+      - DL-RWK-P2A2
+      gated_by:
+      - GT-COVERAGE
+      consumes:
+      - RC-SCOPE
+      produces:
+      - RC-W2
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R02
+  - id: UN-W3
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-workstream
+      intended_outcome: an exhaustive ruvnet/ruflo/claude-flow reference ledger with coupled/replaceable/optional/claim-only classification for every tie
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@e9444fd99d855e35c0674e21632000b40008d210
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SCOPE
+      attempts:
+      - AT-W3-1
+      assigned_through:
+      - DL-W3
+      gated_by:
+      - GT-COVERAGE
+      consumes:
+      - RC-SCOPE
+      produces:
+      - RC-W3
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R02
+  - id: UN-W4
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-workstream
+      intended_outcome: producer -> artifact -> consumer chains, generated/authored boundaries, runtime-loading map and hidden prerequisites
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@61b9b1dec320f5d5c47ebde4e689ea659b078247
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SCOPE
+      - UN-W1
+      - UN-W2
+      attempts:
+      - AT-W4-1
+      - AT-W4-2
+      - AT-W4-3
+      assigned_through:
+      - DL-W4
+      - DL-RWK-P1-W4
+      - DL-RWK-P2B
+      gated_by:
+      - GT-COVERAGE
+      consumes:
+      - RC-SCOPE
+      - RC-W1
+      - RC-W2
+      produces:
+      - RC-W4
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R02
+  - id: UN-W5
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-workstream
+      intended_outcome: extraction dossiers with minimum dependency closures, seam quality, upgrade/drift failure modes and a bounded disposition plus determining constraint for each unit
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@2929599a4022e50f6aef1e9fc6a4f0c4a1d9bcb2
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SCOPE
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      attempts:
+      - AT-W5-1
+      - AT-W5-2
+      assigned_through:
+      - DL-W5
+      - DL-RWK-P2D
+      gated_by:
+      - GT-COVERAGE
+      consumes:
+      - RC-SCOPE
+      - RC-W1
+      - RC-W2
+      - RC-W3
+      - RC-W4
+      produces:
+      - RC-W5
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R02
+  - id: UN-W6
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-workstream
+      intended_outcome: an authority/data-flow map and gate/bypass matrix naming decision point, protected operation, defaults, trust roots and the limits of static assurance
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@61b9b1dec320f5d5c47ebde4e689ea659b078247
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SCOPE
+      attempts:
+      - AT-W6-1
+      - AT-W6-2
+      assigned_through:
+      - DL-W6
+      - DL-RWK-P2C
+      gated_by:
+      - GT-COVERAGE
+      consumes:
+      - RC-SCOPE
+      produces:
+      - RC-W6
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R02
+  - id: UN-W7
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: research-workstream
+      intended_outcome: a maturity/credibility scorecard and a claim-by-claim delta against the named wfh-005 and wfh-007 baselines
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@2929599a4022e50f6aef1e9fc6a4f0c4a1d9bcb2
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SCOPE
+      attempts:
+      - AT-W7-1
+      - AT-W7-2
+      assigned_through:
+      - DL-W7
+      - DL-RWK-P2D2
+      gated_by:
+      - GT-COVERAGE
+      consumes:
+      - RC-SCOPE
+      produces:
+      - RC-W7
+      delivers: []
+      replaces: []
+    provenance:
+    - R01
+    - R02
+  - id: UN-AUDIT-R1
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: coverage-audit
+      intended_outcome: an independent per-predicate ruling on whether wfh-008's discovery coverage is sufficient
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@28704da83c8bcec73a0049d878a1dfb4d2afe051
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      attempts:
+      - AT-AUD-R1-1
+      assigned_through:
+      - DL-AUD-R1
+      gated_by: []
+      consumes:
+      - RC-SCOPE
+      - RC-W1
+      - RC-W2
+      - RC-W3
+      - RC-W4
+      - RC-W5
+      - RC-W6
+      - RC-W7
+      produces:
+      - RC-COV-R1
+      delivers: []
+      replaces: []
+    provenance:
+    - R03
+  - id: UN-AUDIT-R2
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: coverage-audit
+      intended_outcome: an independent per-predicate ruling on whether wfh-008's discovery coverage is sufficient, by an assessor who authored neither the findings nor the round-1 audit
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@d9036ae6162d5cb344674dbd30d16e65cfd5703f
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-AUDIT-R1
+      - UN-W1
+      - UN-W2
+      - UN-W4
+      attempts:
+      - AT-AUD-R2-1
+      - AT-AUD-R2-2
+      assigned_through:
+      - DL-AUD-R2
+      gated_by: []
+      consumes:
+      - RC-COV-R1
+      - RC-W1
+      - RC-W2
+      - RC-W3
+      - RC-W4
+      - RC-W5
+      - RC-W6
+      - RC-W7
+      produces:
+      - RC-COV-R2
+      delivers: []
+      replaces: []
+    provenance:
+    - R04
+  - id: UN-CORRECTIONS
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: pre-distillation-correction
+      intended_outcome: remove every publication-shaped false claim from the findings before the curator carries them into the knowledge graph near-verbatim
+      scope_ref: SC-TEAM
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@61b9b1dec320f5d5c47ebde4e689ea659b078247
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-AUDIT-R2
+      attempts:
+      - AT-CORR-1
+      assigned_through:
+      - DL-CORR
+      gated_by: []
+      consumes:
+      - RC-COV-R2
+      - RC-W1
+      - RC-W2
+      - RC-W4
+      - RC-W6
+      produces:
+      - RC-W1
+      - RC-W2
+      - RC-W4
+      - RC-W6
+      delivers: []
+      replaces: []
+    provenance:
+    - R05
+    evidence_note: 'modelled as its own Unit, not as further Attempts of UN-W1/W2/W4/W6: the intended outcome differs (prevent false publication facts, not complete the partition), so I16 applies'
+  - id: UN-SYNTH
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: synthesis
+      intended_outcome: an adjudicated directional position and REPORT for the jurati-arch-002 proposer, plus the graded knowledge that carries it
+      scope_ref: SC-MIS
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@a595ac758929736a15cf835378c691f306af9bd7
+    relations:
+      directed_by:
+      - GO-JURATI-SUBSTRATE
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-CORRECTIONS
+      - UN-AUDIT-R2
+      attempts:
+      - AT-SYNTH-1
+      assigned_through:
+      - DL-CUR-DYN
+      gated_by:
+      - GT-SYNTHESIS
+      consumes:
+      - RC-W1
+      - RC-W2
+      - RC-W3
+      - RC-W4
+      - RC-W5
+      - RC-W6
+      - RC-W7
+      - RC-COV-R1
+      - RC-COV-R2
+      produces:
+      - RC-REPORT
+      - RC-UNI-316
+      - RC-UNI-317
+      - RC-UNI-318
+      - RC-UNI-319
+      delivers: []
+      replaces: []
+    provenance:
+    - R04
+    - R05
+  - id: UN-RELEVANCE
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: relevance-review
+      intended_outcome: an advisory drift and under-reach challenge of the synthesis against the goal, relayed to the human unmodified
+      scope_ref: SC-MIS
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@600471c4c390dce2d54408ad8bd5960bbceb3244
+    relations:
+      directed_by:
+      - GO-JURATI-SUBSTRATE
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-SYNTH
+      attempts:
+      - AT-REL-1
+      assigned_through:
+      - DL-GOALOWNER-DYN
+      gated_by: []
+      consumes:
+      - RC-REPORT
+      - RC-W1
+      - RC-W2
+      - RC-W3
+      - RC-W4
+      - RC-W5
+      - RC-W6
+      - RC-W7
+      - RC-UNI-316
+      - RC-UNI-317
+      - RC-UNI-318
+      - RC-UNI-319
+      produces:
+      - RC-RELEVANCE
+      delivers: []
+      replaces: []
+    provenance:
+    - R04
+  - id: UN-CLOSE
+    construct: Unit
+    version: 1
+    fields:
+      unit_kind: run-close
+      intended_outcome: record the human verdict, set the run's status to done, stop the cycle and file the two remaining findings
+      scope_ref: SC-MIS
+      current_state: done
+      baseline_ref: git:dug-21/arch-research@b847cee5781b775e23cdf91f95aabd7631de8d20
+    relations:
+      directed_by: []
+      follows:
+      - WF-RESEARCH-SCOPE
+      depends_on:
+      - UN-RELEVANCE
+      - UN-SYNTH
+      attempts:
+      - AT-CLOSE-1
+      assigned_through:
+      - DL-CLOSE
+      - DL-CUR-CLOSE
+      gated_by:
+      - GT-SYNTHESIS
+      consumes:
+      - RC-RELEVANCE
+      - RC-REPORT
+      produces:
+      - RC-SCOPE
+      - RC-ISSUE-66
+      - RC-UNI-320
+      - RC-UNI-321
+      delivers: []
+      replaces: []
+    provenance:
+    - R05
+    - R06
+  Technology:
+  - id: TE-METAHARNESS
+    construct: Technology
+    version: 2
+    fields:
+      name: ruvnet/metaharness
+      grade: claimed
+      constraints: three package ecosystems, not one dependency closure; no lockfile for Cargo, the nested harness, the 37 example packages or the Python surface; no authority boundary an adopter could hold; directional static evidence at one commit only
+    relations:
+      enables: []
+    provenance:
+    - R04
+    - R05
+    - T02
+    evidence_note: 'Unimatrix #312 -> #316, grade:claimed unmoved. enables is empty because the case instantiates no Capability.'
+  - id: TE-RUFLO
+    construct: Technology
+    version: 1
+    fields:
+      name: ruvnet/ruflo
+      grade: missing
+      constraints: inspected only as origin comparison at d33ef4bf; no independent assessment in this run
+    relations:
+      enables: []
+    provenance:
+    - R02
+    - R04
+    evidence_note: a Technology with no knowledge-node Record — Technology and Record are separable, and evidence_record_refs is correctly optional
+  - id: TE-RETORT
+    construct: Technology
+    version: 1
+    fields:
+      name: retort / retort_metaharness
+      grade: missing
+      constraints: host-local, non-distributed, loaded by absolute path from a transient scratchpad; unresolvable by construction; deliberately captured as a follow-on candidate and NOT absorbed into this scope
+    relations:
+      enables: []
+    provenance:
+    - R04
+    - R05
+    evidence_note: 'recorded-but-not-admitted: a Technology the run identified and deliberately declined to characterize'
+  Record:
+  - id: RC-SCOPE
+    construct: Record
+    version: 3
+    fields:
+      category: research-scope-definition
+      category_schema_version: '1'
+      scope_ref: SC-MIS
+      author_or_source_ref: AC-LEAD-1
+      created_at: '2026-08-28T11:49:58Z'
+      content_digest: sha256:fb2d38dc1291c82f9a519774cd0ee4838495f2b4ca5698ece0194e360830ed93
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: done
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/SCOPE.md
+      - issue:66
+    relations:
+      documents:
+      - EV-002
+      - EV-003
+      - EV-030
+      admitted_by:
+      - EV-002
+      supersedes: []
+    provenance:
+    - R01
+    - R06
+  - id: RC-W1
+    construct: Record
+    version: 4
+    fields:
+      category: research-finding
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-RES-W1
+      created_at: '2026-08-28T12:45:25Z'
+      content_digest: sha256:371f61c84e8fa2e198b726f297316691f9c50e93dd3bb63583852a68eed4e40c
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: admitted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/findings-W1.md
+      missing_or_unavailable_refs:
+      - raw command output for every enumeration reported; only the authored summary was retained
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R02
+  - id: RC-W2
+    construct: Record
+    version: 4
+    fields:
+      category: research-finding
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-RES-W2
+      created_at: '2026-08-28T12:45:25Z'
+      content_digest: sha256:5b26192380423a255ea6ba425be7e0d9f9c2a202872715a58dcc5e39a1848a82
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: admitted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/findings-W2.md
+      missing_or_unavailable_refs:
+      - raw lockfile-resolution output
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R02
+  - id: RC-W3
+    construct: Record
+    version: 1
+    fields:
+      category: research-finding
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-RES-W3
+      created_at: '2026-08-28T12:45:25Z'
+      content_digest: sha256:0e04bc4506f567bcd825e8673fc1cfb6d09b4134e80908dd0fb5ceb6015e18b7
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: admitted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/findings-W3.md
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R02
+  - id: RC-W4
+    construct: Record
+    version: 4
+    fields:
+      category: research-finding
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-RES-W4
+      created_at: '2026-08-28T12:45:25Z'
+      content_digest: sha256:b1e966b1c4e7fd85544d918349237fd9cce4befe105c7551819cb9b83dcf44bd
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: admitted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/findings-W4.md
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R02
+  - id: RC-W5
+    construct: Record
+    version: 2
+    fields:
+      category: research-finding
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-RES-W5
+      created_at: '2026-08-28T12:45:25Z'
+      content_digest: sha256:fe29e863aea006867941f91c9b059c7f706815c5b04b4f39553342277710c5af
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: admitted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/findings-W5.md
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R02
+  - id: RC-W6
+    construct: Record
+    version: 3
+    fields:
+      category: research-finding
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-RES-W6
+      created_at: '2026-08-28T12:45:25Z'
+      content_digest: sha256:c2f9c55f768583f997c4c46e92c57238377f9caa190e587a57214a5c531cbbae
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: admitted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/findings-W6.md
+      missing_or_unavailable_refs:
+      - no witnessed execution of any gate; the fail-open branch is read from source, never exercised
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R02
+    evidence_note: the only findings Record that withdrew its own closure claim
+  - id: RC-W7
+    construct: Record
+    version: 2
+    fields:
+      category: research-finding
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-RES-W7
+      created_at: '2026-08-28T12:45:25Z'
+      content_digest: sha256:9b7c3066489628816ee0c7f1bb851b1644a3579998ff8c79d773c922180d1a55
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: admitted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/findings-W7.md
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R02
+  - id: RC-COV-R1
+    construct: Record
+    version: 1
+    fields:
+      category: coverage-audit
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-AUD-R1
+      created_at: '2026-08-28T12:50:22Z'
+      content_digest: sha256:e7c8a49d05fddaabb99e1a38adc38e57ba7d63b39f7eb42668301419863c25bf
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: superseded-operationally
+      currentness: superseded
+      provenance_refs:
+      - git:product/research/wfh-008/reports/coverage.md
+      missing_or_unavailable_refs:
+      - the round-1 over-count of one example manifest was never attributed to a path; the auditor declined to name a cause it could not evidence
+    relations:
+      documents:
+      - EV-007
+      - EV-008
+      - EV-009
+      admitted_by: []
+      supersedes: []
+    provenance:
+    - R03
+  - id: RC-COV-R2
+    construct: Record
+    version: 3
+    fields:
+      category: coverage-audit
+      category_schema_version: '1'
+      scope_ref: SC-TEAM
+      author_or_source_ref: AC-AUD-R2
+      created_at: '2026-08-28T13:36:45Z'
+      content_digest: sha256:c576f610d3b9dab120ea807a5e52c5a8bd731b43d74b253357e49cfad44087b9
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: amended
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/reports/coverage-r2.md
+      missing_or_unavailable_refs:
+      - PyPI transitive/platform/licence closure
+      - whether any published consumer calls runSandboxed()
+      - class-level dryness beyond a static instrument at one commit
+    relations:
+      documents:
+      - EV-010
+      - EV-011
+      - EV-013
+      - EV-014
+      - EV-012
+      - EV-015
+      admitted_by: []
+      supersedes:
+      - RC-COV-R1
+    provenance:
+    - R04
+    evidence_note: one Record carrying two assessments and two gate outcomes over two different subject baselines, plus two in-place amendments; the earlier verdict is retained verbatim inside the file
+  - id: RC-REPORT
+    construct: Record
+    version: 1
+    fields:
+      category: synthesis-report
+      category_schema_version: '1'
+      scope_ref: SC-MIS
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T14:25:29Z'
+      content_digest: sha256:75d938ee52056c70dbcc693bb8744acee66d70854867c476ad1f9ab49da8796d
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: accepted
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/REPORT.md
+      missing_or_unavailable_refs:
+      - a ten-item gap register travels inside the recommendation
+    relations:
+      documents:
+      - EV-021
+      - EV-022
+      admitted_by:
+      - EV-028
+      supersedes: []
+    provenance:
+    - R04
+  - id: RC-RELEVANCE
+    construct: Record
+    version: 1
+    fields:
+      category: relevance-review
+      category_schema_version: '1'
+      scope_ref: SC-MIS
+      author_or_source_ref: AC-GOALOWNER
+      created_at: '2026-08-28T14:32:48Z'
+      content_digest: sha256:80d1dfe0ec56774ba9345d49b76d310a728a2f03a111cc8a612c995c9e08d55c
+      epistemic_kind: inference
+      evidence_altitude: directional
+      lifecycle_state: issued
+      currentness: current
+      provenance_refs:
+      - git:product/research/wfh-008/reports/relevance.md
+    relations:
+      documents:
+      - EV-016
+      admitted_by: []
+      supersedes: []
+    provenance:
+    - R04
+    evidence_note: 'advisory: relayed verbatim by the leader and NOT acted on. Record existence, admission and consequence are three separate facts here — I2 witness.'
+  - id: RC-ISSUE-66
+    construct: Record
+    version: 1
+    fields:
+      category: governance-decision-log
+      category_schema_version: '1'
+      scope_ref: SC-MIS
+      author_or_source_ref: AC-FORGE
+      created_at: '2026-08-28T11:45:42Z'
+      content_digest: unavailable:forge-exposes-no-content-digest
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: closed
+      currentness: current
+      provenance_refs:
+      - https://github.com/dug-21/arch-research/issues/66
+      missing_or_unavailable_refs:
+      - every one of the nine comments is posted by the GitHub account dug-21, including the ones whose bodies self-identify as research-leader; the forge attributes agent-authored and human-authored comments identically
+    relations:
+      documents:
+      - EV-001
+      - EV-002
+      - EV-024
+      - EV-025
+      - EV-027
+      - EV-028
+      - EV-003
+      - EV-004
+      - EV-017
+      - EV-018
+      - EV-019
+      - EV-020
+      - EV-023
+      - EV-026
+      - EV-029
+      - EV-030
+      - EV-031
+      admitted_by: []
+      supersedes: []
+    provenance:
+    - R05
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+  - id: RC-CYCLE
+    construct: Record
+    version: 1
+    fields:
+      category: run-telemetry
+      category_schema_version: '1'
+      scope_ref: SC-MIS
+      author_or_source_ref: AC-UNI
+      created_at: '2026-08-28T13:28:56Z'
+      content_digest: unavailable:cycle-service-exposes-no-content-digest
+      epistemic_kind: mechanical-observation
+      evidence_altitude: directional
+      lifecycle_state: stopped
+      currentness: current
+      provenance_refs:
+      - unimatrix:cycle topic=wfh-008
+      missing_or_unavailable_refs:
+      - all phase boundaries and durations for the scope phase
+      - all phase boundaries and durations for the first pass of tech-discovery
+      - all tool and session telemetry from the Codex-platform leg
+      - the original INIT stamp wf-v0.25-2-g27d5dcb differs from the replacement leader's re-derived wf-v0.25-7-g17ebf2e
+    relations:
+      documents:
+      - EV-004
+      - EV-023
+      - EV-030
+      - EV-020
+      admitted_by: []
+      supersedes: []
+    provenance:
+    - R05
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+    evidence_note: missing_or_unavailable_refs is the field that carries this case's largest evidence hole honestly. Deliberately not backfilled.
+  - id: RC-UNI-312
+    construct: Record
+    version: 1
+    fields:
+      category: knowledge-node
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T12:45:00Z'
+      content_digest: unavailable:unimatrix-exposes-no-content-digest
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: deprecated
+      currentness: superseded
+      provenance_refs:
+      - unimatrix:#312
+    relations:
+      documents: []
+      admitted_by:
+      - EV-014
+      supersedes: []
+    provenance:
+    - R05
+    - T02
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+  - id: RC-UNI-316
+    construct: Record
+    version: 2
+    fields:
+      category: knowledge-node
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T14:25:00Z'
+      content_digest: unavailable:unimatrix-exposes-no-content-digest
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - unimatrix:#316
+      - 'tags: grade:claimed, wfh-008, theme:workflow-harness'
+    relations:
+      documents: []
+      admitted_by:
+      - EV-028
+      supersedes:
+      - RC-UNI-312
+    provenance:
+    - R05
+    - T02
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+    evidence_note: id reissued by context_correct; the prior version is retained and reachable — I1's 'history is superseded, never overwritten' HOLDS in this custody store
+  - id: RC-UNI-317
+    construct: Record
+    version: 2
+    fields:
+      category: knowledge-node
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T14:25:00Z'
+      content_digest: unavailable:unimatrix-exposes-no-content-digest
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - unimatrix:#317
+    relations:
+      documents: []
+      admitted_by:
+      - EV-028
+      supersedes: []
+    provenance:
+    - R05
+    - T02
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+  - id: RC-UNI-318
+    construct: Record
+    version: 2
+    fields:
+      category: knowledge-node
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T14:25:00Z'
+      content_digest: unavailable:unimatrix-exposes-no-content-digest
+      epistemic_kind: reviewed-finding
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - unimatrix:#318
+    relations:
+      documents: []
+      admitted_by:
+      - EV-028
+      supersedes: []
+    provenance:
+    - R05
+    - T02
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+  - id: RC-UNI-319
+    construct: Record
+    version: 1
+    fields:
+      category: knowledge-node
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T14:25:00Z'
+      content_digest: unavailable:unimatrix-exposes-no-content-digest
+      epistemic_kind: inference
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - unimatrix:#319
+      - 'tag: position'
+    relations:
+      documents: []
+      admitted_by:
+      - EV-028
+      supersedes: []
+    provenance:
+    - R05
+    - T02
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+  - id: RC-UNI-320
+    construct: Record
+    version: 1
+    fields:
+      category: knowledge-node
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T15:12:00Z'
+      content_digest: unavailable:unimatrix-exposes-no-content-digest
+      epistemic_kind: inference
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - unimatrix:#320
+      missing_or_unavailable_refs:
+      - 'carries no Motivates edge to #316 at depth 1 in either direction, as re-read 2026-08-29'
+    relations:
+      documents: []
+      admitted_by:
+      - EV-028
+      supersedes: []
+    provenance:
+    - R05
+    - T02
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+    evidence_note: the custody predicate — a reusable method rule filed as a `finding`, not a `lesson-learned`; direct evidence for the lesson_vs_pattern OPEN item
+  - id: RC-UNI-321
+    construct: Record
+    version: 1
+    fields:
+      category: knowledge-node
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-CUR
+      created_at: '2026-08-28T15:12:00Z'
+      content_digest: unavailable:unimatrix-exposes-no-content-digest
+      epistemic_kind: inference
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - unimatrix:#321
+      missing_or_unavailable_refs:
+      - 'carries no Motivates edge to #316 at depth 1 in either direction, as re-read 2026-08-29'
+      - the comparative half was never evidenced; the scope forbade a competitor scan
+    relations:
+      documents: []
+      admitted_by:
+      - EV-028
+      supersedes: []
+    provenance:
+    - R05
+    - T02
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+  - id: RC-METHOD-PROTOCOL
+    construct: Record
+    version: 1
+    fields:
+      category: method-definition
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-OWNER
+      created_at: '2026-08-27T00:00:00Z'
+      content_digest: sha256:bd3fa02b761497303e4c72f3edd3c1e98b6eb31427fd9f10b12633c8d6cd5648
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - git:.claude/workflow/research-scope.md
+      missing_or_unavailable_refs:
+      - no CODEOWNERS file, no branch-protection artifact and no checksum manifest exists in the tree
+    relations:
+      documents: []
+      admitted_by: []
+      supersedes: []
+    provenance:
+    - T01
+    evidence_note: the governing definition, stored inside the repository the governed agents write to; last revised by an agent identity
+  - id: RC-METHOD-AGENT-RESEARCHER
+    construct: Record
+    version: 1
+    fields:
+      category: method-definition
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-OWNER
+      created_at: '2026-08-27T00:00:00Z'
+      content_digest: sha256:unavailable-not-pinned-by-this-instance
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: active
+      currentness: current
+      provenance_refs:
+      - git:.claude/agents/factory/factory-researcher.md
+    relations:
+      documents: []
+      admitted_by: []
+      supersedes: []
+    provenance:
+    - T01
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+  - id: RC-METHOD-SKILLS
+    construct: Record
+    version: 2
+    fields:
+      category: method-definition
+      category_schema_version: '1'
+      scope_ref: SC-COL
+      author_or_source_ref: AC-OWNER
+      created_at: '2026-08-27T19:35:00Z'
+      content_digest: sha256:unavailable-overwritten-state-not-captured
+      epistemic_kind: claim
+      evidence_altitude: directional
+      lifecycle_state: restored-uncommitted
+      currentness: unknown
+      provenance_refs:
+      - git:.claude/skills/uni-*/SKILL.md
+      - issue:66 identity audit comment
+      missing_or_unavailable_refs:
+      - the overwritten content was never captured; only the fact of the overwrite is recorded
+    relations:
+      documents:
+      - EV-031
+      admitted_by: []
+      supersedes: []
+    provenance:
+    - R05
+    _approx:
+      content_digest: PR-RECORD-DIGEST
+    evidence_note: twelve method files silently overwritten by an `npx @dug-21/unimatrix@0.11.3` install on 2026-08-27 19:35, with no authorizing decision — the case's clearest I18 counter-instance
+  Event:
+  - id: EV-001
+    construct: Event
+    fields:
+      event_type: communication
+      occurred_at: '2026-08-28T11:50:12Z'
+      recorded_at: '2026-08-28T11:50:12Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-LEAD-1
+      - AC-OWNER
+      subject_refs:
+      - UN-SCOPE
+      - RC-SCOPE
+      significance: routine
+      carrier: record-ref
+      custody: 'GitHub Issue #66 comment; account dug-21'
+      epistemic_kind: claim
+      extension:
+        sender: AC-LEAD-1
+        route_or_topic: issue:66
+        recipients:
+        - AC-OWNER
+        acknowledgement_requirement: explicit approval required before discovery
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-002
+    construct: Event
+    fields:
+      event_type: decision
+      occurred_at: '2026-08-28T12:27:15Z'
+      recorded_at: '2026-08-28T12:27:15Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-OWNER
+      subject_refs:
+      - UN-SCOPE
+      - RC-SCOPE
+      authority_ref: SC-COL
+      significance: routine
+      carrier: record-ref
+      custody: 'GitHub Issue #66 comment; account dug-21'
+      epistemic_kind: claim
+      extension:
+        authority_ref: SC-COL
+        disposition: approved-with-amendment
+        authorized_refs:
+        - UN-W1
+        - UN-W2
+        - UN-W3
+        - UN-W4
+        - UN-W5
+        - UN-W6
+        - UN-W7
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      - RC-SCOPE
+      caused_by:
+      - EV-001
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    evidence_note: authority_ref points at the Scope root, not the Actor — the R4 correction exercised exactly as intended
+  - id: EV-003
+    construct: Event
+    fields:
+      event_type: adaptation
+      occurred_at: '2026-08-28T12:27:02Z'
+      recorded_at: '2026-08-28T12:27:02Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-OWNER
+      - AC-LEAD-1
+      subject_refs:
+      - RC-SCOPE
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      authority_ref: SC-COL
+      significance: exception
+      carrier: artifact-ref
+      custody: git commit 36e35e1 on dug-21/arch-research
+      epistemic_kind: mechanical-observation
+      extension:
+        decision_ref: EV-002
+        affected_refs:
+        - RC-SCOPE
+        prior_baseline: git-tree:81cffe5e8954129d9b8ea91e9f13ed74c08f6248
+        new_baseline: git-tree:140131bdf67e2ef2ab089f3f79467ba9c2bf11f3
+        resume_conditions: all seven workstreams report reusable CODE and portable CONCEPTS separately
+    relations:
+      documented_by:
+      - RC-SCOPE
+      - RC-ISSUE-66
+      caused_by:
+      - EV-002
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    - R06
+    evidence_note: 'the cleanest adaptation witness in the case: authorized, decision-linked, both baselines pinned to content-addressed trees, and a resume condition that constrained every downstream Unit'
+  - id: EV-004
+    construct: Event
+    fields:
+      event_type: transition
+      occurred_at: '2026-08-28T12:27:15Z'
+      recorded_at: '2026-08-28T12:27:15Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-LEAD-1
+      subject_refs:
+      - UN-RUN
+      authority_ref: DL-RUN-1
+      significance: routine
+      carrier: inline
+      epistemic_kind: claim
+      custody: 'asserted in Issue #66; the corresponding cycle event never reached Unimatrix'
+      extension:
+        unit_ref: UN-RUN
+        prior_state: scope
+        next_state: tech-discovery
+        authorization_ref: EV-002
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      - RC-CYCLE
+      caused_by:
+      - EV-002
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    evidence_note: a transition that occurred organizationally with NO durable telemetry Event; Event.open [durable identity threshold, retention] is exercised as a live hole
+  - id: EV-005
+    construct: Event
+    fields:
+      event_type: effect_request
+      occurred_at: '2026-08-28T12:45:25Z'
+      recorded_at: '2026-08-28T12:45:25Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-LEAD-1
+      subject_refs:
+      - RC-W1
+      - RC-W2
+      - RC-W3
+      - RC-W4
+      - RC-W5
+      - RC-W6
+      - RC-W7
+      authority_ref: DL-RUN-1
+      significance: routine
+      carrier: artifact-ref
+      custody: git index of the working checkout
+      epistemic_kind: mechanical-observation
+      extension:
+        requested_effect: repo-write
+        delegation_ref: DL-RUN-1
+        target_boundary_ref: git remote origin (no EffectBoundary instance — no refusal is evidenced)
+    relations:
+      documented_by: []
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R06
+    evidence_note: 'target_boundary_ref cannot name an EffectBoundary instance: git/forge refusal is unevidenced in the alphabet, so no boundary is instantiated. See PR-BOUNDARY-CAN-REFUSE.'
+  - id: EV-006
+    construct: Event
+    fields:
+      event_type: effect_disposition
+      occurred_at: '2026-08-28T12:45:25Z'
+      recorded_at: '2026-08-28T12:45:25Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-GIT
+      subject_refs:
+      - RC-W1
+      - RC-W2
+      - RC-W3
+      - RC-W4
+      - RC-W5
+      - RC-W6
+      - RC-W7
+      significance: routine
+      carrier: artifact-ref
+      custody: git object store
+      epistemic_kind: mechanical-observation
+      extension:
+        request_ref: EV-005
+        boundary_ref: git remote origin
+        disposition: performed
+        coupling: ordered-best-effort
+    relations:
+      documented_by: []
+      caused_by:
+      - EV-005
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R06
+  - id: EV-007
+    construct: Event
+    fields:
+      event_type: assessment
+      occurred_at: '2026-08-28T12:50:22Z'
+      recorded_at: '2026-08-28T12:50:22Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-AUD-R1
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      significance: routine
+      carrier: record-ref
+      custody: git commit 28704da
+      epistemic_kind: reviewed-finding
+      extension:
+        gate_version_ref: GT-COVERAGE@v1 (git:.claude/workflow/research-scope.md)
+        subject_baseline: git:dug-21/arch-research@e9444fd99d855e35c0674e21632000b40008d210
+        evidence_set:
+        - RC-W1
+        - RC-W2
+        - RC-W3
+        - RC-W4
+        - RC-W5
+        - RC-W6
+        - RC-W7
+        assessor_refs:
+        - AC-AUD-R1
+        independence_check: asserted in the record header; not independently verified — the assessor and the audited researchers share one git author identity and one forge account
+    relations:
+      documented_by:
+      - RC-COV-R1
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R03
+  - id: EV-008
+    construct: Event
+    fields:
+      event_type: gate_outcome
+      occurred_at: '2026-08-28T12:50:22Z'
+      recorded_at: '2026-08-28T12:50:22Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-AUD-R1
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W4
+      significance: exception
+      carrier: record-ref
+      custody: git commit 28704da
+      epistemic_kind: reviewed-finding
+      extension:
+        assessment_ref: EV-007
+        outcome: REWORKABLE
+        missingness: one unowned npm packaging manifest; three count conflicts; sweep 1 not dry
+        consequence_disposition: one bounded rework round on W1/W2/W4; synthesis remains stopped
+    relations:
+      documented_by:
+      - RC-COV-R1
+      caused_by:
+      - EV-007
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R03
+    evidence_note: outcome vocabulary resolves through the assessment's pinned gate_version_ref to GT-COVERAGE.allowed_outcomes — the R2-addition rule exercised end to end
+  - id: EV-009
+    construct: Event
+    fields:
+      event_type: adaptation
+      occurred_at: '2026-08-28T12:50:22Z'
+      recorded_at: '2026-08-28T13:24:34Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-LEAD-1
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W4
+      authority_ref: DL-RUN-1
+      significance: routine
+      carrier: record-ref
+      custody: the audit's repair list plus git commit 9158a11
+      epistemic_kind: claim
+      extension:
+        decision_ref: EV-008
+        affected_refs:
+        - UN-W1
+        - UN-W2
+        - UN-W4
+        prior_baseline: git-tree of e9444fd
+        new_baseline: git-tree:e20f8102c5132d8f1c27c49c787487e7d84b42ac
+        resume_conditions: repairs limited to the four named items; both residue sweeps repeated and recorded
+    relations:
+      documented_by:
+      - RC-COV-R1
+      caused_by:
+      - EV-008
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R03
+    - R05
+    - R06
+  - id: EV-010
+    construct: Event
+    fields:
+      event_type: assessment
+      occurred_at: '2026-08-28T13:36:45Z'
+      recorded_at: '2026-08-28T13:36:45Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-AUD-R2
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W4
+      significance: surprise
+      carrier: record-ref
+      custody: git commit cfbedaa
+      epistemic_kind: reviewed-finding
+      extension:
+        gate_version_ref: GT-COVERAGE@v1
+        subject_baseline: git:dug-21/arch-research@9158a11960dd6eea564a30724fcfbbfdf6715478
+        evidence_set:
+        - RC-W1
+        - RC-W2
+        - RC-W4
+        - RC-COV-R1
+        assessor_refs:
+        - AC-AUD-R2
+        independence_check: 'asserted: authored neither W1-W7 nor round-1 coverage.md; fresh clone at the pinned target SHA'
+    relations:
+      documented_by:
+      - RC-COV-R2
+      caused_by:
+      - EV-009
+      correlated_with:
+      - EV-007
+      supersedes: []
+    provenance:
+    - R04
+  - id: EV-011
+    construct: Event
+    fields:
+      event_type: gate_outcome
+      occurred_at: '2026-08-28T13:36:45Z'
+      recorded_at: '2026-08-28T13:36:45Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-AUD-R2
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      significance: surprise
+      carrier: record-ref
+      custody: git commit cfbedaa
+      epistemic_kind: reviewed-finding
+      extension:
+        assessment_ref: EV-010
+        outcome: REWORKABLE
+        missingness: an entire third package ecosystem (PyPI), a shipped cross-language component, an interpreter prerequisite, a network/credential authority path and a fail-open isolation gate; both sweeps not dry because the enumeration alphabet was JS/Rust-only
+        consequence_disposition: the run's final rework allowance is spent; a third pass would be SCOPE-FAIL
+    relations:
+      documented_by:
+      - RC-COV-R2
+      caused_by:
+      - EV-010
+      correlated_with:
+      - EV-008
+      supersedes: []
+    provenance:
+    - R04
+    evidence_note: the counts were settled in the rework's favour and the gate still failed — outcome and subject are independent, and REWORKABLE was spent on a class, not a typo
+  - id: EV-012
+    construct: Event
+    fields:
+      event_type: adaptation
+      occurred_at: '2026-08-28T13:39:15Z'
+      recorded_at: '2026-08-28T13:50:23Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-LEAD-2
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      authority_ref: DL-RUN-2
+      significance: exception
+      carrier: record-ref
+      custody: the audit's minimal repair list plus git commit 2929599
+      epistemic_kind: claim
+      extension:
+        decision_ref: EV-011
+        affected_refs:
+        - UN-W1
+        - UN-W2
+        - UN-W4
+        - UN-W5
+        - UN-W6
+        - UN-W7
+        prior_baseline: git-tree:e20f8102c5132d8f1c27c49c787487e7d84b42ac
+        new_baseline: git-tree:9036f03c564e5c975c6f2d67dd3dcade60f9a240
+        resume_conditions: additive ownership of the missed class plus honest re-recording of both sweeps under the widened alphabet; no count changes; four researchers on disjoint files
+    relations:
+      documented_by:
+      - RC-COV-R2
+      caused_by:
+      - EV-011
+      correlated_with:
+      - EV-009
+      supersedes: []
+    provenance:
+    - R05
+    - R06
+  - id: EV-013
+    construct: Event
+    fields:
+      event_type: assessment
+      occurred_at: '2026-08-28T13:58:31Z'
+      recorded_at: '2026-08-28T13:58:31Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-AUD-R2
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      significance: routine
+      carrier: record-ref
+      custody: git commit d9036ae
+      epistemic_kind: reviewed-finding
+      extension:
+        gate_version_ref: GT-COVERAGE@v1
+        subject_baseline: git:dug-21/arch-research@2929599a4022e50f6aef1e9fc6a4f0c4a1d9bcb2
+        evidence_set:
+        - RC-W1
+        - RC-W2
+        - RC-W3
+        - RC-W4
+        - RC-W5
+        - RC-W6
+        - RC-W7
+        - RC-COV-R1
+        - RC-COV-R2
+        assessor_refs:
+        - AC-AUD-R2
+        independence_check: the assessor declined to clear predicate 6 on the leader's reading of it and ran a third sweep of its own, on the stated ground that the reading was offered by the party with an interest in it
+    relations:
+      documented_by:
+      - RC-COV-R2
+      caused_by:
+      - EV-012
+      correlated_with:
+      - EV-010
+      supersedes: []
+    provenance:
+    - R04
+  - id: EV-014
+    construct: Event
+    fields:
+      event_type: gate_outcome
+      occurred_at: '2026-08-28T13:58:31Z'
+      recorded_at: '2026-08-28T13:58:31Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-AUD-R2
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      significance: routine
+      carrier: record-ref
+      custody: git commit d9036ae
+      epistemic_kind: reviewed-finding
+      extension:
+        assessment_ref: EV-013
+        outcome: PASS
+        missingness: a ten-item gap register is retained as the honest residual; dryness holds only against a static instrument at a single commit
+        consequence_disposition: tech-discovery closes; synthesis may begin; four asserted-but-untrue defects are issued as curator instructions, not rework triggers
+    relations:
+      documented_by:
+      - RC-COV-R2
+      caused_by:
+      - EV-013
+      correlated_with:
+      - EV-011
+      supersedes: []
+    provenance:
+    - R04
+    - R05
+  - id: EV-015
+    construct: Event
+    fields:
+      event_type: observation
+      occurred_at: '2026-08-28T13:36:45Z'
+      recorded_at: '2026-08-28T13:36:45Z'
+      scope_ref: SC-TEAM
+      actor_refs:
+      - AC-AUD-R2
+      - AC-GIT
+      subject_refs:
+      - RC-W1
+      - RC-W2
+      - RC-W4
+      significance: routine
+      carrier: artifact-ref
+      custody: git object store; content-addressed, and re-derivable by any reader from the same object ids
+      epistemic_kind: mechanical-observation
+      extension:
+        instrument: git rev-parse / git ls-files / diff of sorted path sets
+        subject: the audited findings tree
+        capture_custody: git object store — the id changes if the content changes
+        raw_evidence_ref: git-tree:e20f8102c5132d8f1c27c49c787487e7d84b42ac
+    relations:
+      documented_by:
+      - RC-COV-R2
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R04
+    - R06
+    evidence_note: the ONLY Event in this instance that satisfies observation's required_extension with a real raw_evidence_ref. Every enumeration the audits performed against the TARGET repository has no retained raw output, so those are claims. See PR-OBSERVATION-RAW-EVIDENCE.
+  - id: EV-016
+    construct: Event
+    fields:
+      event_type: observation
+      occurred_at: '2026-08-28T14:32:48Z'
+      recorded_at: '2026-08-28T14:32:48Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-GOALOWNER
+      - AC-UNI
+      subject_refs:
+      - RC-UNI-316
+      - RC-UNI-317
+      - RC-UNI-318
+      - RC-UNI-319
+      significance: routine
+      carrier: record-ref
+      custody: Unimatrix service; the raw tool response was not retained
+      epistemic_kind: reported-observation
+      extension:
+        instrument: context_graph(mode:current, detail:full), agent_id goal-owner
+        subject: the four nodes written by this run
+        capture_custody: Unimatrix server
+        raw_evidence_ref: unimatrix:#316,#317,#318,#319 — live ids only; the response body was not stored
+    relations:
+      documented_by:
+      - RC-RELEVANCE
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R04
+    evidence_note: event_type observation with epistemic_kind reported-observation — the orthogonality rule A8 restored to `values.epistemic_kind` is what makes this expressible, and it is the correct reading
+  - id: EV-017
+    construct: Event
+    fields:
+      event_type: effect_request
+      occurred_at: '2026-08-28T14:10:00Z'
+      recorded_at: '2026-08-28T14:15:55Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-LEAD-2
+      subject_refs:
+      - RC-CYCLE
+      authority_ref: DL-RUN-2
+      significance: routine
+      carrier: inline
+      custody: MCP call from the leader session
+      epistemic_kind: claim
+      extension:
+        requested_effect: cycle-write
+        delegation_ref: DL-RUN-2
+        target_boundary_ref: EB-UNIMATRIX
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-018
+    construct: Event
+    fields:
+      event_type: effect_disposition
+      occurred_at: '2026-08-28T14:10:00Z'
+      recorded_at: '2026-08-28T14:15:55Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-UNI
+      subject_refs:
+      - RC-CYCLE
+      significance: exception
+      carrier: inline
+      custody: 'Unimatrix server error response; the raw error text is quoted in Issue #66 but the response was not retained'
+      epistemic_kind: reported-observation
+      extension:
+        request_ref: EV-017
+        boundary_ref: EB-UNIMATRIX
+        disposition: refused
+        coupling: atomic
+        refusal_reason: outcome exceeds 512 characters
+        refusal_class: payload-shape
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by:
+      - EV-017
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    evidence_note: THE ONLY REFUSAL RECEIPT IN THE CASE. It is a schema refusal, not an authority refusal — agent_id was present on all five failed calls. Under I12 this case therefore demonstrates zero enforced authority.
+  - id: EV-019
+    construct: Event
+    fields:
+      event_type: effect_disposition
+      occurred_at: '2026-08-28T14:10:30Z'
+      recorded_at: '2026-08-28T14:15:55Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-UNI
+      subject_refs:
+      - RC-CYCLE
+      significance: exception
+      carrier: inline
+      custody: Unimatrix server error response
+      epistemic_kind: reported-observation
+      extension:
+        request_ref: EV-017
+        boundary_ref: EB-UNIMATRIX
+        disposition: refused
+        coupling: atomic
+        refusal_reason: outcome contains control characters (four occurrences)
+        refusal_class: payload-shape
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by:
+      - EV-017
+      correlated_with:
+      - EV-018
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-020
+    construct: Event
+    fields:
+      event_type: effect_disposition
+      occurred_at: '2026-08-28T14:11:00Z'
+      recorded_at: '2026-08-28T14:15:55Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-UNI
+      subject_refs:
+      - RC-CYCLE
+      significance: routine
+      carrier: inline
+      custody: Unimatrix server
+      epistemic_kind: reported-observation
+      extension:
+        request_ref: EV-017
+        boundary_ref: EB-UNIMATRIX
+        disposition: performed
+        coupling: atomic
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      - RC-CYCLE
+      caused_by:
+      - EV-017
+      correlated_with:
+      - EV-018
+      - EV-019
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-021
+    construct: Event
+    fields:
+      event_type: effect_request
+      occurred_at: '2026-08-28T14:25:00Z'
+      recorded_at: '2026-08-28T14:25:00Z'
+      scope_ref: SC-COL
+      actor_refs:
+      - AC-CUR
+      subject_refs:
+      - RC-UNI-312
+      - RC-UNI-316
+      authority_ref: DL-CUR-DYN
+      significance: routine
+      carrier: record-ref
+      custody: MCP call from the curator session, agent_id factory-curator
+      epistemic_kind: claim
+      extension:
+        requested_effect: graph-write
+        delegation_ref: DL-CUR-DYN
+        target_boundary_ref: EB-UNIMATRIX
+    relations:
+      documented_by:
+      - RC-REPORT
+      caused_by:
+      - EV-014
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R04
+    - R05
+  - id: EV-022
+    construct: Event
+    fields:
+      event_type: effect_disposition
+      occurred_at: '2026-08-28T14:25:00Z'
+      recorded_at: '2026-08-28T14:25:00Z'
+      scope_ref: SC-COL
+      actor_refs:
+      - AC-UNI
+      subject_refs:
+      - RC-UNI-312
+      - RC-UNI-316
+      significance: routine
+      carrier: record-ref
+      custody: Unimatrix; the deprecated version is retained and the supersession chain is queryable
+      epistemic_kind: mechanical-observation
+      extension:
+        request_ref: EV-021
+        boundary_ref: EB-UNIMATRIX
+        disposition: performed
+        coupling: atomic
+    relations:
+      documented_by:
+      - RC-REPORT
+      caused_by:
+      - EV-021
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R04
+    - T02
+  - id: EV-023
+    construct: Event
+    fields:
+      event_type: transition
+      occurred_at: '2026-08-28T14:11:07Z'
+      recorded_at: '2026-08-28T14:11:07Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-LEAD-2
+      subject_refs:
+      - UN-RUN
+      authority_ref: DL-RUN-2
+      significance: routine
+      carrier: record-ref
+      custody: 'Unimatrix cycle event plus Issue #66 comment'
+      epistemic_kind: mechanical-observation
+      extension:
+        unit_ref: UN-RUN
+        prior_state: tech-discovery
+        next_state: synthesis
+        authorization_ref: EV-024
+    relations:
+      documented_by:
+      - RC-CYCLE
+      - RC-ISSUE-66
+      caused_by:
+      - EV-014
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-024
+    construct: Event
+    fields:
+      event_type: decision
+      occurred_at: '2026-08-28T14:11:07Z'
+      recorded_at: '2026-08-28T14:11:07Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-COORD
+      subject_refs:
+      - UN-W1
+      - UN-W2
+      - UN-W3
+      - UN-W4
+      - UN-W5
+      - UN-W6
+      - UN-W7
+      authority_ref: DL-COORD-STANDING
+      significance: routine
+      carrier: record-ref
+      custody: 'GitHub Issue #66 comment; account dug-21'
+      epistemic_kind: claim
+      extension:
+        authority_ref: DL-COORD-STANDING
+        disposition: coverage confirmed on the independent auditor's ruling
+        authorized_refs:
+        - UN-SYNTH
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by:
+      - EV-014
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    evidence_note: gate outcome (EV-014, the assessor's) and gate confirmation (EV-024, the coordinator's) are separate Events with different actors and different authority — I6 witness
+  - id: EV-025
+    construct: Event
+    fields:
+      event_type: communication
+      occurred_at: '2026-08-28T13:28:56Z'
+      recorded_at: '2026-08-28T13:28:56Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-LEAD-2
+      - AC-COORD
+      - AC-OWNER
+      subject_refs:
+      - UN-RUN
+      - AT-RUN-1
+      - AT-RUN-2
+      - RC-CYCLE
+      significance: exception
+      carrier: record-ref
+      custody: 'GitHub Issue #66 comment; account dug-21'
+      epistemic_kind: claim
+      extension:
+        sender: AC-LEAD-2
+        route_or_topic: issue:66
+        recipients:
+        - AC-OWNER
+        acknowledgement_requirement: none — explicitly no decision requested
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-026
+    construct: Event
+    fields:
+      event_type: adaptation
+      occurred_at: '2026-08-28T13:28:56Z'
+      recorded_at: '2026-08-28T13:28:56Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-COORD
+      subject_refs:
+      - UN-RUN
+      - SC-TEAM
+      authority_ref: DL-COORD-STANDING
+      significance: exception
+      carrier: record-ref
+      custody: 'GitHub Issue #66 comment'
+      epistemic_kind: claim
+      extension:
+        decision_ref: EV-025
+        affected_refs:
+        - UN-RUN
+        - DL-RUN-1
+        - DL-RUN-2
+        prior_baseline: AC-LEAD-1 operating the run under DL-RUN-1
+        new_baseline: AC-LEAD-2 operating the same packet under DL-RUN-2
+        resume_conditions: scope boundary unchanged; owner amendment still binding; target pin re-verified; early cycle events deliberately not backfilled
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by:
+      - EV-025
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    evidence_note: a composition change — the adaptation type's parsed definition covers 'a definition, baseline, composition or method'; the S1 clause that carries 'composition' is present in the pinned file
+  - id: EV-027
+    construct: Event
+    fields:
+      event_type: communication
+      occurred_at: '2026-08-28T14:33:23Z'
+      recorded_at: '2026-08-28T14:33:23Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-LEAD-2
+      - AC-OWNER
+      subject_refs:
+      - UN-SYNTH
+      - RC-REPORT
+      - RC-RELEVANCE
+      significance: routine
+      carrier: record-ref
+      custody: 'GitHub Issue #66 comment; account dug-21'
+      epistemic_kind: claim
+      extension:
+        sender: AC-LEAD-2
+        route_or_topic: issue:66
+        recipients:
+        - AC-OWNER
+        acknowledgement_requirement: five explicit decisions requested; the cycle stays open until ruled
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-028
+    construct: Event
+    fields:
+      event_type: decision
+      occurred_at: '2026-08-28T15:13:03Z'
+      recorded_at: '2026-08-28T15:13:03Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-OWNER
+      subject_refs:
+      - RC-REPORT
+      - TE-METAHARNESS
+      - RC-UNI-316
+      - RC-UNI-319
+      authority_ref: SC-COL
+      significance: routine
+      carrier: record-ref
+      custody: 'GitHub Issue #66 closing comment; account dug-21'
+      epistemic_kind: claim
+      extension:
+        authority_ref: SC-COL
+        disposition: synthesis ACCEPTED; no MetaHarness code taken at any altitude; follow-on stages S0-S3 struck; S4 stands as proposed, not authorized; the bounded package pass is re-aimed at concepts and becomes a separate run
+        authorized_refs:
+        - UN-CLOSE
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by:
+      - EV-027
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    evidence_note: an A5-class decision. The forge attributes it to the same account that posted every agent-authored comment on this Issue; nothing in the record distinguishes a human decision from an agent relay at the custody layer.
+  - id: EV-029
+    construct: Event
+    fields:
+      event_type: adaptation
+      occurred_at: '2026-08-28T15:13:03Z'
+      recorded_at: '2026-08-28T15:13:03Z'
+      scope_ref: SC-PROG
+      actor_refs:
+      - AC-OWNER
+      subject_refs:
+      - GO-JURATI-SUBSTRATE
+      authority_ref: SC-COL
+      significance: exception
+      carrier: record-ref
+      custody: 'GitHub Issue #66 closing comment'
+      epistemic_kind: claim
+      extension:
+        decision_ref: EV-028
+        affected_refs:
+        - GO-JURATI-SUBSTRATE
+        prior_baseline: proposed follow-on staircase S0-S4 attached to MetaHarness
+        new_baseline: S0-S3 struck; generalized S4 unapproved; the concept pass becomes a separately scoped run with its own leader
+        resume_conditions: a new owner-approved mission; no resumption of MetaHarness extraction
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      caused_by:
+      - EV-028
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+  - id: EV-030
+    construct: Event
+    fields:
+      event_type: transition
+      occurred_at: '2026-08-28T15:12:31Z'
+      recorded_at: '2026-08-28T15:13:04Z'
+      scope_ref: SC-MIS
+      actor_refs:
+      - AC-LEAD-2
+      subject_refs:
+      - UN-RUN
+      authority_ref: DL-RUN-2
+      significance: routine
+      carrier: record-ref
+      custody: 'git commit b847cee, Unimatrix cycle stop, Issue #66 closed_at'
+      epistemic_kind: mechanical-observation
+      extension:
+        unit_ref: UN-RUN
+        prior_state: synthesis
+        next_state: done
+        authorization_ref: EV-028
+    relations:
+      documented_by:
+      - RC-CYCLE
+      - RC-SCOPE
+      - RC-ISSUE-66
+      caused_by:
+      - EV-028
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    - R06
+  - id: EV-031
+    construct: Event
+    fields:
+      event_type: unrecorded_change
+      occurred_at: '2026-08-27T19:35:00Z'
+      recorded_at: '2026-08-28T14:13:51Z'
+      scope_ref: SC-COL
+      actor_refs:
+      - AC-COORD
+      subject_refs:
+      - RC-METHOD-SKILLS
+      significance: surprise
+      carrier: record-ref
+      custody: local working tree; the overwritten content was never captured
+      epistemic_kind: claim
+      extension:
+        affected_refs:
+        - RC-METHOD-SKILLS
+        prior_baseline: twelve .claude/skills/uni-*/SKILL.md files carrying the D6 identity instruction
+        new_baseline: the package's bundled copies, which predate D6 and carry no identity instruction
+        authorization_status: unauthorized
+    relations:
+      documented_by:
+      - RC-ISSUE-66
+      - RC-METHOD-SKILLS
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R05
+    evidence_note: an `npx @dug-21/unimatrix@0.11.3` install silently overwrote twelve governing method files. No decision Event exists, so `adaptation` — whose parsed definition and required decision_ref both presuppose authorization — cannot represent it. Registered event type.
+  - id: EV-032
+    construct: Event
+    fields:
+      event_type: unrecorded_change
+      occurred_at: '2026-08-28T18:20:59Z'
+      recorded_at: '2026-08-29T00:00:00Z'
+      scope_ref: SC-COL
+      actor_refs:
+      - AC-OWNER
+      - AC-GIT
+      subject_refs:
+      - UN-RUN
+      - UN-W1
+      - UN-W2
+      - UN-W4
+      - UN-AUDIT-R1
+      - UN-AUDIT-R2
+      - RC-COV-R2
+      - RC-ISSUE-66
+      significance: surprise
+      carrier: artifact-ref
+      custody: git; the pre-rebase commits survive only on branch workflow/agentic-organization-reframe
+      epistemic_kind: mechanical-observation
+      extension:
+        affected_refs:
+        - RC-COV-R2
+        - RC-ISSUE-66
+        prior_baseline: '6acc952 0c01522 17ebf2e 7d28294 3cd296d 215942d 962a6c1 017f4fc c29a08f cd03ad0 — the commit ids cited in the run''s own durable records and in Issue #66'
+        new_baseline: 7cf95b2 36e35e1 9158a11 cfbedaa 2929599 d9036ae 61b9b1d a595ac7 600471c b847cee — same trees, new commit ids, reachable from main
+        authorization_status: authorized-by-role but unrecorded; no decision Event exists
+    relations:
+      documented_by: []
+      caused_by: []
+      correlated_with: []
+      supersedes: []
+    provenance:
+    - R06
+    evidence_note: 'MEASURED, not inferred. `git rev-parse <old>^{tree}` equals `git rev-parse <new>^{tree}` for all five pairs tested; author and authored-date are identical and only the committer differs (dug-21 <angryweed@gmail.com>, 2026-08-28 18:20 UTC), matching a reflog `rebase (finish)` entry. `git merge-base --is-ancestor <old> main` is FALSE for every cited id. Every baseline_ref recorded by wfh-008 therefore no longer resolves on main. See PR-BASELINE-REWRITE.
+
+      '
+pressure_index:
+- PR-SCOPE-AUTHORITY-ROOT
+- PR-SCOPE-EFFECTIVE-AT
+- PR-CAPABILITY-ABSENT
+- PR-LIST-REQUIRED
+- PR-ACTOR-IDENTITY-SINGULAR
+- PR-ACTOR-CONTINUITY
+- PR-SKILL-EVIDENCE-ABSENT
+- PR-SKILL-NAME-COLLISION
+- PR-ROLE-UNDEFINED-ASSESSOR
+- PR-METHOD-CUSTODY
+- PR-DELEGATION-UNIT-CARDINALITY
+- PR-DELEGATION-ATTENUATION-COMPARISON
+- PR-DELEGATION-SELF-GRANT
+- PR-GATE-PROCEDURE
+- PR-GATE-IDENTITY-VERSION
+- PR-BOUNDARY-CAN-REFUSE
+- PR-ENFORCED-AUTHORITY-ABSENT
+- PR-ATTEMPT-DISPOSITION
+- PR-ATTEMPT-RESUME-OWNER
+- PR-OBSERVATION-RAW-EVIDENCE
+- PR-RECORD-DIGEST
+- PR-RECORD-INPLACE-OVERWRITE
+- PR-BASELINE-REWRITE
+- PR-EVENT-IDENTITY-THRESHOLD
+- PR-INDEPENDENCE-UNVERIFIABLE
+- PR-LESSON-VS-PATTERN
+- PR-I19-BINDING-ALTITUDE
+- PR-CAPABILITY-CLASSIFICATION-UNUSED

@@ -1,0 +1,14 @@
+rows: 468
+  exercised: 339
+  construct-pressure: 76
+  not-applicable: 49
+  blocked-by-OPEN: 3
+  inspected-no-material-instance: 1
+cause classifications (row-weighted):
+  model-defect: 65
+  historical-evidence-gap: 40
+  project-evolution-candidate: 14
+  enforcement-gap: 14
+  unresolved: 2
+distinct pressures used: 28
+pressures declared but unused: []

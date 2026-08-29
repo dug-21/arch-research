@@ -1,0 +1,410 @@
+# wfh-008 bounded-evolution COUNTERFACTUALS, encoded as V5 instances.
+#
+# NOTHING IN THIS FILE HAPPENED. Every object carries provenance_class: counterfactual and a
+# distinct identifier. No object here may be counted as observed case coverage, cited as
+# history, or read as a recommendation. These are directional counterfactuals produced under
+# the wfh-011 anti-force-fitting amendment; V5 conformity is NOT a reason to make any of them.
+#
+# Resolve ids against artifacts/wfh-008-instance.yaml — run the checker with BOTH files:
+#   python3 wfh-008-validate.py <model> wfh-008-instance.yaml wfh-008-counterfactual-instance.yaml
+
+meta:
+  instance_id: CF-WFH008-V5
+  instance_version: 1
+  case: wfh-008
+  authored_by: factory-researcher
+  run: wfh-011
+  workstream: W1
+  provenance_class: counterfactual
+  counterfactual: true
+  historical_instance_ref: INST-WFH008-V5
+  model_under_test:
+    path: product/factory/proposals/organizational-data-model-v5.yaml
+    version: 5.0.0
+    sha256: bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060
+    parsed: as-is
+  anti_circularity_declaration: >
+    Each candidate below states an independent reason that stands without reference to V5.
+    Where the only reason available is "V5 would then fit", the candidate is NOT proposed and
+    the pressure is carried as model-defect or unresolved in the coverage CSV instead.
+
+# ---------------------------------------------------------------------------
+candidates:
+
+  CF-01:
+    title: Content-addressed baselines, and no history rewrite after a gate has ruled on it
+    addresses_pressures: [PR-BASELINE-REWRITE]
+    cause_classification: [enforcement-gap, project-evolution-candidate]
+    smallest_change: >
+      Record every baseline_ref as `git-tree:<tree-oid>` (or an annotated tag) in addition to
+      the commit id, and add one line to the factory-git skill: once a gate has ruled against a
+      commit, that commit's branch is not rebased. Nothing else changes.
+    independent_reason: >
+      Independent of any data model. wfh-008's coverage gate ruled against specific commits, and
+      the run's own durable records cite ten commit ids that `git merge-base --is-ancestor` now
+      reports as NOT ancestors of main. A reader cannot reproduce the audited tree from the
+      audit. That is a reproducibility defect in a research method whose entire product is
+      reproducible evidence, and it would be a defect if V5 did not exist. Tree oids survive a
+      rebase; commit oids do not — measured, not asserted.
+    semantic_proof_authority_custody_preservation: >
+      Preserves everything. It adds an identifier that is stable under the operation that broke
+      the existing one. No authority moves, no proof bar changes, no custody relocates, and the
+      commit ids stay in the record alongside the tree oids so the historical citation is not
+      erased.
+    migration_cost: >
+      Low but not zero. Affected surfaces: .claude/skills/factory-git/SKILL.md (the no-rebase
+      rule and the tree-oid convention); the research-scope protocol's INIT and CLOSE steps; the
+      scope template's baseline field; every future coverage/gate report header. Existing
+      records are NOT rewritten — the correct handling is a dated errata line mapping the ten
+      dangling ids to their surviving equivalents, which is itself a Record supersession rather
+      than an edit. Cost is one method commit plus one errata note.
+    affected_artifacts:
+      - .claude/skills/factory-git/SKILL.md
+      - .claude/workflow/research-scope.md (INIT step 3, CLOSE)
+      - product/factory/templates/scope.md
+      - every reports/coverage*.md header convention
+      - product/research/wfh-008/reports/coverage-r2.md (errata only, appended)
+      - GitHub Issue #66 (errata comment only)
+    current_form_representable: true
+    evolved_form_representable: true
+    current_project_fit: >
+      REPRESENTABLE BUT UNVERIFIABLE. V5 accepts the historical form: `Unit.baseline_ref` and
+      `Attempt.baseline_ref` are `text`, so a dangling commit id is a conforming value. That is
+      the finding — V5 cannot tell a resolvable baseline from an unresolvable one, and no V5
+      rule was violated by the rewrite.
+    post_evolution_fit: >
+      REPRESENTABLE AND VERIFIABLE. Identical V5 shape, but `baseline_ref` becomes checkable
+      against the store. V5 gains nothing structurally; the project gains a baseline that means
+      what the model assumes it means.
+    unresolved_discriminator: not-applicable
+    v5_delta: "none — no field, type, relation or invariant changes; only the value's referent changes"
+
+  CF-02:
+    title: An integrity manifest over the method surface
+    addresses_pressures: [PR-METHOD-CUSTODY]
+    cause_classification: [enforcement-gap, project-evolution-candidate]
+    smallest_change: >
+      A checked-in `sha256` manifest over `.claude/workflow/`, `.claude/agents/factory/` and
+      `.claude/rules/`, plus a pre-commit or session-start check that reports a drift. Custody
+      is not moved and no credential is introduced.
+    independent_reason: >
+      Independent of V5, and evidenced by an incident the project itself recorded: on 2026-08-27
+      at 19:35 an `npx @dug-21/unimatrix@0.11.3` install silently overwrote twelve method files
+      with copies predating the D6 identity amendment. Nothing detected it mechanically; it was
+      caught by a human reading. A manifest would have reported it. Every argument for it is an
+      argument about that incident, not about a data model.
+    semantic_proof_authority_custody_preservation: >
+      Preserves, and deliberately does NOT claim more than it delivers. A manifest DETECTS
+      drift; it does not PREVENT it, and it must not be described as custody. It cannot satisfy
+      I18, because the manifest lives in the same repository the governed agents write to and is
+      therefore editable by them — the custody predicate (#320) applies to the manifest itself.
+      Recording that limit is part of the candidate.
+    migration_cost: >
+      Low. One manifest file, one hook, one line in the protocol. Recurring cost is regenerating
+      the manifest on every legitimate method change, which is exactly the point at which an
+      adaptation Event should exist anyway. Risk: a stale manifest becomes noise and is ignored.
+    affected_artifacts:
+      - .claude/settings.json (hook)
+      - a new .claude/METHOD-MANIFEST.sha256
+      - .claude/workflow/research-scope.md (INIT)
+      - .claude/skills/factory-git/SKILL.md
+    current_form_representable: true
+    evolved_form_representable: true
+    current_project_fit: >
+      REPRESENTABLE. The historical unauthorized overwrite is representable only through a
+      REGISTERED event type (`unrecorded_change`), because the seeded `adaptation` type's parsed
+      definition and its required `decision_ref` both presuppose authorization. That the seeded
+      set has no unauthorized-change shape is mild pressure; that the registry mechanism absorbs
+      it without a new core noun is a positive for extend_by_registration.
+    post_evolution_fit: >
+      REPRESENTABLE, and the detection produces an `observation` Event with a real
+      raw_evidence_ref (the manifest diff), which the historical case could not produce.
+    unresolved_discriminator: >
+      Whether V5's I18 is satisfiable AT ALL by any change inside a single repository is not
+      settled by this candidate, and `open.custody_enforcement` says the model knows it.
+
+  CF-03:
+    title: A typed interruption record when a session dies mid-Unit
+    addresses_pressures: [PR-ATTEMPT-DISPOSITION, PR-ATTEMPT-RESUME-OWNER]
+    cause_classification: [model-defect, project-evolution-candidate, historical-evidence-gap]
+    smallest_change: >
+      When a coordinator reconstructs a run after a leader session terminates, it writes the
+      handover as a typed record against the interrupted Attempt — baseline, residue, next
+      admissible transition — instead of, or as well as, prose in an Issue comment.
+    independent_reason: >
+      Independent of V5. wfh-008 lost all phase boundaries and durations for the scope phase and
+      the first tech-discovery pass, and the replacement leader had to reconstruct state from
+      three surfaces by hand. The reconstruction succeeded, and it succeeded because a human-
+      readable handover was written; making it typed is a reliability improvement for run
+      recovery, which the run itself flagged as a factory-plane lesson. It would be worth doing
+      if the seven-entity hypothesis were rejected tomorrow.
+    semantic_proof_authority_custody_preservation: >
+      Preserves. It manufactures no history: the record is explicitly authored by the RESUMING
+      actor at reconstruction time, with its own timestamp, and it does not claim to be the
+      interrupted actor's own disposition. That distinction must survive into the typed form or
+      the candidate is invalid.
+    migration_cost: >
+      Low-moderate. Affects the theme-coordination protocol, the research-leader contract, and
+      whatever store holds the record. Real risk: a typed handover is easier to write than to
+      write honestly, and the historical comment's best property — naming what is permanently
+      missing and refusing to backfill it — is a discipline no schema enforces.
+    affected_artifacts:
+      - .claude/workflow/theme-coordination.md
+      - .claude/agents/factory/theme-coordinator.md
+      - .claude/agents/factory/research-leader.md
+      - a run-telemetry or handover record category
+    current_form_representable: false
+    evolved_form_representable: true
+    current_project_fit: >
+      NOT FAITHFULLY REPRESENTABLE. `Attempt.disposition` is required and its enum offers
+      continue | hold | cancel | rework | complete. An execution terminated by credit exhaustion
+      with NO actor-recorded disposition has no admissible value. The historical instance is
+      forced to write `hold`, marked `_approx`. This is a MODEL-DEFECT and it stays adverse to
+      Attempt whether or not the project evolves — the amendment's rule that a model defect is
+      not hidden by a project change applies here in full.
+    post_evolution_fit: >
+      STILL NOT FULLY REPRESENTABLE. Even with a typed handover, the interrupted Attempt's own
+      disposition remains unrecorded at the time it ended; the evolved form supplies the RESUME
+      side (resume_requirements, which V5 already carries well) and not the TERMINATION side.
+      The candidate improves the project and does not repair the model.
+    unresolved_discriminator: not-applicable
+
+  CF-04:
+    title: Audits retain the raw output of the commands they rule on
+    addresses_pressures: [PR-OBSERVATION-RAW-EVIDENCE, PR-INDEPENDENCE-UNVERIFIABLE]
+    cause_classification: [historical-evidence-gap, project-evolution-candidate]
+    smallest_change: >
+      A coverage audit writes its deciding command outputs to a sibling file and cites it, rather
+      than summarising them in prose. No new tool, no compute, no external cost.
+    independent_reason: >
+      Independent of V5, and the case supplies its own argument. The round-1 audit reported 38
+      example manifests; the round-2 audit found 37 and could not attribute the phantom 38th to
+      any path at any depth, tracked or untracked, and correctly declined to invent a cause. A
+      retained command transcript would have settled it in one line. The run spent part of a
+      rework allowance on that question. This is a research-hygiene improvement whose entire
+      justification is inside the run's own record.
+    semantic_proof_authority_custody_preservation: >
+      Preserves, with one honest limit: a retained transcript is still an actor-supplied file.
+      It raises the evidence altitude from `claim` toward `reported-observation`, not to
+      `mechanical-observation`, unless the capture custody sits outside the reporting actor.
+      Claiming otherwise would be exactly the laundering the amendment forbids.
+    migration_cost: >
+      Low. Affects the coverage-audit convention in the research-scope protocol and the
+      factory-validator/auditor contracts, plus repository size. Risk: a transcript file invites
+      the belief that a rule was mechanically enforced when it was only mechanically observed.
+    affected_artifacts:
+      - .claude/workflow/research-scope.md (coverage gate)
+      - .claude/agents/factory/factory-validator.md
+      - reports/ layout for every future run
+    current_form_representable: true
+    evolved_form_representable: true
+    current_project_fit: >
+      REPRESENTABLE, AND V5 CLASSIFIES IT CORRECTLY — which is a positive result. I4 says an
+      actor-authored account is a claim or inference, and the `observation` event type requires
+      `raw_evidence_ref`. Because wfh-008 retained no raw output for its target-repository
+      enumerations, those facts are encoded as claims, not observations. V5 refused to let a
+      summary masquerade as a measurement without anyone having to argue about it.
+    post_evolution_fit: >
+      REPRESENTABLE with a real `raw_evidence_ref`, moving those Events from `claim` to
+      `reported-observation`. V5 needs no change in either direction.
+    unresolved_discriminator: not-applicable
+
+  CF-05:
+    title: Declare the coverage-auditor duty as a Role
+    addresses_pressures: [PR-ROLE-UNDEFINED-ASSESSOR]
+    cause_classification: [historical-evidence-gap, project-evolution-candidate]
+    smallest_change: >
+      Declare the coverage-auditor duty explicitly — either its own role contract or a named
+      independence clause on factory-validator that covers directional runs.
+    independent_reason: >
+      wfh-010's equivalent blocking gate was ruled by a `factory-validator`; wfh-008's was ruled
+      by a `factory-researcher`. The same gate was assessed under two different role identities
+      in consecutive runs. That inconsistency is visible in the two runs' own report headers and
+      has nothing to do with V5.
+    semantic_proof_authority_custody_preservation: >
+      Preserves. The independence constraints already exist in prose in both audit headers; the
+      change moves them into the contract that the Gate points at. No authority moves.
+    migration_cost: "one new or amended agent definition plus one protocol line"
+    affected_artifacts: [.claude/agents/factory/factory-validator.md, .claude/workflow/research-scope.md]
+    current_form_representable: true
+    evolved_form_representable: true
+    current_project_fit: "representable only by authoring RO-COVERAGE-AUDITOR, a Role the project never defined"
+    post_evolution_fit: "Gate.requires_assessor resolves to a defined Role rather than an inferred one; V5 shape unchanged"
+    unresolved_discriminator: not-applicable
+    encoded_instance: "none — the evolved form has the identical V5 shape; only the referent of RO-COVERAGE-AUDITOR gains a definition Record"
+
+  CF-06:
+    title: Rename the agent frontmatter key `capabilities:` to `skills:`
+    addresses_pressures: [PR-SKILL-NAME-COLLISION]
+    cause_classification: [project-evolution-candidate, unresolved]
+    smallest_change: "rename one frontmatter key across ten agent definition files"
+    independent_reason: >
+      The garage maintains a separate Unimatrix `capability` category with a different meaning,
+      and wfh-010 spent a workstream on exactly this conflation. The rename removes a real
+      reader ambiguity in the repository whether or not V5 survives.
+    semantic_proof_authority_custody_preservation: "pure rename; nothing moves"
+    migration_cost: >
+      Ten agent definition files, any tooling reading the key, and the onboard skill. Low, but it
+      touches the method surface, so it is itself an adaptation Event and must be recorded as one.
+    affected_artifacts: [.claude/agents/factory/*.md, .claude/skills/factory-onboard/SKILL.md]
+    current_form_representable: true
+    evolved_form_representable: true
+    current_project_fit: "representable; the collision is lexical, not structural, and V5 keeps Skill and Capability apart regardless"
+    post_evolution_fit: "identical V5 shape; the model gains nothing and the repository loses an ambiguity"
+    unresolved_discriminator: "whether the collision has ever caused a concrete error is not evidenced by this case"
+    encoded_instance: "none — no V5 object changes"
+
+  CF-07:
+    title: Expose a content digest on knowledge-node reads
+    addresses_pressures: [PR-RECORD-DIGEST]
+    cause_classification: [model-defect, project-evolution-candidate]
+    smallest_change: "return a content digest alongside a node on read"
+    independent_reason: >
+      A digest is what lets a later reader prove a cited node is the node that was cited. This
+      run's own goal-owner re-read #316–#319 and could verify ids, status, grade and edges but
+      explicitly not content — it says so in its own limits section.
+    semantic_proof_authority_custody_preservation: "preserves; a digest adds verifiability and moves no authority"
+    migration_cost: >
+      A change to a service outside this repository. This scope cannot cost it and must not
+      recommend building it; recorded as a directional counterfactual only.
+    affected_artifacts: ["the Unimatrix read API — outside dug-21/arch-research"]
+    current_form_representable: partially
+    evolved_form_representable: true
+    current_project_fit: >
+      HALF REPRESENTABLE. Eleven file-backed Records carry a real sha256; eleven service-backed
+      Records cannot, and the instance writes sentinels the checker reports as
+      MODEL-FORCED-APPROXIMATION.
+    post_evolution_fit: "Record.content_digest becomes satisfiable for knowledge nodes"
+    unresolved_discriminator: >
+      Whether V5 should relax content_digest to optional for externally-custodied Records, or the
+      stores should expose one, is not decidable from one case. The model-defect classification
+      stands either way.
+    encoded_instance: "none — the evolved form differs only in the value of an existing field"
+
+  CF-REJECTED:
+    - title: Give every spawned agent instance a distinct agent_id
+      why_not_proposed: >
+        Attractive — seven researchers share the declared_identity `factory-researcher`, and the
+        run could not attribute which of them authored which of the six publication defects. But
+        `.claude/rules/unimatrix-access.md` D6 states the opposite rule explicitly ("the run-id
+        belongs in topic, feature_cycle and tags — never splice it into identity"), and D6 was
+        ratified for reasons this run did not examine. Proposing it here would be relitigating a
+        standing decision from outside its evidence. Carried as PR-ACTOR-IDENTITY-SINGULAR with
+        cause `unresolved`, not as an evolution candidate.
+    - title: Instantiate a Capability for the proposed jurati-arch-002
+      why_not_proposed: >
+        This is the circular candidate the amendment forbids. The ONLY reason to give
+        jurati-arch-002 an observable_behavior and a done_when is that V5 requires them. The
+        project's own rule — a capability id is created when a behavior is identified, not when
+        a run wants a target — is the better rule. Carried as PR-CAPABILITY-ABSENT with cause
+        `historical-evidence-gap` + `model-defect`.
+    - title: Make the garage's single-writer curator rule enforced rather than conventional
+      why_not_proposed: >
+        Would satisfy I12 handsomely, and is exactly the shape of a build recommendation this
+        scope forbids. It also requires a credential boundary that does not exist and cannot be
+        costed from the fixed alphabet. Carried as PR-ENFORCED-AUTHORITY-ABSENT with cause
+        `enforcement-gap`, and left there.
+
+# ---------------------------------------------------------------------------
+# Counterfactual instance objects. Distinct ids; never merged into the history.
+# ---------------------------------------------------------------------------
+instances:
+
+  Unit:
+    - id: CF01-UN-W1
+      construct: Unit
+      version: 1
+      provenance_class: counterfactual
+      candidate: CF-01
+      varies: UN-W1
+      fields:
+        unit_kind: research-workstream
+        intended_outcome: "a complete component inventory and boundary/topology map with a completeness ledger accounting for every top-level and workspace-owned component"
+        scope_ref: SC-TEAM
+        current_state: done
+        baseline_ref: "git-tree:e20f8102c5132d8f1c27c49c787487e7d84b42ac (commit 9158a11 / formerly 17ebf2e)"
+      relations: {follows: [WF-RESEARCH-SCOPE], depends_on: [], attempts: [], assigned_through: [], gated_by: [], consumes: [], produces: [], delivers: [], directed_by: [], replaces: []}
+      note: >
+        Identical V5 shape to UN-W1. Only the referent of baseline_ref changes: the tree oid is
+        invariant under the rebase that invalidated the commit id, and both ids are retained.
+
+  Attempt:
+    - id: CF03-AT-RUN-1
+      construct: Attempt
+      provenance_class: counterfactual
+      candidate: CF-03
+      varies: AT-RUN-1
+      fields:
+        baseline_ref: "git-tree:140131bdf67e2ef2ab089f3f79467ba9c2bf11f3"
+        started_at: "2026-08-28T11:45:42Z"
+        ended_at: "2026-08-28T13:24:34Z"
+        disposition: hold
+        resume_requirements:
+          baseline: "git-tree:e20f8102c5132d8f1c27c49c787487e7d84b42ac"
+          preconditions: ["scope boundary unchanged", "owner amendment binding", "target pin re-verified unmoved"]
+          unresolved_residue: ["coverage gate open, one rework allowance remaining", "the 38-vs-37 manifest count conflict", "phase boundaries for scope and the first tech-discovery pass permanently lost"]
+          next_admissible_transition: "independent round-2 coverage re-audit"
+          recorded_by: "AC-COORD at 2026-08-28T13:28:56Z, after termination — NOT the interrupted actor's own disposition"
+      relations: {unit: [UN-RUN], actors: [AC-LEAD-1], governed_by: [DL-RUN-1], produces: []}
+      note: >
+        THE EVOLVED FORM STILL CARRIES `_approx` ON disposition. `hold` remains a reconstruction
+        by a different actor. The typed handover populates resume_requirements — which V5 already
+        supports — and leaves the termination-side gap exactly where it was. This object exists to
+        make the residue visible, not to show the model passing.
+      _approx: {disposition: PR-ATTEMPT-DISPOSITION}
+
+  Event:
+    - id: CF02-EV-DETECT
+      construct: Event
+      provenance_class: counterfactual
+      candidate: CF-02
+      varies: EV-031
+      fields:
+        event_type: observation
+        occurred_at: "2026-08-27T19:36:00Z"
+        recorded_at: "2026-08-27T19:36:00Z"
+        scope_ref: SC-COL
+        actor_refs: [AC-GIT]
+        subject_refs: [RC-METHOD-SKILLS]
+        significance: surprise
+        carrier: artifact-ref
+        custody: "checked-in manifest in the same repository — detectable, NOT custodial; the manifest is editable by the governed party"
+        epistemic_kind: mechanical-observation
+        extension:
+          instrument: "sha256 manifest comparison over .claude/workflow, .claude/agents/factory, .claude/rules"
+          subject: "twelve .claude/skills/uni-*/SKILL.md files"
+          capture_custody: "repository working tree; the comparison output is retained"
+          raw_evidence_ref: "the manifest diff"
+      relations: {documented_by: [], caused_by: [], correlated_with: [], supersedes: []}
+      note: >
+        What CF-02 would have produced. It is an `observation`, not an authority refusal: nothing
+        was prevented, and I18 remains unsatisfied in the evolved form as in the historical one.
+
+    - id: CF04-EV-OBS
+      construct: Event
+      provenance_class: counterfactual
+      candidate: CF-04
+      varies: EV-015
+      fields:
+        event_type: observation
+        occurred_at: "2026-08-28T12:50:22Z"
+        recorded_at: "2026-08-28T12:50:22Z"
+        scope_ref: SC-TEAM
+        actor_refs: [AC-AUD-R1]
+        subject_refs: [RC-W1]
+        significance: routine
+        carrier: artifact-ref
+        custody: "transcript file committed beside the audit; authored by the auditing actor"
+        epistemic_kind: reported-observation
+        extension:
+          instrument: "git ls-files '*package.json' | wc -l, and the any-depth find equivalent, at the pinned target commit"
+          subject: "manifest enumeration of ruvnet/metaharness"
+          capture_custody: "the auditing actor's own session — retained, not independently custodied"
+          raw_evidence_ref: "reports/coverage.transcript.txt"
+      relations: {documented_by: [], caused_by: [], correlated_with: [], supersedes: []}
+      note: >
+        epistemic_kind stays `reported-observation`, NOT `mechanical-observation`. Retaining a
+        transcript raises reproducibility; it does not move capture custody outside the reporting
+        actor, and the round-1 over-count is precisely the failure a self-custodied transcript
+        cannot rule out. The evolved form would have SETTLED the 38-vs-37 question, which is the
+        independent benefit — not made the evidence mechanical.

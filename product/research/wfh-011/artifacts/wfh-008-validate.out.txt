@@ -1,0 +1,115 @@
+MODEL   product/factory/proposals/organizational-data-model-v5.yaml
+        sha256 bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060  version 5.0.0
+        core=7 supporting=8 registries=6 catalogs=3 values=8 invariants=19 event_types=9 excluded=11 open=11
+
+INSTANCE product/research/wfh-011/artifacts/wfh-008-instance.yaml
+         sha256 f249aa6fb16c3acf9de5cf1bfdd0c0fa138fca34e2766567ac9aaabad2ea2262
+         counterfactual=False  provenance_class=observed-history
+         model pin MATCHES parsed model digest
+         191 instance objects across 14 constructs
+
+         INVARIANT CHECKS (only those an instance can decide):
+           I13 every Capability required by >=1 Goal ......... PASS  (vacuous: 0 Capability instances)
+           I15 Unit identity survives rework (multi-Attempt) .. PASS  witnesses=['UN-RUN', 'UN-SCOPE', 'UN-W1', 'UN-W2', 'UN-W4', 'UN-W5', 'UN-W6', 'UN-W7', 'UN-AUDIT-R2']
+           I16 distinct intended_outcome per Unit ............ PASS
+           I17 derived Delegation does not exceed parent ..... PASS  (tier + effect_grants only)
+           I17 authority chain reaches a Scope root .......... PASS
+           I12 enforced authority (a boundary enforcing a Delegation) NOT WITNESSED — zero enforced authority in this case
+           Delegation.enforced_by empty on 31/31 Delegations
+           I4  observation Events with mechanical epistemic_kind ['EV-015'] (2 observation Events total)
+           I1  Record supersession chains present ........... ['RC-COV-R2', 'RC-UNI-316']
+
+         EXCLUDED-CONSTRUCT NEGATIVE TEST:
+           excluded constructs appearing as instance sections: NONE — negative test PASSES
+
+         REQUIRED TRAVERSALS (one-way relations, served by index not inverse):
+           Goal GO-WFH -> applicable Workflows: ['WF-RESEARCH-SCOPE']
+           Goal GO-JURATI-SUBSTRATE -> applicable Workflows: ['WF-RESEARCH-SCOPE']
+           Actor AC-OWNER -> participated Attempts: ['AT-SCOPE-2', 'AT-CLOSE-1']
+           Actor AC-COORD -> participated Attempts: ['AT-W1-2', 'AT-W2-2', 'AT-W4-2']
+           Actor AC-LEAD-1 -> participated Attempts: ['AT-SCOPE-1', 'AT-SCOPE-2', 'AT-RUN-1']
+           Actor AC-LEAD-2 -> participated Attempts: ['AT-RUN-2', 'AT-CLOSE-1']
+           Actor AC-RES-W1 -> participated Attempts: ['AT-W1-1']
+           Actor AC-RES-W2 -> participated Attempts: ['AT-W2-1']
+           Actor AC-RES-W3 -> participated Attempts: ['AT-W3-1']
+           Actor AC-RES-W4 -> participated Attempts: ['AT-W4-1']
+           Actor AC-RES-W5 -> participated Attempts: ['AT-W5-1']
+           Actor AC-RES-W6 -> participated Attempts: ['AT-W6-1']
+           Actor AC-RES-W7 -> participated Attempts: ['AT-W7-1']
+           Actor AC-AUD-R1 -> participated Attempts: ['AT-AUD-R1-1']
+           Actor AC-AUD-R2 -> participated Attempts: ['AT-AUD-R2-1', 'AT-AUD-R2-2']
+           Actor AC-RWK-P1 -> participated Attempts: ['AT-W1-2', 'AT-W2-2', 'AT-W4-2']
+           Actor AC-RWK-P2A -> participated Attempts: ['AT-W1-3', 'AT-W2-3']
+           Actor AC-RWK-P2B -> participated Attempts: ['AT-W4-3']
+           Actor AC-RWK-P2C -> participated Attempts: ['AT-W6-2']
+           Actor AC-RWK-P2D -> participated Attempts: ['AT-W5-2', 'AT-W7-2']
+           Actor AC-CORR -> participated Attempts: ['AT-CORR-1']
+           Actor AC-CUR -> participated Attempts: ['AT-SYNTH-1', 'AT-CLOSE-1']
+           Actor AC-GOALOWNER -> participated Attempts: ['AT-REL-1']
+
+INSTANCE product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml
+         sha256 2bfef1de559a487c1c7cd5b7033598470c16978c4b2518a2ac2ddf7d82328818
+         counterfactual=True  provenance_class=counterfactual
+         model pin MATCHES parsed model digest
+         4 instance objects across 3 constructs
+
+         INVARIANT CHECKS (only those an instance can decide):
+           I13 every Capability required by >=1 Goal ......... PASS  (vacuous: 0 Capability instances)
+           I15 Unit identity survives rework (multi-Attempt) .. NOT WITNESSED  witnesses=[]
+           I16 distinct intended_outcome per Unit ............ PASS
+           I17 derived Delegation does not exceed parent ..... PASS  (tier + effect_grants only)
+           I17 authority chain reaches a Scope root .......... PASS
+           I12 enforced authority (a boundary enforcing a Delegation) NOT WITNESSED — zero enforced authority in this case
+           Delegation.enforced_by empty on 0/0 Delegations
+           I4  observation Events with mechanical epistemic_kind ['CF02-EV-DETECT'] (2 observation Events total)
+           I1  Record supersession chains present ........... NONE
+
+         EXCLUDED-CONSTRUCT NEGATIVE TEST:
+           excluded constructs appearing as instance sections: NONE — negative test PASSES
+
+         REQUIRED TRAVERSALS (one-way relations, served by index not inverse):
+
+==============================================================================
+NOTE  S2: Gate.evaluates declares a QUALIFIED inverse `Unit.gated_by`; checked only for targets of construct Unit
+NOTE  S2: Gate.evaluates declares a QUALIFIED inverse `Unit.gated_by`; checked only for targets of construct Unit
+NOTE  S2: Gate.evaluates declares a QUALIFIED inverse `Unit.gated_by`; checked only for targets of construct Unit
+NOTE  S2: Gate.evaluates declares a QUALIFIED inverse `Unit.gated_by`; checked only for targets of construct Unit
+NOTE  COUNTERFACTUAL BOUNDARY: CF01-UN-W1.follows -> WF-RESEARCH-SCOPE crosses history/counterfactual; the inverse is deliberately NOT written back into the other provenance class
+NOTE  COUNTERFACTUAL BOUNDARY: CF03-AT-RUN-1.unit -> UN-RUN crosses history/counterfactual; the inverse is deliberately NOT written back into the other provenance class
+NOTE  COUNTERFACTUAL BOUNDARY: CF03-AT-RUN-1.governed_by -> DL-RUN-1 crosses history/counterfactual; the inverse is deliberately NOT written back into the other provenance class
+NOTE  product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml: event types registered but not exercised: ['adaptation', 'assessment', 'communication', 'decision', 'effect_disposition', 'effect_request', 'gate_outcome', 'transition']
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:SC-COL(Scope): `effective_at` -> pressure PR-SCOPE-EFFECTIVE-AT
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:WF-RESEARCH-SCOPE(Workflow): `definition_custodian_ref` -> pressure PR-METHOD-CUSTODY
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:GT-COVERAGE(Gate): `procedure` -> pressure PR-GATE-PROCEDURE
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:AT-RUN-1(Attempt): `disposition` -> pressure PR-ATTEMPT-DISPOSITION
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:AT-RUN-1(Attempt): `ended_at` -> pressure PR-ATTEMPT-DISPOSITION
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-ISSUE-66(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:forge-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-ISSUE-66(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-CYCLE(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:cycle-service-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-CYCLE(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-312(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:unimatrix-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-312(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-316(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:unimatrix-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-316(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-317(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:unimatrix-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-317(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-318(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:unimatrix-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-318(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-319(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:unimatrix-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-319(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-320(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:unimatrix-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-320(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-321(Record): `content_digest` is a required digest the custody store does not expose -> 'unavailable:unimatrix-exposes-no-content-digest'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-UNI-321(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-METHOD-AGENT-RESEARCHER(Record): `content_digest` is a required digest the custody store does not expose -> 'sha256:unavailable-not-pinned-by-this-instance'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-METHOD-AGENT-RESEARCHER(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-METHOD-SKILLS(Record): `content_digest` is a required digest the custody store does not expose -> 'sha256:unavailable-overwritten-state-not-captured'
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-instance.yaml:RC-METHOD-SKILLS(Record): `content_digest` -> pressure PR-RECORD-DIGEST
+WARN  product/research/wfh-011/artifacts/wfh-008-instance.yaml: I13/I14/I9 and Capability's whole field/relation set are VACUOUS — the case instantiates zero Capability objects
+WARN  product/research/wfh-011/artifacts/wfh-008-instance.yaml: I17 UNDECIDABLE on non-numeric axes for 24 derived Delegations — the model supplies no ordering for escalation_conditions or resource_ceiling maps (open.delegation_attenuation)
+WARN  product/research/wfh-011/artifacts/wfh-008-instance.yaml: I12 second clause NOT WITNESSED — no EffectBoundary enforces any Delegation; every authority in this case is declared only
+WARN  MODEL-FORCED-APPROXIMATION product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml:CF03-AT-RUN-1(Attempt): `disposition` -> pressure PR-ATTEMPT-DISPOSITION
+WARN  product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml: I13/I14/I9 and Capability's whole field/relation set are VACUOUS — the case instantiates zero Capability objects
+WARN  product/research/wfh-011/artifacts/wfh-008-counterfactual-instance.yaml: I12 second clause NOT WITNESSED — no EffectBoundary enforces any Delegation; every authority in this case is declared only
+==============================================================================
+RESULT: 0 error(s), 33 warning(s), 8 note(s)
