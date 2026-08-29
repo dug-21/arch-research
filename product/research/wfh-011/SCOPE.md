@@ -1,6 +1,6 @@
 # wfh-011 — Organizational data-model instantiation and rejection test
 
-**Status:** scoped · HOLD-PREMISE
+**Status:** scoped · pending-human-resume
 **Goal(s):** workflow-harness — establish a manageable common operating model for a distributed, continually improving agentic organization (primary)
 **Capability target(s):** seven-entity organizational data-model hypothesis — no current Unimatrix capability id; structure-only theme hypothesis, with no grade advancement
 **Confidence-required:** directional
@@ -265,3 +265,51 @@ synthesis. While the premise gate remains open, the only valid done call is **HO
 ---
 
 <!-- Amendments are append-only. Never overwrite a validated verdict; explicitly reconcile any extension. -->
+
+## Extension — 2026-08-29: Premise Recheck / Correction
+
+**Reason:** The original `HOLD-PREMISE` assessment above was correct for the file state inspected at that
+time, but is stale relative to the current canonical workspace file. This extension preserves that
+assessment as history and corrects the current premise state; it does not retroactively rewrite the
+original observation.
+
+**Pinned model:** `product/factory/proposals/organizational-data-model-v5.yaml` at SHA-256
+`bf8e55364e36f15ddaf5241cfbb1339ac9672fd04746c14a96306d6fa9841060`.
+
+### Recheck evidence
+
+- `yq` v4.44.3 resolves the complete intended scalar values for `values.autonomy_tier` A0, A3, and A5;
+  `registries.event_type.seeded.effect_disposition.definition`;
+  `registries.event_type.seeded.adaptation.definition`; and
+  `supporting.Attempt.fields.resume_requirements.definition`.
+- An independent read-only PyYAML check returns those same complete scalar values and **PASS** for:
+  core `7`; supporting `8`; registries `6`; catalogs `3`; invariants `19`; event types `9`; all relation
+  targets; declared inverse symmetry, including qualified `Unit.gated_by`; registry/value reference
+  resolution; registry seed conformance with the map key treated as the implicit registry key; every
+  invariant bound from a construct and every construct bound to at least one invariant; and
+  `extension_owner` present on exactly `Capability`, `Unit`, `Event`, `Record`, `Workflow`, and `Gate`.
+- Direct inspection of the pinned canonical file confirms the six formerly split definitions are quoted
+  and contain their complete clauses.
+
+### Corrected premise ruling
+
+Review finding S1's scalar-integrity blocker is **CLOSED for the pinned digest above**. The conditional
+resume requirements numbered 1–3 in the original premise gate are satisfied by the current canonical
+artifact and this append-only digest record. The earlier warning against silent normalization remains
+valid method guidance, but no normalization is now required: consumers must parse the pinned file as-is.
+
+This correction closes no other model question. Review concerns S2–S8, every construct-local and
+top-level OPEN item, the explicit one-way traversal obligations, absent runtime enforcement, and all
+`wfh-010` evidence limits remain inputs to W1–W4 and the independent coverage audit. In particular, the
+qualified inverse convention, notation coverage, invariant atomicity, standing/dynamic Delegation
+discriminator, I19 binding altitude, `receives` asymmetry, superseded-file hygiene, category behavior,
+attenuation, custody enforcement, event identity, Gate identity, skill catalog, lesson-versus-pattern,
+collective authority succession, A3/A4 evidence, Capability rollup, and general semantic compression are
+not resolved by this parse recheck.
+
+### Current gate state
+
+The run is now **scoped · pending-human-resume**, not `researching`. Tech-discovery and W1–W4 remain
+blocked until the owner explicitly approves/resumes Issue #70 and the leader records the corresponding
+cycle transition. This extension supplies no authority to begin research, no model/schema change, no
+graph write, no grade movement, and no runtime-enforcement claim.
