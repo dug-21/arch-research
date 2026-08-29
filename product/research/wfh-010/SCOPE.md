@@ -1,6 +1,6 @@
 # wfh-010 — Agentic-organization vocabulary transfer test
 
-**Status:** scoped
+**Status:** superseded-before-synthesis
 **Goal(s):** workflow-harness — establish a manageable common vocabulary for a distributed, continually improving agentic organization (primary)
 **Capability target(s):** candidate agentic-organization vocabulary hypothesis — no current Unimatrix capability id; structure-only theme hypothesis, with no grade advancement
 **Confidence-required:** directional
@@ -342,3 +342,25 @@ product/service architecture, repository-topology decision, graph write, synthes
 technology grade movement, validated claim, proof-goal, build recommendation, or execution of either
 historical case. `wfh-009` remains held and excluded; this extension authorizes neither its synthesis nor
 additional work on it.
+
+## Reconciliation — 2026-08-29
+
+This run is **superseded before synthesis** by the fresh V5 instantiation validation follow-up. W1–W3,
+their independent coverage audit, W4's targeted ontology/data-model analysis, its bounded repair, and the
+final supplemental independent audit all remain completed historical artifacts. The original W1–W3
+coverage verdict was `PASS`; after one targeted W4 rework round, the supplemental verdict was also
+`PASS`.
+
+No factory-curator synthesis or `REPORT.md` was produced, so this scope did not adjudicate a vocabulary
+v2, publish a directional position, or complete the synthesis phase. No Unimatrix graph write occurred
+and no capability or technology grade moved.
+
+Legacy cycle telemetry retains no phase events or workflow-version tags for this run. That telemetry
+drift is preserved as missing historical evidence: no events or tags are reconstructed or added
+retroactively, and the completed findings and gate records are not overwritten.
+
+The smallest safe continuation is the fresh V5 instantiation validation follow-up: consume the preserved
+WFH-010 findings, audits, and V5 proposal as inputs; instantiate the two historical cases; and test the
+model against conforming and non-conforming examples under a newly approved scope and fresh execution
+surfaces. WFH-010 itself authorizes no further synthesis, model revision, implementation, graph write, or
+grade movement.
