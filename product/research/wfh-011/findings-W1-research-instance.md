@@ -406,6 +406,16 @@ from a local artifact that mirrors it. `git branch -a --contains` is not evidenc
 governed party is a label, not a control* — turned on my own instrument. It is also why every
 `[MEASURED]` label in this document should be read as naming the command, not the conclusion.
 
+There are now three instances of that shape in this workstream, and the third is not about `git` at
+all: when I added the `T03` ledger row I did not re-read the paragraph three lines above it that
+*counts* the ledger rows, so the row landed and the count went stale. "I made the edit" and "the file
+now says what I intended" are different claims, and only the second was the one worth reporting. The
+reviewer who caught it recorded an instance of the same shape in the same hour — reading my working
+tree while I was still editing it and reporting the item as committed state. Two agents, one file, one
+error: **a claim outran its measurement, and the artifact that was consulted was a mutable local one.**
+That is the pattern this case is about, and it is more useful recorded here than in either of our
+apologies.
+
 **My instance was already correct and needs no change.** Every `baseline_ref` in
 `wfh-008-instance.yaml` is a post-rebase full oid; all twelve verify as `ANCESTOR-OF-MAIN`. I never
 routed a value through `EV-032`'s mapping. The mapping in `EV-032.extension` is a *record of the
@@ -653,7 +663,7 @@ V5, and the three rejected ones are rejected precisely because they do not:
 
 ## 9. Source ledger
 
-Every M and R item closes. Two transitive sources were added before use, per the SCOPE's rule.
+Every M and R item closes. Three transitive sources were added before use, per the SCOPE's rule.
 
 | Id | Path / identifier | Closure | Use |
 |---|---|---|---|
@@ -746,3 +756,4 @@ Every M and R item closes. Two transitive sources were added before use, per the
 - type: docs · ref: `.claude/workflow/research-scope.md` · title: "Protocol: research-scope" · org: arch-research garage · year: 2026 · surface: adjacent *(transitive source T01)*
 - type: docs · ref: `.claude/rules/unimatrix-access.md` · title: "Unimatrix Access Rules (factory agents)" · org: arch-research garage · year: 2026 · surface: adjacent *(transitive source T01)*
 - type: dataset · ref: `unimatrix:#312, #316, #317, #318, #319, #320, #321` · title: "wfh-008 knowledge nodes, read-only re-resolution 2026-08-29" · org: arch-research garage · year: 2026 *(transitive source T02)*
+- type: repo · ref: `dug-21/arch-research` · title: "Read-only remote/forge state queries, 2026-08-29 — ls-remote heads, prune dry-run, delete_branch_on_merge, and two commit lookups by full oid" · org: arch-research garage · year: 2026 *(transitive source T03; live state at a timestamp, not a durable fact)*
