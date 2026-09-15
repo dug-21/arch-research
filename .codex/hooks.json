@@ -1,5 +1,4 @@
 {
-  "model": "claude-opus-4-8",
   "hooks": {
     "SessionStart": [
       {
@@ -12,24 +11,13 @@
         ]
       }
     ],
-    "Stop": [
+    "SessionEnd": [
       {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "node /home/vscode/.npm/_npx/39eded8816df3abb/node_modules/@dug-21/unimatrix/lib/hook-client/index.js Stop"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node /home/vscode/.npm/_npx/39eded8816df3abb/node_modules/@dug-21/unimatrix/lib/hook-client/index.js UserPromptSubmit"
           }
         ]
       }
@@ -52,17 +40,6 @@
           {
             "type": "command",
             "command": "node /home/vscode/.npm/_npx/39eded8816df3abb/node_modules/@dug-21/unimatrix/lib/hook-client/index.js PostToolUse"
-          }
-        ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node /home/vscode/.npm/_npx/39eded8816df3abb/node_modules/@dug-21/unimatrix/lib/hook-client/index.js PostToolUseFailure"
           }
         ]
       }
