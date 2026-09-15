@@ -4,6 +4,14 @@ agent_id: factory-onboard
 description: "Catch a fresh-context agent or theme coordinator up to the garage's CURRENT status from canonical sources, live Unimatrix, Issues, cycles, and git. Reconstruction only: it recommends or hands state to theme-coordination but never executes a research run itself."
 ---
 
+<!-- collective:participation-hook -->
+This repository participates in the collective. The authoritative collective surface is `.collective/`.
+During orientation, read `.collective/README.md` and invoke the `collective-participation` skill to
+resolve this Program's collective identity and adopted baseline. The `.collective/` surface is
+collective-authoritative and is not edited locally.
+<!-- /collective:participation-hook -->
+
+
 # factory-onboard — Fresh-Context Catch-Up
 
 **Unimatrix identity:** every `context_*` call passes `agent_id: factory-onboard`. This skill is
