@@ -16,10 +16,8 @@
     "ghcr.io/devcontainers/features/rust:1": {
       "version": "latest",
       "profile": "default"
-    },
-    "ghcr.io/tailscale/codespace/tailscale": {}
+    }
   },
-  "runArgs": ["--device=/dev/net/tun" ],
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "customizations": {
     "vscode": {
