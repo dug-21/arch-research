@@ -179,10 +179,10 @@
   },
   "N7.1": {
     "result": "PASS",
-    "total_bytes": 386110,
+    "total_bytes": 472404,
     "budget_bytes": 5242880,
     "within_budget": true,
     "banned_types": [],
-    "files": 49
+    "files": 53
   }
 }

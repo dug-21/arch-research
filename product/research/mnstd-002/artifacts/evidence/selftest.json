@@ -127,6 +127,20 @@
       "detected": true
     },
     {
+      "case": "v2-xml-accepted-change-reverted",
+      "check": "C5.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "containment-record-disagrees",
+      "check": "C5.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
       "case": "trace-blank-commit-cell",
       "check": "C5.4",
       "green_result": "PASS",
@@ -218,6 +232,13 @@
       "detected": true
     },
     {
+      "case": "checker-file-tampered",
+      "check": "frozen",
+      "green_result": "n/a",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
       "case": "prereq-docker-missing",
       "check": "N1.3",
       "green_result": "n/a",
@@ -227,6 +248,13 @@
     {
       "case": "prereq-font-cache-missing",
       "check": "N1.3",
+      "green_result": "n/a",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "font-pin-byte-changed",
+      "check": "fonts",
       "green_result": "n/a",
       "tampered_result": "FAIL",
       "detected": true

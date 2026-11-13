@@ -426,14 +426,111 @@
   {
     "clause": "C5.3",
     "result": "PASS",
-    "summary": "v2 exit 0, outputs {'html': True, 'pdf': True, 'xml': True}; containment 10/10 pass",
+    "summary": "v2 exit 0, outputs {'html': True, 'pdf': True, 'xml': True}; containment RECOMPUTED from v2/draft.xml via C2.4 mapping: 10/10 pass; problems 0",
     "evidence": [
       "v2/compile.log",
-      "trace/containment.json",
-      "map/mapping.json"
+      "v2/draft.xml",
+      "map/mapping.json",
+      "intake/final/register.json",
+      "task/dispositions.json",
+      "trace/containment.json (cross-checked, not trusted)"
     ],
     "details": {
-      "fails": []
+      "problems": [],
+      "recomputed": [
+        {
+          "id": "FR-01-001",
+          "mode": "element",
+          "expect": "Felt-headed mallet",
+          "v2_ids": [
+            "_c9f0ce0e-56d1-b7ba-214f-3a3726df0535"
+          ],
+          "pass": true
+        },
+        {
+          "id": "FR-01-002",
+          "mode": "element",
+          "expect": "The clamp shall hold the handle with a soft lining.",
+          "v2_ids": [
+            "_3a970b5d-441a-5554-6e9f-76baa4f2127d"
+          ],
+          "pass": true
+        },
+        {
+          "id": "FR-01-004",
+          "mode": "element",
+          "expect": "for ten days before the test",
+          "v2_ids": [
+            "_895c3bf7-4405-ef45-c268-4b39cb5c9053"
+          ],
+          "pass": true
+        },
+        {
+          "id": "GB-01-001",
+          "mode": "element",
+          "expect": "It applies to forks with a nominal pitch between 250 Hz and 900 Hz.",
+          "v2_ids": [
+            "_38a0bd5b-381e-825f-34ae-acf7421d129b"
+          ],
+          "pass": true
+        },
+        {
+          "id": "GB-01-002",
+          "mode": "element",
+          "expect": "variation of the fundamental frequency of a fork during a stated conditioning period",
+          "v2_ids": [
+            "_ea6853be-21d9-5337-a686-339d0c02c9b9"
+          ],
+          "pass": true
+        },
+        {
+          "id": "GB-01-003",
+          "mode": "element",
+          "expect": "120 mm",
+          "v2_ids": [
+            "_ac6ad26b-1e96-8f7c-da88-24771645b18f"
+          ],
+          "pass": true
+        },
+        {
+          "id": "GB-02-001",
+          "mode": "insert",
+          "expect": "Wear hearing protection when striking forks repeatedly.",
+          "v2_ids": [
+            "_8a713806-dbfe-bb6e-2c8d-ef5a84ff9860",
+            "_c1ce97be-8dc3-6dea-183c-a85027677be3"
+          ],
+          "pass": true
+        },
+        {
+          "id": "GB-02-002",
+          "mode": "element",
+          "expect": "Example drift results",
+          "v2_ids": [
+            "_ef3d76df-9c3f-61e0-f6cf-c68eb54cf34c"
+          ],
+          "pass": true
+        },
+        {
+          "id": "PR-DE-01-001",
+          "mode": "element",
+          "expect": "The clamp shall hold the handle with a soft lining. The lining shall be felt.",
+          "v2_ids": [
+            "_3a970b5d-441a-5554-6e9f-76baa4f2127d"
+          ],
+          "pass": true
+        },
+        {
+          "id": "PR-US-01-001",
+          "mode": "range",
+          "expect": "Replace the lining when it shows wear.",
+          "v2_ids": [
+            "_3a970b5d-441a-5554-6e9f-76baa4f2127d",
+            "_d6940192-8013-60ea-7f4b-b3833242be46"
+          ],
+          "pass": true
+        }
+      ]
     }
   },
   {
