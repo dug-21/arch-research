@@ -4,7 +4,9 @@ One rig, one command. Authored by `factory-poc`. Evidence, not a grade.
 
 ```sh
 docker pull metanorma/metanorma@sha256:836b7ab28c538262d58a3ce10d8504e2bb699a57bbc7ae2a5309c27368dff3da  # once (network)
-make fonts   # once, NETWORKED: ~840 MB font cache in ~/.cache/mnstd-002-fonts (override MNSTD_FONT_CACHE); ruling R1
+make fonts   # once, NETWORKED: ~840 MB font cache in ~/.cache/mnstd-002-fonts (override MNSTD_FONT_CACHE); ruling R1.
+             # Pinned: verifies fonts/MANIFEST.json (sha256 + size + font version per file, fontist formulas commit);
+             # exit 1 on mismatch. Re-running on a provisioned cache is offline (verify only).
 make demo    # gated, network-free: two full runs from clean + self-tests + cross-run checks (~10 min)
 ```
 

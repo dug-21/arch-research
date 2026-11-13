@@ -1,7 +1,8 @@
 # mnstd-002 POC — ISO-style Metanorma authoring + commenting/review, end to end.
 # Authored by factory-poc. Host prerequisites: Docker (+ the pinned image), Python 3.14, git >= 2.32.
 #
-#   make fonts   one-time, NETWORKED font provisioning into $(FONT_CACHE) (ruling R1; outside the repo)
+#   make fonts   one-time, NETWORKED font provisioning into $(FONT_CACHE) (ruling R1; outside the repo); then verifies
+#                the set against fonts/MANIFEST.json (sha256 + version per file; owner ruling 1) and FAILS on mismatch
 #   make demo    the gated, network-free demo: two full runs from clean + self-tests + cross-run checks
 #   make once    a single pipeline run into build/run-a (no cross-run checks)
 #   make clean   remove build/ (never touches the font cache or ../artifacts)

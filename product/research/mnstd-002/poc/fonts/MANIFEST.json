@@ -1,0 +1,320 @@
+{
+  "schema": "mnstd-002 font pin v1",
+  "fontist_formulas_commit": "75a1adb7321de34ebc295fa9be97c7aedc753611",
+  "font_dir": "metanorma/fonts",
+  "files": [
+    {
+      "file": "NotoSans-Bold.ttf",
+      "sha256": "0f3f608baf8d88480f399747871b374144eaf9e6f8880d2cb19cfca3ac256697",
+      "bytes": 540696,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Bold"
+    },
+    {
+      "file": "NotoSans-BoldItalic.ttf",
+      "sha256": "eb9a9bad5cf7a88cc306573ba9e2239b95443e285cc84f5f02c38848c1b06f91",
+      "bytes": 555292,
+      "version": "Version 2.008; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Bold Italic"
+    },
+    {
+      "file": "NotoSans-Italic.ttf",
+      "sha256": "7bd35300bb8a6f6aa2f4314a0202c7fe2cb9d5078a903339b8b8340a78f3c312",
+      "bytes": 552776,
+      "version": "Version 2.008; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Italic"
+    },
+    {
+      "file": "NotoSans-Light.ttf",
+      "sha256": "f4ed61228d5c49981ef9b2ef88d2eb69046529e1a5a381a9fa7c705b1fb33433",
+      "bytes": 525860,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Light"
+    },
+    {
+      "file": "NotoSans-LightItalic.ttf",
+      "sha256": "c1f52c7492de60333d9867ed70bf5f75e9b752412644e391f7224bdfc62276dc",
+      "bytes": 544388,
+      "version": "Version 2.008; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Light Italic"
+    },
+    {
+      "file": "NotoSans-Regular.ttf",
+      "sha256": "3c8397ec9650d0ef85bd07fc2099da91fa964ebb29dbe39a38b946177ef79d9b",
+      "bytes": 538048,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Regular"
+    },
+    {
+      "file": "NotoSansHK-Bold.otf",
+      "sha256": "4bce16fbed09278cbdfb4d57749500038cdda70737925a846e3f6c59327ab46e",
+      "bytes": 5840928,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans HK Bold"
+    },
+    {
+      "file": "NotoSansHK-Regular.otf",
+      "sha256": "8a43afea92bb58dfd9027bd7ac6f5b0b2662e2ffb3e7c1edc02c62b2b21924f1",
+      "bytes": 5688384,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans HK"
+    },
+    {
+      "file": "NotoSansJP-Bold.otf",
+      "sha256": "1b0edfb500b73a4fa8a4fcaae1bbbd403994e08e73e3e0da37e70d3853f42c5f",
+      "bytes": 4656448,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans JP Bold"
+    },
+    {
+      "file": "NotoSansJP-Regular.otf",
+      "sha256": "dff723ba59d57d136764a04b9b2d03205544f7cd785a711442d6d2d085ac5073",
+      "bytes": 4533028,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans JP"
+    },
+    {
+      "file": "NotoSansKR-Bold.otf",
+      "sha256": "5a6ceb287ed2fc6cfc6213144ebea68cbd94b20fc9eb873d8486493bf02d9bda",
+      "bytes": 4816044,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans KR Bold"
+    },
+    {
+      "file": "NotoSansKR-Regular.otf",
+      "sha256": "69975a0ac8472717870aefeab0a4d52739308d90856b9955313b2ad5e0148d68",
+      "bytes": 4644748,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans KR"
+    },
+    {
+      "file": "NotoSansMono-Bold.ttf",
+      "sha256": "beb857bd799a114de7d5d90cc75cc69f4b6ee8d401f4ab20697e6f9719a66dfc",
+      "bytes": 525664,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Mono Bold"
+    },
+    {
+      "file": "NotoSansMono-Regular.ttf",
+      "sha256": "d9e2b23d19f8230be7146f409a52b1d23117e635e28f2e2892cf91b7382f325b",
+      "bytes": 512836,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Sans Mono Regular"
+    },
+    {
+      "file": "NotoSansMonoCJKhk-Bold.otf",
+      "sha256": "da24a73c59e785f0f6a726d038a30f62f0a371be0d2df048d1a32926cd072fc5",
+      "bytes": 16948716,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK HK Bold"
+    },
+    {
+      "file": "NotoSansMonoCJKhk-Regular.otf",
+      "sha256": "f72d973a07253e24a08b4fd6923d33087ad33324868a9f9bf17e7c824306d1a1",
+      "bytes": 16384024,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK HK"
+    },
+    {
+      "file": "NotoSansMonoCJKjp-Bold.otf",
+      "sha256": "dfdffe149bc6cbf52860dabd8b8dadbca40ae87a4fbe143b55c0258db2dadfb8",
+      "bytes": 16988848,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK JP Bold"
+    },
+    {
+      "file": "NotoSansMonoCJKjp-Regular.otf",
+      "sha256": "4d01725be822d144cf9a56ade981e6fb920cd7a610b8fc24cc601a920beea5b9",
+      "bytes": 16424156,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK JP"
+    },
+    {
+      "file": "NotoSansMonoCJKkr-Bold.otf",
+      "sha256": "8b82692e9d54205655efd620ab6ff4ad55df94e149021d99529d95e1120621e4",
+      "bytes": 16954224,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK KR Bold"
+    },
+    {
+      "file": "NotoSansMonoCJKkr-Regular.otf",
+      "sha256": "d5afed9988a28ae96afb0f4791754d3c9f4f08d08477eb1a7d6e2d905679a472",
+      "bytes": 16389532,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK KR"
+    },
+    {
+      "file": "NotoSansMonoCJKsc-Bold.otf",
+      "sha256": "a452fedfc0619e43e080b7b861ce34cbd3ec4fbcea495bf8c402a5a02a5dcbdc",
+      "bytes": 16958476,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK SC Bold"
+    },
+    {
+      "file": "NotoSansMonoCJKsc-Regular.otf",
+      "sha256": "ec04cc376b34887cedbdf84074e2e226ed2761eeabdcb9173fc1dd7bfd153ef7",
+      "bytes": 16393784,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK SC"
+    },
+    {
+      "file": "NotoSansMonoCJKtc-Bold.otf",
+      "sha256": "5ea3414e255133ce51aae21bb1e0e428968158bddaaee2597fdfc30cc84bb39a",
+      "bytes": 16956996,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK TC Bold"
+    },
+    {
+      "file": "NotoSansMonoCJKtc-Regular.otf",
+      "sha256": "82a040aed900bba51b5990bc158a86b264c8ad5071a2d8911e8696350e0794b3",
+      "bytes": 16392304,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans Mono CJK TC"
+    },
+    {
+      "file": "NotoSansSC-Bold.otf",
+      "sha256": "c6cb5a93abaa9edc8ee7463b7ebb7f42d618d40e6ed2f7a5371c97b0b64767c0",
+      "bytes": 8543168,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans SC Bold"
+    },
+    {
+      "file": "NotoSansSC-Regular.otf",
+      "sha256": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9",
+      "bytes": 8331336,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans SC"
+    },
+    {
+      "file": "NotoSansTC-Bold.otf",
+      "sha256": "55420b259eb119bf5f2a0aadba10cf9d736c12d64ab93e78546d69ef5f43558b",
+      "bytes": 5839972,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans TC Bold"
+    },
+    {
+      "file": "NotoSansTC-Regular.otf",
+      "sha256": "5bab0cb3c1cf89dde07c4a95a4054b195afbcfe784d69d75c340780712237537",
+      "bytes": 5683368,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "full_name": "Noto Sans TC"
+    },
+    {
+      "file": "NotoSerif-Bold.ttf",
+      "sha256": "3b2086a869bcded2aeb4416fc281ceec9d6ce3c06756cda19f8f763636204e7d",
+      "bytes": 638164,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Serif Bold"
+    },
+    {
+      "file": "NotoSerif-BoldItalic.ttf",
+      "sha256": "4fb8737145b4a503d548af4b517afdfc532e44a96ac15378257e825741334eec",
+      "bytes": 675428,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Serif Bold Italic"
+    },
+    {
+      "file": "NotoSerif-Italic.ttf",
+      "sha256": "0ea81d6b54fc8aa5dff0fd6ebe7cfa431e9e6cf747a8d4aa33581fa0aaccffea",
+      "bytes": 657092,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Serif Italic"
+    },
+    {
+      "file": "NotoSerif-Regular.ttf",
+      "sha256": "c8f669ceb2c9c60ccf55198b305e08a997ffca79a38cc7eeb551e643cbe66505",
+      "bytes": 616196,
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "full_name": "Noto Serif Regular"
+    },
+    {
+      "file": "NotoSerifHK-Bold.otf",
+      "sha256": "c66d7e50517ccc36633de5655862eb748cbd63da4e9c8413018d16d21e25eac1",
+      "bytes": 8236616,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif HK Bold"
+    },
+    {
+      "file": "NotoSerifHK-Regular.otf",
+      "sha256": "5e4e5a6624e0077c232e23dfe54c543a2960cfd36b9123170fe9241d22b35999",
+      "bytes": 7919112,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif HK"
+    },
+    {
+      "file": "NotoSerifJP-Bold.otf",
+      "sha256": "a3228bd8782b2fc1048449bf22c7f35a21e84b49757f0748a1a8cb12b35cac10",
+      "bytes": 6478040,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif JP Bold"
+    },
+    {
+      "file": "NotoSerifJP-Regular.otf",
+      "sha256": "4c82660fda92d21ffaf87b55e1a64f0147003977faf2f44480cef806769ea86c",
+      "bytes": 6212052,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif JP"
+    },
+    {
+      "file": "NotoSerifKR-Bold.otf",
+      "sha256": "d35641984fb727fba36829dd7914872e11163dcdd14c4db2fc86efa657cebd77",
+      "bytes": 7833548,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif KR Bold"
+    },
+    {
+      "file": "NotoSerifKR-Regular.otf",
+      "sha256": "8ec875bfb50753f80712ad027596ad0e5fec9421374e80a36d0f301a8416c4bd",
+      "bytes": 7582008,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif KR"
+    },
+    {
+      "file": "NotoSerifSC-Bold.otf",
+      "sha256": "c44a5be9342f435b01ac7c20e8b144692334a3454be49d8fb3d26a641f9908ee",
+      "bytes": 12089984,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif SC Bold"
+    },
+    {
+      "file": "NotoSerifSC-Regular.otf",
+      "sha256": "c9f8dd8c035e22ea31607e5efbb2dabdf94836a92f5868267dd2b1a85eb0cd3b",
+      "bytes": 11607284,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif SC"
+    },
+    {
+      "file": "NotoSerifTC-Bold.otf",
+      "sha256": "61aa72be8370d860b7a3d8d45f7199d25d8cc5e7189e27e16ed6f5cf54d913e4",
+      "bytes": 8264064,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif TC Bold"
+    },
+    {
+      "file": "NotoSerifTC-Regular.otf",
+      "sha256": "59b9a93ff4a2a9f9627012fead2c095e97b3addee4b16567b1156081b9e5e0bb",
+      "bytes": 7941240,
+      "version": "Version 2.001;hotconv 1.1.0;makeotfexe 2.6.0",
+      "full_name": "Noto Serif TC"
+    },
+    {
+      "file": "STIX2Math.otf",
+      "sha256": "56cc42241cccc86d6d570134aa918fe8ac714f4b340d9916282fcc53c592d546",
+      "bytes": 808220,
+      "version": "Version 2.02 b142",
+      "full_name": "STIX Two Math"
+    },
+    {
+      "file": "noto-fonts-cjk-static-1.1.zip",
+      "sha256": "f3a6d32f5448bc91c5ba21422b75e474b89308916f1b72950b14e46e59c626bc",
+      "bytes": 259633754,
+      "version": "not available (not an sfnt font file)"
+    },
+    {
+      "file": "noto-fonts-latn-1.1.zip",
+      "sha256": "78d3b6a651ac5731ffaac6f62d2ca1c3f62e67b0a5ecc72e911697a36eb42b09",
+      "bytes": 12869664,
+      "version": "not available (not an sfnt font file)"
+    }
+  ]
+}

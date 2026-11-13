@@ -348,6 +348,26 @@ def main(argv):
         return "FAIL" if p.returncode == 2 and "font cache" in p.stderr else f"PASS (exit {p.returncode})"
     case("prereq-font-cache-missing", "N1.3", t)
 
+    # rework 1 (owner ruling 1): one byte of a pinned font changes -> fontpin verify must go red. Runs on a tiny
+    # scratch cache (one real font file copied from the host cache when present, else synthetic bytes) with its
+    # own scratch manifest, so it never touches the host cache or poc/fonts/MANIFEST.json.
+    def t(c):
+        import fontpin
+        fc = c.dir / "fontcache"
+        (fc / "metanorma" / "fonts").mkdir(parents=True)
+        src = fontpin.FONT_CACHE / "metanorma" / "fonts" / "STIX2Math.otf"
+        f = fc / "metanorma" / "fonts" / "STIX2Math.otf"
+        f.write_bytes(src.read_bytes() if src.exists() else b"OTTO" + bytes(64))
+        man = c.dir / "font-manifest.json"
+        if fontpin.main(["write", "--cache", str(fc), "--manifest", str(man)]) != 0 or \
+                fontpin.main(["verify", "--cache", str(fc), "--manifest", str(man)]) != 0:
+            return "PASS (baseline not green)"
+        b = bytearray(f.read_bytes())
+        b[-1] ^= 0xFF
+        f.write_bytes(bytes(b))
+        return "FAIL" if fontpin.main(["verify", "--cache", str(fc), "--manifest", str(man)]) != 0 else "PASS"
+    case("font-pin-byte-changed", "fonts", t)
+
     shutil.rmtree(scratch, ignore_errors=True)
     missed = [x for x in cases if not x["detected"]]
     dump_json({"cases": cases, "all_detected": not missed}, out)
