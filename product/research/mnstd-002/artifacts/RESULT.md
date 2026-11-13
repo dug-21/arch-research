@@ -98,3 +98,49 @@ seeded-negative exclusion), **N6.1 literal** (font provisioning, R1), **N1.1** (
 attested **N8**. If the validator accepts R2 glue and the sentinel, the builder recommends C1–C5 and C7 for
 `proven` and C6 as `proven` or `partial (C6.1-HTML)` depending on that ruling; N6 likely `partial` on its literal
 text.
+
+## Rework 1 (2026-11-13)
+
+Bounded rework after the firewall gate (`reports/gate-feasibility.md` §4.1) and the owner rulings of 2026-11-13.
+Builder: factory-poc. This section adds to the report above; it changes no earlier row except as stated here.
+
+**What changed**
+
+| Commit | Change |
+|---|---|
+| `9988331` | **C5.3 checker recomputes containment.** `checks.c5_3` no longer trusts `trace/containment.json`. It re-derives the result from: the expected text (accept: register `proposed_change`; modify: frozen `modified_text`; both must equal the frozen `expect_in_v2`); the C2.4 mapping (v1→v2 pairs must agree in tag and anchor, and the v2 id must exist); and `v2/draft.xml` parsed directly with ElementTree (not `resolver.Doc`, not `trace.build`). `containment.json` is cross-checked, and any disagreement FAILs. New self-tests: `v2-xml-accepted-change-reverted`, `containment-record-disagrees`. |
+| `53a9d68` | **Font pinning (ruling 1).** `make fonts` verifies the cache against the committed `poc/fonts/MANIFEST.json` and exits 1 on mismatch. The manifest records sha256, size and OpenType nameID 5 version for each of the 45 files in `metanorma/fonts` (43 fonts, plus 2 zips with no version), and the fontist formulas commit `75a1adb7321de34ebc295fa9be97c7aedc753611`. It holds the manifest only, never the fonts. A cache that is already provisioned is now verified offline and is not re-provisioned. New self-test: `font-pin-byte-changed`. |
+| `fdb8338` | **Re-freeze.** The 19 original fixture/expectation/source hashes are unchanged. **Disclosure:** the original freeze (`7953833`) did not cover checker code, so `frozen.verify` could not see the C5.3 edit. `checks.py`, `selftest.py` and `frozen.py` are now frozen (22 files). New self-test: `checker-file-tampered`. |
+
+**The required tamper case.** `v2-xml-accepted-change-reverted` works on a copy of run A. It reverts accepted
+change GB-01-003 in `v2/draft.xml` (`120 mm` → `80 mm`, the v1 value) and leaves `containment.json` untouched.
+- Before the fix: the validator saw C5.3 **PASS** (not detected).
+- After the fix: C5.3 **FAIL**, with 9/10 recomputed and 2 problems:
+  - `GB-01-003: '120 mm' not contained in v2 XML element(s) ['_ac6ad26b-…']`
+  - recorded `pass=True` disagrees with the recomputed `False`.
+
+**Demo.** `make demo` ran once from clean (`rm -rf build/`), **n=1** for this rework, two pipeline runs inside it.
+- Exit 0, 9 min 58 s.
+- Per-run checks: 37 clause checks, 36 PASS + 1 N/A (N4.3), 0 FAIL. Cross-run N1.2/N3.1/N3.2/N7.1: PASS.
+- Self-tests: **37/37 detected** (was 33/33; +4 new cases).
+- C5.3 now reads: `containment RECOMPUTED from v2/draft.xml via C2.4 mapping: 10/10 pass; problems 0`.
+- N3.1 identity set (11 files) and v1/v2 tags are byte-identical to `invocations/demo-2.json`. All clause results are identical to demo-2.
+- Record: `invocations/demo-3.json`.
+- `make fonts` on the host cache: `fontpin: ok (45 files)`. It goes red on a mismatched scratch cache (exit 1).
+
+**Committed evidence rewritten by the demo** (no other evidence was touched):
+- `SNAPSHOT.md`
+- `evidence/checks/summary.json` (C5.3 summary text)
+- `evidence/selftest.json` (37 cases)
+- `evidence/selftest-command-trace.log`
+- `evidence/cross-run.json`
+- `evidence/envelope.json` (`captured_at_utc` only)
+- `evidence/{v1,v2,review/build}/compile.log` (the mn2pdf temp file name only)
+- new `invocations/demo-3.json`
+
+**Caveats.**
+- This is not a fresh-clone run. The host font cache was already provisioned, so `make fonts` did not re-download anything.
+- The first font pin was taken from that same cache, provisioned 2026-11-13 from upstream at formulas commit `75a1adb7`. The pin fixes *this* set; it does not show that upstream still serves it.
+- Pinning is enforced by `make fonts`, not by `make demo` or `prereqs`, as ruling 1 states. A demo run on an unverified cache is still possible.
+- The C5.3 checker shares `common.norm` / `text_of` and the pipeline-written `map/mapping.json` with the pipeline. The mapping is constrained by C2.4 and by the tag/anchor agreement above, but it is not re-derived.
+- Unchanged by this rework: the rig's C6.1 self-check still reports PASS on the HTML glue. Owner ruling 3 rules that the glue does not satisfy C6.1. The ruling, not this self-check, governs C6 (`partial`).

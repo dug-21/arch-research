@@ -1,5 +1,5 @@
 $ metanorma compile -t iso --agree-to-terms --no-install-fonts -x xml,html,pdf,rxl draft.adoc
-java -Xss10m -Xmx3g -Djava.awt.headless=true -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0 -Duser.home=/root -jar /usr/local/bundle/gems/mn2pdf-2.74/bin/mn2pdf.jar --xml-file "/tmp/draft20261113-7-ldmcwx.xml" --xsl-file "/usr/local/bundle/gems/metanorma-iso-3.5.14/lib/isodoc/iso/iso.international-standard.xsl" --pdf-file "/metanorma/draft.pdf" --param baseassetpath="/metanorma"
+java -Xss10m -Xmx3g -Djava.awt.headless=true -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0 -Duser.home=/root -jar /usr/local/bundle/gems/mn2pdf-2.74/bin/mn2pdf.jar --xml-file "/tmp/draft20261113-7-578xws.xml" --xsl-file "/usr/local/bundle/gems/metanorma-iso-3.5.14/lib/isodoc/iso/iso.international-standard.xsl" --pdf-file "/metanorma/draft.pdf" --param baseassetpath="/metanorma"
 
 --- stderr ---
 Style: (bibitem#_2af90696-27fd-790c-888e-0d6f9e6b0214): non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100enLatn
