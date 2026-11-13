@@ -22,13 +22,25 @@ append/retro-fix, so get it right on the first call), agent_id=`research-leader`
 - `phase-end phase:"scope" next_phase:"decompose"`.
 
 ## Phase: decompose
-- `factory-researcher` → a decomposition file (candidate business capabilities + nfrs + dependencies).
+- `factory-researcher` → `DECOMPOSITION.md` (exact name) (candidate business capabilities + nfrs + dependencies).
+- **Board tag convention** (researcher and curator): Tags: `business|nfr`, `grade:<g>`, `{goal}`, `{run-id}`;
+  goal node tags `goal`, `{goal}`, `{run-id}`. NFRs are `category: capability`, `kind: nfr` in content. No
+  `goal:`/`kind:` prefixed tags.
 - `factory-curator` distills → Unimatrix:
   - a `goal` node; `capability` (business) + `nfr` nodes, all `missing`/`claimed`;
   - edges: `Advances→goal` (each cap/nfr), `About→` (nfr→cap), `Prerequisite→` (cap→cap);
   - **tag every node with the run-id**.
 - **GATE (advisory → human):** approve the board. Per §6, the set is **never assumed complete** —
   gaps get added later as new `missing` nodes (frontier-change, D3).
+  - If owner questions are answered by default (including pre-authorized gates), the gate comment lists each
+    default that appears in a done_when clause and declares it **binding for the firewall**. Rewrite
+    'proposed'/'default' wording in those clauses to the fixed value before close. *(mnstd-001 OBS-26.)*
+  - **done_when altitude check (before approving the board).** For each clause ask: *"if the tool satisfies the
+    need through a different layer, file or one-time setup step than this wording assumes, should the clause
+    FAIL?"* If no, rewrite at the need (e.g. "machine-readable number joinable from the compile's XML outputs",
+    not "in the semantic XML"; "no network during the gated run; one-time provisioning declared and pinned",
+    not "only network access is the image pull"). Keep layer-specific wording only where the layer IS the
+    requirement (e.g. "native, not a bespoke overlay"). (Lesson #390; mnstd-002 OBS-29.)
 - `phase-end phase:"decompose" outcome:"N caps, M nfrs"`.
 
 ## CLOSE

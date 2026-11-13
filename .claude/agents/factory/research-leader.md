@@ -31,8 +31,16 @@ The run-id belongs in `topic`/`feature_cycle`, not in identity.
      immediately; completion arrives later as a notification. **If you end your turn after spawning, you
      terminate before your specialists finish and the run is dropped** — silently, with their output
      orphaned. This bites hardest when the leader is itself a subagent, which is now the normal case.
-     Keep the turn alive until every spawn has reported: poll, or block on a wait, but do not assume the
-     spawn call blocked. *(Learned the hard way on the first three-deep chain, 2026-08-21.)*
+     Keep the turn alive until every spawn has **reported**. The completion signal is the spawn's
+     notification or return, **never the presence of its output file** (a file appears before its writer
+     finishes). If you must wait in a shell, use **`Monitor` with an until-loop on the completion condition**
+     (foreground `sleep` is blocked); do not use bare `sleep` loops or file presence, and ignore cycle-review
+     advice naming `TaskOutput` (not a tool in this harness). Do not assume the spawn call blocked.
+     *(Learned the hard way on the first three-deep chain, 2026-08-21; mnstd-001 OBS-26, mnstd-002 OBS-29.)*
+   - **When a specialist's (or your own) report-file write is blocked** (OBS-7, OBS-27): persist its inline
+     markdown yourself and stamp the file with a provenance comment naming the agent and the extraction. Until
+     the owner rules on #389 (options A/B/C), treat a return with zero or several fenced blocks as a FAILED
+     return and re-request; never hand-repair the content.
 3. **Gates** (§14.3):
    - **Advisory** (scope, synthesis incl. the **goal-owner** relevance review): relay the reviewer's stance verbatim to the human; never act on it directly.
    - **Blocking** (coverage, firewall/feasibility): PASS / REWORKABLE (re-spawn prior phase, **max 2**) / SCOPE-FAIL (stop, return to human).
