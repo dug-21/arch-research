@@ -1,0 +1,10 @@
+{
+  "v1_compile_exit": 0,
+  "intake_A_exit": 0,
+  "intake_B_exit": 1,
+  "intake_final_exit": 1,
+  "dispositions_exit": 0,
+  "dispositions_bad_exit": 1,
+  "v2_compile_exit": 0,
+  "review_compile_exit": 0
+}

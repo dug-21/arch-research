@@ -1,0 +1,358 @@
+{
+  "positive": [
+    {
+      "clause": "1",
+      "element": "",
+      "anchor": "cl-scope",
+      "clause_no": "1",
+      "got": {
+        "id": "_e0cc5b47-bfbc-2a46-abed-3f0831144ae5",
+        "anchor": "cl-scope",
+        "tag": "clause",
+        "number": "1",
+        "clause": "1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "1",
+      "element": "para 2",
+      "text": "It applies to forks with a nominal pitch",
+      "clause_no": "1",
+      "got": {
+        "id": "_7ba92c71-4f88-48b6-a012-120243a00336",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "2",
+      "element": "",
+      "anchor": "cl-normref",
+      "clause_no": "2",
+      "got": {
+        "id": "_b3c8b17d-ab28-4560-6795-13768de6d20b",
+        "anchor": "cl-normref",
+        "tag": "references",
+        "number": "2",
+        "clause": "2"
+      },
+      "pass": true
+    },
+    {
+      "clause": "3.1",
+      "element": "",
+      "anchor": "term-glimmerwood",
+      "clause_no": "3.1",
+      "got": {
+        "id": "_a7498f6e-6099-7526-2d68-66743b11a531",
+        "anchor": "term-glimmerwood",
+        "tag": "term",
+        "number": "3.1",
+        "clause": "3.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "4",
+      "element": "para 1",
+      "text": "Each fork shall be identified",
+      "clause_no": "4",
+      "got": {
+        "id": "_ac1bde95-f6a3-3cba-c987-8f0176bce3f9",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "4"
+      },
+      "pass": true
+    },
+    {
+      "clause": "4",
+      "element": "Note 1",
+      "anchor": "note-general-1",
+      "clause_no": "4",
+      "got": {
+        "id": "_bde52ed4-b4a1-505e-a3e8-68623415ce85",
+        "anchor": "note-general-1",
+        "tag": "note",
+        "number": "Note 1",
+        "clause": "4"
+      },
+      "pass": true
+    },
+    {
+      "clause": "4",
+      "element": "Note 2",
+      "anchor": "note-general-2",
+      "clause_no": "4",
+      "got": {
+        "id": "_90d084cd-0859-919d-0deb-8088eb036e39",
+        "anchor": "note-general-2",
+        "tag": "note",
+        "number": "Note 2",
+        "clause": "4"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1",
+      "element": "",
+      "anchor": "cl-stand",
+      "clause_no": "5.1",
+      "got": {
+        "id": "_4c628a8d-8324-a19a-5764-32a05324309c",
+        "anchor": "cl-stand",
+        "tag": "clause",
+        "number": "5.1",
+        "clause": "5.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1",
+      "element": "Table 1",
+      "anchor": "tab-stand",
+      "clause_no": "5.1",
+      "got": {
+        "id": "_b1bf752b-d4bc-c281-2525-e8ab5eefbfd1",
+        "anchor": "tab-stand",
+        "tag": "table",
+        "number": "Table 1",
+        "clause": "5.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1",
+      "element": "para 2",
+      "text": "Other dimensions may be used",
+      "clause_no": "5.1",
+      "got": {
+        "id": "_92994f30-17af-f099-ddff-74927978886c",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "5.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1.1",
+      "element": "",
+      "anchor": "cl-clamp",
+      "clause_no": "5.1.1",
+      "got": {
+        "id": "_c8a2e5c3-3940-24ed-c6f5-1c8208300c53",
+        "anchor": "cl-clamp",
+        "tag": "clause",
+        "number": "5.1.1",
+        "clause": "5.1.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1.1",
+      "element": "para 2",
+      "text": "The lining shall be replaced",
+      "clause_no": "5.1.1",
+      "got": {
+        "id": "_bbd3f18e-cc7e-20da-831d-9149af89e1f5",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "5.1.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "6.1",
+      "element": "Table 2",
+      "anchor": "tab-conditions",
+      "clause_no": "6.1",
+      "got": {
+        "id": "_285beb48-7771-0af2-1c86-b21e91e1f031",
+        "anchor": "tab-conditions",
+        "tag": "table",
+        "number": "Table 2",
+        "clause": "6.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "6.2",
+      "element": "Figure 1",
+      "anchor": "fig-mallet",
+      "clause_no": "6.2",
+      "got": {
+        "id": "_1b261478-1060-0ff1-3756-bd52494ba862",
+        "anchor": "fig-mallet",
+        "tag": "figure",
+        "number": "Figure 1",
+        "clause": "6.2"
+      },
+      "pass": true
+    },
+    {
+      "clause": "7",
+      "element": "para 2",
+      "text": "Example results are given in",
+      "clause_no": "7",
+      "got": {
+        "id": "_87b2259d-6a5c-aed9-1e66-6f00bb077e8e",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "7"
+      },
+      "pass": true
+    },
+    {
+      "clause": "A",
+      "element": "",
+      "anchor": "annex-a",
+      "clause_no": "A",
+      "got": {
+        "id": "_9ca8f109-fc03-bd61-84ae-5ad8e208ab6a",
+        "anchor": "annex-a",
+        "tag": "annex",
+        "number": "A",
+        "clause": "A"
+      },
+      "pass": true
+    },
+    {
+      "clause": "A.1",
+      "element": "Table A.1",
+      "anchor": "tab-results",
+      "clause_no": "A.1",
+      "got": {
+        "id": "_bd8667f7-fd85-0879-7132-14f1c4ee9595",
+        "anchor": "tab-results",
+        "tag": "table",
+        "number": "Table A.1",
+        "clause": "A.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "A.2",
+      "element": "para 1",
+      "text": "A drift above one hertz",
+      "clause_no": "A.2",
+      "got": {
+        "id": "_e952c5b0-3a42-3ff0-2c7f-c5511664bb37",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "A.2"
+      },
+      "pass": true
+    }
+  ],
+  "negative": [
+    {
+      "clause": "9.9",
+      "element": "",
+      "code": "clause_not_found",
+      "got": {
+        "error": "clause_not_found",
+        "message": "no clause, subclause, term or annex numbered '9.9' in v1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1",
+      "element": "Table 7",
+      "code": "element_not_found",
+      "got": {
+        "error": "element_not_found",
+        "message": "no Table 7 in v1 (3 tables exist)"
+      },
+      "pass": true
+    },
+    {
+      "clause": "4",
+      "element": "para 9",
+      "code": "element_not_found",
+      "got": {
+        "error": "element_not_found",
+        "message": "clause 4 has 2 authored paragraph(s); 'para 9' does not exist"
+      },
+      "pass": true
+    },
+    {
+      "clause": "4",
+      "element": "Note 3",
+      "code": "element_not_found",
+      "got": {
+        "error": "element_not_found",
+        "message": "clause 4 has 2 note(s); 'Note 3' does not exist"
+      },
+      "pass": true
+    },
+    {
+      "clause": "B",
+      "element": "",
+      "code": "clause_not_found",
+      "got": {
+        "error": "clause_not_found",
+        "message": "no clause, subclause, term or annex numbered 'B' in v1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "4",
+      "element": "para",
+      "code": "element_ambiguous",
+      "got": {
+        "error": "element_ambiguous",
+        "message": "'para' has no number and clause 4 has 2 paragraphs"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1",
+      "element": "Table 2",
+      "code": "element_not_in_clause",
+      "got": {
+        "error": "element_not_in_clause",
+        "message": "Table 2 exists but is in clause 6.1, not 5.1"
+      },
+      "pass": true
+    },
+    {
+      "clause": "cl. 5",
+      "element": "",
+      "code": "clause_not_found",
+      "got": {
+        "error": "clause_not_found",
+        "message": "'cl. 5' is not a clause/subclause/annex number (bare number or annex letter expected)"
+      },
+      "pass": true
+    },
+    {
+      "clause": "5.1",
+      "element": "Row 3",
+      "code": "element_unparseable",
+      "got": {
+        "error": "element_unparseable",
+        "message": "'Row 3' is not 'para N', 'Table N', 'Figure N' or 'Note N'"
+      },
+      "pass": true
+    },
+    {
+      "clause": "",
+      "element": "Table 1",
+      "code": "clause_missing",
+      "got": {
+        "error": "clause_missing",
+        "message": "no clause/subclause given"
+      },
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "positive": [
+    {
+      "line": 41,
+      "text": "This document specifies a test method",
+      "clause_no": "1",
+      "level": 1,
+      "got": {
+        "id": "_6c9d8cc1-8626-0406-a425-f44faecc94d1",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "1",
+        "block_line": 41,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 43,
+      "text": "It applies to forks with a nominal pitch",
+      "clause_no": "1",
+      "level": 1,
+      "got": {
+        "id": "_7ba92c71-4f88-48b6-a012-120243a00336",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "1",
+        "block_line": 43,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 55,
+      "anchor": "term-glimmerwood",
+      "clause_no": "3.1",
+      "level": 2,
+      "got": {
+        "id": "_a7498f6e-6099-7526-2d68-66743b11a531",
+        "anchor": "term-glimmerwood",
+        "tag": "term",
+        "number": "3.1",
+        "clause": "3.1",
+        "block_line": 55,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 62,
+      "anchor": "cl-general",
+      "clause_no": "4",
+      "level": 1,
+      "got": {
+        "id": "_d7d9862d-f3c7-6f86-2443-c20b8ffef77b",
+        "anchor": "cl-general",
+        "tag": "clause",
+        "number": "4",
+        "clause": "4",
+        "block_line": 62,
+        "block_ctx": "section"
+      },
+      "pass": true
+    },
+    {
+      "line": 65,
+      "text": "The test shall be carried out",
+      "clause_no": "4",
+      "level": 1,
+      "got": {
+        "id": "_b0128fca-8b3c-a7fd-d663-383b48bb2deb",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "4",
+        "block_line": 65,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 68,
+      "anchor": "note-general-1",
+      "clause_no": "4",
+      "level": 1,
+      "got": {
+        "id": "_bde52ed4-b4a1-505e-a3e8-68623415ce85",
+        "anchor": "note-general-1",
+        "tag": "note",
+        "number": "Note 1",
+        "clause": "4",
+        "block_line": 68,
+        "block_ctx": "admonition"
+      },
+      "pass": true
+    },
+    {
+      "line": 78,
+      "text": "The test stand holds the fork",
+      "clause_no": "5.1",
+      "level": 2,
+      "got": {
+        "id": "_a9ec948b-013d-b431-27ba-ad3d88cfa45e",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "5.1",
+        "block_line": 78,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 79,
+      "text": "The test stand holds the fork",
+      "clause_no": "5.1",
+      "level": 2,
+      "got": {
+        "id": "_a9ec948b-013d-b431-27ba-ad3d88cfa45e",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "5.1",
+        "block_line": 78,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 87,
+      "anchor": "tab-stand",
+      "clause_no": "5.1",
+      "level": 2,
+      "got": {
+        "id": "_b1bf752b-d4bc-c281-2525-e8ab5eefbfd1",
+        "anchor": "tab-stand",
+        "tag": "table",
+        "number": "Table 1",
+        "clause": "5.1",
+        "block_line": 83,
+        "block_ctx": "table"
+      },
+      "pass": true
+    },
+    {
+      "line": 94,
+      "text": "The clamp shall grip the handle",
+      "clause_no": "5.1.1",
+      "level": 3,
+      "got": {
+        "id": "_4f1ea0c3-6f79-1fa1-083c-7820e6c3f2f1",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "5.1.1",
+        "block_line": 94,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 96,
+      "text": "The lining shall be replaced",
+      "clause_no": "5.1.1",
+      "level": 3,
+      "got": {
+        "id": "_bbd3f18e-cc7e-20da-831d-9149af89e1f5",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "5.1.1",
+        "block_line": 96,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 100,
+      "text": "The frequency sensor shall resolve",
+      "clause_no": "5.1.2",
+      "level": 3,
+      "got": {
+        "id": "_908aea8a-fe13-f79e-e244-4ee71eb4d612",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "5.1.2",
+        "block_line": 100,
+        "block_ctx": "paragraph"
+      },
+      "pass": true
+    },
+    {
+      "line": 129,
+      "anchor": "fig-mallet",
+      "clause_no": "6.2",
+      "level": 2,
+      "got": {
+        "id": "_1b261478-1060-0ff1-3756-bd52494ba862",
+        "anchor": "fig-mallet",
+        "tag": "figure",
+        "number": "Figure 1",
+        "clause": "6.2",
+        "block_line": 130,
+        "block_ctx": "image"
+      },
+      "pass": true
+    },
+    {
+      "line": 137,
+      "text": "the conditioning period",
+      "clause_no": "7",
+      "level": 1,
+      "got": {
+        "id": "_ec5a7ffa-8b41-ebf2-3f7b-ac00a3dcc68a",
+        "anchor": "",
+        "tag": "p",
+        "number": "",
+        "clause": "7",
+        "block_line": 137,
+        "block_ctx": "list_item"
+      },
+      "pass": true
+    },
+    {
+      "line": 155,
+      "anchor": "tab-results",
+      "clause_no": "A.1",
+      "level": 2,
+      "got": {
+        "id": "_bd8667f7-fd85-0879-7132-14f1c4ee9595",
+        "anchor": "tab-results",
+        "tag": "table",
+        "number": "Table A.1",
+        "clause": "A.1",
+        "block_line": 152,
+        "block_ctx": "table"
+      },
+      "pass": true
+    }
+  ],
+  "negative": [
+    {
+      "line": 3,
+      "code": "line_in_header",
+      "got": {
+        "error": "line_in_header",
+        "message": "line 3 is in the document header (lines 1..26); it is not a body element"
+      },
+      "pass": true
+    },
+    {
+      "line": 33,
+      "code": "line_blank",
+      "got": {
+        "error": "line_blank",
+        "message": "line 33 is blank; it belongs to no element"
+      },
+      "pass": true
+    },
+    {
+      "line": 29,
+      "code": "line_comment",
+      "got": {
+        "error": "line_comment",
+        "message": "line 29 is an AsciiDoc comment; it is not rendered"
+      },
+      "pass": true
+    },
+    {
+      "line": 999,
+      "code": "line_out_of_range",
+      "got": {
+        "error": "line_out_of_range",
+        "message": "line 999 is outside 1..162"
+      },
+      "pass": true
+    }
+  ]
+}

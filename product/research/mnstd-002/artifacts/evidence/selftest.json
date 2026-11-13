@@ -1,0 +1,236 @@
+{
+  "cases": [
+    {
+      "case": "unexplained-warning",
+      "check": "C1.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "locator-expectation-tampered",
+      "check": "C2.1",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "line-expectation-tampered",
+      "check": "C2.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "negative-locator-reason-tampered",
+      "check": "C2.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "c24-renumber-expectation-tampered",
+      "check": "C2.4",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "c24-element-lost",
+      "check": "C2.4",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "seeded-row-leaks-into-register",
+      "check": "C3.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "invalid-sheet-expectation-tampered",
+      "check": "C3.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "register-id-collision",
+      "check": "C3.4",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "pr-reject-expectation-tampered",
+      "check": "C4.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "broken-branch-gate-verdict-flipped",
+      "check": "C4.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "broken-branch-merged-around-gate",
+      "check": "C4.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "network-remote-added",
+      "check": "C4.5",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "validator-accepts-good-record(control)",
+      "check": "C5.1",
+      "green_result": "PASS",
+      "tampered_result": "PASS",
+      "detected": true
+    },
+    {
+      "case": "stray-edit-commit",
+      "check": "C5.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "stray-change-inside-attributed-commit",
+      "check": "C5.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "reject-changes-source",
+      "check": "C5.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "containment-expectation-not-in-v2",
+      "check": "C5.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "trace-blank-commit-cell",
+      "check": "C5.4",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "pdf-drops-one-annotation",
+      "check": "C6.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "duplicate-semantic-annotation",
+      "check": "C6.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "derived-input-edits-v1-text",
+      "check": "C6.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "clean-build-shows-annotation",
+      "check": "C6.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "report-hand-edit",
+      "check": "C7.1",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "report-csv-count-drift",
+      "check": "C7.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "report-link-to-missing-v2-location",
+      "check": "C7.3",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "artefact-with-unregistered-id",
+      "check": "N5.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "trace-contains-git-push",
+      "check": "N6.1",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "trace-networked-unpinned-docker-run",
+      "check": "N6.1",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "trace-contains-commenter-github",
+      "check": "N6.2",
+      "green_result": "PASS",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "fixture-file-tampered",
+      "check": "frozen",
+      "green_result": "n/a",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "prereq-docker-missing",
+      "check": "N1.3",
+      "green_result": "n/a",
+      "tampered_result": "FAIL",
+      "detected": true
+    },
+    {
+      "case": "prereq-font-cache-missing",
+      "check": "N1.3",
+      "green_result": "n/a",
+      "tampered_result": "FAIL",
+      "detected": true
+    }
+  ],
+  "all_detected": true
+}

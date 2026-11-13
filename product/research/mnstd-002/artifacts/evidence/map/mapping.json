@@ -1,0 +1,628 @@
+{
+  "elements": [
+    {
+      "v1_id": "_8ee21029-be28-44f6-e4d3-1b7b4e8a0982",
+      "anchor": "",
+      "tag": "foreword",
+      "v1_number": "",
+      "v1_clause": "foreword",
+      "status": "unchanged",
+      "v2_id": "_8ee21029-be28-44f6-e4d3-1b7b4e8a0982",
+      "v2_number": "",
+      "v2_clause": "foreword"
+    },
+    {
+      "v1_id": "_1dbf70c3-7480-c80a-0e30-6c6de6db689d",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "foreword",
+      "status": "unchanged",
+      "v2_id": "_1dbf70c3-7480-c80a-0e30-6c6de6db689d",
+      "v2_number": "",
+      "v2_clause": "foreword"
+    },
+    {
+      "v1_id": "_432d10b8-ea05-e076-2a16-dcfb612e7d65",
+      "anchor": "intro",
+      "tag": "introduction",
+      "v1_number": "",
+      "v1_clause": "introduction",
+      "status": "unchanged",
+      "v2_id": "_432d10b8-ea05-e076-2a16-dcfb612e7d65",
+      "v2_number": "",
+      "v2_clause": "introduction"
+    },
+    {
+      "v1_id": "_a6e16aab-9c9f-fae8-e131-73dc359a857a",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "introduction",
+      "status": "unchanged",
+      "v2_id": "_a6e16aab-9c9f-fae8-e131-73dc359a857a",
+      "v2_number": "",
+      "v2_clause": "introduction"
+    },
+    {
+      "v1_id": "_e0cc5b47-bfbc-2a46-abed-3f0831144ae5",
+      "anchor": "cl-scope",
+      "tag": "clause",
+      "v1_number": "1",
+      "v1_clause": "1",
+      "status": "unchanged",
+      "v2_id": "_5c5ce85c-20f6-56f9-9f82-9fb416cb5ccb",
+      "v2_number": "1",
+      "v2_clause": "1"
+    },
+    {
+      "v1_id": "_6c9d8cc1-8626-0406-a425-f44faecc94d1",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "1",
+      "status": "unchanged",
+      "v2_id": "_6c9d8cc1-8626-0406-a425-f44faecc94d1",
+      "v2_number": "",
+      "v2_clause": "1"
+    },
+    {
+      "v1_id": "_7ba92c71-4f88-48b6-a012-120243a00336",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "1",
+      "status": "modified",
+      "v2_id": "_38a0bd5b-381e-825f-34ae-acf7421d129b",
+      "v2_number": "",
+      "v2_clause": "1"
+    },
+    {
+      "v1_id": "_8b9c7909-f624-7d72-c8d7-73f16f9f66b7",
+      "anchor": "cl-terms",
+      "tag": "terms",
+      "v1_number": "3",
+      "v1_clause": "3",
+      "status": "unchanged",
+      "v2_id": "_8b4e9378-34a4-9c88-8f18-9c01cd78f9a6",
+      "v2_number": "3",
+      "v2_clause": "3"
+    },
+    {
+      "v1_id": "_dcc01114-4d03-3550-1347-4ba901bda94c",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "3",
+      "status": "unchanged",
+      "v2_id": "_dcc01114-4d03-3550-1347-4ba901bda94c",
+      "v2_number": "",
+      "v2_clause": "3"
+    },
+    {
+      "v1_id": "_1df4aedb-297d-0c69-967f-f6a60db009d2",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "3",
+      "status": "unchanged",
+      "v2_id": "_1df4aedb-297d-0c69-967f-f6a60db009d2",
+      "v2_number": "",
+      "v2_clause": "3"
+    },
+    {
+      "v1_id": "_e6ddc246-88cc-2222-8452-b939a5cefa0e",
+      "anchor": "",
+      "tag": "ul",
+      "v1_number": "",
+      "v1_clause": "3",
+      "status": "unchanged",
+      "v2_id": "_e6ddc246-88cc-2222-8452-b939a5cefa0e",
+      "v2_number": "",
+      "v2_clause": "3"
+    },
+    {
+      "v1_id": "_a7498f6e-6099-7526-2d68-66743b11a531",
+      "anchor": "term-glimmerwood",
+      "tag": "term",
+      "v1_number": "3.1",
+      "v1_clause": "3.1",
+      "status": "unchanged",
+      "v2_id": "_a7498f6e-6099-7526-2d68-66743b11a531",
+      "v2_number": "3.1",
+      "v2_clause": "3.1"
+    },
+    {
+      "v1_id": "_9139d338-a881-248b-b5a7-6d2a43997fc2",
+      "anchor": "term-drift",
+      "tag": "term",
+      "v1_number": "3.2",
+      "v1_clause": "3.2",
+      "status": "modified",
+      "v2_id": "_ea6853be-21d9-5337-a686-339d0c02c9b9",
+      "v2_number": "3.2",
+      "v2_clause": "3.2"
+    },
+    {
+      "v1_id": "_d7d9862d-f3c7-6f86-2443-c20b8ffef77b",
+      "anchor": "cl-general",
+      "tag": "clause",
+      "v1_number": "4",
+      "v1_clause": "4",
+      "status": "unchanged",
+      "v2_id": "_d7d9862d-f3c7-6f86-2443-c20b8ffef77b",
+      "v2_number": "4",
+      "v2_clause": "4"
+    },
+    {
+      "v1_id": "_ac1bde95-f6a3-3cba-c987-8f0176bce3f9",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "4",
+      "status": "unchanged",
+      "v2_id": "_ac1bde95-f6a3-3cba-c987-8f0176bce3f9",
+      "v2_number": "",
+      "v2_clause": "4"
+    },
+    {
+      "v1_id": "_b0128fca-8b3c-a7fd-d663-383b48bb2deb",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "4",
+      "status": "unchanged",
+      "v2_id": "_b0128fca-8b3c-a7fd-d663-383b48bb2deb",
+      "v2_number": "",
+      "v2_clause": "4"
+    },
+    {
+      "v1_id": "_bde52ed4-b4a1-505e-a3e8-68623415ce85",
+      "anchor": "note-general-1",
+      "tag": "note",
+      "v1_number": "Note 1",
+      "v1_clause": "4",
+      "status": "unchanged",
+      "v2_id": "_bde52ed4-b4a1-505e-a3e8-68623415ce85",
+      "v2_number": "Note 1",
+      "v2_clause": "4"
+    },
+    {
+      "v1_id": "_90d084cd-0859-919d-0deb-8088eb036e39",
+      "anchor": "note-general-2",
+      "tag": "note",
+      "v1_number": "Note 2",
+      "v1_clause": "4",
+      "status": "unchanged",
+      "v2_id": "_90d084cd-0859-919d-0deb-8088eb036e39",
+      "v2_number": "Note 2",
+      "v2_clause": "4"
+    },
+    {
+      "v1_id": "_4945b5d4-6de0-5a2e-9848-c29f2e082b83",
+      "anchor": "cl-apparatus",
+      "tag": "clause",
+      "v1_number": "5",
+      "v1_clause": "5",
+      "status": "unchanged",
+      "v2_id": "_38b4eade-d0f1-7671-6bf2-c4a70fcec886",
+      "v2_number": "6",
+      "v2_clause": "6"
+    },
+    {
+      "v1_id": "_4c628a8d-8324-a19a-5764-32a05324309c",
+      "anchor": "cl-stand",
+      "tag": "clause",
+      "v1_number": "5.1",
+      "v1_clause": "5.1",
+      "status": "unchanged",
+      "v2_id": "_c4bb3e65-2379-1bb6-ca98-d654dd4e351a",
+      "v2_number": "6.1",
+      "v2_clause": "6.1"
+    },
+    {
+      "v1_id": "_a9ec948b-013d-b431-27ba-ad3d88cfa45e",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "5.1",
+      "status": "unchanged",
+      "v2_id": "_a49d0e0a-dafa-6f8f-edd5-0c73f011c127",
+      "v2_number": "",
+      "v2_clause": "6.1"
+    },
+    {
+      "v1_id": "_b1bf752b-d4bc-c281-2525-e8ab5eefbfd1",
+      "anchor": "tab-stand",
+      "tag": "table",
+      "v1_number": "Table 1",
+      "v1_clause": "5.1",
+      "status": "modified",
+      "v2_id": "_ac6ad26b-1e96-8f7c-da88-24771645b18f",
+      "v2_number": "Table 1",
+      "v2_clause": "6.1"
+    },
+    {
+      "v1_id": "_92994f30-17af-f099-ddff-74927978886c",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "5.1",
+      "status": "unchanged",
+      "v2_id": "_6514ff0c-d164-439f-fc4f-c3c5c4cd01db",
+      "v2_number": "",
+      "v2_clause": "6.1"
+    },
+    {
+      "v1_id": "_c8a2e5c3-3940-24ed-c6f5-1c8208300c53",
+      "anchor": "cl-clamp",
+      "tag": "clause",
+      "v1_number": "5.1.1",
+      "v1_clause": "5.1.1",
+      "status": "unchanged",
+      "v2_id": "_0f314008-71c4-0ee2-36c9-4d057b743f9c",
+      "v2_number": "6.1.1",
+      "v2_clause": "6.1.1"
+    },
+    {
+      "v1_id": "_4f1ea0c3-6f79-1fa1-083c-7820e6c3f2f1",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "5.1.1",
+      "status": "modified",
+      "v2_id": "_3a970b5d-441a-5554-6e9f-76baa4f2127d",
+      "v2_number": "",
+      "v2_clause": "6.1.1"
+    },
+    {
+      "v1_id": "_bbd3f18e-cc7e-20da-831d-9149af89e1f5",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "5.1.1",
+      "status": "modified",
+      "v2_id": "_d6940192-8013-60ea-7f4b-b3833242be46",
+      "v2_number": "",
+      "v2_clause": "6.1.1"
+    },
+    {
+      "v1_id": "_23203ffc-3848-d9ad-108a-e8e7361ea183",
+      "anchor": "cl-sensor",
+      "tag": "clause",
+      "v1_number": "5.1.2",
+      "v1_clause": "5.1.2",
+      "status": "unchanged",
+      "v2_id": "_263a7578-d30b-c167-9ba1-93558fe26d57",
+      "v2_number": "6.1.2",
+      "v2_clause": "6.1.2"
+    },
+    {
+      "v1_id": "_908aea8a-fe13-f79e-e244-4ee71eb4d612",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "5.1.2",
+      "status": "unchanged",
+      "v2_id": "_a5363dc4-ae75-b22a-e54c-3307ba2ffa71",
+      "v2_number": "",
+      "v2_clause": "6.1.2"
+    },
+    {
+      "v1_id": "_0ea04716-ff1a-de0e-82ec-8bb1e57dc9c4",
+      "anchor": "cl-mallet",
+      "tag": "clause",
+      "v1_number": "5.2",
+      "v1_clause": "5.2",
+      "status": "unchanged",
+      "v2_id": "_39813b04-3207-539c-1f95-7de196eecb1e",
+      "v2_number": "6.2",
+      "v2_clause": "6.2"
+    },
+    {
+      "v1_id": "_f8646a50-36f5-4277-2fcd-2ac1a404966c",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "5.2",
+      "status": "unchanged",
+      "v2_id": "_e5e90eeb-0396-45e3-cd1c-34e5780eef81",
+      "v2_number": "",
+      "v2_clause": "6.2"
+    },
+    {
+      "v1_id": "_7b5c0b81-f71e-98e6-071b-261409034561",
+      "anchor": "cl-procedure",
+      "tag": "clause",
+      "v1_number": "6",
+      "v1_clause": "6",
+      "status": "unchanged",
+      "v2_id": "_f05bd444-2152-9445-51e4-81a6f027d26c",
+      "v2_number": "7",
+      "v2_clause": "7"
+    },
+    {
+      "v1_id": "_4a6192ae-2510-7cd9-b9a4-5cf35e09b91d",
+      "anchor": "cl-conditioning",
+      "tag": "clause",
+      "v1_number": "6.1",
+      "v1_clause": "6.1",
+      "status": "unchanged",
+      "v2_id": "_eb976948-6121-8393-1355-a76c1d9040f8",
+      "v2_number": "7.1",
+      "v2_clause": "7.1"
+    },
+    {
+      "v1_id": "_104d5cf8-9be6-10c3-f39c-b8134c4566aa",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "6.1",
+      "status": "modified",
+      "v2_id": "_895c3bf7-4405-ef45-c268-4b39cb5c9053",
+      "v2_number": "",
+      "v2_clause": "7.1"
+    },
+    {
+      "v1_id": "_285beb48-7771-0af2-1c86-b21e91e1f031",
+      "anchor": "tab-conditions",
+      "tag": "table",
+      "v1_number": "Table 2",
+      "v1_clause": "6.1",
+      "status": "unchanged",
+      "v2_id": "_ea5c5d09-53b5-d54a-51c1-58f879c10456",
+      "v2_number": "Table 2",
+      "v2_clause": "7.1"
+    },
+    {
+      "v1_id": "_a6e0459f-4982-930a-4e43-55152dccc6c2",
+      "anchor": "cl-measurement",
+      "tag": "clause",
+      "v1_number": "6.2",
+      "v1_clause": "6.2",
+      "status": "unchanged",
+      "v2_id": "_ab1ef0aa-7c52-37d0-b5a9-38359e940929",
+      "v2_number": "7.2",
+      "v2_clause": "7.2"
+    },
+    {
+      "v1_id": "_7d37243f-573e-b54e-baab-6686e93ac558",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "6.2",
+      "status": "unchanged",
+      "v2_id": "_f52f88e8-8630-95ad-aec8-fa07bf6ae24c",
+      "v2_number": "",
+      "v2_clause": "7.2"
+    },
+    {
+      "v1_id": "_059d05f4-fcc2-982f-065f-63ec7115acdf",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "6.2",
+      "status": "unchanged",
+      "v2_id": "_8999a9a3-eb73-d888-093b-a584a64fdda1",
+      "v2_number": "",
+      "v2_clause": "7.2"
+    },
+    {
+      "v1_id": "_1b261478-1060-0ff1-3756-bd52494ba862",
+      "anchor": "fig-mallet",
+      "tag": "figure",
+      "v1_number": "Figure 1",
+      "v1_clause": "6.2",
+      "status": "modified",
+      "v2_id": "_c9f0ce0e-56d1-b7ba-214f-3a3726df0535",
+      "v2_number": "Figure 1",
+      "v2_clause": "7.2"
+    },
+    {
+      "v1_id": "_bbddb0f2-77a2-c314-33a5-76f044ad2f68",
+      "anchor": "cl-report",
+      "tag": "clause",
+      "v1_number": "7",
+      "v1_clause": "7",
+      "status": "unchanged",
+      "v2_id": "_a7330990-b645-66fa-350c-31dc785659da",
+      "v2_number": "8",
+      "v2_clause": "8"
+    },
+    {
+      "v1_id": "_c49df1f9-493c-01e5-3641-d9e522be4de4",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "7",
+      "status": "unchanged",
+      "v2_id": "_9638f251-2e40-e200-b265-610585fd57ab",
+      "v2_number": "",
+      "v2_clause": "8"
+    },
+    {
+      "v1_id": "_9e47b7c6-c640-e909-e260-094b3e684890",
+      "anchor": "",
+      "tag": "ul",
+      "v1_number": "",
+      "v1_clause": "7",
+      "status": "unchanged",
+      "v2_id": "_8760db54-0bd9-e155-2648-7b2bae6917a0",
+      "v2_number": "",
+      "v2_clause": "8"
+    },
+    {
+      "v1_id": "_87b2259d-6a5c-aed9-1e66-6f00bb077e8e",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "7",
+      "status": "unchanged",
+      "v2_id": "_eff4e6dd-59a5-8135-85ee-fb73b72b633e",
+      "v2_number": "",
+      "v2_clause": "8"
+    },
+    {
+      "v1_id": "_9ca8f109-fc03-bd61-84ae-5ad8e208ab6a",
+      "anchor": "annex-a",
+      "tag": "annex",
+      "v1_number": "A",
+      "v1_clause": "A",
+      "status": "unchanged",
+      "v2_id": "_a6802565-ff7f-fce8-3a61-555fa5d391c1",
+      "v2_number": "A",
+      "v2_clause": "A"
+    },
+    {
+      "v1_id": "_7f4016f3-cd6e-a665-bc0b-0ee3024e70cf",
+      "anchor": "annex-a-1",
+      "tag": "clause",
+      "v1_number": "A.1",
+      "v1_clause": "A.1",
+      "status": "unchanged",
+      "v2_id": "_3e72f19f-958f-ce84-ae81-35dd693c3a1a",
+      "v2_number": "A.1",
+      "v2_clause": "A.1"
+    },
+    {
+      "v1_id": "_c86ef993-7d64-fd4d-2676-1975b149fc33",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "A.1",
+      "status": "unchanged",
+      "v2_id": "_c86ef993-7d64-fd4d-2676-1975b149fc33",
+      "v2_number": "",
+      "v2_clause": "A.1"
+    },
+    {
+      "v1_id": "_bd8667f7-fd85-0879-7132-14f1c4ee9595",
+      "anchor": "tab-results",
+      "tag": "table",
+      "v1_number": "Table A.1",
+      "v1_clause": "A.1",
+      "status": "modified",
+      "v2_id": "_ef3d76df-9c3f-61e0-f6cf-c68eb54cf34c",
+      "v2_number": "Table A.1",
+      "v2_clause": "A.1"
+    },
+    {
+      "v1_id": "_928cf4b5-0e57-4c3b-e204-3efecfcef5ba",
+      "anchor": "annex-a-2",
+      "tag": "clause",
+      "v1_number": "A.2",
+      "v1_clause": "A.2",
+      "status": "unchanged",
+      "v2_id": "_928cf4b5-0e57-4c3b-e204-3efecfcef5ba",
+      "v2_number": "A.2",
+      "v2_clause": "A.2"
+    },
+    {
+      "v1_id": "_e952c5b0-3a42-3ff0-2c7f-c5511664bb37",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "A.2",
+      "status": "unchanged",
+      "v2_id": "_e952c5b0-3a42-3ff0-2c7f-c5511664bb37",
+      "v2_number": "",
+      "v2_clause": "A.2"
+    },
+    {
+      "v1_id": "_b3c8b17d-ab28-4560-6795-13768de6d20b",
+      "anchor": "cl-normref",
+      "tag": "references",
+      "v1_number": "2",
+      "v1_clause": "2",
+      "status": "unchanged",
+      "v2_id": "_b3c8b17d-ab28-4560-6795-13768de6d20b",
+      "v2_number": "2",
+      "v2_clause": "2"
+    },
+    {
+      "v1_id": "_02b1c060-f2f9-4bc4-035d-e49887f749e3",
+      "anchor": "",
+      "tag": "p",
+      "v1_number": "",
+      "v1_clause": "2",
+      "status": "unchanged",
+      "v2_id": "_02b1c060-f2f9-4bc4-035d-e49887f749e3",
+      "v2_number": "",
+      "v2_clause": "2"
+    }
+  ],
+  "inserted": [
+    {
+      "v2_id": "_c1ce97be-8dc3-6dea-183c-a85027677be3",
+      "anchor": "cl-safety",
+      "tag": "clause",
+      "v2_number": "5",
+      "v2_clause": "5",
+      "text": "Safety"
+    },
+    {
+      "v2_id": "_8a713806-dbfe-bb6e-2c8d-ef5a84ff9860",
+      "anchor": "",
+      "tag": "p",
+      "v2_number": "",
+      "v2_clause": "5",
+      "text": "Wear hearing protection when striking forks repeatedly."
+    }
+  ],
+  "renumbered": [
+    {
+      "anchor": "cl-apparatus",
+      "tag": "clause",
+      "old": "5",
+      "new": "6"
+    },
+    {
+      "anchor": "cl-stand",
+      "tag": "clause",
+      "old": "5.1",
+      "new": "6.1"
+    },
+    {
+      "anchor": "cl-clamp",
+      "tag": "clause",
+      "old": "5.1.1",
+      "new": "6.1.1"
+    },
+    {
+      "anchor": "cl-sensor",
+      "tag": "clause",
+      "old": "5.1.2",
+      "new": "6.1.2"
+    },
+    {
+      "anchor": "cl-mallet",
+      "tag": "clause",
+      "old": "5.2",
+      "new": "6.2"
+    },
+    {
+      "anchor": "cl-procedure",
+      "tag": "clause",
+      "old": "6",
+      "new": "7"
+    },
+    {
+      "anchor": "cl-conditioning",
+      "tag": "clause",
+      "old": "6.1",
+      "new": "7.1"
+    },
+    {
+      "anchor": "cl-measurement",
+      "tag": "clause",
+      "old": "6.2",
+      "new": "7.2"
+    },
+    {
+      "anchor": "cl-report",
+      "tag": "clause",
+      "old": "7",
+      "new": "8"
+    }
+  ]
+}

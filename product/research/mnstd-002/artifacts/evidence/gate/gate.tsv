@@ -1,0 +1,5 @@
+main	5410b5f76de0a6ababb8e264edd5ff5f25f5dbc0	exit=0	xml=yes	asciidoctor_diag=0	new_sev01=0	sev0=0	verdict=BASELINE	w0_rule=PASS	exit_only_rule=PASS
+change/apparatus-wording	b7dd8cfef2e57f01055034d0a90cc969b0137748	exit=0	xml=yes	asciidoctor_diag=0	new_sev01=0	sev0=0	verdict=PASS	w0_rule=PASS	exit_only_rule=PASS
+change/broken-anchor	20e95aebea27e95d20716eb947a2ac7d11a5c3eb	exit=1	xml=yes	asciidoctor_diag=1	new_sev01=2	sev0=1	verdict=FAIL	w0_rule=FAIL	exit_only_rule=FAIL
+change/broken-table	2a1ef21c4776f25294a6d09a13a249008bb573e8	exit=0	xml=yes	asciidoctor_diag=1	new_sev01=0	sev0=0	verdict=FAIL	w0_rule=PASS	exit_only_rule=PASS
+change/broken-xref	15bfc272c77cee060df12c3b4757d7cc96cc2267	exit=0	xml=yes	asciidoctor_diag=0	new_sev01=2	sev0=0	verdict=FAIL	w0_rule=PASS	exit_only_rule=PASS

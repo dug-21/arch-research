@@ -1,0 +1,293 @@
+make: Entering directory '/workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc'
+prereqs: ok (docker, image by digest, python3 3.14.7, git 2.55.0, fonts at /home/vscode/.cache/mnstd-002-fonts)
+rm -rf /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/build
+python3 /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/tools/demo.py /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/build /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/artifacts
+[demo] frozen task verified (task/FROZEN.sha256)
+[demo] $ /usr/local/python/current/bin/python3 /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/tools/pipeline.py /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/build/run-a
+[pipeline] envelope: capturing the effective configuration in force
+[pipeline] C1 compile v1 (xml,html,pdf,rxl; --network none)
+[pipeline] C3 intake A (valid sheets)
+intake: accepted=10 rejected=0 structural=0
+[pipeline] C3 intake B (valid + seeded-invalid sheet; must exit non-zero)
+intake: accepted=10 rejected=11 structural=0
+  REJECT de-mallory.csv:row1 [DE-001]: clause_not_found (no clause, subclause, term or annex numbered '9.9' in v1)
+  REJECT de-mallory.csv:row10 [DE-010]: observations_not_empty (secretariat column must be empty at intake)
+  REJECT de-mallory.csv:row11 [DE-011]: element_not_in_clause (Table 2 exists but is in clause 6.1, not 5.1)
+  REJECT de-mallory.csv:row2 [DE-002]: element_not_found (no Table 7 in v1 (3 tables exist))
+  REJECT de-mallory.csv:row3 [DE-003]: bad_type ('xx' not in ge|te|ed)
+  REJECT de-mallory.csv:row4 [DE-004]: missing_field:comment
+  REJECT de-mallory.csv:row5 [DE-005]: missing_field:mb
+  REJECT de-mallory.csv:row6 [DE-001]: duplicate_id ('DE-001' first used at de-mallory.csv:row1)
+  REJECT de-mallory.csv:row7 [DE-007]: element_ambiguous ('para' has no number and clause 4 has 2 paragraphs)
+  REJECT de-mallory.csv:row8 [DE-008]: clause_not_found ('cl. 5' is not a clause/subclause/annex number (bare number or annex letter expected))
+  REJECT de-mallory.csv:row9 [DE-009]: bad_type ('technical' not in ge|te|ed)
+[pipeline] C4 local git repo (no remote), v1 tag, change branches
+[pipeline] C4 normalise PR review records
+[pipeline] C3/C4 final intake: sheets + PR candidates -> ONE register
+intake: accepted=13 rejected=2 structural=0
+  REJECT change-apparatus-wording/dave.json#2 [2]: line_blank (line 95 is blank; it belongs to no element)
+  REJECT change-apparatus-wording/erin.json#3 [3]: line_not_in_diff (RIGHT line 20 of draft.adoc is outside every hunk of change/apparatus-wording)
+[pipeline] C5.1 validate dispositions (+ seeded bad record)
+dispositions: valid
+  INVALID duplicate_disposition: GB-01-004 has 2 records
+  INVALID unknown_id: ZZ-99-999 is not in the register
+  INVALID missing_disposition: register comment FR-01-001 has no disposition
+  INVALID missing_disposition: register comment FR-01-002 has no disposition
+  INVALID missing_disposition: register comment FR-01-003 has no disposition
+  INVALID missing_disposition: register comment GB-02-001 has no disposition
+  INVALID missing_disposition: register comment GB-02-002 has no disposition
+  INVALID missing_disposition: register comment PR-DE-01-001 has no disposition
+  INVALID missing_disposition: register comment PR-US-01-001 has no disposition
+  INVALID missing_disposition: register comment PR-US-01-002 has no disposition
+  INVALID accept_mismatch: GB-01-001: expect_in_v2 != register proposed_change
+  INVALID bad_disposition: GB-01-002: 'noted' not in accept|modify|reject
+  INVALID missing_observation: GB-01-003
+  INVALID reject_with_change: GB-01-004: a reject must carry no edits/branch/expectation
+  INVALID missing_modified_text: FR-01-004
+  INVALID fixture_coverage: no disposition for a 'pr' channel comment
+dispositions: 16 problem(s)
+[pipeline] C4.3 gate baseline on main@v1
+[pipeline] C5.2 apply PR-DE-01-001 on change/apparatus-wording
+[pipeline] C5.2 apply PR-US-01-001 on change/apparatus-wording
+[pipeline] C4.3 gate + merge change/apparatus-wording resolving ['FR-01-002', 'PR-DE-01-001', 'PR-US-01-001']
+[pipeline] C4.3 gate seeded broken branch change/broken-anchor (must FAIL, must not merge)
+[pipeline] C4.3 gate seeded broken branch change/broken-table (must FAIL, must not merge)
+[pipeline] C4.3 gate seeded broken branch change/broken-xref (must FAIL, must not merge)
+[pipeline] C5.2 apply FR-01-001 on main
+[pipeline] C5.2 apply FR-01-004 on main
+[pipeline] C5.2 apply GB-01-001 on main
+[pipeline] C5.2 apply GB-01-002 on main
+[pipeline] C5.2 apply GB-01-003 on main
+[pipeline] C5.2 apply GB-02-001 on main
+[pipeline] C5.2 apply GB-02-002 on main
+[pipeline] C5.3 compile v2 from tag v2
+[pipeline] C2.4 map v1 -> v2
+[pipeline] C5.3/C5.4 containment + trace
+[pipeline] C6 project register into derived v1 review input; compile
+[pipeline] C7 disposition report from the resolved register only
+report: 13 comments
+[pipeline] checks
+[pipeline]   C1.1   PASS  structure 10/10; outputs {'html': True, 'pdf': True, 'xml': True}; exit 0
+[pipeline]   C1.2   PASS  errors 0 required; 24 warning lines (v1+v2), unexplained/errors: 0
+[pipeline]   C1.3   PASS  flavor iso=True; draft stage CD/30 unpublished=True; 25 authored elements with id+number; missing []
+[pipeline]   C2.1   PASS  18/18 ISO locators -> exactly one expected element (kinds ['Figure', 'Note', 'Table', 'para'], annex True)
+[pipeline]   C2.2   PASS  15/15 file:line -> element + clause; clause levels [1, 2, 3]
+[pipeline]   C2.3   PASS  14/14 non-existent/ambiguous locators and lines rejected with the expected reason (no nearest match)
+[pipeline]   C2.4   PASS  42 unchanged + 8 edited v1 elements mapped; 2 inserted; 9 old->new pairs; problems 0
+[pipeline]   C3.1   PASS  10 sheet comments, reviewers ['alice', 'bob', 'claire'], MB/NC ['FR', 'GB'], types ['ed', 'ge', 'te']; one register with 13 rows (sheet+pr); ids as frozen: True
+[pipeline]   C3.2   PASS  13/13 rows carry a resolved v1 element id beside the original locator; re-resolution drift []
+[pipeline]   C3.3   PASS  exit 1 (non-zero required); 11 seeded rows rejected with per-row reasons; register A==B bytes: True; problems 0
+[pipeline]   C3.4   PASS  13 ids, unique=True; same-MB local-id clash GB-001 -> ['GB-01-001', 'GB-02-001']; originating reviewer preserved=True
+[pipeline]   C4.1   PASS  local repo with tag v1; change branch(es) ['change/apparatus-wording']; PR reviewers {'dave': 1, 'erin': 2} each line-anchored to the branch diff
+[pipeline]   C4.2   PASS  3 PR comments normalised into the register (channel pr, source commit+line, C2.2 anchor); 2 PR comments rejected like C3.3 (exit 1)
+[pipeline]   C4.3   PASS  gate verdicts [('main', '0', 'BASELINE'), ('change/apparatus-wording', '0', 'PASS'), ('change/broken-anchor', '1', 'FAIL'), ('change/broken-table', '0', 'FAIL'), ('change/broken-xref', '0', 'FAIL')]; broken branches that exit 0 yet FAIL: ['change/broken-table', 'change/broken-xref']
+[pipeline]   C4.4   PASS  git log --merges yields 3 comment id -> merge commit pairs; expected PR-resolved ids ['FR-01-002', 'PR-DE-01-001', 'PR-US-01-001']
+[pipeline]   C4.5   PASS  git remote -v: (none); remote.* config: (none); forbidden commands in trace: 0
+[pipeline]   C5.1   PASS  13 dispositions for 13 register comments; {'modify': 4, 'accept': 6, 'reject': 3}; channels {'sheet': 10, 'pr': 3}; seeded bad record rejected with ['accept_mismatch', 'bad_disposition', 'duplicate_disposition', 'fixture_coverage', 'missing_disposition', 'missing_modified_text', 'missing_observation', 'reject_with_change', 'unknown_id']
+[pipeline]   C5.2   PASS  every commit in v1..v2 carries exactly one accept/modify Comment-Id and equals parent + recorded edits; rejects change nothing; merges clean; problems 0
+[pipeline]   C5.3   PASS  v2 exit 0, outputs {'html': True, 'pdf': True, 'xml': True}; containment 10/10 pass
+[pipeline]   C5.4   PASS  13 trace rows (one per comment); blank cells outside reject v2 columns: 0
+[pipeline]   C6.1   PASS  PDF: 13 native sticky-note annotations; HTML: 13 glue asides from native semantic <annotation> (ruling R2; native ISO HTML shows 0); ranged ['PR-US-01-001']; problems 0
+[pipeline]   C6.2   PASS  register R=13, semantic XML annotation elements X=13, PDF /Text annots P=13, HTML H=13; each id exactly once: True
+[pipeline]   C6.3   PASS  hand-written review blocks in committed v1 source: 0; clean v1 build X=0 P=0 H=0; derived input = v1 + projection only: True
+[pipeline]   C6.4   PASS  mechanism: stage 30 (CD, unpublished) + :presentation-metadata-render-document-annotations: true in the DERIVED input only; presentation render flag ['true']; fmt-annotation-body 13; native HTML renders none (glue per R2)
+[pipeline]   C7.1   PASS  13 rows, each register comment once, ISO 2012-03 column order + Disposition + v2 location; regenerated-from-register identical: True
+[pipeline]   C7.2   PASS  HTML + YAML + CSV emitted; type x disposition x MB counts equal across register/CSV/YAML/HTML rows/HTML summary: True (10 cells, total 13)
+[pipeline]   C7.3   PASS  10/10 accept/modify rows link to a v2 location that exists in the v2 semantic XML and v2 HTML
+[pipeline]   N2.1   PASS  12 container runs, all on sha256:836b7ab28c53… (digest verified in envelope: True)
+[pipeline]   N2.2   PASS  `which ruby` exit 1 output ''
+[pipeline]   N2.3   PASS  host glue: Python 3.14.7 stdlib only (third-party imports: none); Node not used; Ruby only in-container (srcmap.rb)
+[pipeline]   N4.1   PASS  register, PR records and report carry all 8 ISO 2012-03 fields (documented mapping in RESULT.md §N4)
+[pipeline]   N4.2   PASS  type vocabulary ['ed', 'ge', 'te']; one comment per row (multi-line comments: none)
+[pipeline]   N4.3   N/A   N/A: DOCX output not selected (Q1 default: HTML + YAML/CSV)
+[pipeline]   N5.1   PASS  walked 13/13 comments (100%, incl. every PR comment) locator->v1->disposition->commit->v2->report using emitted files + git log; breaks 0
+[pipeline]   N5.2   PASS  register-id-shaped tokens absent from the register, across all text artefacts: 0
+[pipeline]   N6.1   PASS  gated run: 198 external commands traced; forbidden/network verbs: 0; every container run --network none. NOTE: font cache was provisioned by a separate networked `make fonts` (ruling R1) — the validator rules N6.1's literal text
+[pipeline]   N6.2   PASS  commenter/github-* invocations in trace: 0; inner repo remotes: none
+[pipeline] done: 37 clause checks, 0 FAIL
+[demo] $ /usr/local/python/current/bin/python3 /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/tools/selftest.py /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/build/run-a /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/build/run-a/selftest.json
+[selftest] unexplained-warning                          C1.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] locator-expectation-tampered                 C2.1   green=PASS tampered=FAIL                                     DETECTED
+[selftest] line-expectation-tampered                    C2.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] negative-locator-reason-tampered             C2.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] c24-renumber-expectation-tampered            C2.4   green=PASS tampered=FAIL                                     DETECTED
+[selftest] c24-element-lost                             C2.4   green=PASS tampered=FAIL                                     DETECTED
+[selftest] seeded-row-leaks-into-register               C3.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] invalid-sheet-expectation-tampered           C3.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] register-id-collision                        C3.4   green=PASS tampered=FAIL                                     DETECTED
+[selftest] pr-reject-expectation-tampered               C4.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] broken-branch-gate-verdict-flipped           C4.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] broken-branch-merged-around-gate             C4.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] network-remote-added                         C4.5   green=PASS tampered=FAIL                                     DETECTED
+dispositions: valid
+[selftest] validator-accepts-good-record(control)       C5.1   green=PASS tampered=PASS                                     DETECTED
+[selftest] stray-edit-commit                            C5.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] stray-change-inside-attributed-commit        C5.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] reject-changes-source                        C5.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] containment-expectation-not-in-v2            C5.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] trace-blank-commit-cell                      C5.4   green=PASS tampered=FAIL                                     DETECTED
+[selftest] pdf-drops-one-annotation                     C6.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] duplicate-semantic-annotation                C6.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] derived-input-edits-v1-text                  C6.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] clean-build-shows-annotation                 C6.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] report-hand-edit                             C7.1   green=PASS tampered=FAIL                                     DETECTED
+[selftest] report-csv-count-drift                       C7.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] report-link-to-missing-v2-location           C7.3   green=PASS tampered=FAIL                                     DETECTED
+[selftest] artefact-with-unregistered-id                N5.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] trace-contains-git-push                      N6.1   green=PASS tampered=FAIL                                     DETECTED
+[selftest] trace-networked-unpinned-docker-run          N6.1   green=PASS tampered=FAIL                                     DETECTED
+[selftest] trace-contains-commenter-github              N6.2   green=PASS tampered=FAIL                                     DETECTED
+[selftest] fixture-file-tampered                        frozen green=n/a  tampered=FAIL                                     DETECTED
+[selftest] prereq-docker-missing                        N1.3   green=n/a  tampered=FAIL                                     DETECTED
+[selftest] prereq-font-cache-missing                    N1.3   green=n/a  tampered=FAIL                                     DETECTED
+[selftest] 33/33 tampered cases detected
+[demo] $ /usr/local/python/current/bin/python3 /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/tools/pipeline.py /workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc/build/run-b
+[pipeline] envelope: capturing the effective configuration in force
+[pipeline] C1 compile v1 (xml,html,pdf,rxl; --network none)
+[pipeline] C3 intake A (valid sheets)
+intake: accepted=10 rejected=0 structural=0
+[pipeline] C3 intake B (valid + seeded-invalid sheet; must exit non-zero)
+intake: accepted=10 rejected=11 structural=0
+  REJECT de-mallory.csv:row1 [DE-001]: clause_not_found (no clause, subclause, term or annex numbered '9.9' in v1)
+  REJECT de-mallory.csv:row10 [DE-010]: observations_not_empty (secretariat column must be empty at intake)
+  REJECT de-mallory.csv:row11 [DE-011]: element_not_in_clause (Table 2 exists but is in clause 6.1, not 5.1)
+  REJECT de-mallory.csv:row2 [DE-002]: element_not_found (no Table 7 in v1 (3 tables exist))
+  REJECT de-mallory.csv:row3 [DE-003]: bad_type ('xx' not in ge|te|ed)
+  REJECT de-mallory.csv:row4 [DE-004]: missing_field:comment
+  REJECT de-mallory.csv:row5 [DE-005]: missing_field:mb
+  REJECT de-mallory.csv:row6 [DE-001]: duplicate_id ('DE-001' first used at de-mallory.csv:row1)
+  REJECT de-mallory.csv:row7 [DE-007]: element_ambiguous ('para' has no number and clause 4 has 2 paragraphs)
+  REJECT de-mallory.csv:row8 [DE-008]: clause_not_found ('cl. 5' is not a clause/subclause/annex number (bare number or annex letter expected))
+  REJECT de-mallory.csv:row9 [DE-009]: bad_type ('technical' not in ge|te|ed)
+[pipeline] C4 local git repo (no remote), v1 tag, change branches
+[pipeline] C4 normalise PR review records
+[pipeline] C3/C4 final intake: sheets + PR candidates -> ONE register
+intake: accepted=13 rejected=2 structural=0
+  REJECT change-apparatus-wording/dave.json#2 [2]: line_blank (line 95 is blank; it belongs to no element)
+  REJECT change-apparatus-wording/erin.json#3 [3]: line_not_in_diff (RIGHT line 20 of draft.adoc is outside every hunk of change/apparatus-wording)
+[pipeline] C5.1 validate dispositions (+ seeded bad record)
+dispositions: valid
+  INVALID duplicate_disposition: GB-01-004 has 2 records
+  INVALID unknown_id: ZZ-99-999 is not in the register
+  INVALID missing_disposition: register comment FR-01-001 has no disposition
+  INVALID missing_disposition: register comment FR-01-002 has no disposition
+  INVALID missing_disposition: register comment FR-01-003 has no disposition
+  INVALID missing_disposition: register comment GB-02-001 has no disposition
+  INVALID missing_disposition: register comment GB-02-002 has no disposition
+  INVALID missing_disposition: register comment PR-DE-01-001 has no disposition
+  INVALID missing_disposition: register comment PR-US-01-001 has no disposition
+  INVALID missing_disposition: register comment PR-US-01-002 has no disposition
+  INVALID accept_mismatch: GB-01-001: expect_in_v2 != register proposed_change
+  INVALID bad_disposition: GB-01-002: 'noted' not in accept|modify|reject
+  INVALID missing_observation: GB-01-003
+  INVALID reject_with_change: GB-01-004: a reject must carry no edits/branch/expectation
+  INVALID missing_modified_text: FR-01-004
+  INVALID fixture_coverage: no disposition for a 'pr' channel comment
+dispositions: 16 problem(s)
+[pipeline] C4.3 gate baseline on main@v1
+[pipeline] C5.2 apply PR-DE-01-001 on change/apparatus-wording
+[pipeline] C5.2 apply PR-US-01-001 on change/apparatus-wording
+[pipeline] C4.3 gate + merge change/apparatus-wording resolving ['FR-01-002', 'PR-DE-01-001', 'PR-US-01-001']
+[pipeline] C4.3 gate seeded broken branch change/broken-anchor (must FAIL, must not merge)
+[pipeline] C4.3 gate seeded broken branch change/broken-table (must FAIL, must not merge)
+[pipeline] C4.3 gate seeded broken branch change/broken-xref (must FAIL, must not merge)
+[pipeline] C5.2 apply FR-01-001 on main
+[pipeline] C5.2 apply FR-01-004 on main
+[pipeline] C5.2 apply GB-01-001 on main
+[pipeline] C5.2 apply GB-01-002 on main
+[pipeline] C5.2 apply GB-01-003 on main
+[pipeline] C5.2 apply GB-02-001 on main
+[pipeline] C5.2 apply GB-02-002 on main
+[pipeline] C5.3 compile v2 from tag v2
+[pipeline] C2.4 map v1 -> v2
+[pipeline] C5.3/C5.4 containment + trace
+[pipeline] C6 project register into derived v1 review input; compile
+[pipeline] C7 disposition report from the resolved register only
+report: 13 comments
+[pipeline] checks
+[pipeline]   C1.1   PASS  structure 10/10; outputs {'html': True, 'pdf': True, 'xml': True}; exit 0
+[pipeline]   C1.2   PASS  errors 0 required; 24 warning lines (v1+v2), unexplained/errors: 0
+[pipeline]   C1.3   PASS  flavor iso=True; draft stage CD/30 unpublished=True; 25 authored elements with id+number; missing []
+[pipeline]   C2.1   PASS  18/18 ISO locators -> exactly one expected element (kinds ['Figure', 'Note', 'Table', 'para'], annex True)
+[pipeline]   C2.2   PASS  15/15 file:line -> element + clause; clause levels [1, 2, 3]
+[pipeline]   C2.3   PASS  14/14 non-existent/ambiguous locators and lines rejected with the expected reason (no nearest match)
+[pipeline]   C2.4   PASS  42 unchanged + 8 edited v1 elements mapped; 2 inserted; 9 old->new pairs; problems 0
+[pipeline]   C3.1   PASS  10 sheet comments, reviewers ['alice', 'bob', 'claire'], MB/NC ['FR', 'GB'], types ['ed', 'ge', 'te']; one register with 13 rows (sheet+pr); ids as frozen: True
+[pipeline]   C3.2   PASS  13/13 rows carry a resolved v1 element id beside the original locator; re-resolution drift []
+[pipeline]   C3.3   PASS  exit 1 (non-zero required); 11 seeded rows rejected with per-row reasons; register A==B bytes: True; problems 0
+[pipeline]   C3.4   PASS  13 ids, unique=True; same-MB local-id clash GB-001 -> ['GB-01-001', 'GB-02-001']; originating reviewer preserved=True
+[pipeline]   C4.1   PASS  local repo with tag v1; change branch(es) ['change/apparatus-wording']; PR reviewers {'dave': 1, 'erin': 2} each line-anchored to the branch diff
+[pipeline]   C4.2   PASS  3 PR comments normalised into the register (channel pr, source commit+line, C2.2 anchor); 2 PR comments rejected like C3.3 (exit 1)
+[pipeline]   C4.3   PASS  gate verdicts [('main', '0', 'BASELINE'), ('change/apparatus-wording', '0', 'PASS'), ('change/broken-anchor', '1', 'FAIL'), ('change/broken-table', '0', 'FAIL'), ('change/broken-xref', '0', 'FAIL')]; broken branches that exit 0 yet FAIL: ['change/broken-table', 'change/broken-xref']
+[pipeline]   C4.4   PASS  git log --merges yields 3 comment id -> merge commit pairs; expected PR-resolved ids ['FR-01-002', 'PR-DE-01-001', 'PR-US-01-001']
+[pipeline]   C4.5   PASS  git remote -v: (none); remote.* config: (none); forbidden commands in trace: 0
+[pipeline]   C5.1   PASS  13 dispositions for 13 register comments; {'modify': 4, 'accept': 6, 'reject': 3}; channels {'sheet': 10, 'pr': 3}; seeded bad record rejected with ['accept_mismatch', 'bad_disposition', 'duplicate_disposition', 'fixture_coverage', 'missing_disposition', 'missing_modified_text', 'missing_observation', 'reject_with_change', 'unknown_id']
+[pipeline]   C5.2   PASS  every commit in v1..v2 carries exactly one accept/modify Comment-Id and equals parent + recorded edits; rejects change nothing; merges clean; problems 0
+[pipeline]   C5.3   PASS  v2 exit 0, outputs {'html': True, 'pdf': True, 'xml': True}; containment 10/10 pass
+[pipeline]   C5.4   PASS  13 trace rows (one per comment); blank cells outside reject v2 columns: 0
+[pipeline]   C6.1   PASS  PDF: 13 native sticky-note annotations; HTML: 13 glue asides from native semantic <annotation> (ruling R2; native ISO HTML shows 0); ranged ['PR-US-01-001']; problems 0
+[pipeline]   C6.2   PASS  register R=13, semantic XML annotation elements X=13, PDF /Text annots P=13, HTML H=13; each id exactly once: True
+[pipeline]   C6.3   PASS  hand-written review blocks in committed v1 source: 0; clean v1 build X=0 P=0 H=0; derived input = v1 + projection only: True
+[pipeline]   C6.4   PASS  mechanism: stage 30 (CD, unpublished) + :presentation-metadata-render-document-annotations: true in the DERIVED input only; presentation render flag ['true']; fmt-annotation-body 13; native HTML renders none (glue per R2)
+[pipeline]   C7.1   PASS  13 rows, each register comment once, ISO 2012-03 column order + Disposition + v2 location; regenerated-from-register identical: True
+[pipeline]   C7.2   PASS  HTML + YAML + CSV emitted; type x disposition x MB counts equal across register/CSV/YAML/HTML rows/HTML summary: True (10 cells, total 13)
+[pipeline]   C7.3   PASS  10/10 accept/modify rows link to a v2 location that exists in the v2 semantic XML and v2 HTML
+[pipeline]   N2.1   PASS  12 container runs, all on sha256:836b7ab28c53… (digest verified in envelope: True)
+[pipeline]   N2.2   PASS  `which ruby` exit 1 output ''
+[pipeline]   N2.3   PASS  host glue: Python 3.14.7 stdlib only (third-party imports: none); Node not used; Ruby only in-container (srcmap.rb)
+[pipeline]   N4.1   PASS  register, PR records and report carry all 8 ISO 2012-03 fields (documented mapping in RESULT.md §N4)
+[pipeline]   N4.2   PASS  type vocabulary ['ed', 'ge', 'te']; one comment per row (multi-line comments: none)
+[pipeline]   N4.3   N/A   N/A: DOCX output not selected (Q1 default: HTML + YAML/CSV)
+[pipeline]   N5.1   PASS  walked 13/13 comments (100%, incl. every PR comment) locator->v1->disposition->commit->v2->report using emitted files + git log; breaks 0
+[pipeline]   N5.2   PASS  register-id-shaped tokens absent from the register, across all text artefacts: 0
+[pipeline]   N6.1   PASS  gated run: 198 external commands traced; forbidden/network verbs: 0; every container run --network none. NOTE: font cache was provisioned by a separate networked `make fonts` (ruling R1) — the validator rules N6.1's literal text
+[pipeline]   N6.2   PASS  commenter/github-* invocations in trace: 0; inner repo remotes: none
+[pipeline] done: 37 clause checks, 0 FAIL
+
+[demo] ================= SUMMARY =================
+[demo] C1.1   PASS  structure 10/10; outputs {'html': True, 'pdf': True, 'xml': True}; exit 0
+[demo] C1.2   PASS  errors 0 required; 24 warning lines (v1+v2), unexplained/errors: 0
+[demo] C1.3   PASS  flavor iso=True; draft stage CD/30 unpublished=True; 25 authored elements with id+number; missing []
+[demo] C2.1   PASS  18/18 ISO locators -> exactly one expected element (kinds ['Figure', 'Note', 'Table', 'para'], annex True)
+[demo] C2.2   PASS  15/15 file:line -> element + clause; clause levels [1, 2, 3]
+[demo] C2.3   PASS  14/14 non-existent/ambiguous locators and lines rejected with the expected reason (no nearest match)
+[demo] C2.4   PASS  42 unchanged + 8 edited v1 elements mapped; 2 inserted; 9 old->new pairs; problems 0
+[demo] C3.1   PASS  10 sheet comments, reviewers ['alice', 'bob', 'claire'], MB/NC ['FR', 'GB'], types ['ed', 'ge', 'te']; one register with 13 rows (sheet+pr); ids as fr
+[demo] C3.2   PASS  13/13 rows carry a resolved v1 element id beside the original locator; re-resolution drift []
+[demo] C3.3   PASS  exit 1 (non-zero required); 11 seeded rows rejected with per-row reasons; register A==B bytes: True; problems 0
+[demo] C3.4   PASS  13 ids, unique=True; same-MB local-id clash GB-001 -> ['GB-01-001', 'GB-02-001']; originating reviewer preserved=True
+[demo] C4.1   PASS  local repo with tag v1; change branch(es) ['change/apparatus-wording']; PR reviewers {'dave': 1, 'erin': 2} each line-anchored to the branch diff
+[demo] C4.2   PASS  3 PR comments normalised into the register (channel pr, source commit+line, C2.2 anchor); 2 PR comments rejected like C3.3 (exit 1)
+[demo] C4.3   PASS  gate verdicts [('main', '0', 'BASELINE'), ('change/apparatus-wording', '0', 'PASS'), ('change/broken-anchor', '1', 'FAIL'), ('change/broken-table', '0
+[demo] C4.4   PASS  git log --merges yields 3 comment id -> merge commit pairs; expected PR-resolved ids ['FR-01-002', 'PR-DE-01-001', 'PR-US-01-001']
+[demo] C4.5   PASS  git remote -v: (none); remote.* config: (none); forbidden commands in trace: 0
+[demo] C5.1   PASS  13 dispositions for 13 register comments; {'modify': 4, 'accept': 6, 'reject': 3}; channels {'sheet': 10, 'pr': 3}; seeded bad record rejected with ['
+[demo] C5.2   PASS  every commit in v1..v2 carries exactly one accept/modify Comment-Id and equals parent + recorded edits; rejects change nothing; merges clean; problems
+[demo] C5.3   PASS  v2 exit 0, outputs {'html': True, 'pdf': True, 'xml': True}; containment 10/10 pass
+[demo] C5.4   PASS  13 trace rows (one per comment); blank cells outside reject v2 columns: 0
+[demo] C6.1   PASS  PDF: 13 native sticky-note annotations; HTML: 13 glue asides from native semantic <annotation> (ruling R2; native ISO HTML shows 0); ranged ['PR-US-01
+[demo] C6.2   PASS  register R=13, semantic XML annotation elements X=13, PDF /Text annots P=13, HTML H=13; each id exactly once: True
+[demo] C6.3   PASS  hand-written review blocks in committed v1 source: 0; clean v1 build X=0 P=0 H=0; derived input = v1 + projection only: True
+[demo] C6.4   PASS  mechanism: stage 30 (CD, unpublished) + :presentation-metadata-render-document-annotations: true in the DERIVED input only; presentation render flag [
+[demo] C7.1   PASS  13 rows, each register comment once, ISO 2012-03 column order + Disposition + v2 location; regenerated-from-register identical: True
+[demo] C7.2   PASS  HTML + YAML + CSV emitted; type x disposition x MB counts equal across register/CSV/YAML/HTML rows/HTML summary: True (10 cells, total 13)
+[demo] C7.3   PASS  10/10 accept/modify rows link to a v2 location that exists in the v2 semantic XML and v2 HTML
+[demo] N2.1   PASS  12 container runs, all on sha256:836b7ab28c53… (digest verified in envelope: True)
+[demo] N2.2   PASS  `which ruby` exit 1 output ''
+[demo] N2.3   PASS  host glue: Python 3.14.7 stdlib only (third-party imports: none); Node not used; Ruby only in-container (srcmap.rb)
+[demo] N4.1   PASS  register, PR records and report carry all 8 ISO 2012-03 fields (documented mapping in RESULT.md §N4)
+[demo] N4.2   PASS  type vocabulary ['ed', 'ge', 'te']; one comment per row (multi-line comments: none)
+[demo] N4.3   N/A   N/A: DOCX output not selected (Q1 default: HTML + YAML/CSV)
+[demo] N5.1   PASS  walked 13/13 comments (100%, incl. every PR comment) locator->v1->disposition->commit->v2->report using emitted files + git log; breaks 0
+[demo] N5.2   PASS  register-id-shaped tokens absent from the register, across all text artefacts: 0
+[demo] N6.1   PASS  gated run: 198 external commands traced; forbidden/network verbs: 0; every container run --network none. NOTE: font cache was provisioned by a separat
+[demo] N6.2   PASS  commenter/github-* invocations in trace: 0; inner repo remotes: none
+[demo] N1.2   PASS  (cross-run)
+[demo] N3.1   PASS  (cross-run)
+[demo] N3.2   PASS  (cross-run)
+[demo] N7.1   PASS  (cross-run)
+[demo] selftest: 33/33 tampered cases detected
+[demo] exit codes: {'run-a': 0, 'selftest': 0, 'run-b': 0}
+[demo] OK: per-run FAILs []
+make: Leaving directory '/workspaces/arch-research/.claude/worktrees/agent-a3496c337c76067b4/product/research/mnstd-002/poc'
+rc=0

@@ -1,0 +1,208 @@
+{
+  "v1": {
+    "warnings": [
+      {
+        "source": "err.html",
+        "severity": 3,
+        "code": "STANDOC_68",
+        "message": "Validation suppression active: sources: /usr/local/bundle/gems/metanorma-iso-3.5.14/lib/metanorma/iso/validation_policy/metanorma.yml; code rules: 121 (off: 0, ",
+        "attribution": "tool",
+        "explanation": "Severity-3 information: metanorma-iso announces that its own validation policy file reclassifies 121 rules. Not a defect."
+      },
+      {
+        "source": "err.html",
+        "severity": 1,
+        "code": "ISO_42",
+        "message": "non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100e",
+        "attribution": "source",
+        "explanation": "Our only normative reference is a deliberately fictitious non-ISO document (GTF 100, nofetch) so that no real standard is cited (N8). ISO/IEC DIR 2 allows non-ISO normative references only under conditions; for a fictitious prototype this is accepted and declared."
+      },
+      {
+        "source": "err.html",
+        "severity": 1,
+        "code": "ISO_66",
+        "message": "style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated t",
+        "attribution": "tool",
+        "explanation": "Reported on ContentSection boilerplate-copyright-default, i.e. the copyright boilerplate metanorma-iso injects (its website www.iso.org and e-mail address contain lowercase 'iso'). Not authored text (Q6)."
+      },
+      {
+        "source": "err.html",
+        "severity": 1,
+        "code": "ISO_121",
+        "message": "style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)",
+        "attribution": "tool",
+        "explanation": "Reported on ContentSection boilerplate-copyright-default: the injected copyright boilerplate contains the digit 8 in the street address 'Ch. de Blandonnet 8'. Not authored text (Q6)."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambria.ttc' (font family 'Cambria', style 'normal', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Regula",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambriab.ttf' (font family 'Cambria', style 'normal', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-Bold' (",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambriai.ttf' (font family 'Cambria', style 'italic', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Itali",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambriaz.ttf' (font family 'Cambria', style 'italic', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-BoldIta",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,normal,400' (font family 'Inter', style 'normal', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Regular' (/root/.metanorma/font",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,normal,700' (font family 'Inter', style 'normal', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-Bold' (/root/.metanorma/fonts/Not",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,italic,400' (font family 'Inter', style 'italic', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Italic' (/root/.metanorma/fonts",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,italic,700' (font family 'Inter', style 'italic', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-BoldItalic' (/root/.metanorma/fon",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      }
+    ],
+    "errors": [],
+    "unexplained": [],
+    "location_violations": []
+  },
+  "v2": {
+    "warnings": [
+      {
+        "source": "err.html",
+        "severity": 3,
+        "code": "STANDOC_68",
+        "message": "Validation suppression active: sources: /usr/local/bundle/gems/metanorma-iso-3.5.14/lib/metanorma/iso/validation_policy/metanorma.yml; code rules: 121 (off: 0, ",
+        "attribution": "tool",
+        "explanation": "Severity-3 information: metanorma-iso announces that its own validation policy file reclassifies 121 rules. Not a defect."
+      },
+      {
+        "source": "err.html",
+        "severity": 1,
+        "code": "ISO_42",
+        "message": "non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100e",
+        "attribution": "source",
+        "explanation": "Our only normative reference is a deliberately fictitious non-ISO document (GTF 100, nofetch) so that no real standard is cited (N8). ISO/IEC DIR 2 allows non-ISO normative references only under conditions; for a fictitious prototype this is accepted and declared."
+      },
+      {
+        "source": "err.html",
+        "severity": 1,
+        "code": "ISO_66",
+        "message": "style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated t",
+        "attribution": "tool",
+        "explanation": "Reported on ContentSection boilerplate-copyright-default, i.e. the copyright boilerplate metanorma-iso injects (its website www.iso.org and e-mail address contain lowercase 'iso'). Not authored text (Q6)."
+      },
+      {
+        "source": "err.html",
+        "severity": 1,
+        "code": "ISO_121",
+        "message": "style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)",
+        "attribution": "tool",
+        "explanation": "Reported on ContentSection boilerplate-copyright-default: the injected copyright boilerplate contains the digit 8 in the street address 'Ch. de Blandonnet 8'. Not authored text (Q6)."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambria.ttc' (font family 'Cambria', style 'normal', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Regula",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambriab.ttf' (font family 'Cambria', style 'normal', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-Bold' (",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambriai.ttf' (font family 'Cambria', style 'italic', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Itali",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font file '/root/.metanorma/fonts/cambriaz.ttf' (font family 'Cambria', style 'italic', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-BoldIta",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,normal,400' (font family 'Inter', style 'normal', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Regular' (/root/.metanorma/font",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,normal,700' (font family 'Inter', style 'normal', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-Bold' (/root/.metanorma/fonts/Not",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,italic,400' (font family 'Inter', style 'italic', weight 'normal/400') doesn't exist. Replaced by 'NotoSans-Italic' (/root/.metanorma/fonts",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      },
+      {
+        "source": "pdf.err",
+        "severity": "",
+        "code": "mn2pdf",
+        "message": "WARNING: Font 'Inter,italic,700' (font family 'Inter', style 'italic', weight 'bold/700') doesn't exist. Replaced by 'NotoSans-BoldItalic' (/root/.metanorma/fon",
+        "attribution": "tool",
+        "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+      }
+    ],
+    "errors": [],
+    "unexplained": [],
+    "location_violations": []
+  }
+}

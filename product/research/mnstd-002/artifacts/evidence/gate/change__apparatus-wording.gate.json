@@ -1,0 +1,35 @@
+{
+  "ref": "change/apparatus-wording",
+  "sha": "b7dd8cfef2e57f01055034d0a90cc969b0137748",
+  "exit": 0,
+  "xml": true,
+  "asciidoctor_diag": [],
+  "sev01": [
+    [
+      1,
+      "ISO_121",
+      "style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)"
+    ],
+    [
+      1,
+      "ISO_42",
+      "non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100enLatn"
+    ],
+    [
+      1,
+      "ISO_66",
+      "style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)"
+    ]
+  ],
+  "sev0_count": 0,
+  "severity_by_code": [
+    "ISO_121=1",
+    "ISO_42=1",
+    "ISO_66=1",
+    "STANDOC_68=3"
+  ],
+  "new_sev01": [],
+  "verdict": "PASS",
+  "rule_w0_exit_or_sev0": "PASS",
+  "rule_exit_only": "PASS"
+}
