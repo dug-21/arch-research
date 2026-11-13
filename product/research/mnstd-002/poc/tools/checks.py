@@ -552,13 +552,7 @@ def c5(c: Ctx):
     probs = attribution(g, reg, disp)
     out.append(res("C5.2", not probs, f"every commit in v1..v2 carries exactly one accept/modify Comment-Id and equals parent + recorded edits; rejects change nothing; merges clean; problems {len(probs)}",
                    ["git log v1..v2", "task/dispositions.json"], {"problems": probs}))
-    cont = load_json(c.R / "trace" / "containment.json")
-    outs = {x: (c.R / "v2" / f"draft.{x}").exists() for x in ("html", "pdf", "xml")}
-    fails = [x["id"] for x in cont if x["pass"] is False]
-    ok = c.steps["v2_compile_exit"] == 0 and all(outs.values()) and not fails and \
-        all(x["pass"] for x in cont if disp[x["id"]]["disposition"] != "reject")
-    out.append(res("C5.3", ok, f"v2 exit {c.steps['v2_compile_exit']}, outputs {outs}; containment {sum(1 for x in cont if x['pass'])}/{sum(1 for x in cont if x['pass'] is not None)} pass",
-                   ["v2/compile.log", "trace/containment.json", "map/mapping.json"], {"fails": fails}))
+    out.append(c5_3(c))
     tr = list(csv.DictReader(io.StringIO((c.R / "trace" / "trace.csv").read_text())))
     probs = []
     if sorted(r["id"] for r in tr) != sorted(r["id"] for r in reg):
@@ -572,6 +566,81 @@ def c5(c: Ctx):
     out.append(res("C5.4", not probs, f"{len(tr)} trace rows (one per comment); blank cells outside reject v2 columns: {len(probs)}",
                    ["trace/trace.csv", "trace/trace.yaml"], {"problems": probs}))
     return out
+
+
+def c5_3(c: Ctx):
+    """C5.3, RECOMPUTED by the checker (rework 1, mnstd-002 gate §4.1). The checker does not trust
+    trace/containment.json: it re-derives containment itself from
+      - the expected text, taken from the register (accept: proposed_change) or the frozen task dispositions
+        (modify: modified_text), and required to equal the frozen expect_in_v2;
+      - the C2.4 mapping (map/mapping.json), whose v1->v2 pairs must agree in tag and anchor and whose v2 ids
+        must exist in the v2 semantic XML;
+      - the v2 SEMANTIC XML itself (v2/draft.xml), parsed here directly with ElementTree (not resolver.Doc and
+        not trace.build, so a defect in the pipeline's containment code is not shared by the checker).
+    It FAILS on any accept/modify whose expected text is absent from its mapped v2 element(s), and FAILS if the
+    pipeline's recorded containment.json disagrees with the recomputation (a tampered record is also caught)."""
+    disp = c.disp
+    reg = {r["id"]: r for r in c.register}
+    mp = load_json(c.R / "map" / "mapping.json")
+    m1 = {e["v1_id"]: e for e in mp["elements"]}
+    inserted = {x["v2_id"] for x in mp["inserted"]}
+    root = ET.parse(c.R / "v2" / "draft.xml").getroot()
+    by_id = {e.get("id"): e for e in root.iter() if e.get("id")}
+    outs = {x: (c.R / "v2" / f"draft.{x}").exists() for x in ("html", "pdf", "xml")}
+    rows, probs = [], []
+    for i in sorted(disp):
+        d = disp[i]
+        k = d["disposition"]
+        if k == "reject":
+            continue
+        r = reg.get(i)
+        if r is None:
+            probs.append(f"{i}: not in register")
+            continue
+        src = r["proposed_change"] if k == "accept" else d.get("modified_text", "")
+        want = norm(src, strip_markup=True)
+        if not want or want != norm(d.get("expect_in_v2", ""), strip_markup=True):
+            probs.append(f"{i}: expected text ({k}) != frozen expect_in_v2")
+        mode = d.get("containment", "element")
+        if mode == "insert":
+            els = [by_id[x] for x in inserted if x in by_id]
+            if len(els) != len(inserted):
+                probs.append(f"{i}: mapped inserted v2 id(s) absent from v2 XML")
+            hit = any(want in norm(text_of(e)) for e in els)
+            v2ids = sorted(x for x in inserted if x in by_id and want in norm(text_of(by_id[x])))
+        else:
+            v1ids = [r["resolved_id"]] + ([r["resolved_to_id"]] if mode == "range" and r.get("resolved_to_id") else [])
+            v2ids, hit = [], False
+            for v1 in v1ids:
+                e = m1.get(v1)
+                if e is None or not e.get("v2_id"):
+                    probs.append(f"{i}: v1 element {v1} has no v2 counterpart in the C2.4 mapping")
+                    continue
+                v2e = by_id.get(e["v2_id"])
+                if v2e is None:
+                    probs.append(f"{i}: mapped v2 id {e['v2_id']} absent from v2 XML")
+                    continue
+                if local(v2e.tag) != e["tag"] or (e["anchor"] and v2e.get("anchor") != e["anchor"]):
+                    probs.append(f"{i}: mapped v2 element {e['v2_id']} is <{local(v2e.tag)} anchor={v2e.get('anchor')}>, mapping says <{e['tag']} anchor={e['anchor']}>")
+                v2ids.append(e["v2_id"])
+            if len(v2ids) == len(v1ids):
+                hit = want in " ".join(norm(text_of(by_id[x])) for x in v2ids)
+        rows.append({"id": i, "mode": mode, "expect": want, "v2_ids": v2ids, "pass": bool(hit)})
+        if not hit:
+            probs.append(f"{i}: '{want[:60]}' not contained in v2 XML element(s) {v2ids}")
+    rec = {x["id"]: x["pass"] for x in load_json(c.R / "trace" / "containment.json")}
+    for x in rows:
+        if rec.get(x["id"]) is not x["pass"]:
+            probs.append(f"{x['id']}: recorded containment.json pass={rec.get(x['id'])} disagrees with recomputed {x['pass']}")
+    for i, v in rec.items():
+        if v is not None and i not in {x["id"] for x in rows}:
+            probs.append(f"{i}: containment recorded for a non-accept/modify id")
+    n_pass = sum(x["pass"] for x in rows)
+    ok = c.steps["v2_compile_exit"] == 0 and all(outs.values()) and not probs and len(rows) >= 1
+    return res("C5.3", ok, f"v2 exit {c.steps['v2_compile_exit']}, outputs {outs}; containment RECOMPUTED from v2/draft.xml via C2.4 mapping: {n_pass}/{len(rows)} pass; problems {len(probs)}",
+               ["v2/compile.log", "v2/draft.xml", "map/mapping.json", "intake/final/register.json", "task/dispositions.json",
+                "trace/containment.json (cross-checked, not trusted)"],
+               {"problems": probs, "recomputed": rows})
 
 
 # ---------------------------------------------------------------- C6
