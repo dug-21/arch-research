@@ -317,17 +317,32 @@ def main(argv):
         return clause(checks.nfr_local(c.ctx()), "N6.2")
     case("trace-contains-commenter-github", "N6.2", t)
 
-    def t(c):
+    def frozen_root(c):
         root = c.dir / "frozen-root"
         (root / "poc").mkdir(parents=True)
         shutil.copytree(c.task, root / "task")
         shutil.copytree(POC / "src", root / "poc" / "src")
         shutil.copy(POC / "warnings-explained.json", root / "poc" / "warnings-explained.json")
+        (root / "poc" / "tools").mkdir()
+        for n in frozen.CHECKER_FILES:
+            shutil.copy(POC / "tools" / n, root / "poc" / "tools" / n)
+        return root
+
+    def t(c):
+        root = frozen_root(c)
         ok_before = not frozen.verify(root)
         p = root / "task" / "expected" / "locators.json"
         p.write_text(p.read_text().replace("cl-scope", "cl-general", 1))
         return ("FAIL" if frozen.verify(root) else "PASS") if ok_before else "PASS (baseline not green)"
     case("fixture-file-tampered", "frozen", t)
+
+    def t(c):  # rework 1: a checker edit is now mechanically visible
+        root = frozen_root(c)
+        ok_before = not frozen.verify(root)
+        p = root / "poc" / "tools" / "checks.py"
+        p.write_text(p.read_text().replace("not probs and len(rows) >= 1", "True", 1))
+        return ("FAIL" if frozen.verify(root) else "PASS") if ok_before else "PASS (baseline not green)"
+    case("checker-file-tampered", "frozen", t)
 
     def t(c):
         env = dict(os.environ)

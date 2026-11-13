@@ -12,12 +12,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import POC, sha256  # noqa: E402
 
 SCOPE = POC.parent
+CHECKER_FILES = ("checks.py", "selftest.py", "frozen.py")
 
 
 def frozen_files(root: Path) -> list[Path]:
     files = sorted(p for p in (root / "task").rglob("*") if p.is_file() and p.name != "FROZEN.sha256")
     files += sorted(p for p in (root / "poc" / "src").rglob("*") if p.is_file())
     files += [root / "poc" / "warnings-explained.json"]
+    # Rework 1 (2026-11-13): the pass-check code itself is frozen too. The original freeze covered fixtures and
+    # expectations only, so a checker edit (like the C5.3 fix) was not mechanically visible. Now it is.
+    files += [root / "poc" / "tools" / n for n in CHECKER_FILES]
     return files
 
 
