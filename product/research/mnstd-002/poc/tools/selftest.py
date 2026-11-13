@@ -220,6 +220,26 @@ def main(argv):
         return clause(checks.c5(ctx), "C5.3")
     case("containment-expectation-not-in-v2", "C5.3", t)
 
+    # Rework 1 (gate-feasibility §4.1): v2 semantic XML loses an ACCEPTED change AFTER the run (GB-01-003,
+    # 120 mm reverted to its v1 value 80 mm); trace/containment.json is left untouched. The checker must
+    # recompute from v2/draft.xml and go red. Before rework 1 this case was MISSED (validator tamper).
+    def t(c):
+        p = c.dir / "v2" / "draft.xml"
+        s = p.read_text(encoding="utf-8")
+        if s.count("120 mm") != 1:
+            return f"ERROR (tamper precondition: '120 mm' occurs {s.count('120 mm')}x in v2 XML)"
+        p.write_text(s.replace("120 mm", "80 mm"), encoding="utf-8")
+        return clause(checks.c5(c.ctx()), "C5.3")
+    case("v2-xml-accepted-change-reverted", "C5.3", t)
+
+    # the pipeline's recorded containment says FAIL for one accept while v2 is intact: record and recomputation
+    # disagree, so the checker must not report green on either alone.
+    def t(c):
+        p = c.dir / "trace" / "containment.json"
+        edit_json(p, lambda d: [x.__setitem__("pass", False) for x in d if x["id"] == "GB-01-001"])
+        return clause(checks.c5(c.ctx()), "C5.3")
+    case("containment-record-disagrees", "C5.3", t)
+
     def t(c):
         p = c.dir / "trace" / "trace.csv"
         lines = p.read_text().split("\n")
