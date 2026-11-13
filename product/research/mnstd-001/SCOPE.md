@@ -1,6 +1,6 @@
 # mnstd-001 — Decompose: Metanorma ISO-style standards authoring & commenting/review prototype
 
-**Status:** scoped
+**Status:** done
 **Goal(s):** `mnstd` (new standalone goal, primary; no goal node exists yet, the curator creates it in the decompose phase)
 **Capability target(s):** none yet. This decompose-scope *produces* the capability board; it advances no grade.
 **Confidence-required:** decompose-scope is structure only. The follow-on `mnstd-002` is **validated** (owner, binding).
