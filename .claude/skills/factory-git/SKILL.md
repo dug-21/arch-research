@@ -110,8 +110,13 @@ As of 2026-08-01 that returns rebase **and** squash **and** merge-commit all all
 - **Research documents: no PR.** They commit straight to `main` as the run produces them (D15). The
   synthesis gate was always reviewed on the **Issue** (D1) — the PR only rubber-stamped a decision made
   elsewhere. The leader closes the Issue at CLOSE with the verdict comment; that is the record.
-- **Research PR (executables only):** for POC code and datasets. `Closes #<scope-issue>`; the leader
-  rebase-merges after the gate. Body = the run summary.
+- **Research PR (executables only):** for POC code and datasets. **`Refs #<scope-issue>` — never `Closes`/
+  `Fixes`/`Resolves`**: the merge happens before synthesis, and an auto-close would end the Issue before its
+  CLOSE verdict comment, which is the gate record (D15; mnstd-002 OBS-28). The leader rebase-merges after the
+  gate. Body = the run summary.
+- **After a rebase-merge, re-anchor provenance.** Rebase rewrites every branch SHA and the branch is deleted on
+  merge. Record a pre→post SHA map (with `git diff <pre> <post> -- <paths>` empty per pair) in the run's ledger,
+  and cite only on-`main` SHAs in anything written after the merge (`proven_by`, REPORT, CLOSE comment).
 - **Method PR:** reviewable (it ripples to every future run); on merge, tag + bump `wf:`.
 
 > **Committing documents to `main` makes the path-scoped rule MORE load-bearing, not less.** There is no
@@ -120,6 +125,14 @@ As of 2026-08-01 that returns rebase **and** squash **and** merge-commit all all
 > **In-flight is not concluded.** A document on `main` may belong to a run still in progress, so the
 > scope's `Status:` line (scoped → researching → [feasibility] → synthesis → done) is the marker that
 > says which — keep it current, and read it before treating a findings file as a verdict.
+
+### Pushing
+
+- **Push with an explicit credential helper.** In the dev container the default helper is the VS Code
+  remote-containers bridge, which hangs (no error) if the IDE connection has dropped. Always push as
+  `git -c credential.helper= -c credential.helper='!gh auth git-credential' push origin <ref>` (same for
+  tag pushes). If a push produces no output within ~30 s, assume this hang, not a network problem.
+  *(mnstd-001 OBS-25.)*
 
 ### One session's method work is ONE PR
 
