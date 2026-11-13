@@ -1,6 +1,6 @@
 # mnstd-002 — Validated: ISO-style Metanorma authoring and commenting cycle, proven by one integrated prototype
 
-**Status:** scoped  <!-- scoped → researching → feasibility → synthesis → done -->
+**Status:** researching  <!-- scoped → researching → feasibility → synthesis → done -->
 **Goal(s):** `mnstd` (primary, **#329**)
 **Capability target(s):** all seven business capabilities on the mnstd board, as workstreams of this ONE scope:
 C1 **#336** · C2 **#335** · C3 **#334** · C4 **#332** · C5 **#333** · C6 **#331** · C7 **#330**.
@@ -291,3 +291,19 @@ on an unproven resolver.
 - **`commenter` needs Ruby.** If it is not in the image, using it on the host would breach N2.2. Running it inside the container is the only N2-clean assembly.
 - **N6 About edges** are written only to C4 and C7 (BOARD.md). The property is still ruled across the whole demo, per node #342's own text.
 - **Fixture sizes** (≥8 comments, ≥10 lines, 5 MB) are researcher proposals carried in the nodes, not owner numbers.
+
+## Extension — 2026-11-13 (tech-discovery leader rulings; append-only, D3, in-envelope)
+
+Recorded by factory-curator for research-leader. No proof bar, clause or NFR text above is changed.
+
+- **R1 — N6.1 vs PDF fonts.** The pinned image ships no fonts; a PDF compile needs a one-time networked font
+  fetch (findings-W0 §5, findings-W4 §4). **Ruling:** the POC provides a separate one-time `make fonts`
+  provisioning step (font cache gitignored, never committed). The gated `make demo` must run every compile with
+  `--network none` and make no other network access. **The N6.1 text is NOT amended:** the validator rules N6.1
+  on its literal text AND states separately whether the gated demo is network-free. The discrepancy is flagged
+  to the owner.
+- **R2 — C6.1 HTML.** Native metanorma-iso 3.5.14 HTML renders no reviewer notes (findings-W4 §0.3); the PDF
+  renders native annotations. **Ruling:** the POC may inject HTML annotations from the native semantic
+  `<annotation>` data, labelled as glue. The validator rules whether that satisfies C6.1's wording. No bar change.
+- **R3 — Defaults and git.** Proceed on the Q1–Q9 defaults as recorded. Host `git` is added as a declared
+  prerequisite with a fail-fast check (findings-W3 §6). This is a prerequisite declaration, not a bar change.
