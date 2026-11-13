@@ -1,6 +1,6 @@
 # mnstd-002 — Validated: ISO-style Metanorma authoring and commenting cycle, proven by one integrated prototype
 
-**Status:** researching  <!-- scoped → researching → feasibility → synthesis → done -->
+**Status:** feasibility — FIREWALL SCOPE-FAIL pending owner rulings (2026-11-13)
 **Goal(s):** `mnstd` (primary, **#329**)
 **Capability target(s):** all seven business capabilities on the mnstd board, as workstreams of this ONE scope:
 C1 **#336** · C2 **#335** · C3 **#334** · C4 **#332** · C5 **#333** · C6 **#331** · C7 **#330**.
