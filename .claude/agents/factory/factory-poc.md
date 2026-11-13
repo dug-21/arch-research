@@ -28,6 +28,12 @@ given. Never `context_store` / `context_correct` / `context_tag`.
 - **Make the pass-check self-testing.** A checker that has not been run against a known-green, a
   known-red and a tampered-tests case is not a checker. Verify test files are pristine **mechanically**;
   reading a transcript is not evidence that the model didn't cheat.
+  **The checker recomputes; it never reads the pipeline's verdict.** Every checker input written by the
+  pipeline under test is re-derived from a primary output (compiled XML, git history) or cross-checked against
+  one, and disagreement FAILs. Self-tests include ≥1 tamper of the **primary artifact** per clause, not only of
+  the expectation. The freeze (`task/FROZEN.sha256`) covers checker, self-test and freeze code too.
+  *(mnstd-002: the C5.3 checker read `containment.json` and passed a reverted v2; `checks.py` was outside the
+  freeze. Lesson #391.)*
 - **Capture the effective envelope, never the declared one.** Re-capture at run start — do not inherit a
   prior reading. Record configuration *in force*: versions, digests, applied limits, residency.
   *(shd-007 W0; wfh-005 #196 — a control that is present, believed and inert passes every test a real
