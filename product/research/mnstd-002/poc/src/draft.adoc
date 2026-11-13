@@ -1,0 +1,161 @@
+= Glimmerwood tuning forks -- Test method for resonance stability
+:docnumber: 99999
+:partnumber: 1
+:edition: 1
+:revdate: 2026-11-13
+:copyright-year: 2026
+:language: en
+:title-intro-en: Glimmerwood tuning forks
+:title-main-en: Test method for resonance stability
+:title-part-en: General method
+:title-intro-fr: Diapasons en bois-lueur
+:title-main-fr: Methode d'essai de la stabilite de resonance
+:title-part-fr: Methode generale
+:doctype: international-standard
+:docstage: 30
+:docsubstage: 00
+:technical-committee-type: TC
+:technical-committee-number: 999
+:technical-committee: Fictitious acoustic instruments
+:secretariat: XYZ
+:mn-document-class: iso
+:mn-output-extensions: xml,html,pdf,rxl
+:local-cache-only:
+:no-isobib:
+:data-uri-image:
+
+// PROVENANCE (N8): every sentence of body text in this file was written by factory-poc for
+// mnstd-002 on a fictitious subject (glimmerwood is an invented timber). No clause text is
+// taken from any real ISO standard. Tool-injected boilerplate is declared in poc/PROVENANCE.md.
+
+.Foreword
+This document was prepared as a fictitious example for a review-cycle prototype.
+
+[[intro]]
+== Introduction
+Glimmerwood is an invented timber used here only to give the example a subject.
+Tuning forks cut from it are imagined to drift in pitch as they dry.
+
+[[cl-scope]]
+== Scope
+This document specifies a test method for the resonance stability of glimmerwood tuning forks.
+
+It applies to forks with a nominal pitch between 200 Hz and 900 Hz.
+
+[bibliography]
+[[cl-normref]]
+== Normative references
+* [[[ref-gtf,nofetch(GTF 100)]]], _Glimmerwood tuning forks -- Vocabulary_ (fictitious)
+
+[[cl-terms]]
+== Terms and definitions
+
+[[term-glimmerwood]]
+=== glimmerwood
+fictitious timber with a fine, luminous grain
+
+[[term-drift]]
+=== resonance drift
+change in the fundamental frequency of a fork over a stated conditioning period
+
+[[cl-general]]
+== General requirements
+Each fork shall be identified by a permanent mark on its handle.
+
+The test shall be carried out on forks that have not been repaired.
+
+[[note-general-1]]
+NOTE: A repaired fork can show a drift unrelated to the timber.
+
+[[note-general-2]]
+NOTE: Marks made with ink can fade during conditioning.
+
+[[cl-apparatus]]
+== Apparatus
+
+[[cl-stand]]
+=== Test stand
+The test stand holds the fork by its handle without touching the tines.
+The recommended dimensions are given in <<tab-stand>>.
+
+[[tab-stand]]
+.Test stand dimensions
+|===
+| Part | Dimension
+
+| Base plate | 200 mm x 150 mm
+| Clamp height | 80 mm
+|===
+
+Other dimensions may be used if the fork does not touch the base plate.
+
+[[cl-clamp]]
+==== Clamp
+The clamp shall grip the handle with a soft lining.
+
+The lining shall be replaced when it shows wear.
+
+[[cl-sensor]]
+==== Frequency sensor
+The frequency sensor shall resolve changes of one tenth of a hertz.
+
+[[cl-mallet]]
+=== Mallet
+The mallet has a felt head and a wooden shaft.
+
+[[cl-procedure]]
+== Procedure
+
+[[cl-conditioning]]
+=== Conditioning
+Store each fork at the conditions given in <<tab-conditions>> for seven days before the test.
+
+[[tab-conditions]]
+.Conditioning environment
+|===
+| Parameter | Value
+
+| Temperature | 23 degrees Celsius
+| Relative humidity | 50 %
+|===
+
+[[cl-measurement]]
+=== Measurement
+Strike the fork with the mallet shown in <<fig-mallet>> and record the fundamental frequency.
+
+Repeat the measurement five times and report the mean.
+
+[[fig-mallet]]
+.Felt mallet
+image::figure1.png[]
+
+[[cl-report]]
+== Test report
+The test report shall include the following information:
+
+* the identification of the fork;
+* the conditioning period;
+* the mean frequency and the drift.
+
+Example results are given in <<annex-a>>.
+
+[[annex-a]]
+[appendix,obligation=informative]
+== Example results
+
+[[annex-a-1]]
+=== Results for two forks
+<<tab-results>> gives fictitious results.
+
+[[tab-results]]
+.Fictitious results
+|===
+| Fork | Drift
+
+| F1 | 0,4 Hz
+| F2 | 0,7 Hz
+|===
+
+[[annex-a-2]]
+=== Interpretation
+A drift above one hertz suggests that the timber was not fully seasoned.

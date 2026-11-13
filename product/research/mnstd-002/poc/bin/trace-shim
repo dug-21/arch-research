@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Command-trace shim (N6 / C4.5 evidence). `make demo` puts poc/bin first on PATH, so every docker and git
+# invocation by the rig (bash or Python subprocess) is appended to $MNSTD_TRACE, then the real binary runs.
+# Authored by factory-poc (mnstd-002).
+name="$(basename "$0")"
+self_dir="$(cd "$(dirname "$0")" && pwd)"
+if [ -n "${MNSTD_TRACE:-}" ]; then
+  { printf '%s' "$name"; for a in "$@"; do printf ' %s' "${a//$'\n'/\\n}"; done; printf '\n'; } >> "$MNSTD_TRACE"
+fi
+IFS=: read -r -a dirs <<< "$PATH"
+for d in "${dirs[@]}"; do
+  [ "$d" = "$self_dir" ] && continue
+  if [ -x "$d/$name" ] && [ ! "$d/$name" -ef "$0" ]; then exec "$d/$name" "$@"; fi
+done
+echo "trace-shim: real '$name' not found on PATH" >&2
+exit 127

@@ -1,0 +1,12 @@
+{
+  "_doc": "Frozen C2.4 expectation, hand-derived from task/dispositions.json against v1. 'modified' lists the v1 elements (as ISO locators, resolved on v1) whose own text the v2 edits change; EVERY other tracked v1 element must map to a v2 element with status 'unchanged'. 'inserted' lists anchors of elements that exist only in v2. 'renumbered' is the exact expected set of old->new pairs (by anchor).",
+  "modified": ["1 para 2", "3.2", "5.1 Table 1", "5.1.1 para 1", "5.1.1 para 2", "6.1 para 1", "6.2 Figure 1", "A.1 Table A.1"],
+  "inserted_anchors": ["cl-safety"],
+  "inserted_count": 2,
+  "renumbered": {
+    "cl-apparatus": ["5", "6"], "cl-stand": ["5.1", "6.1"], "cl-clamp": ["5.1.1", "6.1.1"], "cl-sensor": ["5.1.2", "6.1.2"],
+    "cl-mallet": ["5.2", "6.2"], "cl-procedure": ["6", "7"], "cl-conditioning": ["6.1", "7.1"],
+    "cl-measurement": ["6.2", "7.2"], "cl-report": ["7", "8"]
+  },
+  "edited_element_count_min": 3
+}

@@ -1,0 +1,9 @@
+#version: 2012-03
+#document: ISO/CD 99999-1:2026
+#date: 2026-10-02
+#project: Glimmerwood tuning forks (fictitious, mnstd-002 fixture)
+#reviewer: bob
+#mb: GB
+id,mb,line,clause,element,type,comment,proposed_change,observations
+GB-001,GB,,5,,te,A clause on safety is missing; insert a new clause titled Safety before the Apparatus clause.,Wear hearing protection when striking forks repeatedly.,
+GB-002,GB,,A.1,Table A.1,ed,The caption should say what the results are.,Example drift results,

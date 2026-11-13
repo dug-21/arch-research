@@ -1,0 +1,5 @@
+{
+  "_doc": "Frozen expectation: exactly these PR review comments are rejected (and no others), each with a reason whose code starts with the listed code.",
+  "change-apparatus-wording/dave.json#2": ["line_blank"],
+  "change-apparatus-wording/erin.json#3": ["line_not_in_diff"]
+}

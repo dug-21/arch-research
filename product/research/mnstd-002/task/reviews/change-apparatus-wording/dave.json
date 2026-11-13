@@ -1,0 +1,16 @@
+{
+  "_doc": "Simulated PR review record (fixture). Fields mirror GitHub's pull-request review-comment model (path, side LEFT|RIGHT, line, start_line) plus the ISO template fields. head commit is taken from the branch at normalisation time and recorded as source_commit.",
+  "review": {
+    "branch": "change/apparatus-wording",
+    "reviewer": {"name": "dave", "mb": "DE"},
+    "date": "2026-10-10",
+    "comments": [
+      {"local_id": 1, "path": "draft.adoc", "side": "RIGHT", "line": 94, "type": "te",
+       "comment": "Say what the soft lining is made of.",
+       "proposed_change": "The clamp shall hold the handle with a soft lining. The lining shall be felt."},
+      {"local_id": 2, "path": "draft.adoc", "side": "LEFT", "line": 95, "type": "ed",
+       "comment": "SEEDED NEGATIVE: this comment sits on a blank context line and must be rejected.",
+       "proposed_change": ""}
+    ]
+  }
+}

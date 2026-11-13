@@ -1,0 +1,11 @@
+#version: 2012-03
+#document: ISO/CD 99999-1:2026
+#date: 2026-10-01
+#project: Glimmerwood tuning forks (fictitious, mnstd-002 fixture)
+#reviewer: alice
+#mb: GB
+id,mb,line,clause,element,type,comment,proposed_change,observations
+GB-001,GB,43,1,para 2,te,The lower pitch limit is too low; forks below 250 Hz behave differently.,It applies to forks with a nominal pitch between 250 Hz and 900 Hz.,
+GB-002,GB,,3.2,,ed,"The definition should not start with the word change, which reads like an instruction.",variation in the fundamental frequency of a fork over a stated conditioning period,
+GB-003,GB,,5.1,Table 1,te,A clamp height of 80 mm is too low for long forks.,120 mm,
+GB-004,GB,,4,Note 2,ge,Consider deleting this note; it adds nothing.,Delete Note 2.,

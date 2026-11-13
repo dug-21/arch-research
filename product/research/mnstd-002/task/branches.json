@@ -1,0 +1,15 @@
+{
+  "_doc": "Change-proposal branches for the PR simulation. 'implements' branches take their proposal commit(s) from the disposition record of the named sheet comment (so the proposal is itself attributable). 'seeded_broken' branches are fixtures that MUST fail the pre-merge gate and never merge; 'expect_exit' records the compile exit status the fixture is designed around (checked, so a branch that 'fails' only because the compiler crashed is distinguished from one that exits 0 and is caught by the verdict rule).",
+  "branches": [
+    {"name": "change/apparatus-wording", "implements": ["FR-01-002"], "author": ["Editor", "editor@example.invalid"]},
+    {"name": "change/broken-anchor", "seeded_broken": "duplicate author anchor: the Frequency sensor subclause reuses [[cl-clamp]]",
+     "expect_exit": "nonzero",
+     "edits": [{"file": "draft.adoc", "find": "[[cl-sensor]]\n==== Frequency sensor", "replace": "[[cl-clamp]]\n==== Frequency sensor"}]},
+    {"name": "change/broken-table", "seeded_broken": "unterminated table: the closing |=== of Table A.1 is deleted",
+     "expect_exit": "zero",
+     "edits": [{"file": "draft.adoc", "find": "| F2 | 0,7 Hz\n|===\n", "replace": "| F2 | 0,7 Hz\n"}]},
+    {"name": "change/broken-xref", "seeded_broken": "cross-reference to an anchor that does not exist (<<annex-z>>)",
+     "expect_exit": "zero",
+     "edits": [{"file": "draft.adoc", "find": "Example results are given in <<annex-a>>.", "replace": "Example results are given in <<annex-z>>."}]}
+  ]
+}

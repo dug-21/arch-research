@@ -1,0 +1,11 @@
+#version: 2012-03
+#document: ISO/CD 99999-1:2026
+#date: 2026-10-03
+#project: Glimmerwood tuning forks (fictitious, mnstd-002 fixture)
+#reviewer: claire
+#mb: FR
+id,mb,line,clause,element,type,comment,proposed_change,observations
+FR-001,FR,,6.2,Figure 1,te,The caption should name the head material of the mallet.,Mallet with felt head,
+FR-002,FR,,5.1.1,para 1,ed,Use the verb hold rather than grip.,The clamp shall hold the handle with a soft lining.,
+FR-003,FR,,7,,ge,The test report clause could point to a reporting template.,Add a reference to a reporting template.,
+FR-004,FR,,6.1,para 1,te,Seven days of conditioning is too short for dense timber.,for fourteen days before the test,

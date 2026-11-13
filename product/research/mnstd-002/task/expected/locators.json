@@ -1,0 +1,35 @@
+{
+  "_doc": "Frozen C2.1/C2.3 fixture. Hand-authored from poc/src/draft.adoc (NOT from resolver output). A positive case passes iff the resolver returns exactly one element whose @anchor equals 'anchor' (structural elements), or whose own text starts with 'text' (unanchored paragraphs), and whose clause equals 'clause'. A negative case passes iff the resolver raises an error with code 'code'.",
+  "positive": [
+    {"clause": "1", "element": "", "anchor": "cl-scope", "clause_no": "1"},
+    {"clause": "1", "element": "para 2", "text": "It applies to forks with a nominal pitch", "clause_no": "1"},
+    {"clause": "2", "element": "", "anchor": "cl-normref", "clause_no": "2"},
+    {"clause": "3.1", "element": "", "anchor": "term-glimmerwood", "clause_no": "3.1"},
+    {"clause": "4", "element": "para 1", "text": "Each fork shall be identified", "clause_no": "4"},
+    {"clause": "4", "element": "Note 1", "anchor": "note-general-1", "clause_no": "4"},
+    {"clause": "4", "element": "Note 2", "anchor": "note-general-2", "clause_no": "4"},
+    {"clause": "5.1", "element": "", "anchor": "cl-stand", "clause_no": "5.1"},
+    {"clause": "5.1", "element": "Table 1", "anchor": "tab-stand", "clause_no": "5.1"},
+    {"clause": "5.1", "element": "para 2", "text": "Other dimensions may be used", "clause_no": "5.1"},
+    {"clause": "5.1.1", "element": "", "anchor": "cl-clamp", "clause_no": "5.1.1"},
+    {"clause": "5.1.1", "element": "para 2", "text": "The lining shall be replaced", "clause_no": "5.1.1"},
+    {"clause": "6.1", "element": "Table 2", "anchor": "tab-conditions", "clause_no": "6.1"},
+    {"clause": "6.2", "element": "Figure 1", "anchor": "fig-mallet", "clause_no": "6.2"},
+    {"clause": "7", "element": "para 2", "text": "Example results are given in", "clause_no": "7"},
+    {"clause": "A", "element": "", "anchor": "annex-a", "clause_no": "A"},
+    {"clause": "A.1", "element": "Table A.1", "anchor": "tab-results", "clause_no": "A.1"},
+    {"clause": "A.2", "element": "para 1", "text": "A drift above one hertz", "clause_no": "A.2"}
+  ],
+  "negative": [
+    {"clause": "9.9", "element": "", "code": "clause_not_found"},
+    {"clause": "5.1", "element": "Table 7", "code": "element_not_found"},
+    {"clause": "4", "element": "para 9", "code": "element_not_found"},
+    {"clause": "4", "element": "Note 3", "code": "element_not_found"},
+    {"clause": "B", "element": "", "code": "clause_not_found"},
+    {"clause": "4", "element": "para", "code": "element_ambiguous"},
+    {"clause": "5.1", "element": "Table 2", "code": "element_not_in_clause"},
+    {"clause": "cl. 5", "element": "", "code": "clause_not_found"},
+    {"clause": "5.1", "element": "Row 3", "code": "element_unparseable"},
+    {"clause": "", "element": "Table 1", "code": "clause_missing"}
+  ]
+}

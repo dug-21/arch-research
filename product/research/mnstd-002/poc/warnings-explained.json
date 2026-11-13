@@ -1,0 +1,36 @@
+{
+  "_doc": "C1.2: every warning the v1/v2 compiles emit must match an entry here, or the check FAILS as 'unexplained'. 'attribution' is 'source' (caused by text we authored) or 'tool' (caused by metanorma-iso boilerplate or the toolchain environment). Matching: err.html entries by code (and optional message substring); pdf.err and asciidoctor lines by regex.",
+  "errhtml": {
+    "STANDOC_68": {
+      "attribution": "tool",
+      "explanation": "Severity-3 information: metanorma-iso announces that its own validation policy file reclassifies 121 rules. Not a defect."
+    },
+    "ISO_42": {
+      "attribution": "source",
+      "explanation": "Our only normative reference is a deliberately fictitious non-ISO document (GTF 100, nofetch) so that no real standard is cited (N8). ISO/IEC DIR 2 allows non-ISO normative references only under conditions; for a fictitious prototype this is accepted and declared."
+    },
+    "ISO_66": {
+      "attribution": "tool",
+      "explanation": "Reported on ContentSection boilerplate-copyright-default, i.e. the copyright boilerplate metanorma-iso injects (its website www.iso.org and e-mail address contain lowercase 'iso'). Not authored text (Q6).",
+      "must_be_located_in_anchor": "boilerplate-copyright-default"
+    },
+    "ISO_121": {
+      "attribution": "tool",
+      "explanation": "Reported on ContentSection boilerplate-copyright-default: the injected copyright boilerplate contains the digit 8 in the street address 'Ch. de Blandonnet 8'. Not authored text (Q6).",
+      "must_be_located_in_anchor": "boilerplate-copyright-default"
+    }
+  },
+  "pdf_err": [
+    {
+      "regex": "^WARNING: Font file '/root/\\.metanorma/fonts/cambria[a-z]*\\.tt[cf]' .*doesn't exist\\. Replaced by 'NotoSans-",
+      "attribution": "tool",
+      "explanation": "The ISO PDF stylesheet asks for Cambria, which is proprietary and not provisioned by fontist; mn2pdf substitutes Noto Sans. Cosmetic."
+    },
+    {
+      "regex": "^WARNING: Font 'Inter,[a-z]+,[0-9]+' .*doesn't exist\\. Replaced by 'NotoSans-",
+      "attribution": "tool",
+      "explanation": "The ISO PDF stylesheet asks for Inter; the provisioned variable Inter font is not usable by FOP, so mn2pdf substitutes Noto Sans (findings-W0 §5). Cosmetic."
+    }
+  ],
+  "asciidoctor": []
+}
