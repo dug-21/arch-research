@@ -1,0 +1,116 @@
+{
+  "blocks": [
+    {
+      "id": "FR-01-001",
+      "from": "fig-mallet",
+      "to": "fig-mallet",
+      "reviewer": "claire (FR)",
+      "date": "2026-10-03",
+      "text": "[FR-01-001] MB/NC FR | type te | 6.2/Figure 1 | sheet: The caption should name the head material of the mallet. Proposed change: Mallet with felt head"
+    },
+    {
+      "id": "FR-01-002",
+      "from": "rv-e2",
+      "to": "rv-e2",
+      "reviewer": "claire (FR)",
+      "date": "2026-10-03",
+      "text": "[FR-01-002] MB/NC FR | type ed | 5.1.1/para 1 | sheet: Use the verb hold rather than grip. Proposed change: The clamp shall hold the handle with a soft lining."
+    },
+    {
+      "id": "FR-01-003",
+      "from": "cl-report",
+      "to": "cl-report",
+      "reviewer": "claire (FR)",
+      "date": "2026-10-03",
+      "text": "[FR-01-003] MB/NC FR | type ge | 7 | sheet: The test report clause could point to a reporting template. Proposed change: Add a reference to a reporting template."
+    },
+    {
+      "id": "FR-01-004",
+      "from": "rv-e4",
+      "to": "rv-e4",
+      "reviewer": "claire (FR)",
+      "date": "2026-10-03",
+      "text": "[FR-01-004] MB/NC FR | type te | 6.1/para 1 | sheet: Seven days of conditioning is too short for dense timber. Proposed change: for fourteen days before the test"
+    },
+    {
+      "id": "GB-01-001",
+      "from": "rv-e5",
+      "to": "rv-e5",
+      "reviewer": "alice (GB)",
+      "date": "2026-10-01",
+      "text": "[GB-01-001] MB/NC GB | type te | 1/para 2 | sheet: The lower pitch limit is too low; forks below 250 Hz behave differently. Proposed change: It applies to forks with a nominal pitch between 250 Hz and 900 Hz."
+    },
+    {
+      "id": "GB-01-002",
+      "from": "term-drift",
+      "to": "term-drift",
+      "reviewer": "alice (GB)",
+      "date": "2026-10-01",
+      "text": "[GB-01-002] MB/NC GB | type ed | 3.2 | sheet: The definition should not start with the word change, which reads like an instruction. Proposed change: variation in the fundamental frequency of a fork over a stated conditioning period"
+    },
+    {
+      "id": "GB-01-003",
+      "from": "rv-e7",
+      "to": "rv-e7",
+      "reviewer": "alice (GB)",
+      "date": "2026-10-01",
+      "text": "[GB-01-003] MB/NC GB | type te | 5.1/Table 1 | sheet: A clamp height of 80 mm is too low for long forks. Proposed change: 120 mm"
+    },
+    {
+      "id": "GB-01-004",
+      "from": "note-general-2",
+      "to": "note-general-2",
+      "reviewer": "alice (GB)",
+      "date": "2026-10-01",
+      "text": "[GB-01-004] MB/NC GB | type ge | 4/Note 2 | sheet: Consider deleting this note; it adds nothing. Proposed change: Delete Note 2."
+    },
+    {
+      "id": "GB-02-001",
+      "from": "cl-apparatus",
+      "to": "cl-apparatus",
+      "reviewer": "bob (GB)",
+      "date": "2026-10-02",
+      "text": "[GB-02-001] MB/NC GB | type te | 5 | sheet: A clause on safety is missing; insert a new clause titled Safety before the Apparatus clause. Proposed change: Wear hearing protection when striking forks repeatedly."
+    },
+    {
+      "id": "GB-02-002",
+      "from": "rv-e10",
+      "to": "rv-e10",
+      "reviewer": "bob (GB)",
+      "date": "2026-10-02",
+      "text": "[GB-02-002] MB/NC GB | type ed | A.1/Table A.1 | sheet: The caption should say what the results are. Proposed change: Example drift results"
+    },
+    {
+      "id": "PR-DE-01-001",
+      "from": "rv-e2",
+      "to": "rv-e2",
+      "reviewer": "dave (DE)",
+      "date": "2026-10-10",
+      "text": "[PR-DE-01-001] MB/NC DE | type te | 5.1.1/para 1 | pr: Say what the soft lining is made of. Proposed change: The clamp shall hold the handle with a soft lining. The lining shall be felt."
+    },
+    {
+      "id": "PR-US-01-001",
+      "from": "rv-e2",
+      "to": "rv-e11",
+      "reviewer": "erin (US)",
+      "date": "2026-10-11",
+      "text": "[PR-US-01-001] MB/NC US | type ed | 5.1.1/para 1 | pr: These two sentences about the lining should use the same voice. Proposed change: Replace the lining as soon as it shows wear."
+    },
+    {
+      "id": "PR-US-01-002",
+      "from": "cl-clamp",
+      "to": "cl-clamp",
+      "reviewer": "erin (US)",
+      "date": "2026-10-11",
+      "text": "[PR-US-01-002] MB/NC US | type ge | 5.1.1 | pr: Consider merging this subclause into its parent clause. Proposed change: Merge the clamp subclause into the test stand subclause."
+    }
+  ],
+  "inserted_anchors": {
+    "_104d5cf8-9be6-10c3-f39c-b8134c4566aa": "rv-e4",
+    "_4f1ea0c3-6f79-1fa1-083c-7820e6c3f2f1": "rv-e2",
+    "_7ba92c71-4f88-48b6-a012-120243a00336": "rv-e5",
+    "_b1bf752b-d4bc-c281-2525-e8ab5eefbfd1": "rv-e7",
+    "_bbd3f18e-cc7e-20da-831d-9149af89e1f5": "rv-e11",
+    "_bd8667f7-fd85-0879-7132-14f1c4ee9595": "rv-e10"
+  }
+}

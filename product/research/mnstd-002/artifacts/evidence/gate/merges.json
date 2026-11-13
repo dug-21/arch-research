@@ -1,0 +1,198 @@
+{
+  "change/apparatus-wording": {
+    "ref": "change/apparatus-wording",
+    "sha": "b7dd8cfef2e57f01055034d0a90cc969b0137748",
+    "exit": 0,
+    "xml": true,
+    "asciidoctor_diag": [],
+    "sev01": [
+      [
+        1,
+        "ISO_121",
+        "style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)"
+      ],
+      [
+        1,
+        "ISO_42",
+        "non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100enLatn"
+      ],
+      [
+        1,
+        "ISO_66",
+        "style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)"
+      ]
+    ],
+    "sev0_count": 0,
+    "severity_by_code": [
+      "ISO_121=1",
+      "ISO_42=1",
+      "ISO_66=1",
+      "STANDOC_68=3"
+    ],
+    "new_sev01": [],
+    "verdict": "PASS",
+    "rule_w0_exit_or_sev0": "PASS",
+    "rule_exit_only": "PASS",
+    "merge_commit": "4f7061147b29af43de03c3813bd4cb308bb4180b",
+    "merged": true
+  },
+  "change/broken-anchor": {
+    "ref": "change/broken-anchor",
+    "sha": "20e95aebea27e95d20716eb947a2ac7d11a5c3eb",
+    "exit": 1,
+    "xml": true,
+    "asciidoctor_diag": [
+      "asciidoctor: WARNING: <stdin>: line 260: id assigned to section already in use: cl-clamp"
+    ],
+    "sev01": [
+      [
+        0,
+        "STANDOC_36",
+        "ID cl-clamp has already been used at line 139"
+      ],
+      [
+        1,
+        "ISO_121",
+        "style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)"
+      ],
+      [
+        1,
+        "ISO_122",
+        "identifier cl-clamp: duplicate"
+      ],
+      [
+        1,
+        "ISO_42",
+        "non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100enLatn"
+      ],
+      [
+        1,
+        "ISO_66",
+        "style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)"
+      ]
+    ],
+    "sev0_count": 1,
+    "severity_by_code": [
+      "ISO_121=1",
+      "ISO_122=1",
+      "ISO_42=1",
+      "ISO_66=1",
+      "STANDOC_36=0",
+      "STANDOC_68=3"
+    ],
+    "new_sev01": [
+      [
+        0,
+        "STANDOC_36",
+        "ID cl-clamp has already been used at line 139"
+      ],
+      [
+        1,
+        "ISO_122",
+        "identifier cl-clamp: duplicate"
+      ]
+    ],
+    "verdict": "FAIL",
+    "rule_w0_exit_or_sev0": "FAIL",
+    "rule_exit_only": "FAIL",
+    "merged": false
+  },
+  "change/broken-table": {
+    "ref": "change/broken-table",
+    "sha": "2a1ef21c4776f25294a6d09a13a249008bb573e8",
+    "exit": 0,
+    "xml": true,
+    "asciidoctor_diag": [
+      "asciidoctor: WARNING: <stdin>: line 312: unterminated table block"
+    ],
+    "sev01": [
+      [
+        1,
+        "ISO_121",
+        "style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)"
+      ],
+      [
+        1,
+        "ISO_42",
+        "non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100enLatn"
+      ],
+      [
+        1,
+        "ISO_66",
+        "style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)"
+      ]
+    ],
+    "sev0_count": 0,
+    "severity_by_code": [
+      "ISO_121=1",
+      "ISO_42=1",
+      "ISO_66=1",
+      "STANDOC_68=3"
+    ],
+    "new_sev01": [],
+    "verdict": "FAIL",
+    "rule_w0_exit_or_sev0": "PASS",
+    "rule_exit_only": "PASS",
+    "merged": false
+  },
+  "change/broken-xref": {
+    "ref": "change/broken-xref",
+    "sha": "15bfc272c77cee060df12c3b4757d7cc96cc2267",
+    "exit": 0,
+    "xml": true,
+    "asciidoctor_diag": [],
+    "sev01": [
+      [
+        1,
+        "ISODOC_1",
+        "Anchor annex-z pointed to by fmt-xref is not defined in the document"
+      ],
+      [
+        1,
+        "ISODOC_1",
+        "Anchor annex-z pointed to by xref is not defined in the document"
+      ],
+      [
+        1,
+        "ISO_121",
+        "style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)"
+      ],
+      [
+        1,
+        "ISO_42",
+        "non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100enLatn"
+      ],
+      [
+        1,
+        "ISO_66",
+        "style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)"
+      ]
+    ],
+    "sev0_count": 0,
+    "severity_by_code": [
+      "ISODOC_1=1",
+      "ISO_121=1",
+      "ISO_21=2",
+      "ISO_42=1",
+      "ISO_56=2",
+      "ISO_66=1",
+      "STANDOC_68=3"
+    ],
+    "new_sev01": [
+      [
+        1,
+        "ISODOC_1",
+        "Anchor annex-z pointed to by fmt-xref is not defined in the document"
+      ],
+      [
+        1,
+        "ISODOC_1",
+        "Anchor annex-z pointed to by xref is not defined in the document"
+      ]
+    ],
+    "verdict": "FAIL",
+    "rule_w0_exit_or_sev0": "PASS",
+    "rule_exit_only": "PASS",
+    "merged": false
+  }
+}

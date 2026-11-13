@@ -1,0 +1,100 @@
+[
+  {
+    "id": "FR-01-001",
+    "disposition": "modify",
+    "mode": "element",
+    "expect": "Felt-headed mallet",
+    "v2_text": "Felt-headed mallet",
+    "pass": true
+  },
+  {
+    "id": "FR-01-002",
+    "disposition": "accept",
+    "mode": "element",
+    "expect": "The clamp shall hold the handle with a soft lining.",
+    "v2_text": "The clamp shall hold the handle with a soft lining. The lining shall be felt.",
+    "pass": true
+  },
+  {
+    "id": "FR-01-003",
+    "disposition": "reject",
+    "mode": "n/a",
+    "pass": null
+  },
+  {
+    "id": "FR-01-004",
+    "disposition": "modify",
+    "mode": "element",
+    "expect": "for ten days before the test",
+    "v2_text": "Store each fork at the conditions given in for ten days before the test.",
+    "pass": true
+  },
+  {
+    "id": "GB-01-001",
+    "disposition": "accept",
+    "mode": "element",
+    "expect": "It applies to forks with a nominal pitch between 250 Hz and 900 Hz.",
+    "v2_text": "It applies to forks with a nominal pitch between 250 Hz and 900 Hz.",
+    "pass": true
+  },
+  {
+    "id": "GB-01-002",
+    "disposition": "modify",
+    "mode": "element",
+    "expect": "variation of the fundamental frequency of a fork during a stated conditioning period",
+    "v2_text": "resonance drift variation of the fundamental frequency of a fork during a stated conditioning period",
+    "pass": true
+  },
+  {
+    "id": "GB-01-003",
+    "disposition": "accept",
+    "mode": "element",
+    "expect": "120 mm",
+    "v2_text": "Test stand dimensions Part Dimension Base plate 200 mm x 150 mm Clamp height 120 mm",
+    "pass": true
+  },
+  {
+    "id": "GB-01-004",
+    "disposition": "reject",
+    "mode": "n/a",
+    "pass": null
+  },
+  {
+    "id": "GB-02-001",
+    "disposition": "accept",
+    "mode": "insert",
+    "expect": "Wear hearing protection when striking forks repeatedly.",
+    "v2_text": "Wear hearing protection when striking forks repeatedly.",
+    "pass": true
+  },
+  {
+    "id": "GB-02-002",
+    "disposition": "accept",
+    "mode": "element",
+    "expect": "Example drift results",
+    "v2_text": "Example drift results Fork Drift F1 0,4 Hz F2 0,7 Hz",
+    "pass": true
+  },
+  {
+    "id": "PR-DE-01-001",
+    "disposition": "accept",
+    "mode": "element",
+    "expect": "The clamp shall hold the handle with a soft lining. The lining shall be felt.",
+    "v2_text": "The clamp shall hold the handle with a soft lining. The lining shall be felt.",
+    "pass": true
+  },
+  {
+    "id": "PR-US-01-001",
+    "disposition": "modify",
+    "mode": "range",
+    "expect": "Replace the lining when it shows wear.",
+    "v2_text": "The clamp shall hold the handle with a soft lining. The lining shall be felt. Replace the lining when it shows wear.",
+    "pass": true
+  },
+  {
+    "id": "PR-US-01-002",
+    "disposition": "reject",
+    "mode": "n/a",
+    "pass": null
+  }
+]

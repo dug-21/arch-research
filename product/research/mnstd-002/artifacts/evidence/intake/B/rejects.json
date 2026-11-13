@@ -1,0 +1,90 @@
+[
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row1",
+    "source_id": "DE-001",
+    "reasons": [
+      "clause_not_found (no clause, subclause, term or annex numbered '9.9' in v1)"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row10",
+    "source_id": "DE-010",
+    "reasons": [
+      "observations_not_empty (secretariat column must be empty at intake)"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row11",
+    "source_id": "DE-011",
+    "reasons": [
+      "element_not_in_clause (Table 2 exists but is in clause 6.1, not 5.1)"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row2",
+    "source_id": "DE-002",
+    "reasons": [
+      "element_not_found (no Table 7 in v1 (3 tables exist))"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row3",
+    "source_id": "DE-003",
+    "reasons": [
+      "bad_type ('xx' not in ge|te|ed)"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row4",
+    "source_id": "DE-004",
+    "reasons": [
+      "missing_field:comment"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row5",
+    "source_id": "DE-005",
+    "reasons": [
+      "missing_field:mb"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row6",
+    "source_id": "DE-001",
+    "reasons": [
+      "duplicate_id ('DE-001' first used at de-mallory.csv:row1)"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row7",
+    "source_id": "DE-007",
+    "reasons": [
+      "element_ambiguous ('para' has no number and clause 4 has 2 paragraphs)"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row8",
+    "source_id": "DE-008",
+    "reasons": [
+      "clause_not_found ('cl. 5' is not a clause/subclause/annex number (bare number or annex letter expected))"
+    ]
+  },
+  {
+    "channel": "sheet",
+    "source": "de-mallory.csv:row9",
+    "source_id": "DE-009",
+    "reasons": [
+      "bad_type ('technical' not in ge|te|ed)"
+    ]
+  }
+]

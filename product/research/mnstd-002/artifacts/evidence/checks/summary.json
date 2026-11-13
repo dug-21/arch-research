@@ -1,0 +1,665 @@
+[
+  {
+    "clause": "C1.1",
+    "result": "PASS",
+    "summary": "structure 10/10; outputs {'html': True, 'pdf': True, 'xml': True}; exit 0",
+    "evidence": [
+      "poc/src/draft.adoc",
+      "v1/compile.log",
+      "v1/draft.{html,pdf,xml}"
+    ],
+    "details": {
+      "structure": {
+        "foreword": true,
+        "scope": true,
+        "normative_references": true,
+        "terms_and_definitions": true,
+        "numbered_clauses>=3": true,
+        "subclause_level>=1": true,
+        "table>=1": true,
+        "figure>=1": true,
+        "note>=1": true,
+        "annex>=1": true
+      },
+      "outputs": {
+        "html": true,
+        "pdf": true,
+        "xml": true
+      },
+      "pdf_magic": true
+    }
+  },
+  {
+    "clause": "C1.2",
+    "result": "PASS",
+    "summary": "errors 0 required; 24 warning lines (v1+v2), unexplained/errors: 0",
+    "evidence": [
+      "checks/warnings.json",
+      "poc/warnings-explained.json",
+      "v1/draft.err.html",
+      "v1/draft.pdf.err"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C1.3",
+    "result": "PASS",
+    "summary": "flavor iso=True; draft stage CD/30 unpublished=True; 25 authored elements with id+number; missing []",
+    "evidence": [
+      "v1/draft.xml",
+      "v1/draft.presentation.xml"
+    ],
+    "details": {
+      "elements": [
+        {
+          "anchor": "intro",
+          "tag": "introduction",
+          "id": "_432d10b8-ea05-e076-2a16-dcfb612e7d65",
+          "number": "",
+          "ok": true
+        },
+        {
+          "anchor": "cl-scope",
+          "tag": "clause",
+          "id": "_e0cc5b47-bfbc-2a46-abed-3f0831144ae5",
+          "number": "1",
+          "ok": true
+        },
+        {
+          "anchor": "cl-normref",
+          "tag": "references",
+          "id": "_b3c8b17d-ab28-4560-6795-13768de6d20b",
+          "number": "2",
+          "ok": true
+        },
+        {
+          "anchor": "cl-terms",
+          "tag": "terms",
+          "id": "_8b9c7909-f624-7d72-c8d7-73f16f9f66b7",
+          "number": "3",
+          "ok": true
+        },
+        {
+          "anchor": "term-glimmerwood",
+          "tag": "term",
+          "id": "_a7498f6e-6099-7526-2d68-66743b11a531",
+          "number": "3.1",
+          "ok": true
+        },
+        {
+          "anchor": "term-drift",
+          "tag": "term",
+          "id": "_9139d338-a881-248b-b5a7-6d2a43997fc2",
+          "number": "3.2",
+          "ok": true
+        },
+        {
+          "anchor": "cl-general",
+          "tag": "clause",
+          "id": "_d7d9862d-f3c7-6f86-2443-c20b8ffef77b",
+          "number": "4",
+          "ok": true
+        },
+        {
+          "anchor": "note-general-1",
+          "tag": "note",
+          "id": "_bde52ed4-b4a1-505e-a3e8-68623415ce85",
+          "number": "Note 1",
+          "ok": true
+        },
+        {
+          "anchor": "note-general-2",
+          "tag": "note",
+          "id": "_90d084cd-0859-919d-0deb-8088eb036e39",
+          "number": "Note 2",
+          "ok": true
+        },
+        {
+          "anchor": "cl-apparatus",
+          "tag": "clause",
+          "id": "_4945b5d4-6de0-5a2e-9848-c29f2e082b83",
+          "number": "5",
+          "ok": true
+        },
+        {
+          "anchor": "cl-stand",
+          "tag": "clause",
+          "id": "_4c628a8d-8324-a19a-5764-32a05324309c",
+          "number": "5.1",
+          "ok": true
+        },
+        {
+          "anchor": "tab-stand",
+          "tag": "table",
+          "id": "_b1bf752b-d4bc-c281-2525-e8ab5eefbfd1",
+          "number": "Table 1",
+          "ok": true
+        },
+        {
+          "anchor": "cl-clamp",
+          "tag": "clause",
+          "id": "_c8a2e5c3-3940-24ed-c6f5-1c8208300c53",
+          "number": "5.1.1",
+          "ok": true
+        },
+        {
+          "anchor": "cl-sensor",
+          "tag": "clause",
+          "id": "_23203ffc-3848-d9ad-108a-e8e7361ea183",
+          "number": "5.1.2",
+          "ok": true
+        },
+        {
+          "anchor": "cl-mallet",
+          "tag": "clause",
+          "id": "_0ea04716-ff1a-de0e-82ec-8bb1e57dc9c4",
+          "number": "5.2",
+          "ok": true
+        },
+        {
+          "anchor": "cl-procedure",
+          "tag": "clause",
+          "id": "_7b5c0b81-f71e-98e6-071b-261409034561",
+          "number": "6",
+          "ok": true
+        },
+        {
+          "anchor": "cl-conditioning",
+          "tag": "clause",
+          "id": "_4a6192ae-2510-7cd9-b9a4-5cf35e09b91d",
+          "number": "6.1",
+          "ok": true
+        },
+        {
+          "anchor": "tab-conditions",
+          "tag": "table",
+          "id": "_285beb48-7771-0af2-1c86-b21e91e1f031",
+          "number": "Table 2",
+          "ok": true
+        },
+        {
+          "anchor": "cl-measurement",
+          "tag": "clause",
+          "id": "_a6e0459f-4982-930a-4e43-55152dccc6c2",
+          "number": "6.2",
+          "ok": true
+        },
+        {
+          "anchor": "fig-mallet",
+          "tag": "figure",
+          "id": "_1b261478-1060-0ff1-3756-bd52494ba862",
+          "number": "Figure 1",
+          "ok": true
+        },
+        {
+          "anchor": "cl-report",
+          "tag": "clause",
+          "id": "_bbddb0f2-77a2-c314-33a5-76f044ad2f68",
+          "number": "7",
+          "ok": true
+        },
+        {
+          "anchor": "annex-a",
+          "tag": "annex",
+          "id": "_9ca8f109-fc03-bd61-84ae-5ad8e208ab6a",
+          "number": "A",
+          "ok": true
+        },
+        {
+          "anchor": "annex-a-1",
+          "tag": "clause",
+          "id": "_7f4016f3-cd6e-a665-bc0b-0ee3024e70cf",
+          "number": "A.1",
+          "ok": true
+        },
+        {
+          "anchor": "tab-results",
+          "tag": "table",
+          "id": "_bd8667f7-fd85-0879-7132-14f1c4ee9595",
+          "number": "Table A.1",
+          "ok": true
+        },
+        {
+          "anchor": "annex-a-2",
+          "tag": "clause",
+          "id": "_928cf4b5-0e57-4c3b-e204-3efecfcef5ba",
+          "number": "A.2",
+          "ok": true
+        }
+      ]
+    }
+  },
+  {
+    "clause": "C2.1",
+    "result": "PASS",
+    "summary": "18/18 ISO locators -> exactly one expected element (kinds ['Figure', 'Note', 'Table', 'para'], annex True)",
+    "evidence": [
+      "c2/locators.json",
+      "task/expected/locators.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C2.2",
+    "result": "PASS",
+    "summary": "15/15 file:line -> element + clause; clause levels [1, 2, 3]",
+    "evidence": [
+      "c2/lines.json",
+      "task/expected/lines.json",
+      "v1/srcmap.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C2.3",
+    "result": "PASS",
+    "summary": "14/14 non-existent/ambiguous locators and lines rejected with the expected reason (no nearest match)",
+    "evidence": [
+      "c2/locators.json",
+      "c2/lines.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C2.4",
+    "result": "PASS",
+    "summary": "42 unchanged + 8 edited v1 elements mapped; 2 inserted; 9 old->new pairs; problems 0",
+    "evidence": [
+      "map/mapping.json",
+      "task/expected/c24.json"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C3.1",
+    "result": "PASS",
+    "summary": "10 sheet comments, reviewers ['alice', 'bob', 'claire'], MB/NC ['FR', 'GB'], types ['ed', 'ge', 'te']; one register with 13 rows (sheet+pr); ids as frozen: True",
+    "evidence": [
+      "task/sheets/*.csv",
+      "intake/final/register.{json,yaml,csv}"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C3.2",
+    "result": "PASS",
+    "summary": "13/13 rows carry a resolved v1 element id beside the original locator; re-resolution drift []",
+    "evidence": [
+      "intake/final/register.csv (locator, resolved_id)"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C3.3",
+    "result": "PASS",
+    "summary": "exit 1 (non-zero required); 11 seeded rows rejected with per-row reasons; register A==B bytes: True; problems 0",
+    "evidence": [
+      "intake/B/rejects.csv",
+      "intake/A/register.json",
+      "intake/B/register.json",
+      "task/invalid/de-mallory.csv",
+      "task/expected/invalid-sheet.json"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C3.4",
+    "result": "PASS",
+    "summary": "13 ids, unique=True; same-MB local-id clash GB-001 -> ['GB-01-001', 'GB-02-001']; originating reviewer preserved=True",
+    "evidence": [
+      "intake/final/register.csv (id, source_id, reviewer, source)"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C4.1",
+    "result": "PASS",
+    "summary": "local repo with tag v1; change branch(es) ['change/apparatus-wording']; PR reviewers {'dave': 1, 'erin': 2} each line-anchored to the branch diff",
+    "evidence": [
+      "repo/ (git)",
+      "task/reviews/*/*.json",
+      "pr/candidates.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C4.2",
+    "result": "PASS",
+    "summary": "3 PR comments normalised into the register (channel pr, source commit+line, C2.2 anchor); 2 PR comments rejected like C3.3 (exit 1)",
+    "evidence": [
+      "intake/final/register.csv",
+      "intake/final/rejects.csv",
+      "task/expected/pr-rejects.json"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C4.3",
+    "result": "PASS",
+    "summary": "gate verdicts [('main', '0', 'BASELINE'), ('change/apparatus-wording', '0', 'PASS'), ('change/broken-anchor', '1', 'FAIL'), ('change/broken-table', '0', 'FAIL'), ('change/broken-xref', '0', 'FAIL')]; broken branches that exit 0 yet FAIL: ['change/broken-table', 'change/broken-xref']",
+    "evidence": [
+      "gate/gate.tsv",
+      "gate/*.gate.json",
+      "gate/*.compile.log",
+      "git log"
+    ],
+    "details": {
+      "problems": [],
+      "weaker_rules": {
+        "change/broken-anchor": {
+          "w0_rule": "FAIL",
+          "exit_only_rule": "FAIL"
+        },
+        "change/broken-table": {
+          "w0_rule": "PASS",
+          "exit_only_rule": "PASS"
+        },
+        "change/broken-xref": {
+          "w0_rule": "PASS",
+          "exit_only_rule": "PASS"
+        }
+      }
+    }
+  },
+  {
+    "clause": "C4.4",
+    "result": "PASS",
+    "summary": "git log --merges yields 3 comment id -> merge commit pairs; expected PR-resolved ids ['FR-01-002', 'PR-DE-01-001', 'PR-US-01-001']",
+    "evidence": [
+      "checks/c4.4-gitlog.tsv",
+      "git log --merges --format=%(trailers:key=Resolves)"
+    ],
+    "details": {
+      "pairs": {
+        "FR-01-002": "4f7061147b29af43de03c3813bd4cb308bb4180b",
+        "PR-DE-01-001": "4f7061147b29af43de03c3813bd4cb308bb4180b",
+        "PR-US-01-001": "4f7061147b29af43de03c3813bd4cb308bb4180b"
+      }
+    }
+  },
+  {
+    "clause": "C4.5",
+    "result": "PASS",
+    "summary": "git remote -v: (none); remote.* config: (none); forbidden commands in trace: 0",
+    "evidence": [
+      "repo/.git/config",
+      "command-trace.log"
+    ],
+    "details": {
+      "trace_lines": 143,
+      "docker_runs": 12,
+      "forbidden": [],
+      "present": true
+    }
+  },
+  {
+    "clause": "C5.1",
+    "result": "PASS",
+    "summary": "13 dispositions for 13 register comments; {'modify': 4, 'accept': 6, 'reject': 3}; channels {'sheet': 10, 'pr': 3}; seeded bad record rejected with ['accept_mismatch', 'bad_disposition', 'duplicate_disposition', 'fixture_coverage', 'missing_disposition', 'missing_modified_text', 'missing_observation', 'reject_with_change', 'unknown_id']",
+    "evidence": [
+      "task/dispositions.json",
+      "dispositions/validation.json",
+      "dispositions/validation-bad.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C5.2",
+    "result": "PASS",
+    "summary": "every commit in v1..v2 carries exactly one accept/modify Comment-Id and equals parent + recorded edits; rejects change nothing; merges clean; problems 0",
+    "evidence": [
+      "git log v1..v2",
+      "task/dispositions.json"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C5.3",
+    "result": "PASS",
+    "summary": "v2 exit 0, outputs {'html': True, 'pdf': True, 'xml': True}; containment 10/10 pass",
+    "evidence": [
+      "v2/compile.log",
+      "trace/containment.json",
+      "map/mapping.json"
+    ],
+    "details": {
+      "fails": []
+    }
+  },
+  {
+    "clause": "C5.4",
+    "result": "PASS",
+    "summary": "13 trace rows (one per comment); blank cells outside reject v2 columns: 0",
+    "evidence": [
+      "trace/trace.csv",
+      "trace/trace.yaml"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C6.1",
+    "result": "PASS",
+    "summary": "PDF: 13 native sticky-note annotations; HTML: 13 glue asides from native semantic <annotation> (ruling R2; native ISO HTML shows 0); ranged ['PR-US-01-001']; problems 0",
+    "evidence": [
+      "review/build/draft.pdf",
+      "review/build/draft.review-glue.html",
+      "review/build/draft.xml",
+      "review/annotations.json"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C6.2",
+    "result": "PASS",
+    "summary": "register R=13, semantic XML annotation elements X=13, PDF /Text annots P=13, HTML H=13; each id exactly once: True",
+    "evidence": [
+      "review/annotations.json (count script: checks.c6)"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C6.3",
+    "result": "PASS",
+    "summary": "hand-written review blocks in committed v1 source: 0; clean v1 build X=0 P=0 H=0; derived input = v1 + projection only: True",
+    "evidence": [
+      "poc/src/draft.adoc",
+      "review/input/draft.adoc",
+      "review/clean-annotations.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "C6.4",
+    "result": "PASS",
+    "summary": "mechanism: stage 30 (CD, unpublished) + :presentation-metadata-render-document-annotations: true in the DERIVED input only; presentation render flag ['true']; fmt-annotation-body 13; native HTML renders none (glue per R2)",
+    "evidence": [
+      "review/build/draft.presentation.xml",
+      "review/input/draft.adoc"
+    ],
+    "details": {
+      "native_html_annotations": 0
+    }
+  },
+  {
+    "clause": "C7.1",
+    "result": "PASS",
+    "summary": "13 rows, each register comment once, ISO 2012-03 column order + Disposition + v2 location; regenerated-from-register identical: True",
+    "evidence": [
+      "report/report.{html,csv,yaml}",
+      "trace/register.resolved.json"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "C7.2",
+    "result": "PASS",
+    "summary": "HTML + YAML + CSV emitted; type x disposition x MB counts equal across register/CSV/YAML/HTML rows/HTML summary: True (10 cells, total 13)",
+    "evidence": [
+      "report/report.html",
+      "report/report.yaml",
+      "report/report.csv"
+    ],
+    "details": {
+      "register_counts": {
+        "ed|accept|FR": 1,
+        "ed|accept|GB": 1,
+        "ed|modify|GB": 1,
+        "ed|modify|US": 1,
+        "ge|reject|FR": 1,
+        "ge|reject|GB": 1,
+        "ge|reject|US": 1,
+        "te|accept|DE": 1,
+        "te|accept|GB": 3,
+        "te|modify|FR": 2
+      }
+    }
+  },
+  {
+    "clause": "C7.3",
+    "result": "PASS",
+    "summary": "10/10 accept/modify rows link to a v2 location that exists in the v2 semantic XML and v2 HTML",
+    "evidence": [
+      "report/report.html",
+      "v2/draft.xml",
+      "v2/draft.html"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "N2.1",
+    "result": "PASS",
+    "summary": "12 container runs, all on sha256:836b7ab28c53… (digest verified in envelope: True)",
+    "evidence": [
+      "command-trace.log",
+      "envelope.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "N2.2",
+    "result": "PASS",
+    "summary": "`which ruby` exit 1 output ''",
+    "evidence": [
+      "envelope.json"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "N2.3",
+    "result": "PASS",
+    "summary": "host glue: Python 3.14.7 stdlib only (third-party imports: none); Node not used; Ruby only in-container (srcmap.rb)",
+    "evidence": [
+      "poc/tools/*.py",
+      "poc/REQUIREMENTS.txt"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "N4.1",
+    "result": "PASS",
+    "summary": "register, PR records and report carry all 8 ISO 2012-03 fields (documented mapping in RESULT.md §N4)",
+    "evidence": [
+      "intake/final/register.csv",
+      "pr/candidates.json",
+      "report/report.csv"
+    ],
+    "details": {
+      "problems": [],
+      "pr_mapping": [
+        "clause(resolved)",
+        "comment",
+        "element(resolved)",
+        "line(v1_line)",
+        "mb",
+        "observations",
+        "proposed_change",
+        "type"
+      ]
+    }
+  },
+  {
+    "clause": "N4.2",
+    "result": "PASS",
+    "summary": "type vocabulary ['ed', 'ge', 'te']; one comment per row (multi-line comments: none)",
+    "evidence": [
+      "intake/final/register.csv",
+      "report/report.csv"
+    ],
+    "details": {}
+  },
+  {
+    "clause": "N4.3",
+    "result": "N/A",
+    "summary": "N/A: DOCX output not selected (Q1 default: HTML + YAML/CSV)",
+    "evidence": [],
+    "details": {}
+  },
+  {
+    "clause": "N5.1",
+    "result": "PASS",
+    "summary": "walked 13/13 comments (100%, incl. every PR comment) locator->v1->disposition->commit->v2->report using emitted files + git log; breaks 0",
+    "evidence": [
+      "intake/final/register.json",
+      "trace/trace.csv",
+      "map/mapping.json",
+      "report/report.csv",
+      "git log"
+    ],
+    "details": {
+      "problems": []
+    }
+  },
+  {
+    "clause": "N5.2",
+    "result": "PASS",
+    "summary": "register-id-shaped tokens absent from the register, across all text artefacts: 0",
+    "evidence": [
+      "run dir (all text files)"
+    ],
+    "details": {
+      "stray": {}
+    }
+  },
+  {
+    "clause": "N6.1",
+    "result": "PASS",
+    "summary": "gated run: 198 external commands traced; forbidden/network verbs: 0; every container run --network none. NOTE: font cache was provisioned by a separate networked `make fonts` (ruling R1) — the validator rules N6.1's literal text",
+    "evidence": [
+      "command-trace.log"
+    ],
+    "details": {
+      "trace_lines": 198,
+      "docker_runs": 12,
+      "forbidden": [],
+      "present": true
+    }
+  },
+  {
+    "clause": "N6.2",
+    "result": "PASS",
+    "summary": "commenter/github-* invocations in trace: 0; inner repo remotes: none",
+    "evidence": [
+      "command-trace.log",
+      "repo/.git/config"
+    ],
+    "details": {}
+  }
+]

@@ -1,0 +1,28 @@
+$ metanorma compile -t iso --agree-to-terms --no-install-fonts -x xml,html,pdf,rxl draft.adoc
+java -Xss10m -Xmx3g -Djava.awt.headless=true -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0 -Duser.home=/root -jar /usr/local/bundle/gems/mn2pdf-2.74/bin/mn2pdf.jar --xml-file "/tmp/draft20261113-7-y2rsfs.xml" --xsl-file "/usr/local/bundle/gems/metanorma-iso-3.5.14/lib/isodoc/iso/iso.international-standard.xsl" --pdf-file "/metanorma/draft.pdf" --param baseassetpath="/metanorma"
+
+--- stderr ---
+Style: (bibitem#_2af90696-27fd-790c-888e-0d6f9e6b0214): non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: (fictitious)Glimmerwood tuning forks — VocabularyGTF 100100enLatn
+Abbreviated terms: (ContentSection#_11ae8c5c-e007-4b8e-783e-a6285bf7bc10): style: 'de' is written in lowercase but 'DE' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)
+Abbreviated terms: (ContentSection#_11ae8c5c-e007-4b8e-783e-a6285bf7bc10): style: 'iso' is written in lowercase but 'ISO' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)
+Abbreviated terms: (Annotation#_5148f64d-e440-26df-2972-6d066baa3295): style: 'pr' is written in lowercase but 'PR' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)
+Abbreviated terms: (Annotation#_71735011-a301-d6c9-b6f4-62216bf85020): style: 'pr' is written in lowercase but 'PR' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)
+Abbreviated terms: (Annotation#_a6b76942-c15b-9437-b75c-56a11f07cac5): style: 'pr' is written in lowercase but 'PR' is used elsewhere in the document (abbreviations are written consistently) (ISO House Style (2026), Abbreviated terms)
+Punctuation: (Annotation#_3ea7c283-850b-8cf0-5bb2-97f76be0aae0): style: could (ambiguous modal verb) (ISO House Style (2026), Punctuation > Use of /; Spelling and wording > IT terms; Spelling and wording > Need to; Spelling and wording > Might and could)
+Numbers, values and dates: (Annotation#_6f582801-28d5-6488-11c6-46c5fe30f206): possible decimal point: mark up numbers with stem:[]: 6.2 (ISO House Style (2026), Numbers, values and dates > Numbers; ISO/IEC DIR 2:2021, 9.1)
+Numbers, values and dates: (Annotation#_1b2ef6c6-2856-1a0a-7c6d-0bb86dc1e9fd): possible decimal point: mark up numbers with stem:[]: 6.1 (ISO House Style (2026), Numbers, values and dates > Numbers; ISO/IEC DIR 2:2021, 9.1)
+Numbers, values and dates: (Annotation#_5faf609f-f5d8-3183-9fd3-cd256fcadc19): possible decimal point: mark up numbers with stem:[]: 3.2 (ISO House Style (2026), Numbers, values and dates > Numbers; ISO/IEC DIR 2:2021, 9.1)
+Numbers, values and dates: (Annotation#_8c2b87cb-1584-3911-f63f-86158b6083bf): possible decimal point: mark up numbers with stem:[]: 5.1 (ISO House Style (2026), Numbers, values and dates > Numbers; ISO/IEC DIR 2:2021, 9.1)
+Numbers, values and dates: (ContentSection#_11ae8c5c-e007-4b8e-783e-a6285bf7bc10): style: digit '8' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_6dabc667-d677-0fea-89cd-00216f9f7e85): style: digit '1' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_3ea7c283-850b-8cf0-5bb2-97f76be0aae0): style: digit '7' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_1b2ef6c6-2856-1a0a-7c6d-0bb86dc1e9fd): style: digit '1' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_ee7ceae5-d3cd-2fa7-1fda-aa835adae542): style: digit '1' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_ee7ceae5-d3cd-2fa7-1fda-aa835adae542): style: digit '2' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_61e37a03-af24-acc1-5844-87684d3a6007): style: digit '4' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_61e37a03-af24-acc1-5844-87684d3a6007): style: digit '2' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_0712b369-5e2d-c609-ba86-c74319a24063): style: digit '5' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_5148f64d-e440-26df-2972-6d066baa3295): style: digit '1' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+Numbers, values and dates: (Annotation#_71735011-a301-d6c9-b6f4-62216bf85020): style: digit '1' in prose (write the numbers one to nine as words) (ISO House Style (2026), Numbers, values and dates > General)
+
+--- exit 0 ---

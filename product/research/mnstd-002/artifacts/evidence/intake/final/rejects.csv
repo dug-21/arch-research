@@ -1,0 +1,3 @@
+channel,source,source_id,reasons
+pr,change-apparatus-wording/dave.json#2,2,line_blank (line 95 is blank; it belongs to no element)
+pr,change-apparatus-wording/erin.json#3,3,line_not_in_diff (RIGHT line 20 of draft.adoc is outside every hunk of change/apparatus-wording)

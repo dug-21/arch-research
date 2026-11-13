@@ -1,0 +1,14 @@
+id,channel,mb,type,locator,disposition,commit,merge_commit,v1_element_id,v1_anchor,v1_clause,v2_element_id,v2_anchor,v2_clause,renumbered,containment
+FR-01-001,sheet,FR,te,6.2 Figure 1,modify,1b307f2dae781c54af4c2695169375e76600afff,n/a (applied on main),_1b261478-1060-0ff1-3756-bd52494ba862,fig-mallet,6.2,_c9f0ce0e-56d1-b7ba-214f-3a3726df0535,fig-mallet,7.2,6.2->7.2,pass
+FR-01-002,sheet,FR,ed,5.1.1 para 1,accept,15c6126e14dacd401ef3960e0afa75329203b251,4f7061147b29af43de03c3813bd4cb308bb4180b,_4f1ea0c3-6f79-1fa1-083c-7820e6c3f2f1,(unanchored),5.1.1,_3a970b5d-441a-5554-6e9f-76baa4f2127d,(unanchored),6.1.1,5.1.1->6.1.1,pass
+FR-01-003,sheet,FR,ge,7,reject,none (reject: no source change),n/a,_bbddb0f2-77a2-c314-33a5-76f044ad2f68,cl-report,7,,,,,n/a
+FR-01-004,sheet,FR,te,6.1 para 1,modify,94b12adc317538e109cb9c5587050b6e228f9a7b,n/a (applied on main),_104d5cf8-9be6-10c3-f39c-b8134c4566aa,(unanchored),6.1,_895c3bf7-4405-ef45-c268-4b39cb5c9053,(unanchored),7.1,6.1->7.1,pass
+GB-01-001,sheet,GB,te,1 para 2,accept,1d80f15fe7182931d0a566f595f4e8793fe08213,n/a (applied on main),_7ba92c71-4f88-48b6-a012-120243a00336,(unanchored),1,_38a0bd5b-381e-825f-34ae-acf7421d129b,(unanchored),1,=,pass
+GB-01-002,sheet,GB,ed,3.2,modify,828896e3729cb1f378e98fccbb0acdcec675e55d,n/a (applied on main),_9139d338-a881-248b-b5a7-6d2a43997fc2,term-drift,3.2,_ea6853be-21d9-5337-a686-339d0c02c9b9,term-drift,3.2,=,pass
+GB-01-003,sheet,GB,te,5.1 Table 1,accept,1b1aba6d3a5f21537cfe78089e935bb2f396e8e6,n/a (applied on main),_b1bf752b-d4bc-c281-2525-e8ab5eefbfd1,tab-stand,5.1,_ac6ad26b-1e96-8f7c-da88-24771645b18f,tab-stand,6.1,5.1->6.1,pass
+GB-01-004,sheet,GB,ge,4 Note 2,reject,none (reject: no source change),n/a,_90d084cd-0859-919d-0deb-8088eb036e39,note-general-2,4,,,,,n/a
+GB-02-001,sheet,GB,te,5,accept,5ca2db1059afa01ff79de1e2a22db81ca54c6583,n/a (applied on main),_4945b5d4-6de0-5a2e-9848-c29f2e082b83,cl-apparatus,5,_8a713806-dbfe-bb6e-2c8d-ef5a84ff9860,(unanchored),5,new (inserted before v1 5),pass
+GB-02-002,sheet,GB,ed,A.1 Table A.1,accept,f4e0d8ba47dd52d20123b03c6503305db47a4090,n/a (applied on main),_bd8667f7-fd85-0879-7132-14f1c4ee9595,tab-results,A.1,_ef3d76df-9c3f-61e0-f6cf-c68eb54cf34c,tab-results,A.1,=,pass
+PR-DE-01-001,pr,DE,te,draft.adoc:94,accept,508f4dea5ee0f0acae85462c34eabb1195049acf,4f7061147b29af43de03c3813bd4cb308bb4180b,_4f1ea0c3-6f79-1fa1-083c-7820e6c3f2f1,(unanchored),5.1.1,_3a970b5d-441a-5554-6e9f-76baa4f2127d,(unanchored),6.1.1,5.1.1->6.1.1,pass
+PR-US-01-001,pr,US,ed,draft.adoc:94-96,modify,b7dd8cfef2e57f01055034d0a90cc969b0137748,4f7061147b29af43de03c3813bd4cb308bb4180b,_4f1ea0c3-6f79-1fa1-083c-7820e6c3f2f1,(unanchored),5.1.1,_3a970b5d-441a-5554-6e9f-76baa4f2127d,(unanchored),6.1.1,5.1.1->6.1.1,pass
+PR-US-01-002,pr,US,ge,draft.adoc:93,reject,none (reject: no source change),n/a,_c8a2e5c3-3940-24ed-c6f5-1c8208300c53,cl-clamp,5.1.1,,,,,n/a

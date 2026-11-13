@@ -1,0 +1,21 @@
+{
+  "valid": false,
+  "errors": [
+    "duplicate_disposition: GB-01-004 has 2 records",
+    "unknown_id: ZZ-99-999 is not in the register",
+    "missing_disposition: register comment FR-01-001 has no disposition",
+    "missing_disposition: register comment FR-01-002 has no disposition",
+    "missing_disposition: register comment FR-01-003 has no disposition",
+    "missing_disposition: register comment GB-02-001 has no disposition",
+    "missing_disposition: register comment GB-02-002 has no disposition",
+    "missing_disposition: register comment PR-DE-01-001 has no disposition",
+    "missing_disposition: register comment PR-US-01-001 has no disposition",
+    "missing_disposition: register comment PR-US-01-002 has no disposition",
+    "accept_mismatch: GB-01-001: expect_in_v2 != register proposed_change",
+    "bad_disposition: GB-01-002: 'noted' not in accept|modify|reject",
+    "missing_observation: GB-01-003",
+    "reject_with_change: GB-01-004: a reject must carry no edits/branch/expectation",
+    "missing_modified_text: FR-01-004",
+    "fixture_coverage: no disposition for a 'pr' channel comment"
+  ]
+}

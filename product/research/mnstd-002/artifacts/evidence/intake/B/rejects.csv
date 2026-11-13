@@ -1,0 +1,12 @@
+channel,source,source_id,reasons
+sheet,de-mallory.csv:row1,DE-001,"clause_not_found (no clause, subclause, term or annex numbered '9.9' in v1)"
+sheet,de-mallory.csv:row10,DE-010,observations_not_empty (secretariat column must be empty at intake)
+sheet,de-mallory.csv:row11,DE-011,"element_not_in_clause (Table 2 exists but is in clause 6.1, not 5.1)"
+sheet,de-mallory.csv:row2,DE-002,element_not_found (no Table 7 in v1 (3 tables exist))
+sheet,de-mallory.csv:row3,DE-003,bad_type ('xx' not in ge|te|ed)
+sheet,de-mallory.csv:row4,DE-004,missing_field:comment
+sheet,de-mallory.csv:row5,DE-005,missing_field:mb
+sheet,de-mallory.csv:row6,DE-001,duplicate_id ('DE-001' first used at de-mallory.csv:row1)
+sheet,de-mallory.csv:row7,DE-007,element_ambiguous ('para' has no number and clause 4 has 2 paragraphs)
+sheet,de-mallory.csv:row8,DE-008,clause_not_found ('cl. 5' is not a clause/subclause/annex number (bare number or annex letter expected))
+sheet,de-mallory.csv:row9,DE-009,bad_type ('technical' not in ge|te|ed)

@@ -1,0 +1,32 @@
+{
+  "captured_at_utc": "2026-11-13T18:10:23Z",
+  "host": {
+    "arch": "x86_64",
+    "kernel": "6.12.100+deb13-amd64",
+    "os": "Ubuntu 24.04.4 LTS"
+  },
+  "python": "3.14.7",
+  "node": "v24.20.0",
+  "git": "git version 2.55.0",
+  "docker": "client 29.7.2-2 / server 29.7.2-2 (linux/amd64)",
+  "which_ruby": {
+    "cmd": "sh -c which ruby",
+    "exit": 1,
+    "out": ""
+  },
+  "which_gem": {
+    "cmd": "sh -c which gem",
+    "exit": 1,
+    "out": ""
+  },
+  "image_ref": "metanorma/metanorma@sha256:836b7ab28c538262d58a3ce10d8504e2bb699a57bbc7ae2a5309c27368dff3da",
+  "image_inspect": "[\"metanorma/metanorma@sha256:836b7ab28c538262d58a3ce10d8504e2bb699a57bbc7ae2a5309c27368dff3da\"] sha256:836b7ab28c538262d58a3ce10d8504e2bb699a57bbc7ae2a5309c27368dff3da 2026-11-13T02:30:54.610443191Z amd64",
+  "image_digest_ok": true,
+  "metanorma_version": "Metanorma 2.5.24\nMetanorma::Cli 1.18.6\nMetanorma::Standoc 3.5.20/IsoDoc 3.7.14\nMetanorma::Iso 3.5.14\nMetanorma::Iec 2.9.2\nMetanorma::Ieee 1.7.3\nMetanorma::Ietf 3.7.15\nMetanorma::Generic 3.5.2\nMetanorma::Bipm 2.9.3\nMetanorma::Ribose 2.9.2\nMetanorma::Cc 2.9.2\nMetanorma::Iho 1.4.2\nMetanorma::Jis 1.2.4\nMetanorma::M3AAWG 2.2.7\nMetanorma::Gb 1.5.10\nMetanorma::UN 0.12.21\nMetanorma::Ogc 2.10.2\nMetanorma::Itu 2.9.4\nMetanorma::Plateau 1.3.4\ncanon 0.3.125\nexpressir 2.4.67\nfontist 3.0.37\nglossarist 2.14.16\nhtml2doc 1.12.0\nisodoc 3.7.14\nisodoc-i18n 1.5.3\nlutaml-model 0.8.175\nmetanorma-core 0.2.8\nmetanorma-plugin-glossarist 0.5.12\nmetanorma-plugin-lutaml 0.7.67\nmetanorma-taste 1.1.5\nmetanorma-utils 2.0.12\nmn-requirements 0.5.17\nmn2pdf 2.74\nogc-gml 1.2.3\noscal 0.1.1\nplurimath 0.11.17\npubid 2.0.22\nsuma 0.5.36\nunitsml 0.6.14\nvectory 0.13.3\nxmi 0.7.9",
+  "font_cache": {
+    "path": "/home/vscode/.cache/mnstd-002-fonts",
+    "bytes": 873405539,
+    "files": 4539,
+    "provisioned_marker": true
+  }
+}
