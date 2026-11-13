@@ -1,0 +1,14 @@
+{
+  "_doc": "Frozen expectation for task/invalid/de-mallory.csv: each row must be rejected and its reasons must include the listed reason code (prefix match on the code before any '(' or ':').",
+  "de-mallory.csv:row1": ["clause_not_found"],
+  "de-mallory.csv:row2": ["element_not_found"],
+  "de-mallory.csv:row3": ["bad_type"],
+  "de-mallory.csv:row4": ["missing_field:comment"],
+  "de-mallory.csv:row5": ["missing_field:mb"],
+  "de-mallory.csv:row6": ["duplicate_id"],
+  "de-mallory.csv:row7": ["element_ambiguous"],
+  "de-mallory.csv:row8": ["clause_not_found"],
+  "de-mallory.csv:row9": ["bad_type"],
+  "de-mallory.csv:row10": ["observations_not_empty"],
+  "de-mallory.csv:row11": ["element_not_in_clause"]
+}

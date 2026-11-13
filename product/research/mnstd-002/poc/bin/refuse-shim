@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Refusing shim (N6.1/N6.2): network/forge tools must never run in the gated demo. Any attempt is logged to
+# $MNSTD_TRACE (so the trace check fails) and refused. Authored by factory-poc (mnstd-002).
+name="$(basename "$0")"
+if [ -n "${MNSTD_TRACE:-}" ]; then
+  { printf '%s' "$name"; for a in "$@"; do printf ' %s' "$a"; done; printf '\n'; } >> "$MNSTD_TRACE"
+fi
+echo "refuse-shim: '$name' is forbidden in the gated mnstd-002 demo (N6)" >&2
+exit 97

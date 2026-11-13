@@ -1,0 +1,4 @@
+{
+  "_doc": "Every reason code below must appear in the validator output for task/invalid/dispositions-bad.json, and the validator must exit non-zero.",
+  "codes": ["accept_mismatch", "bad_disposition", "missing_observation", "reject_with_change", "duplicate_disposition", "unknown_id", "missing_modified_text", "missing_disposition", "fixture_coverage"]
+}

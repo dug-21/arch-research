@@ -1,0 +1,5 @@
+{
+  "_doc": "Frozen expectation for the final register (C3.1/C3.4/C4.2): exactly these ids, minted deterministically as {MB}-{reviewer ordinal within MB}-{row} (sheets) and PR-{MB}-{reviewer ordinal}-{local id} (PR channel).",
+  "sheet": ["FR-01-001", "FR-01-002", "FR-01-003", "FR-01-004", "GB-01-001", "GB-01-002", "GB-01-003", "GB-01-004", "GB-02-001", "GB-02-002"],
+  "pr": ["PR-DE-01-001", "PR-US-01-001", "PR-US-01-002"]
+}

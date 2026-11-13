@@ -1,0 +1,19 @@
+{
+  "_doc": "Simulated PR review record (fixture). Comment 1 is a multi-line (range) comment: start_line..line, both RIGHT side.",
+  "review": {
+    "branch": "change/apparatus-wording",
+    "reviewer": {"name": "erin", "mb": "US"},
+    "date": "2026-10-11",
+    "comments": [
+      {"local_id": 1, "path": "draft.adoc", "side": "RIGHT", "start_line": 94, "line": 96, "type": "ed",
+       "comment": "These two sentences about the lining should use the same voice.",
+       "proposed_change": "Replace the lining as soon as it shows wear."},
+      {"local_id": 2, "path": "draft.adoc", "side": "LEFT", "line": 93, "type": "ge",
+       "comment": "Consider merging this subclause into its parent clause.",
+       "proposed_change": "Merge the clamp subclause into the test stand subclause."},
+      {"local_id": 3, "path": "draft.adoc", "side": "RIGHT", "line": 20, "type": "te",
+       "comment": "SEEDED NEGATIVE: line 20 is outside every hunk of this branch and must be rejected.",
+       "proposed_change": ""}
+    ]
+  }
+}

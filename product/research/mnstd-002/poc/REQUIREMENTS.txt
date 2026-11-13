@@ -1,0 +1,10 @@
+# N2.3 — declared, pinned host-side dependencies of the mnstd-002 POC glue.
+# Python: CPython 3.14 (measured 3.14.7). Standard library ONLY — no third-party package is imported
+# (checked mechanically by checks.nfr_local / N2.3). Nothing to install.
+python==3.14.*
+# git (ruling R3, declared prerequisite): >= 2.32 for %(trailers:...,separator=). Measured 2.55.0.
+git>=2.32
+# Node 24: permitted by N1.1/N2.3, NOT used by this rig.
+# Ruby: NOT used on the host (N2.2). tools/srcmap.rb runs only inside the pinned container image.
+# Container image (N2.1), pinned by digest:
+# metanorma/metanorma@sha256:836b7ab28c538262d58a3ce10d8504e2bb699a57bbc7ae2a5309c27368dff3da

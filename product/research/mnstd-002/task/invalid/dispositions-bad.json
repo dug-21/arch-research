@@ -1,0 +1,12 @@
+{
+  "_doc": "SEEDED-INVALID disposition record. Validator must exit non-zero and report every code listed in task/expected/invalid-dispositions.json.",
+  "dispositions": [
+    {"id": "GB-01-001", "disposition": "accept", "observation": "x", "edits": [{"file": "draft.adoc", "find": "200 Hz", "replace": "250 Hz"}], "expect_in_v2": "not the proposed change"},
+    {"id": "GB-01-002", "disposition": "noted", "observation": "ISO 'noted' has no Q7 slot"},
+    {"id": "GB-01-003", "disposition": "accept", "observation": "", "edits": [{"file": "draft.adoc", "find": "80 mm", "replace": "120 mm"}], "expect_in_v2": "120 mm"},
+    {"id": "GB-01-004", "disposition": "reject", "observation": "rejected but edits smuggled in", "edits": [{"file": "draft.adoc", "find": "ink", "replace": "pencil"}]},
+    {"id": "GB-01-004", "disposition": "reject", "observation": "second record for the same id"},
+    {"id": "ZZ-99-999", "disposition": "reject", "observation": "id that is not in the register"},
+    {"id": "FR-01-004", "disposition": "modify", "observation": "no modified text", "edits": [{"file": "draft.adoc", "find": "seven", "replace": "ten"}], "expect_in_v2": "ten"}
+  ]
+}

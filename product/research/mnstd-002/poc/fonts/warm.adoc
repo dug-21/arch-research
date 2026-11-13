@@ -1,0 +1,24 @@
+= Font warm-up document (fictitious)
+:docnumber: 99998
+:edition: 1
+:revdate: 2026-11-13
+:copyright-year: 2026
+:language: en
+:title-main-en: Font provisioning warm-up
+:title-main-fr: Prechauffage des polices
+:doctype: international-standard
+:docstage: 30
+:docsubstage: 00
+:technical-committee-type: TC
+:technical-committee-number: 999
+:technical-committee: Fictitious instruments
+:secretariat: XYZ
+:mn-document-class: iso
+:mn-output-extensions: xml,html,pdf
+:local-cache-only:
+:no-isobib:
+
+// Authored by factory-poc (mnstd-002) solely to trigger the one-time font download.
+
+== Scope
+This fictitious document exists only to make the toolchain download the fonts it needs.

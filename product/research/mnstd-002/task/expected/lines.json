@@ -1,0 +1,27 @@
+{
+  "_doc": "Frozen C2.2/C2.3 fixture over poc/src/draft.adoc (v1). Hand-authored by reading the source. Positive: resolver returns the element with @anchor 'anchor' or whose own text starts with 'text', and clause number 'clause_no'. 'level' is the clause depth of the enclosing clause (1 = top-level clause). Negative: resolver raises 'code'.",
+  "file": "draft.adoc",
+  "positive": [
+    {"line": 41, "text": "This document specifies a test method", "clause_no": "1", "level": 1},
+    {"line": 43, "text": "It applies to forks with a nominal pitch", "clause_no": "1", "level": 1},
+    {"line": 55, "anchor": "term-glimmerwood", "clause_no": "3.1", "level": 2},
+    {"line": 62, "anchor": "cl-general", "clause_no": "4", "level": 1},
+    {"line": 65, "text": "The test shall be carried out", "clause_no": "4", "level": 1},
+    {"line": 68, "anchor": "note-general-1", "clause_no": "4", "level": 1},
+    {"line": 78, "text": "The test stand holds the fork", "clause_no": "5.1", "level": 2},
+    {"line": 79, "text": "The test stand holds the fork", "clause_no": "5.1", "level": 2},
+    {"line": 87, "anchor": "tab-stand", "clause_no": "5.1", "level": 2},
+    {"line": 94, "text": "The clamp shall grip the handle", "clause_no": "5.1.1", "level": 3},
+    {"line": 96, "text": "The lining shall be replaced", "clause_no": "5.1.1", "level": 3},
+    {"line": 100, "text": "The frequency sensor shall resolve", "clause_no": "5.1.2", "level": 3},
+    {"line": 129, "anchor": "fig-mallet", "clause_no": "6.2", "level": 2},
+    {"line": 137, "text": "the conditioning period", "clause_no": "7", "level": 1},
+    {"line": 155, "anchor": "tab-results", "clause_no": "A.1", "level": 2}
+  ],
+  "negative": [
+    {"line": 3, "code": "line_in_header"},
+    {"line": 33, "code": "line_blank"},
+    {"line": 29, "code": "line_comment"},
+    {"line": 999, "code": "line_out_of_range"}
+  ]
+}

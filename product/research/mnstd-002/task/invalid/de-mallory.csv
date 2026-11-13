@@ -1,0 +1,18 @@
+#version: 2012-03
+#document: ISO/CD 99999-1:2026
+#date: 2026-10-04
+#project: Glimmerwood tuning forks (fictitious, mnstd-002 SEEDED-INVALID fixture: every row must be rejected)
+#reviewer: mallory
+#mb: DE
+id,mb,line,clause,element,type,comment,proposed_change,observations
+DE-001,DE,,9.9,,te,I1 seeded: clause 9.9 does not exist.,,
+DE-002,DE,,5.1,Table 7,te,I2 seeded: only three tables exist and none is Table 7.,,
+DE-003,DE,,4,,xx,I3 seeded: type xx is not in the ISO vocabulary.,,
+DE-004,DE,,4,para 1,ed,,I4 seeded: comment text is missing.,
+DE-005,,,4,para 2,ed,I5 seeded: MB/NC is missing.,,
+DE-001,DE,,4,para 1,ed,I6 seeded: duplicate of the reviewer id used on the first row.,,
+DE-007,DE,,4,para,te,I7 seeded: para without a number in a clause with two paragraphs.,,
+DE-008,DE,,cl. 5,,te,I8 seeded: clause written with a prefix.,,
+DE-009,DE,,5.2,,technical,I9 seeded: full word instead of te.,,
+DE-010,DE,,5.2,,ed,I10 seeded: observations column pre-filled.,,Accepted.
+DE-011,DE,,5.1,Table 2,te,I11 seeded: Table 2 exists but is not in clause 5.1.,,
