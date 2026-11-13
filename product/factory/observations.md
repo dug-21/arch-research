@@ -551,3 +551,78 @@ rather than as "Normal."**
 
 Recorded as a factory enhancement, `claimed`, pending an upstream fix. `#65` stays `partial` and stays
 blocked.
+
+## OBS-24 — `knowledge_entries_stored` is never populated, and wfh-011 cited it as corroboration
+*2026-11-13 · from the mnstd-001 retro*
+
+`context_cycle_review(mnstd-001)` reports `metrics.universal.knowledge_entries_stored: 0` beside
+`session_summaries[0].knowledge_stored: 16` and `phase_stats[decompose].knowledge_stored: 16` in the
+same payload; the run-tag lookup confirms 16 nodes. The session block attributes the stores correctly,
+so this is not OBS-14's subagent blindness: the universal scalar is simply not computed. Same payload:
+`total_tool_calls: 0` vs a distribution summing to 84; `total_served: 0` vs `knowledge_served: 9`;
+`attribution.total_session_count: 0` vs `session_count: 1`; `agents_spawned` omits the
+factory-researcher; the close interval is a phase named `""`. All scored `Normal` on a 0.0/0.0 baseline.
+
+**Correction:** wfh-011 RETRO §1 says its zero-writes instruction was "corroborated by the instrument"
+via `knowledge_entries_stored: 0`. That field reads 0 whatever was written (#302 recorded it at 0 vs 35
+stores the day before), so the claim is attested, not corroborated. **Rule: never cite a
+`metrics.universal` scalar as corroboration; yield comes from a run-tag `context_lookup` only.**
+Unimatrix: #348 (Motivates #302).
+
+## OBS-25 — `git push` hangs silently on the VS Code container credential helper
+*2026-11-13 · from the mnstd-001 run (leader-reported, config verified in retro)*
+
+The repo's `credential.helper` is the VS Code remote-containers node helper. When the IDE websocket at
+127.0.0.1 drops (the `ide` MCP server fails with the same error), `git-credential-helper get` blocks
+forever and `git push` hangs with no error. `git -c credential.helper= -c
+credential.helper='!gh auth git-credential' push origin main` succeeds immediately. In an autonomous
+run a hang is worse than a failure: nothing surfaces it. Fix lives in factory-git.
+
+## OBS-26 — Defaulted owner answers become the firewall bar without being frozen
+*2026-11-13 · from the mnstd-001 retro*
+
+With advisory gates owner-pre-authorized, mnstd-001 proceeded on researcher defaults for Q1–Q9. Several
+now sit inside done_when clauses the mnstd-002 validator rules against, still worded as open
+("owner-selected format (Q1; default …)", "proposed: 5 MB"). Honest labelling — but an open bar is
+closed later by whoever is under pressure (OBS-21). A decompose close must freeze defaulted answers as
+the binding bar. Secondary: the leader's file-existence + mtime-stability poll loops (7) used file
+presence as a completion predicate; it races with partial writes — the spawn notification is the
+signal.
+
+## OBS-27 — The report-file hook blocks the leader too; persistence now runs on transcript extraction
+*2026-11-13 · from the mnstd-002 run (leader-reported) and retro*
+
+A harness hook ("Subagents should return findings as text, not write report files") blocked .md writes by every
+factory-researcher (W0–W4), the synthesis curator (REPORT.md, GRADES.md) **and the research-leader's own Write
+tool**. SCOPE.md, validator gate reports and relevance.md were not blocked, so the block is name/intent-shaped,
+not path-shaped. The leader persisted every blocked file by extracting the agent's final ```markdown block from
+its transcript JSONL (scratchpad `extract.py`) and writing via Bash. OBS-7's "leader persists" contract now
+depends on evading a harness policy, and fails silently if an agent returns zero or two fenced blocks. Not a
+subject finding. Unimatrix: #389 (was #21), options A sanction-the-extractor / B harness config / C curator persists.
+**Owner decision needed (B is a settings change).**
+
+## OBS-28 — `Closes #N` on an executables PR auto-closes the scope Issue; rebase-merge orphans cited SHAs
+*2026-11-13 · from the mnstd-002 run*
+
+PR #75's body said "Closes #74", as factory-git instructs. The rebase-merge closed the scope Issue mid-run
+(synthesis not yet done); the leader reopened it. Under D15 the Issue's CLOSE verdict comment is the gate
+record, so an executables PR must say `Refs #N`. Second hazard, same merge: rebase rewrote every POC SHA and the
+branch was deleted on merge, so SHAs cited in RESULT.md (9988331, 53a9d68, fdb8338, 1bc97ca), the gate report
+(7953833, 17a7fa4) and Issue comments are not on main and dangle from a fresh clone. Only the curator's
+pre→post map in GRADES.md bridges them — by initiative, not method.
+
+## OBS-29 — The literal firewall worked; the bar it read was written at the wrong altitude, and the known conflicts reached the owner last
+*2026-11-13 · from the mnstd-002 retro*
+
+The validator re-ran the artifact (n=6, byte-identical), ruled 37 clauses, and returned SCOPE FAIL on four
+(N1.1, N6.1, C1.3, C6.1-HTML) with every substantive check passing — the first method-caught instance of the
+shd-007 trap (#388, ADR now validated). Three of the four were decompose-time guesses about the toolchain ("only
+Docker, Node, Python"; "only network access is the image pull"; "semantic XML … number"). The owner cleared them
+by ruling in minutes, choosing among the validator's A/B/C grade columns. Two were known at tech-discovery
+(leader rulings R1/R2 correctly left the bar unamended) but the pre-authorized coverage gate meant the owner saw
+them only after a 2.7 h feasibility. Lessons: #390 (done_when altitude), #391 (checker must recompute from primary
+outputs; checker code inside the freeze — the C5.3 checker read a pipeline-written file). Enhancement #392
+(escalate literal conflicts at coverage). Telemetry side-note: mnstd-001's retro ran in this session during
+mnstd-002's scope phase and its stores (#347/#348) are counted as mnstd-002's — attribution is by session time
+window, not feature_cycle (evidence for #302). The review's "run_in_background + TaskOutput" recommendation names
+a tool this harness does not have; the documented wait is Monitor with an until-loop.
