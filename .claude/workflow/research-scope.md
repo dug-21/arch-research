@@ -40,6 +40,10 @@ smart-edge: the proof-goal ran to a `partial` artifact with no Issue and no cycl
   distills → `technology` (`claimed`, `Prerequisite→` capability) + `finding` (`Motivates`, `cites`).
   Tag with the run-id.
 - **GATE (blocking → coverage):** loop-until-dry K/N + **human confirm**. REWORK ≤2 → re-spawn researchers; else SCOPE-FAIL.
+  **Bar questions at coverage.** The leader lists every clause the findings show cannot pass on its literal
+  text (clause id + the finding that shows it) and posts them on the Issue as **owner bar questions**. Gate
+  pre-authorization does not cover these items. Feasibility may proceed; the leader never answers them, and the
+  validator still rules literally. (Enhancement #392, claimed; mnstd-002 OBS-29.)
 - `phase-end phase:"tech-discovery" outcome:"T claimed, R reused"`.
 
 ## Phase: feasibility  *(validated/empirical only — SKIPPED for directional)*
