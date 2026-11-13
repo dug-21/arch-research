@@ -1,6 +1,6 @@
 # mnstd-002 — Validated: ISO-style Metanorma authoring and commenting cycle, proven by one integrated prototype
 
-**Status:** feasibility — FIREWALL SCOPE-FAIL pending owner rulings (2026-11-13)
+**Status:** feasibility — owner rulings recorded; C5.3 checker rework in progress (2026-11-13)
 **Goal(s):** `mnstd` (primary, **#329**)
 **Capability target(s):** all seven business capabilities on the mnstd board, as workstreams of this ONE scope:
 C1 **#336** · C2 **#335** · C3 **#334** · C4 **#332** · C5 **#333** · C6 **#331** · C7 **#330**.
@@ -307,3 +307,15 @@ Recorded by factory-curator for research-leader. No proof bar, clause or NFR tex
   `<annotation>` data, labelled as glue. The validator rules whether that satisfies C6.1's wording. No bar change.
 - **R3 — Defaults and git.** Proceed on the Q1–Q9 defaults as recorded. Host `git` is added as a declared
   prerequisite with a fail-fast check (findings-W3 §6). This is a prerequisite declaration, not a bar change.
+
+## Extension (2026-11-13): owner firewall rulings (verbatim)
+
+**Owner firewall rulings for mnstd-002** (genuine human input, 2026-11-13; relayed verbatim by the coordinator to research-leader):
+
+1. **N1.1 / N6.1 — YES.** The one-time font download (`make fonts`) is environment setup, equivalent to the image pull. Condition: pin the fonts (version + checksum manifest, verified by `make fonts`) as a follow-up. Do it in this run if it's cheap; otherwise log it as a tracked follow-up on the Issue.
+2. **C1.3 — YES.** Clause numbers in Metanorma's presentation XML, joined by element id, satisfy C1.3. That's Metanorma's native layering, not our addition.
+3. **C6.1 (HTML half) — NO.** HTML notes added by our script are the excluded bespoke overlay. C6 stays `partial`. Record the finding honestly: Metanorma ISO HTML does not render native review notes; PDF does.
+
+Required before merging PR #75: fix the C5.3 checker so it actually recomputes its result (it must fail when an accepted change is removed from v2), add that case as a tamper test, and have the factory-validator (independent, not the builder) confirm the fix. A spot-check of the changed clause is enough; no full re-gate needed.
+
+These rulings supersede the leader rulings R1/R2 above where they differ (R1: N6.1 now ruled satisfied by owner; R2: glue HTML ruled NOT to satisfy C6.1). Recorded on Issue #74 before any grade moved.
