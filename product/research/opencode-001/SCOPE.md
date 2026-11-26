@@ -38,6 +38,10 @@ The immediate opportunity is to select among model families and allocate existin
 2. Separate conclusions for subscription access, observation fidelity, context injection, routing authority, repository identity, and collective sharing. State whether each gap blocks the platform decision or can be deferred.
 3. A staged follow-on scope testing a pinned OpenCode integration on one representative real workflow against its Claude Code baseline and using a second repository to probe isolation.
 
+## Coverage extension — consolidated development environment
+
+[The owner accepted the original coverage and asked a follow-up about a consolidated project console](https://github.com/dug-21/arch-research/issues/77#issuecomment-7181560517). Evaluate OpenCode Desktop as the interactive project, session, chat, and file surface. Check how much recurring setup can move into centrally maintained agent definitions, harness configuration, protocol launchers, and Unimatrix enrollment. Identify the remaining work for a portfolio view that reports project and protocol state, and compare a Desktop extension with a separate project console using OpenCode sessions. Keep per-project execution context and memory binding explicit. Assess onboarding a new repository and leave optional shared knowledge within the existing Collective investigation. Deliver the extension in `findings-W5.md`.
+
 ## Proof bar
 
 The owner approved the directional scope with one clarification. Derive the required capture, learning, context injection, routing, and isolation behavior from current Claude Code workflows and the intended platform. Evaluate the shipped Unimatrix OpenCode adapter against those requirements and identify missing host or Unimatrix capabilities even where the existing integration works as designed.
