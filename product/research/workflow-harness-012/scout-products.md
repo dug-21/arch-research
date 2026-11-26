@@ -1,7 +1,9 @@
 # Established products — workflow-harness ecosystem
 
-**Survey and retrieval date** 2026-11-26  
-**Mode** Discovery, recurring warm and cold legs  
+**Survey and retrieval date** 2026-11-26
+
+**Mode** Discovery, recurring warm and cold legs
+
 **Evidence** Published artifacts, released vendor APIs and vendor documentation. Release evidence establishes published availability. Runtime, security, and comparative quality remain directionally assessed.
 
 ## Capability map

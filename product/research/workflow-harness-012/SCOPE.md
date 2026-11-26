@@ -1,9 +1,13 @@
 # workflow-harness-012 — Directional ecosystem survey
 
-**Status:** done  
-**Survey date:** 2026-11-26  
-**Theme:** workflow-harness  
-**Confidence:** directional  
+**Status:** done
+
+**Survey date:** 2026-11-26
+
+**Theme:** workflow-harness
+
+**Confidence:** directional
+
 **Kick:** owner-injected v2 framing, with external ecosystem scan
 
 ## Question
