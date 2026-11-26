@@ -1,6 +1,6 @@
 # opencode-001 — OpenCode v2 as a platform for a Unimatrix-backed harness
 
-**Status:** researching\
+**Status:** synthesis\
 **Goal(s):** Run development and research workflows across eligible models while retaining continuous learning and useful context from Unimatrix. Related goal: sovereign local-first dev/research loop (Unimatrix #242).\
 **Capability target:** Routing-capable agentic harness (Unimatrix #245). The declarative model-routing and escalation contract (#244) is an interface dependency.\
 **Confidence-required:** directional\
