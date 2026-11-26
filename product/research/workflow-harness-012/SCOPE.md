@@ -1,6 +1,6 @@
 # workflow-harness-012 — Directional ecosystem survey
 
-**Status:** researching  
+**Status:** done  
 **Survey date:** 2026-11-26  
 **Theme:** workflow-harness  
 **Confidence:** directional  
@@ -25,3 +25,7 @@ One concurrent directional run, four surface scouts and up to two bounded rechec
 Prior queue dispositions are preserved. #67 is held by the owner before synthesis. #48 is parked at owner triage. #54 is open tracking drift after completed triage and formalization. #43 is legacy tracking alongside closed #46. #44 was proposed in the original scan and has no observed run. #77 remains closed and the staged pilot is out of scope.
 
 Artifacts live under `product/research/workflow-harness-012/`. Return the dated capability map, evidence gaps and triage record to the theme coordinator.
+
+## Close
+
+The coordinator accepted directional source coverage, including four named grid holes and four cold legs. Triage retained two assembly precedents, parked eleven hypotheses with re-entry conditions, and promoted zero proof goals. The OpenCode pilot remains staged. [Capability map and evidence gaps](REPORT.md) · [Triage](reports/triage.md) · [Issue #78](https://github.com/dug-21/arch-research/issues/78)
